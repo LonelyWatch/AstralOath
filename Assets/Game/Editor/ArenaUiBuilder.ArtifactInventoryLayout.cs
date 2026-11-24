@@ -169,12 +169,12 @@ namespace AstralOath.Editor
             PrefabUtility.RecordPrefabInstancePropertyModifications(wearer.transform);
             PrefabUtility.RecordPrefabInstancePropertyModifications(wearer.gameObject);
             PrefabUtility.RecordPrefabInstancePropertyModifications(wearer.Require<Image>("frame"));
-            var limit = Text(rect, "Artifact level", null, 22, .347f, .385f, .63f, .223f,
+            var limit = Text(rect, "Artifact level", null, 31, .347f, .385f, .63f, .223f,
                 new Color32(255, 183, 76, 255));
-            var name = Text(rect, "Artifact name", null, 23, .347f, .603f, .63f, .229f, Color.white);
+            var name = Text(rect, "Artifact name", null, 30, .347f, .603f, .63f, .229f, Color.white);
             var exp = Picture(rect, "Experience material", InventoryArt("ArtifactEnhancement/game_eff_unit_expup"),
                 .022f, -.004f, .267f, .238f, true);
-            var amount = Text(rect, "Material count", null, 23, .011f, .723f, .297f, .221f, Color.white,
+            var amount = Text(rect, "Material count", null, 32, .011f, .723f, .297f, .221f, Color.white,
                 TextAlignmentOptions.Midline, false);
             ApplySummonTextOutline(amount);
             exp.enabled = amount.enabled = false;

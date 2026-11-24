@@ -84,13 +84,25 @@ namespace AstralOath.Editor
             proportions.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
             proportions.aspectRatio = .652f;
             panel.gameObject.SetActive(true);
-            Paint(panel,null,new Color32(19,30,48,255),true);
-            PaintSoftModal(Area(panel,"Frame",0,0,1,1)).raycastTarget = false;
+            var nativeFrame = Area(panel,"Native quality frame",0,0,1,1);
+            // Full quality sprites include their original transparent outer shadow.
+            // Expand that margin outside the content box so the text retains its native inset.
+            nativeFrame.offsetMin = -Vector2.one * 31f * HomeDesignScale;
+            nativeFrame.offsetMax = Vector2.one * 31f * HomeDesignScale;
+            var popupPlate = Paint(nativeFrame, InventoryArt("Equipment/_box_equip_1"), Color.white, true, true);
+            popupPlate.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            keys.Add(("popupPlate", popupPlate));
+            var qualitySources = Area(root,"Popup quality graphics",0,0,.01f,.01f);
+            string[] qualities = { "normal", "good", "rare", "heroic", "epic" };
+            for (int i=0; i<qualities.Length; i++)
+                keys.Add(("popup_" + qualities[i], Picture(qualitySources, qualities[i],
+                    InventoryArt("Equipment/_box_equip_" + (i+1)),0,0,1,1)));
+            qualitySources.gameObject.SetActive(false);
             keys.Add(("popupItem",SingleSlotColumn(Area(panel,"Worn item",.060f,.055f,.880f,.832f),null,null,true)));
             keys.Add(("popupRemove",Action(panel,"Remove equipment","home.gear.singleRemove",27,
                 .151f,.857f,.337f,.089f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
             keys.Add(("change",Action(panel,"Change equipment","home.gear.singleChange",27,
-                .512f,.857f,.337f,.089f,out var changeCaption,CommonArt("_btn_green"),Color.white)));
+                .512f,.857f,.337f,.089f,out var changeCaption,BagArt("_btn_small_black"),Color.white)));
             foreach (var caption in new[] { removeCaption, changeCaption })
             {
                 caption.fontStyle = FontStyles.Bold;
@@ -152,7 +164,9 @@ namespace AstralOath.Editor
                 new Color32(163,167,180,255), TextAlignmentOptions.TopLeft, true)));
             float mainY = popup ? .300f : .315f;
             float setY = popup ? .764f : .697f;
-            Paint(Area(detail,"Main property band",.005f,mainY,.984f,.069f),null,new Color32(105,119,147,17));
+            Color WhiteBand(byte coverage) => new Color(1,1,1,QualitySettings.activeColorSpace == ColorSpace.Linear
+                ? Mathf.GammaToLinearSpace(coverage/255f) : coverage/255f);
+            Paint(Area(detail,"Main property band",.005f,mainY,.984f,.069f),Art("_white"),WhiteBand(10));
             if (!popup) keys.Add(("mainIcon",Picture(detail,"Main property icon",null,.022f,mainY+.009f,.068f,.05f,true)));
             BindingMap StatRow(RectTransform parent, string rowName, float x, float top, float width, float height,
                 int size, bool primary)
@@ -193,7 +207,7 @@ namespace AstralOath.Editor
                 PrefabUtility.RecordPrefabInstancePropertyModifications(text);
             }
             keys.Add(("score", score));
-            Paint(Area(detail,"Set band",.005f,setY,.984f,.066f),null,new Color32(78,82,98,10));
+            Paint(Area(detail,"Set band",.005f,setY,.984f,.066f),Art("_white"),WhiteBand(5));
             keys.Add(("setIcon",Picture(detail,"Set icon",null,.018f,setY+.005f,.080f,.056f,true)));
             var set = Text(detail,"Equipped set pieces",null,29,.103f,setY,.875f,.066f);
             set.richText = true;

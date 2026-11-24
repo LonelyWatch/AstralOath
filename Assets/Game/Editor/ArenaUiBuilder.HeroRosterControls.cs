@@ -20,6 +20,7 @@ namespace AstralOath.Editor
             }
 
             var detail = Find<RectTransform>("rosterDetail");
+            Remove(Find<RectTransform>("rosterShading"), "Summary shadow");
             var header = Find<RectTransform>("rosterHeaderComposition");
             var controls = (RectTransform)header.Find("Roster controls");
             bindings.RemoveAll(entry => entry.Key == "gearSets" || entry.Key.StartsWith("heroSet")
@@ -32,17 +33,29 @@ namespace AstralOath.Editor
                 Remove(controls, name);
             Remove(header, "Roster tools");
 
-            var shade = Picture(detail, "Hero identity shade", RosterArt("HeroIdentityShade"), .056f, .089f, .335f, .36f);
-            shade.color = new Color32(10, 15, 39, 236);
-            shade.rectTransform.SetAsFirstSibling();
+            // unit_detail.csb left_equipment(74,0)/n_dim, in 1280x720 source coordinates.
+            Image Shadow(string name, string sprite, Vector2 center, Vector2 size, float angle)
+            {
+                var image = Picture(detail,name,RosterArt("SourceShadows/"+sprite),0,0,0,0);
+                var rect = image.rectTransform;
+                rect.anchorMin = rect.anchorMax = Vector2.zero;
+                rect.pivot = new Vector2(.5f,.5f);
+                rect.sizeDelta = size * HomeDesignScale;
+                rect.anchoredPosition = center * HomeDesignScale;
+                rect.localEulerAngles = new Vector3(0,0,angle);
+                // These local copies include source node opacity in their linear black coverage.
+                image.color = Color.white;
+                rect.SetAsFirstSibling();
+                return image;
+            }
+            Remove(detail,"Hero summary glow");
+            Shadow("Hero summary glow","_grow",new Vector2(154,399),new Vector2(164*3.19f,167*7),0);
+            // Cocos positive rotations are clockwise; Unity's Z rotation is counterclockwise.
+            var shade = Shadow("Hero identity shade","_grow_s",new Vector2(154,361.998f),new Vector2(20*38.8f,113*5),90);
             bindings.Add(("heroIdentityShade", shade));
 
             var readingInk = Resources.Load<Material>("AstralOathPlayerNameShadow");
             Remove(detail, "Attribute contrast");
-            var firstStat = Find<GameText>("detailStatLabel_attack").rectTransform;
-            var statShade = Area(detail,"Attribute contrast",.058f,.557f,.170f,.279f);
-            Paint(statShade,null,new Color32(10,17,32,202));
-            statShade.SetSiblingIndex(firstStat.GetSiblingIndex());
             foreach (var entry in bindings.Where(item => item.Key.StartsWith("detailStat")))
             {
                 var stat = (GameText)entry.Target;
@@ -54,9 +67,6 @@ namespace AstralOath.Editor
                 var action = detail.Find(key);
                 var label = action.Find("Action caption").GetComponent<GameText>();
                 Remove(action, "Caption backing");
-                var backing = Paint(Area((RectTransform)action, "Caption backing", -.105f, .944f, 1.21f, .35f),
-                    null, new Color32(12, 20, 35, 225));
-                backing.transform.SetSiblingIndex(label.transform.GetSiblingIndex());
                 Place(label.rectTransform, -.13f, .940f, 1.26f, .35f);
                 label.fontSize = 23;
                 label.fontSharedMaterial = readingInk;
@@ -103,8 +113,21 @@ namespace AstralOath.Editor
                 var dismiss = Button(Area(overlay, "Outside", 0, .159f, 1, .841f), null, Color.clear);
                 dismiss.transition = Selectable.Transition.None;
                 var face = Area(overlay, "Panel", x, .161f, w, height);
-                Paint(face, null, new Color32(19,30,48,253), true);
-                PaintSoftModal(Area(face,"Frame",0,0,1,1)).raycastTarget = false;
+                var nativeFrame = Area(face,"Native frame",0,0,1,1);
+                // Both source sprites include a 31–34px shadow outside the visible frame.
+                // Keep that padding outside the content area instead of drawing inputs across the border.
+                nativeFrame.offsetMin = -Vector2.one * 32f * HomeDesignScale;
+                nativeFrame.offsetMax = Vector2.one * 32f * HomeDesignScale;
+                if (key == "searchPanel")
+                {
+                    var sourceFrame = Paint(nativeFrame,RosterArt("SourceSearch/_box_black_gold"),Color.white,true,true);
+                    sourceFrame.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+                }
+                else
+                {
+                    var sourceFrame = Paint(nativeFrame,RosterArt("SourceSearch/filter_main_bg"),Color.white,true,true);
+                    sourceFrame.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+                }
                 popup.Add((key, overlay.gameObject));
                 popup.Add((key + "Dismiss", dismiss));
                 overlay.gameObject.SetActive(false);
@@ -118,14 +141,30 @@ namespace AstralOath.Editor
                 return button;
             }
 
-            var search = Panel("searchPanel", "Search by hero name", .617f, .30f, .123f);
+            var search = Panel("searchPanel", "Search by hero name", .617f, .30f, .55f);
             var input = BuildRosterSearch(search, out var hint);
-            Place((RectTransform)input.transform, .035f, .18f, .545f, .64f);
-            var clear = Button(Area(search, "Clear search", .588f, .18f, .12f, .64f), CommonArt("_btn_small_black"), Color.white);
-            PressSmallBlack(clear);
-            Picture((RectTransform)clear.transform, "Clear", Art("cm_icon_etcclose"), .20f, .2f, .60f, .60f, true);
+            var inputPlate = input.GetComponent<Image>();
+            inputPlate.sprite = RosterArt("SourceSearch/_btn_white");
+            inputPlate.type = Image.Type.Sliced;
+            inputPlate.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            input.textComponent.color = new Color32(30,27,24,255);
+            hint.color = new Color32(84,81,77,255);
+            hint.text = labels[InventoryPrefix+"roster_search_input_hint"];
+            input.transform.Find("Search icon").gameObject.SetActive(false);
+            Place(input.textViewport,.045f,.03f,.80f,.94f);
+            hint.alignment = TextAlignmentOptions.MidlineLeft;
+            Place((RectTransform)input.transform, .035f, .04f, .66f, .145f);
+            var clear = Button(Area(search, "Clear search", .603f, .04f, .085f, .145f), null, Color.clear);
+            Picture((RectTransform)clear.transform, "Clear", Art("cm_icon_etcclose"), .20f, .2f, .60f, .60f, true)
+                .color = new Color32(67,55,47,255);
             popup.Add(("clear", clear));
-            Choice(search, "submit", InventoryPrefix + "roster_search", .74f, .18f, .225f, .64f);
+            var submit = Action(search,"submit",InventoryPrefix+"roster_search",22,.715f,.04f,.25f,.145f,
+                out _,CommonArt("_btn_green"),Color.white);
+            popup.Add(("submit",submit));
+            Paint(Area(search,"History divider",.035f,.205f,.93f,.008f),Art("_bar_2"),new Color32(255,255,255,45),sliced:true);
+            Text(search,"Recent searches",InventoryPrefix+"roster_recent_searches",19,.045f,.22f,.79f,.08f,RosterMuted);
+            Text(search,"Empty search history",InventoryPrefix+"roster_empty_history",19,
+                .06f,.55f,.88f,.15f,RosterMuted,TextAlignmentOptions.Center);
             bindings.Add(("search", input));
             bindings.Add(("searchHint", hint));
             var options = Panel("filters", "Roster filters", .457f, .459f, .362f);

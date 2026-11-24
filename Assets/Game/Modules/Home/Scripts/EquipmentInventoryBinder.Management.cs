@@ -38,6 +38,7 @@ namespace AstralOath.Client.Home
         {
             var set = ManagementSets[managementSet];
             Get<GameText>("manageSetFilterLabel").text = set == null ? L("manageAllSets") : SetName(set);
+            Get<Image>("manageSetFilterSymbol").sprite = set == null ? Get<Image>("manageFilterAllArt").sprite : Get<Image>("set_" + set).sprite;
             Get<GameText>("manageSortLabel").text = (managementSortByScore ? L("manageScoreSort") : L("sortItemLevel")) + " ↓";
             if (set != null) candidates = candidates.Where(item => item.setId == set);
             var ordered = managementSortByScore ? candidates.OrderByDescending(ItemScore).ThenByDescending(item => item.itemLevel) :
@@ -51,7 +52,7 @@ namespace AstralOath.Client.Home
                 .Where(index => before[index] != after[index]).ToArray();
             Get<GameText>("manageQuoteMetric").text = string.Join("\n", changed.Select(i => L(PanelKeys[i])));
             Get<GameText>("manageQuoteBefore").text = string.Join("\n", changed.Select(i => PanelValue(i,before[i])));
-            Get<GameText>("manageQuoteAfter").text = string.Join("\n", changed.Select(i => PanelValue(i,after[i])));
+            Get<GameText>("manageQuoteAfter").text = string.Join("\n", changed.Select(i => "→ " + PanelValue(i,after[i])));
             Get<GameText>("manageQuoteDelta").text = string.Join("\n", changed.Select(i =>
             {
                 int delta = after[i] - before[i];
@@ -62,15 +63,15 @@ namespace AstralOath.Client.Home
                 changed.Length == 0 ? L("noStatChange") : "";
             var panel = (RectTransform)Get<GameObject>("managementQuote").transform;
             var noteText = Get<GameText>("manageChange");
-            float width = ((RectTransform)panel.parent).rect.width * .60f * .80f;
+            float width = ((RectTransform)panel.parent).rect.width * .40f;
             float notesHeight = string.IsNullOrEmpty(noteText.text) ? 0f :
                 Mathf.Max(30f, noteText.GetPreferredValues(noteText.text, width, float.PositiveInfinity).y + 12f);
             float valuesHeight = Mathf.Max(1,changed.Length) * 34f;
-            float notesTop = 194f + valuesHeight + 18f;
-            float panelHeight = Mathf.Max(500f,notesTop + notesHeight + 120f);
+            float notesTop = 304f + valuesHeight + 18f;
+            float panelHeight = Mathf.Max(680f,notesTop + notesHeight + 158f);
             float height = panelHeight / 1080f;
-            panel.anchorMin = new Vector2(.20f,.50f - height / 2f);
-            panel.anchorMax = new Vector2(.80f,.50f + height / 2f);
+            panel.anchorMin = new Vector2(0,.50f - height / 2f);
+            panel.anchorMax = new Vector2(1,.50f + height / 2f);
             void PlaceVertically(RectTransform rect, float top, float extent)
             {
                 rect.anchorMin = new Vector2(rect.anchorMin.x,1f-(top+extent)/panelHeight);
@@ -78,16 +79,14 @@ namespace AstralOath.Client.Home
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
             }
             PlaceVertically(Get<GameText>("manageQuoteTitle").rectTransform,24f,48f);
-            PlaceVertically(Get<GameText>("manageSummary").rectTransform,86f,50f);
-            PlaceVertically((RectTransform)Get<GameObject>("manageQuoteHeadings").transform,154f,34f);
+            PlaceVertically(Get<GameText>("manageSummary").rectTransform,202f,50f);
             foreach (string column in new[] {"Metric","Before","After","Delta"})
             {
-                PlaceVertically(Get<GameText>("manageQuoteHeading"+column).rectTransform,158f,30f);
-                PlaceVertically(Get<GameText>("manageQuote"+column).rectTransform,194f,valuesHeight);
+                PlaceVertically(Get<GameText>("manageQuote"+column).rectTransform,304f,valuesHeight);
             }
             PlaceVertically(noteText.rectTransform,notesTop,notesHeight);
-            PlaceVertically((RectTransform)Get<GameButton>("manageCancel").transform,panelHeight-90f,64f);
-            PlaceVertically((RectTransform)Get<GameButton>("manageConfirm").transform,panelHeight-90f,64f);
+            PlaceVertically((RectTransform)Get<GameButton>("manageCancel").transform,panelHeight-136f,96f);
+            PlaceVertically((RectTransform)Get<GameButton>("manageConfirm").transform,panelHeight-136f,96f);
         }
 
         private int[] PanelValues(string hero, BattleStats plain, EquipmentPiece[] pieces)
@@ -106,11 +105,14 @@ namespace AstralOath.Client.Home
             apply.interactable = choosing && hero != null && hero.instanceId != selected.equippedHeroId && !loadFailed;
             apply.targetGraphic.color = apply.interactable ? Color.white : new Color(.46f,.46f,.46f,1f);
             Get<GameText>("applyLabel").color = apply.interactable ? Color.white : new Color32(139,150,159,255);
-            Get<GameButton>("manageReset").gameObject.SetActive(choosing);
+            var reset = Get<GameButton>("manageReset");
+            reset.interactable = choosing;
+            ((Image)reset.targetGraphic).sprite = Get<Image>(choosing ? "manageFilterWhiteArt" : "manageFilterBlackArt").sprite;
+            Get<Image>("manageResetIcon").color = choosing ? Color.black : new Color32(255,255,255,76);
             Get<GameObject>("manageCurrentGroup").SetActive(!choosing);
             Get<GameText>("managePrompt").gameObject.SetActive(!choosing);
             Get<GameText>("manageHeroName").text = hero == null ? "" : heroName(hero.instanceId);
-            Get<GameText>("manageHeroStars").text = hero == null ? "" : new string('★',hero.stars);
+            for (int i = 0; i < 6; i++) Get<Image>("manageHeroStar" + i).enabled = hero != null && i < hero.stars;
             var portrait = Get<Image>("manageHeroIcon");
             portrait.sprite = hero == null ? null : heroPortrait(hero.instanceId);
             portrait.enabled = portrait.sprite;
@@ -125,16 +127,28 @@ namespace AstralOath.Client.Home
             var original = plain == null ? null : PanelValues(hero.instanceId,plain,currentPieces);
             var proposed = plain == null ? null : PanelValues(hero.instanceId,plain,previewPieces);
             PaintLoadout("manageCurrent",current,currentPieces,original,null);
-            PaintLoadout("managePreview",preview,previewPieces,proposed,original);
+            PaintLoadout("managePreview",preview,previewPieces,proposed,original,choosing);
             if (!choosing) return;
 
             BindSlotArt(new EquipmentItemCardBinder(Get<BindingMap>("manageThumbnail")),selected);
+            Get<Image>("manageDetailPlate").sprite = Get<Image>("manageDetail_" + selected.grade).sprite;
+            Get<Image>("manageMainStatIcon").sprite = StatArt(selected.mainStat);
+            Get<Image>("manageMainStatIcon").enabled = true;
             Get<GameText>("name").text = ItemName(selected);
             Get<GameText>("manageDescription").text = ItemDescription(selected);
             PaintEquipmentScore("manageScore",selected);
             Get<GameText>("quality").text = L(selected.grade) + L(selected.slot);
+            Get<GameText>("quality").color = selected.grade switch
+            {
+                "good" => new Color32(121,203,104,255), "rare" => new Color32(116,181,243,255),
+                "heroic" => new Color32(218,122,234,255), "epic" => new Color32(238,87,62,255),
+                _ => new Color32(200,193,180,255)
+            };
             Get<GameText>("wearer").text = string.IsNullOrEmpty(selected.equippedHeroId) ? L("unworn") : F("owner",heroName(selected.equippedHeroId));
-            Get<GameText>("manageSet").text = SetProgress(selected);
+            int proposedSetCount = preview.Count(item => item?.setId == selected.setId);
+            Get<GameText>("manageSet").text = SetName(selected.setId) + " (" + Num(proposedSetCount) + "/" +
+                (selected.setId == "speed" ? "4" : "2") + ")";
+            Get<GameText>("manageSetEffect").text = L(selected.setId + "SetEffect");
             var setIcon = Get<Image>("manageSetIcon");
             setIcon.sprite = SetArt(selected);
             setIcon.enabled = setIcon.sprite;
@@ -147,7 +161,7 @@ namespace AstralOath.Client.Home
             }
         }
 
-        private void PaintLoadout(string group, EquipmentInventoryItem[] gear, EquipmentPiece[] pieces, int[] values, int[] baseline)
+        private void PaintLoadout(string group, EquipmentInventoryItem[] gear, EquipmentPiece[] pieces, int[] values, int[] baseline, bool showValues = true)
         {
             var targets = group == "managePreview" ? managerPreview : managerCurrent;
             for (int i = 0; i < targets.Length; ++i)
@@ -156,14 +170,16 @@ namespace AstralOath.Client.Home
                 // Activate width-driven layout only after the page is on its runtime Canvas.
                 Get<BindingMap>(group + "_" + Slots[i]).GetComponent<AspectRatioFitter>().enabled = true;
                 PaintWornSlot(targets[i], gear[i]);
+                targets[i].Root.GetComponent<CanvasGroup>().alpha = group == "managePreview" && !showValues ? .45f : 1f;
             }
             for (int i = 0; i < PanelKeys.Length; ++i)
             {
                 var map = Get<BindingMap>(group + "_" + PanelKeys[i]);
-                map.gameObject.SetActive(values != null);
+                map.gameObject.SetActive(values != null && showValues);
                 if (group == "managePreview")
                 {
                     var change = Get<GameText>("manageDelta_" + PanelKeys[i]);
+                    change.gameObject.SetActive(showValues);
                     int delta = values == null || baseline == null ? 0 : values[i]-baseline[i];
                     change.text = delta == 0 ? "" : (delta > 0 ? "+" : "") + PanelValue(i,delta);
                     change.color = delta > 0 ? new Color32(255,149,41,255) : new Color32(56,148,240,255);

@@ -1,5 +1,7 @@
 # Arena
 
+主页共用的简中文案表 `Configs/arena-zh-hans.json` 补齐装备套装效果、管理页主副能力值和英雄搜索提示；本轮仅调整这些 Home 使用的文案，不改变竞技场权威规则。[原素材复核](../../../../docs/development/ui-material-reference.md)
+
 预禁确认的短闪只跟随当次被点击的头像，镜像头像直接更新禁用标记，避免大面积白光覆盖邻格。原帧、运行截图和验证范围见 [本轮复核](../../../../docs/delivery/2026-11-23-equipment-battle-review.md)。
 
 选人立绘、阵型模型和预禁展示的离屏目标跟随画布上的实际像素。双人预禁按每张 4K 像素面积限制内存，完成过渡后释放隐藏立绘。[显示尺寸、原帧及验证](../../../../docs/delivery/2026-11-22-client-image-quality.md)

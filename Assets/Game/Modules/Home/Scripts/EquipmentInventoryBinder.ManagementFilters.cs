@@ -5,6 +5,7 @@ using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Home
 {
@@ -86,8 +87,14 @@ namespace AstralOath.Client.Home
                 var button = Get<GameButton>("manageStatFilter" + i);
                 var label = button.GetComponentInChildren<GameText>(true);
                 string heading = i == 0 ? L("manageFilterMain") : F("manageFilterSub", i);
-                label.text = F("manageFilterChoice", heading, ManagementStatCaption(managementStatFilters[i]));
-                label.color = i == openStatFilter || managementStatFilters[i] != null ? new Color32(254,217,133,255) : Color.white;
+                string kind = managementStatFilters[i];
+                label.text = kind == null ? heading : ManagementStatCaption(kind);
+                bool active = i == openStatFilter || kind != null;
+                ((Image)button.targetGraphic).sprite = Get<Image>(active ? "manageFilterWhiteArt" : "manageFilterBlackArt").sprite;
+                label.color = active ? new Color32(23,25,29,255) : new Color32(187,193,201,255);
+                var symbol = Get<Image>("manageStatSymbol" + i);
+                symbol.sprite = kind == null ? Get<Image>("manageFilterAllArt").sprite : Get<Image>("stat_" + kind.Replace("Pct",string.Empty)).sprite;
+                symbol.color = active ? new Color32(23,25,29,255) : Color.white;
             }
             if (openStatFilter < 0) return;
             foreach (string option in ManagementStatKinds)
@@ -97,7 +104,10 @@ namespace AstralOath.Client.Home
                 var label = button.GetComponentInChildren<GameText>(true);
                 label.text = ManagementStatCaption(kind);
                 button.interactable = !UsedByOtherSubfilter(kind);
-                label.color = managementStatFilters[openStatFilter] == kind ? new Color32(254,217,133,255) :
+                bool chosen = managementStatFilters[openStatFilter] == kind;
+                Get<Image>("manageStatSelected_" + option).enabled = chosen;
+                Get<Image>("manageStatOptionSymbol_" + option).color = chosen ? new Color32(23,25,29,255) : Color.white;
+                label.color = chosen ? new Color32(23,25,29,255) :
                     button.interactable ? Color.white : new Color32(133,142,156,255);
             }
         }

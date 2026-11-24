@@ -105,7 +105,7 @@ namespace AstralOath.Client.Home
             view.TabHeroesLabel.Bind(locale, scope, TextPrefix + "heroes");
             view.TabEquipmentLabel.Bind(locale, scope, TextPrefix + "equipment");
             view.TabArtifactsLabel.Bind(locale, scope, TextPrefix + "artifacts");
-            view.SearchHint.Bind(locale, scope, TextPrefix + "roster_search");
+            view.SearchHint.Bind(locale, scope, TextPrefix + "roster_search_input_hint");
             BindRosterTools(scope);
             view.BagCaption("EquipmentSort").Bind(locale, scope, TextPrefix + "sort_equipment_score");
             view.BagCaption("ArtifactSort").Bind(locale, scope, TextPrefix + "sort_upgrade");

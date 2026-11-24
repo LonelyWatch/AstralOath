@@ -13,12 +13,14 @@ namespace AstralOath.Editor
         {
             void Link(string key, Object target) => refs.Add(("artifact" + key, target));
             var frame = Area(detail, "Detail frame", -.06f, -.055f, 1.12f, 1.12f);
-            Paint(frame, BagArt("_box_equip_0"), Color.white, false, true).pixelsPerUnitMultiplier = 1f / BagDesignScale;
+            Paint(frame, ArtifactRestoreArt("_box_equip_0_linear"), Color.white, false, true).pixelsPerUnitMultiplier = 1f / BagDesignScale;
 
             var illustration = Area(detail, "Artifact illustration", .051f, .04f, .55f, .576f);
             var painting = Paint(illustration, null, Color.white);
             painting.preserveAspect = true;
             Link("Portrait", painting);
+            Paint(Area(illustration,"Original card surround",-.008f,-.003f,1.029f,1.018f),
+                ArtifactRestoreArt("arti_frame_box"),Color.white,sliced:true).pixelsPerUnitMultiplier=1f/BagDesignScale;
             Picture(illustration, "Card filigree", SummonArt("arti_frame_deco_1"), 0, 0, .44f, .40f);
             Link("DetailEmblem", Picture(illustration, "Emblem", null, -.027f, -.035f, .245f, .195f, true));
             Link("DetailBadge", Prefab(illustration, "NotificationBadge", .126f, -.026f, .166f, .064f).GetComponent<BindingMap>());
@@ -106,7 +108,7 @@ namespace AstralOath.Editor
             {
                 var tab = Action(detail, key, ArtifactInventoryPrefix + label, 23, x, .628f, .461f, .063f,
                     out var text, BagArt("_btn_small_black"), Color.white);
-                var highlight = Picture((RectTransform)tab.transform, "Selected tab", Art("_btn_white_flat"), 0, 0, 1, 1);
+                var highlight = Picture((RectTransform)tab.transform, "Selected tab", SummonArt("_btn_white"), 0, 0, 1, 1);
                 highlight.type = Image.Type.Sliced;
                 if (key == "Skill")
                 {

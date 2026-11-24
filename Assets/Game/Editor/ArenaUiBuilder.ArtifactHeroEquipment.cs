@@ -10,6 +10,8 @@ namespace AstralOath.Editor
 {
     public static partial class ArenaUiBuilder
     {
+        private static Sprite ArtifactRestoreArt(string key) => Load<Sprite>(InventoryTextures + "ArtifactRestore/" + key + ".png");
+
         private static void BuildWornArtifactMarkers(RectTransform slot, string prefix, List<(string Key, Object Target)> owner)
         {
             var star = DraftSprite("TeamBadges/cm_icon_star");
@@ -57,6 +59,8 @@ namespace AstralOath.Editor
             void CardFace(RectTransform host, string prefix, bool full)
             {
                 Link(prefix + "Portrait", Picture(host, "Card illustration", null, 0, 0, 1, 1));
+                Paint(Area(host, "Original card surround", -.008f, -.003f, 1.029f, 1.018f),
+                    ArtifactRestoreArt("arti_frame_box"), Color.white, sliced:true).pixelsPerUnitMultiplier = 1f / BagDesignScale;
                 Picture(host, "Emblem filigree", SummonArt("arti_frame_deco_1"), 0,0,.45f,.405f);
                 Link(prefix + "Emblem", Picture(host, "Artifact emblem", null, .005f,.002f,.22f,.16f,true));
                 Link(prefix + "Badge", Prefab(host,"NotificationBadge",.157f,-.007f,.141f,.060f).GetComponent<BindingMap>());
@@ -69,12 +73,12 @@ namespace AstralOath.Editor
                 Picture(zoomArea,"Magnify",Art("cm_icon_etczoomer"),.13f,.13f,.74f,.74f,true);
                 Link(prefix+"Zoom",zoom);
                 if (!full) return;
-                Caption(host,"cardName",null,33,.04f,.83f,.92f,.083f,Color.white).alignment=TextAlignmentOptions.Center;
-                Paint(Area(host,"Name ornament",.12f,.914f,.76f,.003f),null,new Color32(223,168,79,190));
+                Caption(host,"cardName",null,38,.04f,.83f,.92f,.083f,Color.white).alignment=TextAlignmentOptions.Center;
+                Picture(host,"Name ornament",ArtifactRestoreArt("arti_frame_deco_2"),0,.749f,1,.249f,true);
                 Picture(host,"Attack symbol",InventoryArt("Equipment/cm_icon_stat_att"),.052f,.938f,.065f,.046f,true);
                 Picture(host,"Health symbol",InventoryArt("Equipment/cm_icon_stat_max_hp"),.77f,.938f,.065f,.046f,true);
-                Caption(host,"cardAttack",null,26,.122f,.925f,.18f,.066f,Color.white);
-                Caption(host,"cardHealth",null,26,.845f,.925f,.15f,.066f,Color.white);
+                Caption(host,"cardAttack",null,32,.122f,.925f,.18f,.066f,Color.white);
+                Caption(host,"cardHealth",null,32,.845f,.925f,.15f,.066f,Color.white);
             }
 
             var pick = Area(page,"Equip artifact",0,0,1,1);
@@ -106,13 +110,13 @@ namespace AstralOath.Editor
             faceFit.aspectMode=AspectRatioFitter.AspectMode.FitInParent;
             faceFit.aspectRatio=378f/598f;
             CardFace(face,"card",true);
-            Caption(content,"grade",null,24,.513f,.034f,.47f,.047f,Color.white);
-            Caption(content,"name",null,36,.513f,.084f,.474f,.067f,Color.white).fontStyle=FontStyles.Bold;
-            Caption(content,"story",null,21,.513f,.154f,.478f,.208f,Mist,true).alignment=TextAlignmentOptions.TopLeft;
-            Caption(content,"class",null,26,.523f,.392f,.46f,.067f,Color.white);
-            Caption(content,"skillTitle",ArtifactInventoryPrefix+"skill_heading",25,.521f,.468f,.29f,.067f,new Color32(112,190,231,255));
-            Caption(content,"level",null,32,.74f,.467f,.247f,.069f,new Color32(253,166,67,255)).alignment=TextAlignmentOptions.Right;
-            Paint(Area(content,"Skill divider",.513f,.536f,.482f,.002f),null,new Color32(152,166,192,148));
+            Caption(content,"grade",null,28,.513f,.034f,.47f,.047f,Color.white);
+            Caption(content,"name",null,45,.513f,.084f,.474f,.067f,Color.white).fontStyle=FontStyles.Bold;
+            Caption(content,"story",null,24,.513f,.154f,.478f,.208f,Mist,true).alignment=TextAlignmentOptions.TopLeft;
+            Caption(content,"class",null,31,.523f,.392f,.46f,.067f,Color.white);
+            Caption(content,"skillTitle",ArtifactInventoryPrefix+"skill_heading",31,.521f,.468f,.29f,.067f,new Color32(112,190,231,255));
+            Caption(content,"level",null,38,.74f,.467f,.247f,.069f,new Color32(253,166,67,255)).alignment=TextAlignmentOptions.Right;
+            Paint(Area(content,"Skill divider",.503f,.531f,.495f,.014f),BagArt("_bar_2"),new Color32(152,166,192,148),sliced:true);
             Caption(content,"body",null,29,.517f,.55f,.477f,.218f,Color.white,true).alignment=TextAlignmentOptions.TopLeft;
             Act(content,"training",ArtifactInventoryPrefix+"enhance",25,.727f,.78f,.247f,.091f,SummonArt("_btn_blue_r_3"));
             Act(content,"equip","home.gear.singleEquip",30,.519f,.881f,.455f,.105f,CommonArt("_btn_green"));
@@ -122,12 +126,12 @@ namespace AstralOath.Editor
 
             var popup=Area(page,"Worn artifact details",0,0,1,1);
             Link("popup",popup.gameObject);
-            Link("outside",Button(Area(popup,"Dismiss outside",0,0,1,1),null,Black(.69f)));
-            var dialog=Area(popup,"Details panel",.50f,.054f,0,.825f);
+            Link("outside",Button(Area(popup,"Dismiss outside",0,0,1,1),null,Black(.62f)));
+            var dialog=Area(popup,"Details panel",.50f,.015f,0,.902f);
             var fit=dialog.gameObject.AddComponent<AspectRatioFitter>();
             fit.aspectMode=AspectRatioFitter.AspectMode.HeightControlsWidth;
-            fit.aspectRatio=232f/362f;
-            Paint(dialog,BagArt("_box_equip_0"),Color.white,true,true);
+            fit.aspectRatio=442f/650f;
+            Paint(dialog,ArtifactRestoreArt("_box_equip_0_linear"),Color.white,true,true).pixelsPerUnitMultiplier=1f/BagDesignScale;
             var inside=Area(dialog,"Detail contents",0,0,1,1);
             var portrait=Area(inside,"Thumbnail",.013f,.012f,.605f,.603f);
             portrait=Area(portrait,"Card proportions",0,0,1,1);
@@ -153,8 +157,17 @@ namespace AstralOath.Editor
             Caption(inside,"popupAttack",null,28,.645f,.357f,.34f,.058f,Color.white);
             Caption(inside,"healthCaption",InventoryPrefix+"stat.health",23,.645f,.405f,.34f,.045f,Mist);
             Caption(inside,"popupHealth",null,28,.645f,.444f,.34f,.058f,Color.white);
-            Act(inside,"skillTab",ArtifactInventoryPrefix+"skill_heading",23,.008f,.631f,.495f,.066f,Art("_btn_white_flat"));
-            Act(inside,"storyTab",ArtifactInventoryPrefix+"story_tab",23,.506f,.631f,.485f,.066f,Art("_btn_white_flat"));
+            var wornSale=Button(Area(inside,"Sell worn artifact unavailable",.807f,.532f,.17f,.088f),
+                BagArt("_btn_small_black"),new Color32(255,255,255,90));
+            wornSale.interactable=false;
+            Picture((RectTransform)wornSale.transform,"Sell",BagArt("cm_icon_etcbin"),.22f,.14f,.56f,.72f,true)
+                .color=new Color32(151,165,182,70);
+            Act(inside,"skillTab",ArtifactInventoryPrefix+"skill_heading",23,.008f,.631f,.495f,.066f,SummonArt("_btn_white"));
+            Act(inside,"storyTab",ArtifactInventoryPrefix+"story_tab",23,.506f,.631f,.485f,.066f,SummonArt("_btn_white"));
+            var skillButton=(GameButton)keys.Find(pair=>pair.Item1=="skillTab").Item2;
+            var skillLabel=(GameText)keys.Find(pair=>pair.Item1=="skillTabLabel").Item2;
+            Place(skillLabel.rectTransform,.29f,0,.63f,1);
+            Link("skillTabGlyph",Picture((RectTransform)skillButton.transform,"Artifact skill",InventoryArt("icon_menu_pararti"),.20f,.16f,.13f,.68f,true));
             var popupBody = Caption(inside,"popupBody",null,24,0,0,1,1,Color.white,true);
             popupBody.alignment=TextAlignmentOptions.TopLeft;
             ApplyWornArtifactInsets(popupBody.rectTransform);
@@ -172,9 +185,14 @@ namespace AstralOath.Editor
             Paint(gesture,null,Color.clear,true);
             Link("gesture",gesture);
             Link("paintBack",SharedHeaderBack(Area(painting,"Painting header",0,0,1,.092f)));
-            Caption(painting,"paintingTitle",null,34,.047f,0,.42f,.091f,Color.white);
-            Act(painting,"rotate",ArtifactInventoryPrefix+"rotate",21,.594f,.706f,.104f,.066f,BagArt("_btn_small_black"));
-            Caption(painting,"gestures",ArtifactInventoryPrefix+"painting_help",21,.35f,.795f,.3f,.174f,Mist,true).alignment=TextAlignmentOptions.Center;
+            Caption(painting,"paintingTitle",null,45,.047f,0,.42f,.091f,Color.white);
+            Act(painting,"rotate",ArtifactInventoryPrefix+"rotate",28,.594f,.706f,.104f,.066f,BagArt("_btn_small_black"));
+            var rotateButton=(GameButton)keys.Find(pair=>pair.Item1=="rotate").Item2;
+            Place(((GameText)keys.Find(pair=>pair.Item1=="rotateLabel").Item2).rectTransform,.30f,0,.68f,1);
+            Picture((RectTransform)rotateButton.transform,"Rotate",ArtifactRestoreArt("icon_menu_rotate"),.06f,.20f,.22f,.60f,true).color=Mist;
+            Paint(Area(painting,"Painting gesture help",.316f,.795f,.38f,.176f),BagArt("_btn_small_black"),new Color32(255,255,255,153),sliced:true);
+            Picture(painting,"Gesture help icon",SummonArt("icon_menu_info"),.495f,.815f,.022f,.042f,true).color=Mist;
+            Caption(painting,"gestures",ArtifactInventoryPrefix+"painting_help",26,.35f,.858f,.3f,.099f,Mist,true).alignment=TextAlignmentOptions.Center;
             Bind(page,keys.ToArray());
             owner.Add(("artifactHeroEquipment",page.GetComponent<BindingMap>()));
             page.gameObject.SetActive(false);
@@ -184,14 +202,9 @@ namespace AstralOath.Editor
         {
             var scroll = body.GetComponentInParent<ScrollRect>(true);
             var contents = (RectTransform)(scroll ? scroll.transform.parent : body.parent);
-            Place(contents, .061f, .038f, .878f, .919f);
-            var dialog = (RectTransform)contents.parent;
-            if (!dialog.Find("Detail lining"))
-            {
-                var lining = Area(dialog,"Detail lining",.044f,.034f,.912f,.925f);
-                Paint(lining,null,new Color32(18,29,46,255));
-                lining.SetAsFirstSibling();
-            }
+            // The source sprite includes a 31 px transparent surround. Keep the authored
+            // corner scale and place content inside its visible frame, rather than shrinking the corners.
+            Place(contents, .111f, .072f, .789f, .849f);
             if (!scroll)
             {
                 var viewport = Area(contents,"Description viewport",.009f,.716f,.982f,.166f);
@@ -202,7 +215,7 @@ namespace AstralOath.Editor
                 scroll.movementType = ScrollRect.MovementType.Clamped;
                 scroll.scrollSensitivity = 38f;
                 viewport.gameObject.AddComponent<RectMask2D>();
-                Paint(viewport,null,new Color32(19,27,43,250),true);
+                Paint(viewport,null,Color.clear,true);
                 body.SetParent(viewport,false);
                 body.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }

@@ -631,7 +631,7 @@ namespace AstralOath.Editor
             Paint(host, null, Black(.61f), true);
             bindings.Add((key, host.gameObject));
             var panel = Area(host, "Native panel", x, y, width, height);
-            if (softSurface) PaintSoftModal(panel);
+            if (softSurface) PaintSourceMessageBox(panel);
             else Paint(panel, background ? background : SummonArt("renew_popup_bg_alpha"), Color.white, true);
             host.gameObject.SetActive(false);
             return panel;

@@ -18,6 +18,7 @@ namespace AstralOath.Client.Home
         public override void Validate()
         {
             _ = Comparison; _ = Popup; _ = Candidates; _ = Row;
+            Bindings.Require<Image>("popupPlate");
             foreach (var key in new[] { "back", "equip", "unequip", "change", "popupRemove", "dismiss", "retry" })
                 Bindings.Require<GameButton>(key);
             foreach (var key in new[] { "current", "candidate", "popupItem" })

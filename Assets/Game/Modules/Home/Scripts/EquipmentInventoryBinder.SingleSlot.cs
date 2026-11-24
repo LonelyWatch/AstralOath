@@ -132,6 +132,7 @@ namespace AstralOath.Client.Home
             singleView.Map.Require<GameText>("feedback").text = loadFailed ? L("loadFailed") : slotFeedback;
             if (showingWornPopup)
             {
+                singleView.Map.Require<Image>("popupPlate").sprite = singleView.Map.Require<Image>("popup_" + worn.grade).sprite;
                 PaintSlotColumn("popupItem", worn);
             }
             else

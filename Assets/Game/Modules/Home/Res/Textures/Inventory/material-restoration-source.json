@@ -1,0 +1,142 @@
+{
+  "referenceLayouts": [
+    "wnd/inventory_equip_popup.csb",
+    "wnd/unit_detail.csb",
+    "wnd/hero_detail_search.csb",
+    "wnd/filter_3sector.csb"
+  ],
+  "updated": "2026-11-25",
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/SourceSearch/_box_black_gold.png",
+      "source": "img/_box_black_gold.png",
+      "sourceSha256": "74232c37f99a3ab675efc15cb8b4cd173ff8aed3308318e5f84c0a308e39bfa3",
+      "outputSha256": "74232c37f99a3ab675efc15cb8b4cd173ff8aed3308318e5f84c0a308e39bfa3",
+      "border": [
+        44,
+        48,
+        48,
+        44
+      ],
+      "basis": "hero_detail_search.csb search_frame/input; independent sprite slicing, existing shared copies have different cap borders."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/SourceSearch/_btn_white.png",
+      "source": "img/_btn_white.png",
+      "sourceSha256": "2f10f52779fffafa5098d9bbecbdc314c566e2f95c4cc327dd3ea9fdc40969b3",
+      "outputSha256": "2f10f52779fffafa5098d9bbecbdc314c566e2f95c4cc327dd3ea9fdc40969b3",
+      "border": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "basis": "hero_detail_search.csb search_frame/input; independent sprite slicing, existing shared copies have different cap borders."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/SourceSearch/filter_main_bg.png",
+      "source": "img/filter_main_bg.png",
+      "sourceSha256": "38ffeb0efaa36ffb331b60ebb8cd143e33ec53fe5dc398820a1865e360c61568",
+      "outputSha256": "38ffeb0efaa36ffb331b60ebb8cd143e33ec53fe5dc398820a1865e360c61568",
+      "border": [
+        55,
+        50,
+        55,
+        50
+      ],
+      "basis": "filter_3sector.csb source native blue gradient and outline, confirmed against 11/17 00:33 recording."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/SourceShadows/_grow.png",
+      "source": "img/_grow.png",
+      "sourceSha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c",
+      "outputSha256": "9020da3c9b5958029a1cd6d667a2706ec953ceea8db9c0ede253d4b1c5f14b8b",
+      "sourceNodeOpacity": 102,
+      "conversion": "Apply native node opacity then alpha = 1-sRGBToLinear(1-alpha); white tint in Linear Unity. Geometry from unit_detail.csb."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/SourceShadows/_grow_s.png",
+      "source": "img/_grow_s.png",
+      "sourceSha256": "603cfa0e72b427c33b02806a29faa5dc47d6edee1f47d69a0a928e54451c5e8b",
+      "outputSha256": "4089c3e3b01eaad1483d12c7aaec606bf92d8f3ece2649bf2def2a1dabd373e8",
+      "sourceNodeOpacity": 178,
+      "conversion": "Apply native node opacity then alpha = 1-sRGBToLinear(1-alpha); white tint in Linear Unity. Geometry from unit_detail.csb."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_1.png",
+      "size": [
+        446,
+        392
+      ],
+      "border": [
+        66,
+        203,
+        66,
+        153
+      ],
+      "basis": "Source popup _box_equip_0 cap(63,150,314,36) plus 3px all-side padding measured in full quality sprite. Runtime grade substitution is inferred from recording."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_2.png",
+      "size": [
+        446,
+        392
+      ],
+      "border": [
+        66,
+        203,
+        66,
+        153
+      ],
+      "basis": "Source popup _box_equip_0 cap(63,150,314,36) plus 3px all-side padding measured in full quality sprite. Runtime grade substitution is inferred from recording."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_3.png",
+      "size": [
+        446,
+        392
+      ],
+      "border": [
+        66,
+        203,
+        66,
+        153
+      ],
+      "basis": "Source popup _box_equip_0 cap(63,150,314,36) plus 3px all-side padding measured in full quality sprite. Runtime grade substitution is inferred from recording."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_4.png",
+      "size": [
+        446,
+        392
+      ],
+      "border": [
+        66,
+        203,
+        66,
+        153
+      ],
+      "basis": "Source popup _box_equip_0 cap(63,150,314,36) plus 3px all-side padding measured in full quality sprite. Runtime grade substitution is inferred from recording."
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/_box_equip_5.png",
+      "size": [
+        446,
+        392
+      ],
+      "border": [
+        66,
+        203,
+        66,
+        153
+      ],
+      "basis": "Source popup _box_equip_0 cap(63,150,314,36) plus 3px all-side padding measured in full quality sprite. Runtime grade substitution is inferred from recording."
+    }
+  ],
+  "colorSpace": "Linear",
+  "notes": [
+    "full品质框的3px推导边界需与实图核对，并非CSB直接存值。",
+    "SourceShadows合成源节点opacity后按透射率转换，使用白色tint。",
+    "SourceSearch采用源CSB专用cap；不修改共享用途。"
+  ]
+}

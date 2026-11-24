@@ -51,7 +51,6 @@ namespace AstralOath.Editor
             var bottomVignette = Picture(shading, "Bottom vignette", Art("_grow_s"), 0, .74f, 1f, .26f);
             bottomVignette.rectTransform.localScale = new Vector3(1, -1, 1);
             bottomVignette.color = Black(.71f);
-            Picture(shading, "Summary shadow", Art("_grow"), -.22f, .16f, .61f, 1.12f).color = Black(.65f);
             composition = Area(roster, "Hero composition", 0, 0, 1, 1);
             var header = Area(roster, "Hero header composition", 0, 0, 1, 1);
             Paint(Area(header, "Hero header shade", 0, 0, 1, .092f), null, Black(.18f));

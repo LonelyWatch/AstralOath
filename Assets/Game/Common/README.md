@@ -4,7 +4,7 @@
 
 Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音效。每次播放由 Bootstrap 对已安装且与传入对象相同的 AudioClip 单独持有 YooAsset 句柄，播放结束释放。窗口立即释放自身的预制和配置句柄，音效尾声继续引用所需音频包。启动内置音和运行时生成的 AudioClip 使用直接引用。该改动涉及 Common 与 Bootstrap AOT。
 
-`SoftModalSurface` 是项目深蓝软边底板，UGUI 九宫格保留边缘，内部实色层保障正文可读。
+原版横幅确认窗使用 `SourceMessageBox` 或 `SourceWideConfirmation`，分别按 `msgbox.csb` 与 `equip_change_popup.csb` 的源图、切片及透明度绘制；源渐变上不再叠实色内层。两张用途副本保留不同 cap，亮白细边单独换算线性覆盖率，来源和哈希见 `Res/Textures/arena-common-source.json`。`SoftModalSurface` 继续供开发 GM 自有弹窗使用，不作为原版业务弹窗的替代。[原素材复核](../../../docs/development/ui-material-reference.md)
 
 启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭后声音可继续播放，根 Canvas 关闭时才开始淡出。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
 

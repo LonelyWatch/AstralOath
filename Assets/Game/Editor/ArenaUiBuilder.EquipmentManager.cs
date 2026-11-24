@@ -15,43 +15,69 @@ namespace AstralOath.Editor
             var pane = Area(frame,"Manage equipment",0,0,1,1);
             keys.Add(("pickerSurface",pane.gameObject));
             Paint(pane,InventoryArt("base_unit_hero"),Color.white,true);
-            Paint(Area(pane,"Loadout surface",.022f,.106f,.458f,.856f),null,new Color32(6,18,36,240));
-            Paint(Area(pane,"Equipment catalogue surface",.491f,.106f,.487f,.856f),null,new Color32(10,18,34,215));
+            // equip_base.csb: these are source scale-nine panels and gradients, not replacement fills.
+            Paint(Area(pane,"Loadout source panel",-.20f,.092f,.677f,1.02f),ManagementArt("_btn_small_black_5"),
+                ManagementSourceTint(30,144,255,229),false,true).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            Paint(Area(pane,"Catalogue source gradient",.477f,.092f,.523f,.908f),ManagementArt("_gradient_side"),
+                ManagementSourceTint(96,137,203,51),false,true).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            Picture(pane,"Source blue glow",ManagementArt("_grow_small"),.054f,.10f,.78f,.87f).color = ManagementSourceTint(20,116,230,76);
+            Paint(Area(pane,"Loadout bottom ornament",0,.923f,.245f,.015f),ManagementArt("_bar_25"),
+                ManagementSourceTint(83,126,178,76),false,true).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
             var header = Area(pane,"Management header",0,0,1,.094f);
-            Paint(header,null,Black(.34f));
+            Paint(header,Art("_white"),Black(.20f));
             var back = SharedHeaderBack(header);
             keys.Add(("close",back));
             var title = Text(header,"Title",InventoryPrefix + "roster_manage_equipment",35,0,0,.45f,1);
             title.rectTransform.offsetMin = new Vector2(((RectTransform)back.transform).rect.width + 4f*HomeDesignScale,0);
-            keys.Add(("manageHeroIcon",Picture(pane,"Hero portrait",null,.026f,.110f,.034f,.066f,true)));
-            keys.Add(("manageHeroName",Text(pane,"Hero name",null,31,.064f,.106f,.23f,.065f,Color.white)));
-            keys.Add(("manageHeroStars",Text(pane,"Hero stars",null,29,.296f,.106f,.164f,.065f,new Color32(255,208,65,255))));
-            var current = Area(pane,"Currently worn loadout",.036f,.182f,.195f,.698f);
-            var preview = Area(pane,"Proposed loadout",.263f,.182f,.195f,.698f);
+            var help = Picture(pane,"Management help glyph",Art("cm_hud_top_btn_help"),.153f,.016f,.030f,.057f,true).rectTransform;
+            help.anchorMin = new Vector2(0,help.anchorMin.y);
+            help.anchorMax = new Vector2(0,help.anchorMax.y);
+            help.offsetMin = new Vector2(226f * HomeDesignScale,0);
+            help.offsetMax = new Vector2(270f * HomeDesignScale,0);
+            keys.Add(("manageHeroIcon",Picture(pane,"Hero portrait",null,.027f,.110f,.031f,.066f,true)));
+            var heroCaption = Area(pane,"Hero name and source stars",.064f,.106f,.35f,.065f);
+            var captionLayout = heroCaption.gameObject.AddComponent<HorizontalLayoutGroup>();
+            captionLayout.childAlignment = TextAnchor.MiddleLeft;
+            captionLayout.childControlWidth = captionLayout.childControlHeight = true;
+            captionLayout.childForceExpandWidth = captionLayout.childForceExpandHeight = false;
+            captionLayout.spacing = 6 * HomeDesignScale;
+            var heroName = Text(heroCaption,"Hero name",null,31,0,0,1,1,Color.white);
+            heroName.gameObject.AddComponent<LayoutElement>().flexibleWidth = 0;
+            keys.Add(("manageHeroName",heroName));
+            var stars = Area(heroCaption,"Source star strip",0,0,1,1);
+            var starSize = stars.gameObject.AddComponent<LayoutElement>();
+            starSize.preferredWidth = 103f * HomeDesignScale;
+            starSize.preferredHeight = 25f * HomeDesignScale;
+            for (int i = 0; i < 6; i++)
+                keys.Add(("manageHeroStar" + i,Picture(stars,"Star " + i,Art("Draft/TeamBadges/cm_icon_star"),i * 15.6f / 103f,0,24.6f / 103f,1,true)));
+            var current = Area(pane,"Currently worn loadout",.033f,.1975f,.190f,.676f);
+            var preview = Area(pane,"Proposed loadout",.2635f,.1975f,.190f,.676f);
             keys.Add(("manageCurrentGroup",current.gameObject));
             foreach (var group in new[] { ("manageCurrent",current), ("managePreview",preview) })
             {
                 for (int i = 0; i < slots.Length; ++i)
                 {
-                    var step = InstantiateEquipmentSlot(group.Item2,slots[i],CommonArt("_box_equip_0"),RosterArt("cm_icon_par" + authored[i]));
+                    var step = InstantiateEquipmentSlot(group.Item2,slots[i],CommonArt("cm_item_slot"),RosterArt("cm_icon_par" + authored[i]));
                     AuthorWornEquipmentCard(step, false);
+                    step.Require<BindingMap>("wornCard").gameObject.AddComponent<CanvasGroup>();
                     step.gameObject.SetActive(false);
                     var aspect = step.gameObject.AddComponent<AspectRatioFitter>();
                     aspect.enabled = false;
                     aspect.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
                     aspect.aspectRatio = 1f;
-                    Place((RectTransform)step.transform,i % 3 * .35f,i / 3 * .19f + .071f,.29f,.166f);
+                    Place((RectTransform)step.transform,i % 3 * .346f,i / 3 * .191f,.290f,.1625f);
                     step.gameObject.SetActive(true);
                     var symbol = step.Require<Image>("placeholder");
-                    Place(symbol.rectTransform,.29f,.29f,.42f,.42f);
+                    Place(symbol.rectTransform,.12f,.53f,.36f,.36f);
+                    symbol.color = new Color32(255,255,255,76);
                     PrefabUtility.RecordPrefabInstancePropertyModifications(symbol.rectTransform);
                     PrefabUtility.RecordPrefabInstancePropertyModifications(step.transform);
                     keys.Add((group.Item1 + "_" + slots[i],step));
                     var hit = step.Require<Image>("frame");
-                    hit.sprite = CommonArt("_box_equip_0");
+                    hit.sprite = CommonArt("cm_item_slot");
                     hit.type = Image.Type.Sliced;
                     hit.preserveAspect = false;
-                    hit.pixelsPerUnitMultiplier = 4f;
+                    hit.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
                     hit.raycastTarget = true;
                     var select = step.gameObject.AddComponent<GameButton>();
                     select.targetGraphic = hit;
@@ -59,18 +85,20 @@ namespace AstralOath.Editor
                     PrefabUtility.RecordPrefabInstancePropertyModifications(hit);
                     keys.Add((group.Item1 + "Select_" + slots[i],select));
                 }
-                Text(group.Item2,"Loadout heading","home.gear." + group.Item1,26,0,0,1,.063f,Color.white);
+                // The project has no authoritative combat-power formula. Keep the real stat heading in its source band.
+                Paint(Area(group.Item2,"Attribute band",-.015f,.385f,1.015f,.070f),Art("_white"),ManagementSourceTint(255,255,255,10));
+                Text(group.Item2,"Loadout heading","home.gear." + group.Item1,27,.035f,.385f,.93f,.070f,Color.white);
                 string[] stats = { "attack","defense","health","speed","critChanceBp","critDamageBp","effectivenessBp","resistanceBp" };
                 for (int i = 0; i < stats.Length; ++i)
                 {
                     var row = AddEquipmentStatRow(group.Item2,stats[i]);
-                    Place((RectTransform)row.transform,0,.463f + .057f * i,1,.053f);
+                    Place((RectTransform)row.transform,0,.477f + .0485f * i,1,.047f);
                     var map = row.GetComponent<BindingMap>();
                     var statIcon = InventoryArt("Equipment/cm_icon_stat_" + new[] { "att", "def", "max_hp", "speed", "cri", "cri_dmg", "acc", "res" }[i]);
-                    Picture((RectTransform)row.transform,"Stat icon",statIcon,0,.15f,.065f,.70f,true).color = Mist;
+                    Picture((RectTransform)row.transform,"Stat icon",statIcon,.02f,.12f,.065f,.76f,true).color = new Color32(255,255,255,127);
                     var statLabel = map.Require<GameText>("label");
                     var statValue = map.Require<GameText>("value");
-                    Place(statLabel.rectTransform,.09f,0,.55f,1);
+                    Place(statLabel.rectTransform,.14f,0,.51f,1);
                     Place(statValue.rectTransform,.64f,0,.36f,1);
                     foreach (var text in new[] {statLabel,statValue})
                     {
@@ -84,8 +112,8 @@ namespace AstralOath.Editor
                     {
                         var name = map.Require<GameText>("label");
                         var value = map.Require<GameText>("value");
-                        Place(name.rectTransform,.09f,0,.44f,1);
-                        Place(value.rectTransform,.53f,0,.25f,1);
+                        name.gameObject.SetActive(false);
+                        Place(value.rectTransform,.125f,0,.36f,1);
                         foreach (var text in new[] {name,value})
                         {
                             text.enableAutoSizing = true;
@@ -94,7 +122,7 @@ namespace AstralOath.Editor
                             PrefabUtility.RecordPrefabInstancePropertyModifications(text.rectTransform);
                             PrefabUtility.RecordPrefabInstancePropertyModifications(text);
                         }
-                        var delta = Text(group.Item2,"Difference " + stats[i],null,24,.78f,.463f + .057f*i,.22f,.053f,Color.white,TextAlignmentOptions.MidlineRight);
+                        var delta = Text(group.Item2,"Difference " + stats[i],null,25,.52f,.477f + .0485f*i,.43f,.047f,Color.white,TextAlignmentOptions.MidlineLeft);
                         delta.enableAutoSizing = true;
                         delta.fontSizeMin = 14;
                         delta.fontSizeMax = 24;
@@ -103,109 +131,165 @@ namespace AstralOath.Editor
                     PrefabUtility.RecordPrefabInstancePropertyModifications(row.transform);
                     keys.Add((group.Item1 + "_" + stats[i],map));
                 }
-                Paint(Area(group.Item2,"Set background",0,.941f,1,.069f),null,new Color32(100,142,179,17));
-                keys.Add((group.Item1 + "Set",Text(group.Item2,"Active sets",null,24,.025f,.941f,.95f,.069f,Mist)));
+                Paint(Area(group.Item2,"Set background",-.015f,.929f,1.015f,.070f),Art("_white"),ManagementSourceTint(255,255,255,10));
+                Picture(group.Item2,"Set status icon",RosterArt("cm_icon_etcbp"),.02f,.941f,.065f,.046f,true).color = new Color32(255,255,255,76);
+                keys.Add((group.Item1 + "Set",Text(group.Item2,"Active sets",null,23,.14f,.929f,.84f,.070f,Mist)));
             }
-            var info = Area(pane,"Candidate details",.032f,.185f,.205f,.762f);
+            var info = Area(pane,"Candidate details",.033f,.175f,.217f,.800f);
             keys.Add(("detail",info.gameObject));
-            Paint(info,null,new Color32(14,25,42,255));
-            var thumb = SingleSlotThumbnail(info,.07f,.035f,.29f,.17f);
+            var plate = Paint(Area(info,"Source equipment grade panel",-.085f,-.035f,1.17f,1.065f),
+                InventoryArt("Equipment/_box_equip_1"),Color.white,false,true);
+            plate.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            keys.Add(("manageDetailPlate",plate));
+            var sourcePlates = Area(info,"Source quality plates",0,0,.01f,.01f);
+            string[] grades = { "normal","good","rare","heroic","epic" };
+            for (int i = 0; i < grades.Length; i++)
+                keys.Add(("manageDetail_" + grades[i],Picture(sourcePlates,grades[i],InventoryArt("Equipment/_box_equip_" + (i+1)),0,0,1,1)));
+            sourcePlates.gameObject.SetActive(false);
+            var thumb = SingleSlotThumbnail(info,.07f,.035f,.29f,.151f);
             keys.Add(("manageThumbnail",thumb));
             keys.Add(("portrait",thumb.Require<Image>("icon")));
-            keys.Add(("quality",Text(info,"Quality",null,27,.40f,.045f,.53f,.07f,new Color32(247,204,131,255))));
-            keys.Add(("name",Text(info,"Name",null,29,.40f,.115f,.53f,.075f,Color.white)));
-            keys.Add(("manageDescription",Text(info,"Item description",null,25,.07f,.223f,.86f,.103f,Mist,TextAlignmentOptions.TopLeft,true)));
-            Paint(Area(info,"Main property surface",.04f,.349f,.92f,.071f),null,new Color32(110,152,187,35));
-            var subList = EquipmentStatList(info,.07f,.437f,.86f,.32f);
+            keys.Add(("quality",Text(info,"Quality",null,27,.40f,.026f,.53f,.075f,new Color32(247,204,131,255),TextAlignmentOptions.TopLeft,true)));
+            keys.Add(("name",Text(info,"Name",null,29,.40f,.108f,.53f,.075f,Color.white)));
+            keys.Add(("manageDescription",Text(info,"Item description",null,18,.07f,.190f,.86f,.050f,Mist,TextAlignmentOptions.TopLeft,true)));
+            Paint(Area(info,"Main property surface",.04f,.240f,.92f,.075f),Art("_white"),ManagementSourceTint(255,255,255,10));
+            var subList = EquipmentStatList(info,.07f,.340f,.86f,.255f);
             for (int i = 0; i < 5; ++i)
             {
                 var row = AddEquipmentStatRow(i == 0 ? info : subList,"Item stat " + i);
-                if (i == 0) Place((RectTransform)row.transform,.07f,.349f,.86f,.071f);
-                else row.AddComponent<LayoutElement>().preferredHeight = 41;
+                if (i == 0) Place((RectTransform)row.transform,.07f,.240f,.86f,.075f);
+                else row.AddComponent<LayoutElement>().preferredHeight = 36;
                 foreach (var statText in row.GetComponentsInChildren<GameText>())
                 {
                     statText.fontSize = i == 0 ? 30 : 25;
-                    statText.fontStyle = FontStyles.Normal;
+                    statText.fontStyle = i == 0 ? FontStyles.Bold : FontStyles.Normal;
                     PrefabUtility.RecordPrefabInstancePropertyModifications(statText);
+                }
+                if (i == 0)
+                {
+                    var map = row.GetComponent<BindingMap>();
+                    Place(map.Require<GameText>("label").rectTransform,.10f,0,.60f,1);
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(map.Require<GameText>("label").rectTransform);
+                    keys.Add(("manageMainStatIcon",Picture((RectTransform)row.transform,"Source main stat symbol",null,0,.15f,.07f,.70f,true)));
                 }
                 PrefabUtility.RecordPrefabInstancePropertyModifications(row.transform);
                 keys.Add(("manageItemStat"+i,row.GetComponent<BindingMap>()));
             }
             var score = AddEquipmentScoreRow(subList,0,0,1,1);
-            score.gameObject.AddComponent<LayoutElement>().preferredHeight = 44;
+            score.gameObject.AddComponent<LayoutElement>().preferredHeight = 42;
             foreach (var text in score.GetComponentsInChildren<GameText>())
             {
                 text.fontStyle = FontStyles.Normal;
                 PrefabUtility.RecordPrefabInstancePropertyModifications(text);
             }
             keys.Add(("manageScore",score));
-            Paint(Area(info,"Set surface",.04f,.772f,.92f,.075f),null,new Color32(110,152,187,20));
-            keys.Add(("manageSetIcon",Picture(info,"Set icon",null,.07f,.782f,.09f,.055f,true)));
-            keys.Add(("manageSet",Text(info,"Set",null,27,.18f,.772f,.75f,.075f,Color.white)));
-            keys.Add(("wearer",Text(info,"Wearer",null,24,.07f,.886f,.86f,.075f,Mist,TextAlignmentOptions.Center,true)));
-            keys.Add(("managePrompt",Text(pane,"Candidate prompt","home.gear.manageSelect",22,.263f,.899f,.195f,.055f,Mist,TextAlignmentOptions.Center,true)));
+            Paint(Area(info,"Source set divider",.055f,.593f,.89f,.007f),ManagementArt("z_tile_bar"),ManagementSourceTint(255,255,255,76),false,true);
+            keys.Add(("manageSetIcon",Picture(info,"Set icon",null,.07f,.614f,.11f,.064f,true)));
+            keys.Add(("manageSet",Text(info,"Set",null,27,.20f,.614f,.73f,.064f,Color.white)));
+            keys.Add(("manageSetEffect",Text(info,"Set effect",null,24,.07f,.690f,.86f,.105f,Mist,TextAlignmentOptions.TopLeft,true)));
+            Paint(Area(info,"Source wearer divider",.055f,.833f,.89f,.007f),ManagementArt("z_tile_bar"),ManagementSourceTint(255,255,255,76),false,true);
+            Picture(info,"Wearer information symbol",ManagementArt("icon_menu_info_2"),.45f,.868f,.10f,.05f,true).color = new Color32(255,255,255,76);
+            keys.Add(("wearer",Text(info,"Wearer",null,22,.07f,.923f,.86f,.062f,Mist,TextAlignmentOptions.Center,true)));
+            keys.Add(("managePrompt",Text(pane,"Candidate prompt","home.gear.manageSelect",23,.278f,.627f,.164f,.085f,Mist,TextAlignmentOptions.Center,true)));
             for (int i = 0; i < slots.Length; ++i)
             {
-                var rect = Area(pane,"Filter " + slots[i],.51f+i*.056f,.113f,.051f,.068f);
+                var rect = Area(pane,"Filter " + slots[i],.565f+i*.040f,.106f,.040f,.081f);
                 keys.Add(("filter_"+slots[i],Button(rect,null,Color.clear)));
                 keys.Add(("active_"+slots[i],Picture(rect,"Selected",BagArt("_tap_select_blue2"),0,0,1,1)));
                 Picture(rect,"Slot",RosterArt("cm_icon_par"+authored[i]),.24f,.2f,.52f,.6f,true);
             }
-            keys.Add(("manageSetFilter",Action(pane,"Filter set",null,24,.507f,.204f,.142f,.057f,
+            keys.Add(("manageSetFilter",Action(pane,"Filter set",null,24,.565f,.203f,.110f,.054f,
                 out var setFilterLabel,CommonArt("_btn_small_black"),Color.white)));
             keys.Add(("manageSetFilterLabel",setFilterLabel));
-            keys.Add(("manageSort",Action(pane,"Candidate sort",null,21,.859f,.124f,.101f,.053f,
+            Place(setFilterLabel.rectTransform,.22f,.04f,.75f,.92f);
+            setFilterLabel.alignment = TextAlignmentOptions.MidlineLeft;
+            keys.Add(("manageSetFilterSymbol",Picture((RectTransform)setFilterLabel.transform.parent,"Filter source symbol",Art("icon_menu_all"),.025f,.10f,.18f,.80f,true)));
+            keys.Add(("manageSort",Action(pane,"Candidate sort",null,24,.815f,.116f,.090f,.056f,
                 out var sortLabel,CommonArt("_btn_small_black"),Color.white)));
             keys.Add(("manageSortLabel",sortLabel));
-            Paint(Area(pane,"Catalogue divider",.507f,.344f,.453f,.002f),null,new Color32(110,163,212,72));
-            var scroll = InventoryScroll(pane,"Candidates",.507f,.360f,.453f,.494f);
+            sortLabel.enableAutoSizing = true;
+            sortLabel.fontSizeMin = 16;
+            sortLabel.fontSizeMax = 24;
+            Paint(Area(pane,"Catalogue top divider",.565f,.182f,.342f,.009f),CommonArt("_bar_2"),ManagementSourceTint(255,255,255,51),false,true);
+            Paint(Area(pane,"Catalogue divider",.494f,.337f,.480f,.006f),ManagementArt("z_tile_bar"),ManagementSourceTint(255,255,255,76),false,true);
+            var scroll = InventoryScroll(pane,"Candidates",.494f,.353f,.480f,.521f);
             var grid = scroll.content.gameObject.AddComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(132,172);
-            grid.spacing = new Vector2(16,20);
-            grid.padding = new RectOffset(6,3,7,3);
+            grid.cellSize = new Vector2(86,111) * HomeDesignScale;
+            grid.spacing = new Vector2(16,27) * HomeDesignScale;
+            grid.padding = new RectOffset(5,3,6,3);
             scroll.content.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             keys.Add(("items",scroll));
             var template = InstantiateEquipmentItemCard(pane,"Equipment item template");
             template.gameObject.SetActive(false);
             PrefabUtility.RecordPrefabInstancePropertyModifications(template.gameObject);
             keys.Add(("template",template.gameObject));
-            var apply = Action(pane,"Apply loadout","home.gear.manageChange",27,.767f,.880f,.193f,.068f,out var label,CommonArt("_btn_green"),Color.white);
+            Paint(Area(pane,"Catalogue bottom divider",.494f,.872f,.480f,.006f),ManagementArt("z_tile_bar"),ManagementSourceTint(255,255,255,76),false,true);
+            var apply = Action(pane,"Apply loadout","home.gear.manageChange",27,.741f,.894f,.162f,.073f,out var label,CommonArt("_btn_green"),Color.white);
+            Place(label.rectTransform,.22f,0,.74f,1);
+            Picture((RectTransform)apply.transform,"Equip action icon",InventoryArt("icon_menu_equip"),.075f,.16f,.14f,.68f,true);
             keys.Add(("apply",apply));
+            ((Image)apply.targetGraphic).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
             keys.Add(("applyLabel",label));
-            var reset=Action(pane,"Reset preview","home.gear.manageReset",23,.263f,.903f,.126f,.051f,out _,BagArt("_btn_small_black"),Color.white);
+            var reset=Action(pane,"Reset preview",null,23,.261f,.895f,.043f,.072f,out _,CommonArt("_btn_small_white"),Color.white);
+            var resetIcon = Picture((RectTransform)reset.transform,"Reset action icon",Load<Sprite>(Arena + "Res/Textures/Draft/Filters/icon_menu_reset.png"),.11f,.10f,.78f,.80f,true);
+            keys.Add(("manageResetIcon",resetIcon));
             keys.Add(("manageReset",reset));
             keys.Add(("status",Text(pane,"Equipment status",null,24,.51f,.47f,.44f,.10f,Color.white,TextAlignmentOptions.Center,true)));
             keys.Add(("retry",Action(pane,"Retry","home.gear.retry",23,.64f,.59f,.19f,.07f,out _,BagArt("_btn_small_black"))));
             BuildManagementFilters(pane,keys);
         }
 
+        private static Sprite ManagementArt(string stem) => InventoryArt("Equipment/Management/" + stem);
+
+        // The source client composites gamma-authored tints. Linear UGUI otherwise brightens its 10/255 white bands
+        // and turns the low-opacity blue gradient into a gray rectangle. Keep this compensation local to these source nodes.
+        private static Color ManagementSourceTint(byte r, byte g, byte b, byte opacity)
+        {
+            var color = ((Color)new Color32(r,g,b,255)).linear;
+            color.a = Mathf.GammaToLinearSpace(opacity / 255f);
+            return color;
+        }
+
         private static void BuildManagementQuote(RectTransform dialog,List<(string Key,Object Target)> keys)
         {
-            var panel=Area(dialog,"Confirm loadout change",.20f,.25f,.60f,.50f);
+            var panel=Area(dialog,"Confirm loadout change",0,.185f,1,.63f);
             keys.Add(("managementQuote",panel.gameObject));
-            PaintSoftModal(panel);
-            keys.Add(("manageQuoteTitle",Text(panel,"Title","home.gear.manageChange",36,.08f,.058f,.84f,.10f,Color.white,TextAlignmentOptions.Center)));
-            keys.Add(("manageSummary",Text(panel,"Summary",null,27,.08f,.19f,.84f,.10f,Mist,TextAlignmentOptions.Center,true)));
-            var headingBand = Paint(Area(panel,"Comparison headings",.10f,.333f,.80f,.078f),null,new Color32(96,151,199,36));
+            PaintSourceMessageBox(panel,true);
+            keys.Add(("manageQuoteTitle",Text(panel,"Title","home.gear.manageChange",38,.25f,.058f,.50f,.10f,Color.white,TextAlignmentOptions.Center)));
+            var ornament = Picture(panel,"Source title ornament",Art("_bar_23"),.285f,.185f,.43f,.026f);
+            ornament.type = Image.Type.Sliced;
+            ornament.color = ManagementSourceTint(255,255,255,102);
+            keys.Add(("manageSummary",Text(panel,"Summary",null,27,.25f,.29f,.50f,.10f,Mist,TextAlignmentOptions.Center,true)));
+            var headingBand = Area(panel,"Comparison headings",.35f,.41f,.30f,.045f);
             keys.Add(("manageQuoteHeadings",headingBand.gameObject));
+            headingBand.gameObject.SetActive(false);
             string[] columns = { "Metric","Before","After","Delta" };
             for (int i = 0; i < columns.Length; i++)
             {
                 string column = columns[i];
-                float x = .12f + i * .196f;
+                float x = .35f + i * .083f;
                 var align = i == 0 ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.TopRight;
-                keys.Add(("manageQuoteHeading" + column,Text(panel,column,"home.gear.quote" + column,24,x,.350f,.172f,.055f,Mist,align)));
-                var values = Text(panel,column + " values",null,27,x,.43f,.172f,.30f,Color.white,align);
+                var heading = Text(panel,column,"home.gear.quote" + column,24,x,.41f,.075f,.045f,Mist,align);
+                heading.gameObject.SetActive(false);
+                keys.Add(("manageQuoteHeading" + column,heading));
+                var values = Text(panel,column + " values",null,29,x,.46f,.075f,.23f,Color.white,align);
                 values.richText = column == "Delta";
                 values.lineSpacing = 4;
                 values.enableAutoSizing = true;
                 values.fontSizeMin = 15;
-                values.fontSizeMax = 27;
+                values.fontSizeMax = 29;
                 keys.Add(("manageQuote" + column,values));
             }
-            keys.Add(("manageChange",Text(panel,"Transaction notes",null,22,.10f,.732f,.80f,.064f,Mist,TextAlignmentOptions.Center,true)));
-            keys.Add(("manageCancel",Action(panel,"Cancel","home.gear.cancel",27,.15f,.807f,.31f,.145f,out _,CommonArt("_btn_gold"),Color.white)));
-            keys.Add(("manageConfirm",Action(panel,"Change equipment","home.gear.manageChange",27,.54f,.807f,.31f,.145f,out _,CommonArt("_btn_green"),Color.white)));
+            keys.Add(("manageChange",Text(panel,"Transaction notes",null,22,.30f,.70f,.40f,.075f,Mist,TextAlignmentOptions.Center,true)));
+            var gold = Load<Sprite>(SummonPath + "Res/Textures/_btn_gold_r_2.png");
+            var goldPressed = Load<Sprite>(SummonPath + "Res/Textures/_btn_gold_r_p_2.png");
+            var cancel = Action(panel,"Cancel","home.gear.cancel",29,.36f,.807f,.135f,.145f,out _,gold,Color.white);
+            var confirm = Action(panel,"Change equipment","home.gear.manageChange",29,.505f,.807f,.162f,.145f,out _,ManagementArt("_btn_green_r_2"),Color.white);
+            PressSprites(cancel,gold,goldPressed);
+            PressSprites(confirm,ManagementArt("_btn_green_r_2"),ManagementArt("_btn_green_r_p_2"));
+            foreach (var button in new[] { cancel,confirm }) ((Image)button.targetGraphic).pixelsPerUnitMultiplier = 1f / (.53f * HomeDesignScale);
+            keys.Add(("manageCancel",cancel));
+            keys.Add(("manageConfirm",confirm));
         }
     }
 }

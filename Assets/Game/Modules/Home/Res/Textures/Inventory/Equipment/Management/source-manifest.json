@@ -1,0 +1,188 @@
+{
+  "referenceLayouts": [
+    "wnd/equip_base.csb",
+    "wnd/equip_change_popup.csb"
+  ],
+  "assets": [
+    {
+      "source": "img/_btn_small_black_5.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_btn_small_black_5.png",
+      "sha256": "f919ecef011f35498b0f8db4f82e16b80191e2e216cbbd48e1c07923644753d3",
+      "size": [
+        64,
+        64
+      ],
+      "border": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false
+    },
+    {
+      "source": "img/_gradient_side.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_gradient_side.png",
+      "sha256": "e9e1c26c8eed3726f35599b21e9059aecc6d331c9697bec31df3a3a09b9c64a2",
+      "size": [
+        321,
+        34
+      ],
+      "border": [
+        60,
+        11,
+        60,
+        11
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false
+    },
+    {
+      "source": "img/_bar_25.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_bar_25.png",
+      "sha256": "5578589de905ac65e8d939eac17f5427f7a6f66078e7178d29570e9252bc75c7",
+      "size": [
+        33,
+        18
+      ],
+      "border": [
+        9,
+        5,
+        19,
+        5
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false
+    },
+    {
+      "source": "img/_grow_small.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_grow_small.png",
+      "sha256": "0f085c1cd6920b71484d1a30b80f6f6ef776b269078982aeefbdd7902f0d3dd9",
+      "size": [
+        98,
+        97
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false
+    },
+    {
+      "source": "img/icon_menu_info_2.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/icon_menu_info_2.png",
+      "sha256": "6832f260b5772210e3c5631698e6024f0de0ec2445bf23f4c321bc46489297a6",
+      "size": [
+        100,
+        100
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false
+    },
+    {
+      "source": "img/_box_black_white.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_box_black_white.png",
+      "sha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1",
+      "size": [
+        116,
+        116
+      ],
+      "border": [
+        44,
+        48,
+        48,
+        44
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false,
+      "reason": "Same original PNG as common but equip_base n_mainstat_box/bg n_substat_box/bg uses Cocos cap(44,44,24,24). Common border40 is shared by unrelated layouts; separate source-specific slicing preserves them."
+    },
+    {
+      "source": "img/z_tile_bar.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/z_tile_bar.png",
+      "sha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "size": [
+        64,
+        4
+      ],
+      "border": [
+        5,
+        1,
+        5,
+        1
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false,
+      "reason": "Existing Arena/Summon same PNG has border0. equip_base source cap(5,1,54,2) requires endpoint-preserving slicing; duplicate import avoids editing unrelated shared meta."
+    },
+    {
+      "source": "img/_btn_green_r_2.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_btn_green_r_2.png",
+      "sha256": "225a05c81de08f57d930dff6d67d57cd29aef9d384a9c57c272002fd91d5bdbc",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false,
+      "sourceNode": "equip_change_popup.csb/Layer/n_show_eff/btn_buy",
+      "sourceCap": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "sourceScale": [
+        0.53,
+        0.53
+      ]
+    },
+    {
+      "source": "img/_btn_green_r_p_2.png",
+      "target": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/_btn_green_r_p_2.png",
+      "sha256": "09b9ed3c465af65605433d5168dc55e93a35d0fd42b4fa08ac23aaf4fd122a60",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ],
+      "compression": "Uncompressed",
+      "mipmap": false,
+      "sourceNode": "equip_change_popup.csb/Layer/n_show_eff/btn_buy",
+      "sourceCap": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "sourceScale": [
+        0.53,
+        0.53
+      ]
+    }
+  ],
+  "notes": [
+    "同PNG因源cap不同独立导入，不更改Common现有用途。"
+  ]
+}

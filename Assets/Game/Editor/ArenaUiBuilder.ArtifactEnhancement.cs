@@ -36,7 +36,7 @@ namespace AstralOath.Editor
 
             var left = Area(page, "Artifact stats and skill", .09f, .121f, .229f, .84f);
             Label("grade", left, 0, .011f, 1, .064f, 27, gold);
-            Label("name", left, 0, .068f, 1, .088f, 35, Color.white);
+            Label("name", left, 0, .068f, 1, .088f, 42, Color.white);
             for (int i = 0; i < 3; ++i)
             {
                 float y = .151f + .062f * i;
@@ -44,20 +44,32 @@ namespace AstralOath.Editor
                 if (i < 2) Picture(left, key + " icon", InventoryArt("Equipment/cm_icon_stat_" + (i == 0 ? "att" : "max_hp")),
                     0, y, .068f, .06f, true);
                 Text(left, key + " label", i < 2 ? InventoryPrefix + "stat." + key : ArtifactInventoryPrefix + "maxEnhance",
-                    29, i < 2 ? .08f : 0, y, .46f, .06f);
-                Label(key, left, .44f, y, .22f, .06f, 33, Color.white, TextAlignmentOptions.MidlineRight);
-                Label(key + "Gain", left, .67f, y, .33f, .06f, 30, orange, TextAlignmentOptions.MidlineRight);
+                    35, i < 2 ? .08f : 0, y, .46f, .06f);
+                Label(key, left, .44f, y, .22f, .06f, 40, Color.white, TextAlignmentOptions.MidlineRight);
+                Label(key + "Gain", left, .67f, y, .33f, .06f, 36, orange, TextAlignmentOptions.MidlineRight);
             }
-            Picture(left, "Skill rule", BagArt("_bar_2"), 0, .35f, 1, .015f);
-            Text(left, "Skill heading", ArtifactInventoryPrefix + "skill_heading", 25, .08f, .371f, .88f, .059f, gold);
+            Paint(Area(left, "Skill rule", 0, .35f, 1, .015f),BagArt("_bar_2"),new Color32(146,109,62,178),sliced:true);
+            Text(left, "Skill heading", ArtifactInventoryPrefix + "skill_heading", 30, .08f, .371f, .88f, .059f, gold);
             Picture(left, "Skill icon", RosterArt("cm_icon_pararti"), 0, .37f, .08f, .064f, true);
-            Picture(left, "Skill divider", BagArt("_bar_2"), 0, .444f, 1, .012f);
-            Label("rank", left, 0, .459f, 1, .06f, 28, orange);
-            Label("skill", left, 0, .533f, 1, .18f, 22, Color.white, TextAlignmentOptions.TopLeft, true);
-            Label("nextRank", left, 0, .76f, 1, .059f, 28, orange);
-            Label("nextSkill", left, 0, .83f, 1, .167f, 22, Color.white, TextAlignmentOptions.TopLeft, true);
-            Paint(Area(page, "Left separator", .335f, .118f, .0012f, .846f), null, new Color32(142, 105, 66, 185));
-            Paint(Area(page, "Right separator", .677f, .118f, .0012f, .846f), null, new Color32(142, 105, 66, 185));
+            Paint(Area(left, "Skill divider", 0, .444f, 1, .012f),BagArt("_bar_2"),new Color32(146,109,62,153),sliced:true);
+            Label("rank", left, 0, .459f, 1, .06f, 34, orange);
+            Label("skill", left, 0, .533f, 1, .18f, 29, Color.white, TextAlignmentOptions.TopLeft, true);
+            Label("nextRank", left, 0, .76f, 1, .059f, 34, orange);
+            Label("nextSkill", left, 0, .83f, 1, .167f, 29, Color.white, TextAlignmentOptions.TopLeft, true);
+            NativeSeparator("Left separator",.335f);
+            NativeSeparator("Right separator",.677f);
+            void NativeSeparator(string name,float x)
+            {
+                var rail=Area(page,name,x,.118f,0,.846f);
+                for(int i=0;i<2;i++)
+                {
+                    var half=Area(rail,i==0?"Upper ornament":"Lower ornament",.5f,i==0?.25f:.75f,0,0);
+                    half.sizeDelta=new Vector2(306f,17f)*BagDesignScale;
+                    half.localEulerAngles=new Vector3(0,0,i==0?-90:90);
+                    Paint(half,ArtifactRestoreArt("_bar_4"),new Color32(146,109,62,178),sliced:true)
+                        .pixelsPerUnitMultiplier=1f/BagDesignScale;
+                }
+            }
 
             var dial = Area(page, "Native rune dial", .49f, .349f, 0, 0);
             Image Rune(string key, float width, float height, float dx = 0f, float dy = 0f, byte alpha = 255)
@@ -92,10 +104,10 @@ namespace AstralOath.Editor
                 Picture(center, "Limit slot " + i, SummonArt("arti_gauge_bg"), x, .087f, .101f, .045f, true);
                 Link("break" + i, Picture(center, "Limit " + i, BagArt("arti_gauge_bar"), x, .087f, .101f, .045f, true));
             }
-            Paint(Area(center, "Experience rail", .06f, .19f, .88f, .033f), null, Black(.69f));
+            Paint(Area(center, "Experience rail", .06f, .19f, .88f, .033f), ArtifactRestoreArt("_progress_bg"), Color.white, sliced:true);
             var fill = Area(center, "Experience", .06f, .19f, .88f, .033f);
             fill.pivot = new Vector2(0, .5f);
-            Paint(fill, null, gold);
+            Paint(fill, ArtifactRestoreArt("_progress_bar"), new Color32(146,109,62,255));
             Link("fill", fill);
             Label("exp", center, 0, .145f, 1, .117f, 22, Color.white, TextAlignmentOptions.Center);
             Label("gain", center, .80f, .145f, .20f, .115f, 23, orange, TextAlignmentOptions.Center);

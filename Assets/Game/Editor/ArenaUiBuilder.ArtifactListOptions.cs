@@ -50,10 +50,15 @@ namespace AstralOath.Editor
             var notice = Area(root, "Artifact capacity limit", 0, 0, 1, 1);
             var dismiss = Button(Area(notice, "Dim background", 0, 0, 1, 1), null, Black(.66f));
             var message = Area(notice, "Notice", 0, .245f, 1, .50f);
-            Paint(message, BagArt("_box_equip_none"), new Color32(29, 49, 70, 255), true, true);
+            PaintSourceMessageBox(message);
             Text(message, "Title", "home.artifacts.capacityTitle", 34, .2f, .10f, .6f, .18f, Color.white, TextAlignmentOptions.Center);
+            var divider = Picture(message,"Source title divider",SummonArt("_bar_23"),.26f,.285f,.48f,.03f);
+            divider.type = Image.Type.Sliced;
+            divider.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            divider.color = new Color(1,1,1,Mathf.GammaToLinearSpace(102f/255f));
             Text(message, "Limit", "home.artifacts.capacityReached", 27, .1f, .37f, .8f, .18f, Mist, TextAlignmentOptions.Center);
-            var ok = Action(message, "OK", "home.artifacts.confirm", 25, .433f, .72f, .134f, .18f, out _, SummonArt("_btn_blue"), Color.white);
+            var ok = Action(message, "OK", "home.artifacts.confirm", 25, .433f, .72f, .134f, .18f, out _, SummonArt("_btn_blue_r_3"), Color.white);
+            ((Image)ok.targetGraphic).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
             bindings.Add(("artifactCapacityNotice", notice.gameObject));
             bindings.Add(("artifactCapacityOk", ok));
             bindings.Add(("artifactCapacityDismiss", dismiss));

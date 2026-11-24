@@ -837,11 +837,13 @@ namespace AstralOath.Client.Tests
                         Click(single,"change");
                     }
                     Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("empty").activeInHierarchy, Is.True);
+                    if (index == 0) yield return Capture("equipment-slot-empty",1478,720);
                     var candidate = VisibleRows(single,"candidates").Single(m => m.name == item.instanceId);
                     Assert.That(candidate.Require<BindingMap>("card").Require<Image>("icon").sprite.name,
                         Is.EqualTo(trainingWeaponIcons[index]));
                     Click(candidate,"select");
                     Assert.That(single.Require<BindingMap>("candidate").Require<GameObject>("detail").activeInHierarchy, Is.True);
+                    if (index == 0) yield return Capture("equipment-slot-candidate",1478,720);
                     if (index > 0)
                     {
                         yield return Capture("equipment-slot-compare",1478,720);
@@ -849,6 +851,7 @@ namespace AstralOath.Client.Tests
                     }
                     Click(single,"equip");
                     yield return Wait(() => !browser.gameObject.activeSelf, "Single-slot equip did not return to the hero.");
+                    if (index == 0) yield return Capture("equipment-first-equip-applied",1478,720);
                 }
                 else
                 {
@@ -880,10 +883,13 @@ namespace AstralOath.Client.Tests
                 yield return Capture("equipment-equipped-hero-narrow",1040,960);
                 Click(page,"gearOpen_weapon");
                 Assert.That(single.Require<GameObject>("popup").activeInHierarchy, Is.True);
+                Assert.That(single.Require<Image>("popupPlate").sprite.name,Is.EqualTo("_box_equip_2"),
+                    "The worn good-quality item must use its full native quality frame.");
                 yield return Capture("equipment-equipped-detail",1478,720);
                 Click(single,"popupRemove");
                 yield return Wait(() => !weaponSlot.enabled,"Unequipping the weapon must clear its icon.");
                 Assert.That(page.Require<GameText>("detailStat_attack").text,Is.EqualTo(initialAttack));
+                yield return Capture("equipment-removed",1478,720);
             }
             else
             {

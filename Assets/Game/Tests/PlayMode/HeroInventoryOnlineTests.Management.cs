@@ -16,6 +16,57 @@ namespace AstralOath.Client.Tests
     public sealed partial class HeroInventoryOnlineTests
     {
         [UnityTest]
+        public IEnumerator EquipmentManagerKeepsSixWornSlotsAndSourceSetDetailsAligned()
+        {
+            if (!Uri.TryCreate(Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL"),UriKind.Absolute,out var endpoint) || !endpoint.IsLoopback)
+                Assert.Ignore("Requires the isolated training equipment service.");
+            using var scope = new AstralOath.Client.Core.BindingScope(CancellationToken.None);
+            using var arena = new Arena.ArenaApi(endpoint,scope.Token);
+            var login = arena.GetSessionTokenAsync("Six slots QA",scope.Token);
+            yield return Wait(() => login.IsCompleted,"Guest login did not complete.");
+            string bearer = login.GetAwaiter().GetResult();
+            Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
+            using var heroes = new HeroInventoryApi(endpoint,Token,scope.Token);
+            using var equipment = new EquipmentInventoryApi(endpoint,Token,scope.Token);
+            var roster = heroes.FetchAsync(scope.Token);
+            var read = equipment.FetchAsync(scope.Token);
+            yield return Wait(() => roster.IsCompleted && read.IsCompleted,"Could not read the training account.");
+            var hero = roster.GetAwaiter().GetResult().heroes[0];
+            var snapshot = read.GetAwaiter().GetResult();
+            var slots = new[] { "weapon","helmet","armor","necklace","ring","boots" };
+            foreach (string slot in slots)
+            {
+                var item = snapshot.items.First(value => value.slot == slot);
+                var equip = equipment.ChangeAsync("equip",Guid.NewGuid().ToString("N"),hero.instanceId,item.instanceId,slot,snapshot.version,scope.Token);
+                yield return Wait(() => equip.IsCompleted,"Could not prepare the worn " + slot + ".");
+                snapshot = equip.GetAwaiter().GetResult();
+            }
+            var opening = OpenArtifactWindow(true,scope,heroes,null,null,equipment);
+            yield return Wait(() => opening.IsCompleted,"Could not open six-slot equipment management.");
+            var page = opening.GetAwaiter().GetResult();
+            Click(page,"gearManage");
+            var browser = page.Require<BindingMap>("gearBrowser");
+            foreach (string slot in slots)
+            {
+                Assert.That(browser.Require<BindingMap>("manageCurrent_" + slot).Require<Image>("item").enabled,Is.True,slot);
+                Assert.That(browser.Require<BindingMap>("managePreview_" + slot).Require<BindingMap>("wornCard").GetComponent<CanvasGroup>().alpha,Is.EqualTo(.45f));
+            }
+            yield return Capture("equipment-manager-six-worn",1478,720);
+            var replacement = snapshot.items.Single(value => value.slot == "weapon" && string.IsNullOrEmpty(value.equippedHeroId));
+            Click(VisibleRows(browser,"items").Single(row => row.name == replacement.instanceId),"select");
+            Assert.That(browser.Require<GameText>("manageSetEffect").text,Does.Contain("12%"));
+            Assert.That(browser.Require<GameText>("manageSet").text,Does.Contain("(3/2)"),
+                "Candidate details must count the target hero's proposed pieces, not the unowned candidate's former wearer.");
+            foreach (string slot in slots)
+                Assert.That(browser.Require<BindingMap>("managePreview_" + slot).Require<Image>("item").isActiveAndEnabled,Is.True,slot);
+            yield return Capture("equipment-manager-six-preview",1478,720);
+            yield return Capture("equipment-manager-six-preview-1080p",1920,1080);
+            Click(browser,"manageReset");
+            Assert.That(browser.Require<GameObject>("detail").activeSelf,Is.False);
+            Assert.That(browser.Require<BindingMap>("manageCurrent_weapon").Require<Image>("item").isActiveAndEnabled,Is.True);
+        }
+
+        [UnityTest]
         public IEnumerator ManagementTransferConfirmationShowsEveryNoteAndCancelsWithoutMutation()
         {
             var url = Environment.GetEnvironmentVariable("ASTRAL_EQUIPMENT_TEST_URL");
@@ -143,7 +194,10 @@ namespace AstralOath.Client.Tests
             Assert.That(browser.Require<GameText>("managePrompt").isActiveAndEnabled,Is.True);
             Assert.That(browser.Require<GameButton>("apply").interactable,Is.False);
             Assert.That(browser.Require<GameButton>("apply").targetGraphic.color.r,Is.LessThan(.6f));
-            Assert.That(browser.Require<BindingMap>("managePreview_attack").gameObject.activeSelf,Is.True);
+            Assert.That(browser.Require<BindingMap>("managePreview_attack").gameObject.activeSelf,Is.False,
+                "The original empty selection shows its prompt, then reveals proposed values after choosing an item.");
+            Assert.That(browser.Require<Image>("manageDetailPlate").sprite,Is.Not.Null);
+            Assert.That(browser.Require<BindingMap>("managePreview_weapon").Require<Image>("frame").sprite.name,Is.EqualTo("cm_item_slot"));
             yield return Capture("equipment-manager-before",1478,720);
             yield return CheckManagementFilters(browser);
             Click(browser,"managePreviewSelect_helmet");
@@ -160,12 +214,16 @@ namespace AstralOath.Client.Tests
             Assert.That(previewFrame.rectTransform.rect.width,Is.GreaterThan(20));
             Assert.That(previewFrame.rectTransform.rect.height,Is.GreaterThan(20));
             Assert.That(browser.Require<GameText>("manageDescription").text,Is.Not.Empty);
+            Assert.That(browser.Require<Image>("manageDetailPlate").sprite.name,Is.EqualTo("_box_equip_" +
+                (Array.IndexOf(new[] { "normal","good","rare","heroic","epic" },weapon.grade) + 1)));
+            Assert.That(browser.Require<GameText>("manageSetEffect").text,Is.Not.Empty);
             Assert.That(int.TryParse(browser.Require<BindingMap>("manageScore").Require<GameText>("value").text,out _),Is.True);
             string proposed = browser.Require<BindingMap>("managePreview_attack").Require<GameText>("value").text;
             var difference = browser.Require<GameText>("manageDelta_attack");
             Assert.That(difference.text,Does.StartWith("+"));
             Assert.That((Color32)difference.color,Is.EqualTo(new Color32(255,149,41,255)));
             yield return Capture("equipment-manager-preview",1478,720);
+            yield return Capture("equipment-manager-preview-1080p",1920,1080);
             yield return Capture("equipment-manager-preview-4x3",1280,960);
             yield return Capture("equipment-manager-preview-21x9",1920,823);
             Click(browser,"apply");

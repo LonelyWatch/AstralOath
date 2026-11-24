@@ -10,7 +10,7 @@ namespace AstralOath.Client.Tests
     public sealed class SingleSlotEquipmentTests
     {
         [Test]
-        public void EquippedPopupKeepsPortraitProportionsAndSolidReadingSurface()
+        public void EquippedPopupKeepsPortraitProportionsAndNativeQualitySurface()
         {
             var window = AssetDatabase.LoadAssetAtPath<GameObject>(
                 "Assets/Game/Modules/Home/Res/Prefab/SingleSlotEquipment.prefab").GetComponent<BindingMap>();
@@ -19,9 +19,13 @@ namespace AstralOath.Client.Tests
             Assert.That(ratio, Is.Not.Null);
             Assert.That(ratio.aspectMode, Is.EqualTo(AspectRatioFitter.AspectMode.FitInParent));
             Assert.That(ratio.aspectRatio, Is.InRange(.64f,.68f));
-            var surface = panel.GetComponent<Image>();
-            Assert.That(surface.sprite, Is.Null);
+            var surface = window.Require<Image>("popupPlate");
+            Assert.That(surface, Is.SameAs(window.Require<Image>("popupPlate")));
+            Assert.That(surface.sprite.name, Is.EqualTo("_box_equip_1"));
+            Assert.That(surface.type, Is.EqualTo(Image.Type.Sliced));
             Assert.That(surface.color.a, Is.EqualTo(1f));
+            Assert.That(panel.Find("Frame/Readable interior"), Is.Null,
+                "An opaque overlay must not hide the native leather, trim and ornament.");
         }
 
         [Test]

@@ -1,0 +1,90 @@
+{
+  "reference": "Screenrecorder-2026-11-21-22-31-26-469.mp4, 00:06 / 00:21 / 00:37 / 01:28",
+  "layouts": [
+    "artifact_card.csb",
+    "artifact_detail_sub_popup.csb",
+    "unit_item_upgrade.csb"
+  ],
+  "purpose": "Authorized source sprites; artifact frame variant compensates nonlinear source opacity in Unity Linear.",
+  "materials": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/_bar_4.png",
+      "source": "D:/sevenepic/原始资源/img/_bar_4.png",
+      "sha256": "436229E4EE7CEE3E9497EDAD167AFA9ED826BCA81E8223C29BE62B71E34BEB1A",
+      "sourceSha256": "436229E4EE7CEE3E9497EDAD167AFA9ED826BCA81E8223C29BE62B71E34BEB1A",
+      "size": [
+        98,
+        17
+      ],
+      "unityBorder": "{x: 32, y: 4, z: 32, w: 4}"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/_box_equip_0_linear.png",
+      "source": "D:/sevenepic/原始资源/img/_box_equip_0.png",
+      "sha256": "F19129E33EDA383DC8783A25243EE486CA5FA740C48BF2572E225F69F71DCA57",
+      "sourceSha256": "FF9522FC341BD43FB08960CEAD5C15B32BC93D7857AB2187449E9A806DE7239F",
+      "size": [
+        440,
+        386
+      ],
+      "unityBorder": "{x: 100, y: 100, z: 100, w: 100}",
+      "transform": "RGB unchanged; Aout=round(255*(1-sRGBToLinear(1-Ain/255)))",
+      "rgbUnchanged": true
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/_progress_bar.png",
+      "source": "D:/sevenepic/原始资源/img/_progress_bar.png",
+      "sha256": "F58E4B66C8A119023EDC6054097A6896D778B473A92DC49403996C4597F81614",
+      "sourceSha256": "F58E4B66C8A119023EDC6054097A6896D778B473A92DC49403996C4597F81614",
+      "size": [
+        100,
+        8
+      ],
+      "unityBorder": "{x: 0, y: 0, z: 0, w: 0}"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/_progress_bg.png",
+      "source": "D:/sevenepic/原始资源/img/_progress_bg.png",
+      "sha256": "7DC78BFAEEA874636E4585D9EA9D44F77FC447EE73E89A9AAE7139343F169BA6",
+      "sourceSha256": "7DC78BFAEEA874636E4585D9EA9D44F77FC447EE73E89A9AAE7139343F169BA6",
+      "size": [
+        104,
+        12
+      ],
+      "unityBorder": "{x: 4, y: 2, z: 4, w: 2}"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/arti_frame_box.png",
+      "source": "D:/sevenepic/原始资源/item_arti/arti_frame_box.png",
+      "sha256": "4F15408A0E3CB39EC01483E17181C735539CF0A4C7068EB8BEF45DC4C81A3C27",
+      "sourceSha256": "4F15408A0E3CB39EC01483E17181C735539CF0A4C7068EB8BEF45DC4C81A3C27",
+      "size": [
+        99,
+        99
+      ],
+      "unityBorder": "{x: 32, y: 32, z: 32, w: 32}"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/arti_frame_deco_2.png",
+      "source": "D:/sevenepic/原始资源/item_arti/arti_frame_deco_2.png",
+      "sha256": "3C87B8F5417CE7AE586457A62EBE391D696761DC7F7DD41E7F3A981C76422235",
+      "sourceSha256": "3C87B8F5417CE7AE586457A62EBE391D696761DC7F7DD41E7F3A981C76422235",
+      "size": [
+        378,
+        149
+      ],
+      "unityBorder": "{x: 0, y: 0, z: 0, w: 0}"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/ArtifactRestore/icon_menu_rotate.png",
+      "source": "D:/sevenepic/原始资源/img/icon_menu_rotate.png",
+      "sha256": "94F4E2B9534CEC1A8B037F6C8AAF61B696EA9C2F564B8C1B4BFAD6CF5A802965",
+      "sourceSha256": "94F4E2B9534CEC1A8B037F6C8AAF61B696EA9C2F564B8C1B4BFAD6CF5A802965",
+      "size": [
+        100,
+        100
+      ],
+      "unityBorder": "{x: 0, y: 0, z: 0, w: 0}"
+    }
+  ]
+}

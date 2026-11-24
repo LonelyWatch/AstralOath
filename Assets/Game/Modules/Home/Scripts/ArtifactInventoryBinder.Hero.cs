@@ -205,9 +205,10 @@ namespace AstralOath.Client.Home
                 foreach (var tab in new[]{"skillTab","storyTab"})
                 {
                     bool activeTab = (tab == "storyTab") == storyTab;
-                    HeroControl<GameButton>(tab).targetGraphic.color = activeTab ? Color.white : new Color32(37,51,64,255);
+                    HeroControl<GameButton>(tab).targetGraphic.color = activeTab ? Color.white : new Color32(0,0,0,76);
                     HeroControl<GameText>(tab+"Label").color = activeTab ? Color.black : new Color32(163,179,191,255);
                 }
+                HeroControl<Image>("skillTabGlyph").color = storyTab ? new Color32(163,179,191,255) : Color.black;
                 return;
             }
             bool worn = item.heroInstanceId == pickerHero?.instanceId;

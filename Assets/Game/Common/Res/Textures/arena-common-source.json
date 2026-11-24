@@ -3,7 +3,10 @@
   "sourceScenes": [
     "wnd/pvplive_lounge_creat.csb",
     "wnd/pvplive_mock_battle_item.csb",
-    "wnd/pvplive_lounge.csb"
+    "wnd/pvplive_lounge.csb",
+    "wnd/msgbox.csb",
+    "wnd/msgbox_renewal.csb",
+    "wnd/equip_change_popup.csb"
   ],
   "assets": [
     {
@@ -185,6 +188,40 @@
         12,
         12
       ]
+    },
+    {
+      "asset": "SourceMessageBox.png",
+      "source": "img/renew_popup_bg_2.png",
+      "sourceSha256": "80b58044904520d4e88b1189ee8aac5dd7c5c40ccffa55a409fbd9413e9354f7",
+      "outputSha256": "5098929747d17d552f4f1ef760b5a8edcb149e4398eb961ebd3ffcbb1a9727bf",
+      "size": [
+        256,
+        410
+      ],
+      "border": [
+        0,
+        30,
+        0,
+        30
+      ],
+      "conversion": "ImportSummoningArt.linear_confirmation_rules: only bright top/bottom rule coverage to linear; raw interior RGB/alpha unchanged."
+    },
+    {
+      "asset": "SourceWideConfirmation.png",
+      "source": "img/renew_popup_bg_2_alpha.png",
+      "sourceSha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "outputSha256": "9ce5b5e7f5c8052d6532ff515d0d4205680e4c3b18070e0914eaf29c60bb0762",
+      "size": [
+        256,
+        410
+      ],
+      "border": [
+        30,
+        70,
+        30,
+        40
+      ],
+      "conversion": "ImportSummoningArt.linear_confirmation_rules; equip_change_popup.csb cap(30,40,196,300), source alpha already includes .9; white tint."
     }
   ]
 }

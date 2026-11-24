@@ -1,8 +1,12 @@
 #if UNITY_EDITOR
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using AstralOath.Client.Common;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Tests
 {
@@ -46,7 +50,18 @@ namespace AstralOath.Client.Tests
             ClickVisibleCenter(browser, "manageStatOption_all");
             Assert.That(Count(), Is.EqualTo(2));
             yield return OpenStatFilter(3);
-            ClickVisibleCenter(browser, "manageStatBackdrop");
+            // The source menu straddles the canvas centre. Click the visible left backdrop, not the menu behind its centre.
+            Canvas.ForceUpdateCanvases();
+            var backdrop = browser.Require<GameButton>("manageStatBackdrop");
+            var backdropRect = (RectTransform)backdrop.transform;
+            var point = new PointerEventData(EventSystem.current) {
+                position = RectTransformUtility.WorldToScreenPoint(null,backdropRect.TransformPoint(
+                    new Vector2(backdropRect.rect.xMin + backdropRect.rect.width * .25f,backdropRect.rect.center.y)))
+            };
+            var hits = new List<RaycastResult>();
+            backdrop.GetComponentInParent<GraphicRaycaster>().Raycast(point,hits);
+            Assert.That(ExecuteEvents.GetEventHandler<IPointerClickHandler>(hits.First().gameObject),Is.EqualTo(backdrop.gameObject));
+            ExecuteEvents.ExecuteHierarchy(hits.First().gameObject,point,ExecuteEvents.pointerClickHandler);
             Assert.That(browser.Require<GameObject>("manageStatMenu").activeSelf, Is.False);
             Assert.That(Count(), Is.EqualTo(2));
         }

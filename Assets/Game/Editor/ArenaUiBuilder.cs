@@ -260,6 +260,16 @@ namespace AstralOath.Editor
             return edge;
         }
 
+        private static Image PaintSourceMessageBox(RectTransform rect, bool equipmentChange = false)
+        {
+            // msgbox.csb: native 256x410 sprite, cap (0,30,256,350), opacity 216.
+            // The source rules have linear-light alpha coverage; no opaque interior covers the gradient.
+            var surface = Paint(rect, CommonArt(equipmentChange ? "SourceWideConfirmation" : "SourceMessageBox"),
+                equipmentChange ? Color.white : new Color32(255,255,255,216), true, true);
+            surface.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            return surface;
+        }
+
         private static void Cover(RectTransform parent, string name, Sprite sprite)
         {
             if (!sprite) return;
