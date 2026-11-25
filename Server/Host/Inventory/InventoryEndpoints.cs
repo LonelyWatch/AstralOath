@@ -33,6 +33,13 @@ internal static class InventoryEndpoints
         inventory.MapGet("/equipment", (HttpContext http, ArenaStore sessions, InventoryStore store,
             CancellationToken cancellation) => Handle(app, http, sessions,
                 id => store.ReadEquipment(id, cancellation), cancellation));
+        inventory.MapGet("/equipment/enhancement-rules", (HttpContext http, ArenaStore sessions,
+            CancellationToken cancellation) => Handle(app, http, sessions,
+                _ => Task.FromResult(EquipmentEnhancementCatalog.Rules), cancellation));
+        inventory.MapPost("/equipment/{instanceId}/enhance", (HttpContext http, string instanceId,
+            EquipmentEnhancementRequest request, ArenaStore sessions, InventoryStore store, CancellationToken cancellation) =>
+            Handle(app, http, sessions, id => store.EnhanceEquipment(id, instanceId, request, cancellation), cancellation))
+            .WithMetadata(new RequestSizeLimitAttribute(4096));
         inventory.MapMethods("/equipment", [HttpMethods.Head], (HttpContext http, ArenaStore sessions, InventoryStore store,
             CancellationToken cancellation) => Handle(app, http, sessions, id => store.ReadEquipmentVersion(id, cancellation),
                 cancellation, version => EquipmentVersionResponse(http, version)));

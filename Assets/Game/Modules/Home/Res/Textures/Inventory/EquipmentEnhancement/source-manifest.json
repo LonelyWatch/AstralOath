@@ -1,0 +1,331 @@
+{
+  "sources": {
+    "effect/itemupgrade_mainbg_v2.sct": "00812e58e8b041d4769d9658cf384492a4db47ad8722cd6100415f66eae2e58e",
+    "effect/itemupgrade_mainbg_v2.atlas": "d1a85acd21f0a7ad57fbd4d9e7a250de7b68f8d4c239333a82f6c90acea35ac0",
+    "effect/itemupgrade_mainbg_v2.scsp": "f8e328f57f66120117923b041b8d0f8543511b5cb44ae7f883fef3eb21ce6efa",
+    "effect/itemupgrade_main_v2.sct": "7451c38516ab1c965efcb3a7b06903f4d0634c9394847e67de15385efc7c6615",
+    "effect/itemupgrade_main_v2.atlas": "0dede1c6c40eb362301f1d2e0a9a3b11f8ccdfc92d2ff1d4d600dc5977d806c7",
+    "effect/itemupgrade_main_v2.scsp": "720a9b2d8f60c92f5853e563c88a156550c4805ba761148de02682c8763c6b40",
+    "wnd/unit_item_upgrade.csb": "5f7e2b08ed3c0ac17f5a035cebe350449d837dce1fa0ee6d851c6578778e07a5",
+    "sound/ui1.bank": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804",
+    "sound/events.yml": "7d9103cb87155bebf22e90988c834ec553ba6853d4e5a68bfdc435ba2122c487"
+  },
+  "assets": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_equip_0.png",
+      "source": "item/icon_eq_stone_equip_0.png",
+      "sourceSha256": "b58a8f8c65c20573003786d94fd543805557980fec42bb872ce42aefde5169f3",
+      "outputSha256": "b58a8f8c65c20573003786d94fd543805557980fec42bb872ce42aefde5169f3",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_equip_1.png",
+      "source": "item/icon_eq_stone_equip_1.png",
+      "sourceSha256": "348e27ea7cf72ab707be994e16e25cc80556a007feab208b4cffc2c4ecf14761",
+      "outputSha256": "348e27ea7cf72ab707be994e16e25cc80556a007feab208b4cffc2c4ecf14761",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_equip_2.png",
+      "source": "item/icon_eq_stone_equip_2.png",
+      "sourceSha256": "c10402ee934c9f3c695b9ac3437913480093fd9cf87c1e99b297911ed00310b8",
+      "outputSha256": "c10402ee934c9f3c695b9ac3437913480093fd9cf87c1e99b297911ed00310b8",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_equip_3.png",
+      "source": "item/icon_eq_stone_equip_3.png",
+      "sourceSha256": "e0d69b16f75d6e88444a363bdeffbdbe90f7f0e0fe32c9799ee23290e81bd424",
+      "outputSha256": "e0d69b16f75d6e88444a363bdeffbdbe90f7f0e0fe32c9799ee23290e81bd424",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_acce_0.png",
+      "source": "item/icon_eq_stone_acce_0.png",
+      "sourceSha256": "3b89027d5bac81a9999ab2bd2442877e06b44894b521811e8a0c77c563e20213",
+      "outputSha256": "3b89027d5bac81a9999ab2bd2442877e06b44894b521811e8a0c77c563e20213",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_acce_1.png",
+      "source": "item/icon_eq_stone_acce_1.png",
+      "sourceSha256": "6c1f5fcea27f706f37b8083dfc771b6be58ad9d04ddd5c702ff890901d14d026",
+      "outputSha256": "6c1f5fcea27f706f37b8083dfc771b6be58ad9d04ddd5c702ff890901d14d026",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_acce_2.png",
+      "source": "item/icon_eq_stone_acce_2.png",
+      "sourceSha256": "bb9af23ecb480c6c2adf60d00867658f1737c85abf89ceb2705b1aa352ff9d5f",
+      "outputSha256": "bb9af23ecb480c6c2adf60d00867658f1737c85abf89ceb2705b1aa352ff9d5f",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_eq_stone_acce_3.png",
+      "source": "item/icon_eq_stone_acce_3.png",
+      "sourceSha256": "b3ddf163f5c3ed7bddb14c0b6eb2f47bdfadb4df11fccbbca00e4d883c0a7e1e",
+      "outputSha256": "b3ddf163f5c3ed7bddb14c0b6eb2f47bdfadb4df11fccbbca00e4d883c0a7e1e",
+      "width": 84,
+      "height": 84
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/upgrade_arcane_btn.png",
+      "source": "img/upgrade_arcane_btn.png",
+      "sourceSha256": "f83dfd7e5fb5418e9bc8c221b33a4d9e62a3440866b674b32f9de0e299340d02",
+      "outputSha256": "f83dfd7e5fb5418e9bc8c221b33a4d9e62a3440866b674b32f9de0e299340d02",
+      "width": 171,
+      "height": 71
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/upgrade_arcane_btn_p.png",
+      "source": "img/upgrade_arcane_btn_p.png",
+      "sourceSha256": "f7603a320bc688c0130681865472795f186b6752cc5edb0e472c00d7748c01fa",
+      "outputSha256": "f7603a320bc688c0130681865472795f186b6752cc5edb0e472c00d7748c01fa",
+      "width": 171,
+      "height": 71
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/upgrade_arcane_stat_no.png",
+      "source": "img/upgrade_arcane_stat_no.png",
+      "sourceSha256": "ac099373921f72b5c587aa5653af06554a203d0e23c489e41f66de06577016fd",
+      "outputSha256": "ac099373921f72b5c587aa5653af06554a203d0e23c489e41f66de06577016fd",
+      "width": 36,
+      "height": 36
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_itembg_stuff_1.png",
+      "source": "img/_itembg_stuff_1.png",
+      "sourceSha256": "63c4dfcc900938c8e69f93eb6e115175336f2aa388179c5decb24385c9867afa",
+      "outputSha256": "63c4dfcc900938c8e69f93eb6e115175336f2aa388179c5decb24385c9867afa",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_itembg_stuff_2.png",
+      "source": "img/_itembg_stuff_2.png",
+      "sourceSha256": "41a85df7b0dc1209dacc41a3377540b29b2e5e5e3b51eb8e2819e5655155a5bf",
+      "outputSha256": "41a85df7b0dc1209dacc41a3377540b29b2e5e5e3b51eb8e2819e5655155a5bf",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_itembg_stuff_3.png",
+      "source": "img/_itembg_stuff_3.png",
+      "sourceSha256": "c165dd77d8a632779d35005ba62b74889e79cfcf99a80a384834e635b3184ec7",
+      "outputSha256": "c165dd77d8a632779d35005ba62b74889e79cfcf99a80a384834e635b3184ec7",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_itembg_stuff_4.png",
+      "source": "img/_itembg_stuff_4.png",
+      "sourceSha256": "fa1ebab62897d8dcbc495547b4952ee9cde4ae7ef0b310c80fe82521380a4343",
+      "outputSha256": "fa1ebab62897d8dcbc495547b4952ee9cde4ae7ef0b310c80fe82521380a4343",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_itembg_stuff_5.png",
+      "source": "img/_itembg_stuff_5.png",
+      "sourceSha256": "96a0b517325417640a03f1d6f5b3da04a4f18eb938c3ecc5bf5aab6f2ba2af19",
+      "outputSha256": "96a0b517325417640a03f1d6f5b3da04a4f18eb938c3ecc5bf5aab6f2ba2af19",
+      "width": 96,
+      "height": 96
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_btn_blue.png",
+      "source": "img/_btn_blue.png",
+      "sourceSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "outputSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "width": 152,
+      "height": 61
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_btn_blue_p.png",
+      "source": "img/_btn_blue_p.png",
+      "sourceSha256": "98d0f5503b405d49091e3e0b19254b946b36b3191f8a07199a92ef7210023603",
+      "outputSha256": "98d0f5503b405d49091e3e0b19254b946b36b3191f8a07199a92ef7210023603",
+      "width": 152,
+      "height": 61
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/icon_menu_info_2.png",
+      "source": "img/icon_menu_info_2.png",
+      "sourceSha256": "6832f260b5772210e3c5631698e6024f0de0ec2445bf23f4c321bc46489297a6",
+      "outputSha256": "6832f260b5772210e3c5631698e6024f0de0ec2445bf23f4c321bc46489297a6",
+      "width": 100,
+      "height": 100
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/renew_popup_bg.png",
+      "source": "img/renew_popup_bg.png",
+      "sourceSha256": "e8bf7aadd73b22b3e1cdfc5f52b9843c99a3cf4b6fe3af78668e0c415542bfbe",
+      "outputSha256": "e8bf7aadd73b22b3e1cdfc5f52b9843c99a3cf4b6fe3af78668e0c415542bfbe",
+      "width": 366,
+      "height": 578
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/_slider_bg.png",
+      "source": "img/_slider_bg.png",
+      "sourceSha256": "d3861c097f7a0fe5bec6e060f46c5bb194943fac6a4f07b80c32bd6fd84ddd1f",
+      "outputSha256": "d3861c097f7a0fe5bec6e060f46c5bb194943fac6a4f07b80c32bd6fd84ddd1f",
+      "width": 413,
+      "height": 12
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/option_bar_circle.png",
+      "source": "img/option_bar_circle.png",
+      "sourceSha256": "2f9930f3cb5ac7ddd3b48181acb4642930f75ca51e658b5819dca816a07e1119",
+      "outputSha256": "2f9930f3cb5ac7ddd3b48181acb4642930f75ca51e658b5819dca816a07e1119",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/upgrade_bg.png",
+      "region": "upgrade_bg",
+      "source": "effect/itemupgrade_mainbg_v2",
+      "outputSha256": "c6750e9e51bf35f0d405520fe3fd17d20eaa7ee8529797570c2f1bbd20298aee"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/panta_bg.png",
+      "region": "panta_bg",
+      "source": "effect/itemupgrade_mainbg_v2",
+      "outputSha256": "0d1ff741e51b428caca0f09eef94f58dde336739c26e8abf4d3ae7df0de754bb"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/star_01.png",
+      "region": "star_01",
+      "source": "effect/itemupgrade_mainbg_v2",
+      "outputSha256": "e349123e3a0e36788c7083fa9598151091f611c74a2bb38da7c82fe607ba5600"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/star_02.png",
+      "region": "star_02",
+      "source": "effect/itemupgrade_mainbg_v2",
+      "outputSha256": "ac115fcc6a1c88f4f8d7b1f796b1ecd8175909c9d977cfba88616717a38f691e"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/star_03.png",
+      "region": "star_03",
+      "source": "effect/itemupgrade_mainbg_v2",
+      "outputSha256": "23b25888216b97800503c05c9c58007f70dd03b2e9ed9cd8d1c86b4544509f97"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/stone.png",
+      "region": "stone",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "7c0878acb0c914037e0b69d58a30cb798cffde9493b9797afc6594115b42a62f"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/stone_b.png",
+      "region": "stone_b",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "4efc533a18840f0657ca2045a8576c05b79677cdb5a335e214b98d3064a2270a"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/panta_in.png",
+      "region": "panta_in",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "7fb2b4d75665b85680360836c7522fb4e31b37ae0f55ab88d3e9e5342271888d"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/stone_glow.png",
+      "region": "stone_glow",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "c587add8bf8cbcc36241e676595ddace3d20cc13adb77955325a32d0f8487b4d"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/flash.png",
+      "region": "flash",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "4ef5ecce2b924172f2f8702b9a028978902af53c50689a4bd907111c987c90b5"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/EquipmentEnhancement/lightning_core_05.png",
+      "region": "lightning_core_05",
+      "source": "effect/itemupgrade_main_v2",
+      "outputSha256": "1f06854f8fd4ec3341abdb5f118f412e77766c35b8dc298338c3f72d6ae4f08c"
+    }
+  ],
+  "audio": [
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/SlotIn.wav",
+      "event": "event:/ui/upgrade/slot_in",
+      "eventId": "94518238-4110-4e57-99c1-1ee716e11efe",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_hero_upgrade_material.wav"
+      ],
+      "pcmFrames": 31547,
+      "durationSeconds": 0.6572291666666666,
+      "outputSha256": "4fd83cf06b465da353897cfdc8319ad1158c34b1f005e8d2feae2b7e3d17314a"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/SlotOut.wav",
+      "event": "event:/ui/upgrade/slot_out",
+      "eventId": "5e2653a1-f4c7-484d-ab00-4d3c7ab98d2a",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_hero_slot_cancel.wav"
+      ],
+      "pcmFrames": 37099,
+      "durationSeconds": 0.7728958333333333,
+      "outputSha256": "5d5e7180693b64d89a4ddb70dce3dd1850dd354691b4daf1797d356d15ff97e9"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/Start.wav",
+      "event": "event:/effect/itemupgrade_main_v2_start",
+      "eventId": "2f361a1e-2bd3-4fe1-8fb5-c1badce7826c",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\itemupgrade_main_v2_start.wav"
+      ],
+      "pcmFrames": 156541,
+      "durationSeconds": 3.261270833333333,
+      "outputSha256": "c18b40d2931b6671d131909945c25e90d0648beedb6e2f9a4dbdd09dc551eb3c"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/Finish.wav",
+      "event": "event:/effect/itemupgrade_main_v2_circle",
+      "eventId": "541ae3b6-f820-4590-98c6-8cd6367d6223",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\itemupgrade_main_v2_circle.wav"
+      ],
+      "pcmFrames": 76568,
+      "durationSeconds": 1.5951666666666666,
+      "outputSha256": "636462831809520b72da1fbae7a962978b3f2d8358f1daa7b0ea8ab0bb66e459"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/Good.wav",
+      "event": "event:/effect/ui_enchant_bonus",
+      "eventId": "92eafc81-b6dc-47bd-af83-4f6fad68dcae",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_hero_upgrade_great.wav"
+      ],
+      "pcmFrames": 95984,
+      "durationSeconds": 1.9996666666666667,
+      "outputSha256": "2ab725efdff0f09ee0dc7307d5b38d991226c13fad8037a5811ba715ddf83f70"
+    },
+    {
+      "asset": "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement/Great.wav",
+      "event": "event:/effect/ui_enchant_ultimate",
+      "eventId": "6ecb24ae-f3b3-431c-93f8-caf3b8ea5d7b",
+      "bank": "sound/ui1.bank",
+      "sourceSamples": [
+        "assets\\ui\\se_ui_hero_upgrade_perfect.wav"
+      ],
+      "pcmFrames": 93725,
+      "durationSeconds": 1.9526041666666667,
+      "outputSha256": "1f7b10958ce1c2a72a3fca54ec7943a7c300aa0c4554b03cb57915b258d4de7c"
+    }
+  ]
+}

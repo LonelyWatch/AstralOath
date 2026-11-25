@@ -58,7 +58,7 @@ namespace AstralOath.Client.Home
             grade.color = entry.template.Stars == 5 ? new Color32(250,121,70,255) : entry.template.Stars == 4
                 ? new Color32(225,124,233,255) : new Color32(109,175,239,255);
             SetImage(ui.Get<Image>("DetailEmblem"), entry.combatIcon);
-            detailBadge.Set(false, selected.level);
+            detailBadge.Set(false, selected.level, 15 + 3 * selected.limitBreaks);
             var portrait = HasWearer(selected) ? heroPortrait?.Invoke(selected.heroInstanceId) : null;
             SetImage(ui.Get<Image>("DetailWearer"), portrait);
             ui.Get<GameObject>("DetailWearerFrame").SetActive(portrait);

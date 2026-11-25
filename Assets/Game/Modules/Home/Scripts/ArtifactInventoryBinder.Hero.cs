@@ -180,7 +180,7 @@ namespace AstralOath.Client.Home
             SetImage(HeroControl<Image>(prefix+"Portrait"),entry.card);
             SetImage(HeroControl<Image>(prefix+"Emblem"),entry.combatIcon);
             SetImage(HeroControl<Image>(prefix+"Wearer"),HasWearer(item) ? heroPortrait?.Invoke(item.heroInstanceId) : null);
-            new NotificationBadgeBinder(HeroControl<BindingMap>(prefix+"Badge")).Set(false,item.level);
+            new NotificationBadgeBinder(HeroControl<BindingMap>(prefix+"Badge")).Set(false,item.level,15 + 3 * item.limitBreaks);
             for (int i = 0; i < 5; ++i)
             {
                 HeroControl<Image>(prefix+"Star"+i).enabled = i < template.Stars;

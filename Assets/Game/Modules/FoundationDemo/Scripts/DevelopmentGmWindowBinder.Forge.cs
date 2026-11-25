@@ -110,7 +110,8 @@ namespace AstralOath.Client.FoundationDemo
             var main = tier.stats.First(x => x.kind == forgeMain);
             bool validEnhance = Number(view.Field("forgeEnhance").text, out int enhance) &&
                 enhance >= tier.minEnhance && enhance <= tier.maxEnhance;
-            string mainValue = validEnhance ? Display(main.kind, main.mainBase + main.mainStep * enhance) : "—";
+            string mainValue = validEnhance ? Display(main.kind,
+                main.mainValues != null && enhance < main.mainValues.Length ? main.mainValues[enhance] : main.mainBase + main.mainStep * enhance) : "—";
             Caption("forgeSlot", T("forgeSlot", Gear(forgeSlot)));
             Caption("forgeTier", T("forgeTier", forgeLevel));
             Caption("forgeGrade", T("forgeGrade", Gear(forgeGrade)));
@@ -151,7 +152,7 @@ namespace AstralOath.Client.FoundationDemo
                 {
                     var rule = tier.stats.First(s => s.kind == subKinds[i]);
                     Number(view.Field("forgeRolls" + i).text, out int rolls);
-                    valueField.SetTextWithoutNotify((rule.rollMin * Math.Clamp(rolls, 1, budget) /
+                    valueField.SetTextWithoutNotify((RollRange(rule).rollMin * Math.Clamp(rolls, 1, budget) /
                         (Percent(rule.kind) ? 100 : 1)).ToString());
                 }
             }
@@ -202,12 +203,13 @@ namespace AstralOath.Client.FoundationDemo
                 }
                 total += rolls;
                 laterUpgrades += rolls - 1;
-                string lo = Display(rule.kind, rule.rollMin * rolls), hi = Display(rule.kind, rule.rollMax * rolls);
+                var range = RollRange(rule);
+                string lo = Display(rule.kind, range.rollMin * rolls), hi = Display(rule.kind, range.rollMax * rolls);
                 view.Label("forgeRange" + i).text = lo + " – " + hi;
                 long unit = Percent(rule.kind) ? 100L : 1L;
                 if (!Number(view.Field("forgeValue" + i).text, out int value) ||
-                    value * unit < rule.rollMin * rolls || value * unit > rule.rollMax * rolls ||
-                    value * unit % rule.step != 0)
+                    value * unit < range.rollMin * rolls || value * unit > range.rollMax * rolls ||
+                    range.step < 1 || value * unit % range.step != 0)
                 { error ??= T("forgeValueError", i + 1, lo, hi); continue; }
                 if (create) stats[i] = new GmForgeSubstat { kind = rule.kind, rolls = rolls, value = (int)(value * unit) };
             }
@@ -216,7 +218,12 @@ namespace AstralOath.Client.FoundationDemo
             if (!create || error != null) return null;
             return new GmForgeAction { requestId = Guid.NewGuid().ToString("N"), action = "forgeEquipment", key = forgeSlot,
                 value = quantity, forge = new GmForgeRecipe { itemLevel = tier.itemLevel, enhanceLevel = enhance,
-                    grade = forgeGrade, setId = forgeSet, mainKind = forgeMain, substats = stats } };
+                    grade = forgeGrade, setId = forgeSet, mainKind = forgeMain, substats = stats,
+                    rulesVersion = Rules.enhancementRulesVersion } };
         }
+
+        private GmForgeRules.RollRange RollRange(GmForgeRules.Stat stat) =>
+            stat.gradeRanges?.FirstOrDefault(range => range.grade == forgeGrade) ??
+            new GmForgeRules.RollRange { grade = forgeGrade, rollMin = stat.rollMin, rollMax = stat.rollMax, step = stat.step };
     }
 }

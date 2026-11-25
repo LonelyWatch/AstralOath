@@ -124,6 +124,8 @@ namespace AstralOath.Client.Home
             slotVersion = version;
             var worn = WornSlotItem();
             var candidate = CandidateSlotItem();
+            singleView.Map.Require<GameButton>("currentEnhance").gameObject.SetActive(worn != null);
+            singleView.Map.Require<GameButton>("candidateEnhance").gameObject.SetActive(candidate != null);
             if (candidate == null) candidateId = null;
             if (worn == null) showingWornPopup = false;
             singleView.Comparison.SetActive(!showingWornPopup);

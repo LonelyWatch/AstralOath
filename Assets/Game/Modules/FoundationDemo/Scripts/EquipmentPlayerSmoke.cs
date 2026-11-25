@@ -17,13 +17,16 @@ namespace AstralOath.Client.FoundationDemo
                 Array.IndexOf(args, "-astral-equipment-smoke") >= 0;
         }
 
-        internal static void Start(GameLaunchContext context, CancellationToken token)
+        internal static bool EnhancementRequested => IsRequested() &&
+            Array.IndexOf(Environment.GetCommandLineArgs(), "-astral-equipment-enhancement-smoke") >= 0;
+
+        internal static void Start(GameLaunchContext context, CancellationToken token, StartupNavigation navigation)
         {
             Application.runInBackground = true;
-            _ = RunAndQuitAsync(context, token);
+            _ = RunAndQuitAsync(context, token, navigation);
         }
 
-        private static async Task RunAndQuitAsync(GameLaunchContext context, CancellationToken token)
+        private static async Task RunAndQuitAsync(GameLaunchContext context, CancellationToken token, StartupNavigation navigation)
         {
             try
             {
@@ -32,6 +35,7 @@ namespace AstralOath.Client.FoundationDemo
                 if (!endpoint.IsLoopback)
                     throw new InvalidOperationException("Equipment UI smoke requires an isolated training server.");
                 await RunAsync(context, token);
+                if (EnhancementRequested) await navigation.VerifyEquipmentEnhancementAsync(token);
                 Application.Quit(0);
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { }

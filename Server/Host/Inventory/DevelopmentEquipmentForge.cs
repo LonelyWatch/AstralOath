@@ -5,20 +5,43 @@ namespace AstralOath.Server.Inventory;
 
 internal sealed record GmForgeInput(
     [property: JsonRequired] int ItemLevel, [property: JsonRequired] int EnhanceLevel,
-    string? Grade, string? SetId, string? MainKind, GmForgeSubstat?[]? Substats);
+    string? Grade, string? SetId, string? MainKind, GmForgeSubstat?[]? Substats, string? RulesVersion = null);
 internal sealed record GmForgeSubstat(string? Kind, int Value, int Rolls);
-internal sealed record ForgeStatRule(string Kind, int MainBase, int MainStep, int RollMin, int RollMax, int Step);
+internal sealed record ForgeStatRule(string Kind, int MainBase, int MainStep, int RollMin, int RollMax, int Step,
+    int[]? MainValues = null, ForgeRollRange[]? GradeRanges = null);
+internal sealed record ForgeRollRange(string Grade, int RollMin, int RollMax, int Step);
 internal sealed record ForgeTier(int ItemLevel, int MinEnhance, int MaxEnhance, ForgeStatRule[] Stats);
 internal sealed record ForgeGrade(string Grade, int[] UnlockEnhancements)
 {
     public int InitialSubstats => UnlockEnhancements.Count(level => level == 0);
 }
 internal sealed record ForgeSlot(string Slot, string[] MainKinds, string[] SubKinds);
-internal sealed record ForgeRules(ForgeTier[] Tiers, ForgeSlot[] Slots, ForgeGrade[] Grades, string[] Sets);
+internal sealed record ForgeRules(ForgeTier[] Tiers, ForgeSlot[] Slots, ForgeGrade[] Grades, string[] Sets,
+    string? EnhancementRulesVersion = null);
 
 internal static class DevelopmentEquipmentForge
 {
-    internal static readonly ForgeRules Rules = BuildRules();
+    private static readonly ForgeRules LegacyRules = BuildRules();
+    internal static readonly ForgeRules Rules = BuildOriginalRules();
+
+    private static ForgeRules BuildOriginalRules()
+    {
+        var tiers = LegacyRules.Tiers.Select(tier => tier with { Stats = tier.Stats.Select(stat =>
+        {
+            var main = EquipmentEnhancementCatalog.Rules.Profiles.FirstOrDefault(p => p.ItemLevel == tier.ItemLevel && p.MainKind == stat.Kind);
+            var ranges = new[] { "rare", "heroic", "epic" }.Select(grade =>
+            {
+                var values = EquipmentEnhancementEngine.Distribution(tier.ItemLevel == 90 ? 85 : tier.ItemLevel, grade, stat.Kind);
+                int step = stat.Kind is "attack" or "health" or "defense" or "speed" ? 1 : 100;
+                return new ForgeRollRange(grade, values.Min(v => v.Value) * step, values.Max(v => v.Value) * step, step);
+            }).ToArray();
+            return stat with { MainBase = main?.MainValues[0] ?? stat.MainBase, MainStep = 0,
+                MainValues = main?.MainValues, GradeRanges = ranges };
+        }).ToArray() }).ToArray();
+        return LegacyRules with { Tiers = tiers.Where(t => t.ItemLevel != 90).ToArray(),
+            Grades = LegacyRules.Grades.Where(g => g.Grade is "rare" or "heroic" or "epic").ToArray(),
+            EnhancementRulesVersion = EquipmentEnhancementCatalog.Rules.RulesVersion };
+    }
 
     private static ForgeRules BuildRules()
     {
@@ -58,12 +81,13 @@ internal static class DevelopmentEquipmentForge
 
     internal static EquipmentGrant Create(string? slotId, GmForgeInput? input)
     {
+        if (input?.RulesVersion != null) return CreateOriginal(slotId, input);
         static EntryProblem Invalid() => new(400, "invalid_gm_forge");
         if (input is null || input.Substats is null || input.Substats.Length > 4) throw Invalid();
-        var slot = Rules.Slots.FirstOrDefault(entry => entry.Slot == slotId);
-        var tier = Rules.Tiers.FirstOrDefault(entry => entry.ItemLevel == input.ItemLevel);
-        var grade = Rules.Grades.FirstOrDefault(entry => entry.Grade == input.Grade);
-        if (slot == null || tier == null || grade == null || !Rules.Sets.Contains(input.SetId) ||
+        var slot = LegacyRules.Slots.FirstOrDefault(entry => entry.Slot == slotId);
+        var tier = LegacyRules.Tiers.FirstOrDefault(entry => entry.ItemLevel == input.ItemLevel);
+        var grade = LegacyRules.Grades.FirstOrDefault(entry => entry.Grade == input.Grade);
+        if (slot == null || tier == null || grade == null || !LegacyRules.Sets.Contains(input.SetId) ||
             input.EnhanceLevel < tier.MinEnhance || input.EnhanceLevel > tier.MaxEnhance ||
             !slot.MainKinds.Contains(input.MainKind)) throw Invalid();
 
@@ -92,5 +116,42 @@ internal static class DevelopmentEquipmentForge
         if (unlocked + laterUpgrades != grade.InitialSubstats + enhance / 3) throw Invalid();
         return new("gm_forge_" + slot.Slot, slot.Slot, input.SetId!, input.ItemLevel, input.EnhanceLevel,
             grade.Grade, new(main.Kind, main.MainBase + main.MainStep * input.EnhanceLevel), substats);
+    }
+
+    private static EquipmentGrant CreateOriginal(string? slotId, GmForgeInput input)
+    {
+        static EntryProblem Invalid() => new(400, "invalid_gm_forge");
+        if (input.RulesVersion != Rules.EnhancementRulesVersion || input.Substats == null) throw Invalid();
+        var slot = Rules.Slots.FirstOrDefault(s => s.Slot == slotId);
+        var tier = Rules.Tiers.FirstOrDefault(t => t.ItemLevel == input.ItemLevel);
+        var grade = Rules.Grades.FirstOrDefault(g => g.Grade == input.Grade);
+        var profile = EquipmentEnhancementCatalog.Rules.Profiles.FirstOrDefault(p => p.ItemLevel == input.ItemLevel &&
+            p.Grade == input.Grade && p.Slot == slotId && p.MainKind == input.MainKind && p.Supported);
+        if (slot == null || tier == null || grade == null || profile == null || !Rules.Sets.Contains(input.SetId) ||
+            input.EnhanceLevel is < 0 or > 15 || !slot.MainKinds.Contains(input.MainKind)) throw Invalid();
+        int enhance = input.EnhanceLevel;
+        int unlocked = grade.UnlockEnhancements.Count(at => at <= enhance);
+        if (input.Substats.Length != unlocked) throw Invalid();
+        var allowed = EquipmentEnhancementEngine.LegalSubstats(slot.Slot, input.MainKind!);
+        var used = new HashSet<string>(StringComparer.Ordinal);
+        var stats = new OwnedEquipmentStat[unlocked];
+        int laterUpgrades = 0;
+        for (int index = unlocked - 1; index >= 0; index--)
+        {
+            var stat = input.Substats[index];
+            int unlock = grade.UnlockEnhancements[index];
+            int laterUnlocks = grade.UnlockEnhancements.Count(at => at > unlock && at <= enhance);
+            int available = (enhance - unlock) / 3 - laterUnlocks - laterUpgrades;
+            if (stat?.Kind == null || !allowed.Contains(stat.Kind) || !used.Add(stat.Kind) ||
+                stat.Rolls < 1 || stat.Rolls > 1 + available) throw Invalid();
+            var range = tier.Stats.Single(s => s.Kind == stat.Kind).GradeRanges!.Single(r => r.Grade == grade.Grade);
+            if (stat.Value < range.RollMin * stat.Rolls || stat.Value > range.RollMax * stat.Rolls ||
+                stat.Value % range.Step != 0) throw Invalid();
+            laterUpgrades += stat.Rolls - 1;
+            stats[index] = new(stat.Kind, stat.Value);
+        }
+        if (unlocked + laterUpgrades != grade.InitialSubstats + enhance / 3) throw Invalid();
+        return new("gm_forge_" + slot.Slot, slot.Slot, input.SetId!, input.ItemLevel, enhance, grade.Grade,
+            new(input.MainKind!, profile.MainValues[enhance]), stats, profile.Id);
     }
 }

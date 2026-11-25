@@ -20,6 +20,7 @@ namespace AstralOath.Client.Home
         public int capacity, used;
         public long version;
         public EquipmentInventoryItem[] items;
+        public EquipmentEnhancementBalances materials;
     }
 
     [Serializable, Preserve]
@@ -35,6 +36,9 @@ namespace AstralOath.Client.Home
     {
         public string instanceId, templateId, slot, setId, grade, equippedHeroId;
         public int itemLevel, enhanceLevel;
+        public long xp;
+        public bool enhancementSupported;
+        public string enhancementBlockReason;
         public EquipmentStatValue mainStat;
         public EquipmentStatValue[] substats;
         [NonSerialized] private EquipmentPiece piece;
@@ -60,7 +64,7 @@ namespace AstralOath.Client.Home
         }
     }
 
-    public sealed class EquipmentInventoryApi : IDisposable
+    public sealed partial class EquipmentInventoryApi : IDisposable
     {
         private readonly Uri inventory, actions;
         private readonly Func<CancellationToken, Task<string>> getBearer;

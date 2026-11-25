@@ -2,13 +2,17 @@
 
 战斗响应中的 `cooldownReduction` 随技能结算给出实减的回合数。菲奥雷托满专注使用「蝴蝶斩击」时，三技能未强化减少 6 回合，强化到 +3 减少 5 回合，两种情况下剩余值均为零。旧响应缺少该字段时，新客户端按零读取。[战斗复核](../docs/delivery/2026-11-22-battle-followup.md)
 
-开发版 GM 在回环地址的 Development 游戏服注册 `GET /api/development/gm` 与 `POST /api/development/gm/actions`。已有会话的任一账号可查看和设置自己的 12 项余额，按目录发放英雄、神器及训练装备。绝对余额的范围为 0 至 10 亿，每次发放 1 至 10 件。账号取自 Bearer 会话，服务端在同一账号锁和事务内检查容量、登记请求、写库存及审计。同一请求 ID 的同参数重试读取当前结果，参数冲突返回 409。正式环境和对外监听不注册这组路由。测试入口为 `DevelopmentGmTests`。
+开发版 GM 在回环地址的 Development 游戏服注册 `GET /api/development/gm` 与 `POST /api/development/gm/actions`。已有会话的任一账号可查看和设置自己的目录余额（含装备/饰品强化材料），按目录发放英雄、神器及训练装备。绝对余额的范围为 0 至 10 亿，每次发放 1 至 10 件。账号取自 Bearer 会话，服务端在同一账号锁和事务内检查容量、登记请求、写库存及审计。同一请求 ID 的同参数重试读取当前结果，参数冲突返回 409。正式环境和对外监听不注册这组路由。测试入口为 `DevelopmentGmTests`。
 
 共享战斗规则会随反击动作回传实际触发来源；查尔斯反击状态和技能被动反击分别回归。[动作事件与客户端表现](../docs/delivery/2026-11-22-battle-action-recovery.md)
 
 装备分数从当前主副属性计算。服务端测试直接调用与客户端同源的共享方法，用六组国服实录数值校验。现有库存协议已包含计算所需字段。[装备评分与取整](../Shared/com.astraloath.shared/README.md)
 
 ## 开发 GM 自定义锻造
+
+新目录只宣传源规则可支持的70/85级稀有/英雄/传说。`forgeRules.enhancementRulesVersion` 由新客户端随配方 `rulesVersion` 提交，主属性按 `MainValues[enhanceLevel]`，副属性按 `GradeRanges` 的当前品质范围及掷数/开放时机检查，发放带来源profile。旧请求不带版本时仍走下述历史近似规则以兼容旧回执，不获得可强化profile，不将旧属性静默迁为新曲线。[源表、精度/经济策略与 API](../docs/development/equipment-enhancement.md)
+
+### 未带版本的旧客户端兼容配方
 
 开发端读取 `GET /api/development/gm` 的 `forgeRules`，按服务端给出的部位、等级、品质、套装、主属性和副属性范围填写配方。提交到 `POST /api/development/gm/actions`，动作是 `forgeEquipment`，`key` 为六部位之一，`value` 为生成件数（1 至 10）。`forge` 包含 `itemLevel`、`enhanceLevel`、`grade`、`setId`、`mainKind`、按解锁顺序排列的 `substats[{kind,value,rolls}]`。15 级训练装备仍用原有 `equipment` 动作按模板发放。
 

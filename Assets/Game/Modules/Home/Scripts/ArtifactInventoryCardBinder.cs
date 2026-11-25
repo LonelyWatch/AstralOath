@@ -39,7 +39,7 @@ namespace AstralOath.Client.Home
             view.Wearer.sprite = wearer;
             view.Wearer.enabled = wearer;
             view.WearerFrame.SetActive(wearer);
-            enhancement.Set(false, item.level);
+            enhancement.Set(false, item.level, 15 + 3 * item.limitBreaks);
             rarity.Show(entry.template.Stars);
             for (int i = 0; i < view.Breaks.Length; i++)
             {

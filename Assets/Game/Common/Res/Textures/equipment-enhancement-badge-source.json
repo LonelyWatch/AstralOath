@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "source": "D:\\sevenepic\\原始资源\\img\\_upgrade_num_orange.png",
+      "path": "Assets\\Game\\Common\\Res\\Textures\\_upgrade_num_orange.png",
+      "sha256": "90bf46720571e414d0498c2e4487adcfdb30a3d0a7d0a8fe6c24d3d4ff3e0117",
+      "capInsets": {
+        "x": 12,
+        "y": 11,
+        "width": 3,
+        "height": 8
+      },
+      "reference": "unit_item_upgrade.csb LEFT/n_equip_detail/n_up; 2026-11-25 recording +3/+6 and +15"
+    },
+    {
+      "source": "D:\\sevenepic\\原始资源\\img\\_upgrade_num_red.png",
+      "path": "Assets\\Game\\Common\\Res\\Textures\\_upgrade_num_red.png",
+      "sha256": "7ecbd9bc42ac4e5ef31a413763b872af1eb6e7997e669ae7a82353ec0b41469c",
+      "capInsets": {
+        "x": 12,
+        "y": 11,
+        "width": 3,
+        "height": 8
+      },
+      "reference": "unit_item_upgrade.csb LEFT/n_equip_detail/n_up; 2026-11-25 recording +3/+6 and +15"
+    }
+  ]
+}

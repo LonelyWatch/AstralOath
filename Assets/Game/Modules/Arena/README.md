@@ -1,5 +1,7 @@
 # Arena
 
+共用 `arena-zh-hans.json` 新增普通装备强化、结果返粉及开发GM各部位强化材料的稳定中文key，供Home/Foundation使用；竞技场规则未改。[强化实现与边界](../../../../docs/development/equipment-enhancement.md)
+
 主页共用的简中文案表 `Configs/arena-zh-hans.json` 补齐装备套装效果、管理页主副能力值和英雄搜索提示；本轮仅调整这些 Home 使用的文案，不改变竞技场权威规则。[原素材复核](../../../../docs/development/ui-material-reference.md)
 
 预禁确认的短闪只跟随当次被点击的头像，镜像头像直接更新禁用标记，避免大面积白光覆盖邻格。原帧、运行截图和验证范围见 [本轮复核](../../../../docs/delivery/2026-11-23-equipment-battle-review.md)。

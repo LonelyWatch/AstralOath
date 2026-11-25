@@ -43,7 +43,7 @@ namespace AstralOath.Client.FoundationDemo
     internal sealed class GmForgeRecipe
     {
         public int itemLevel, enhanceLevel;
-        public string grade, setId, mainKind;
+        public string grade, setId, mainKind, rulesVersion;
         public GmForgeSubstat[] substats;
     }
 
@@ -57,6 +57,7 @@ namespace AstralOath.Client.FoundationDemo
     [Serializable, Preserve]
     internal sealed class GmForgeRules
     {
+        public string enhancementRulesVersion;
         public Tier[] tiers;
         public Slot[] slots;
         public Grade[] grades;
@@ -69,7 +70,18 @@ namespace AstralOath.Client.FoundationDemo
             public int initialSubstats;
             public int[] unlockEnhancements;
         }
-        [Serializable, Preserve] internal sealed class Stat { public string kind; public int mainBase, mainStep, rollMin, rollMax, step; }
+        [Serializable, Preserve] internal sealed class Stat
+        {
+            public string kind;
+            public int mainBase, mainStep, rollMin, rollMax, step;
+            public int[] mainValues;
+            public RollRange[] gradeRanges;
+        }
+        [Serializable, Preserve] internal sealed class RollRange
+        {
+            public string grade;
+            public int rollMin, rollMax, step;
+        }
     }
 
     internal sealed class GmRejectedException : IOException

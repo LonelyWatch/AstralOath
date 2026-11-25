@@ -17,7 +17,8 @@ internal sealed record DevelopmentGmState(string PlayerId, string RealmId, Devel
 
 internal sealed partial class SummonStore
 {
-    private static readonly string[] GmMaterials = ["gold", "lesserCharm", "greaterCharm", "epicCharm", "bottle", "powder"];
+    private static readonly string[] GmMaterials = new[] { "gold", "lesserCharm", "greaterCharm", "epicCharm", "bottle", "powder" }
+        .Concat(EquipmentEnhancementCatalog.Rules.Materials.Select(material => material.Id)).ToArray();
     private static readonly Dictionary<string, string> GmWalletColumns = new(StringComparer.Ordinal)
     {
         ["bookmarks"] = "bookmarks", ["epicBookmarks"] = "epic_bookmarks", ["goldTransmitStones"] = "gold_transmit_stones",

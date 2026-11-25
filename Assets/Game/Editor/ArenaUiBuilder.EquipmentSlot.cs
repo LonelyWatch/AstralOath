@@ -27,7 +27,11 @@ namespace AstralOath.Editor
             label.fontSizeMin = 13f;
             label.fontSizeMax = 22f;
             label.enabled = false;
-            Bind(badge, ("mark", mark), ("label", label));
+            var normalPlate = Picture(badge, "Normal enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_orange.png"), 0, 0, 1, 1, true);
+            var maximumPlate = Picture(badge, "Maximum enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_red.png"), 0, 0, 1, 1, true);
+            normalPlate.gameObject.SetActive(false);
+            maximumPlate.gameObject.SetActive(false);
+            Bind(badge, ("mark", mark), ("label", label), ("normalPlate", normalPlate), ("maximumPlate", maximumPlate));
             Save(badge.gameObject, BadgePrefabPath);
             UIViewRegistry.ValidatePrefab<NotificationBadge>(Load<GameObject>(BadgePrefabPath));
 

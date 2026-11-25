@@ -1,5 +1,7 @@
 # Common UI
 
+普通装备强化角标用原 `_upgrade_num_orange` / `_upgrade_num_red` 九宫格纹理，`NotificationBadgeBinder.Set` 接收当前最大强化等级（普通装备 15；神器随突破增加）。+0 隐藏编号，未满橙底、满级红底，通知红点仍使用原通知纹理。复用时重置纹理、颜色和标签；同一等级的上限改变也会重画。生成入口 `ArenaUiBuilder.BuildEquipmentSlotAssets`，来源清单 `Res/Textures/equipment-enhancement-badge-source.json`。[强化方案与验收行为](../../../docs/plans/2026-11-25-equipment-enhancement.md)
+
 `UiAudioPlayback` 为每次二维播放创建独立音源，保留该次播放的音量、音高与混音通道。音源所属的 Canvas、控件或演出关闭时，正在播放的声音按非缩放时间淡出 0.20 秒。重叠点击和新页面的音量各自独立，音效自然结束时立即回收。已接入通用点击、召唤演出与获得语音、战斗合击提示、灵魂燃烧、竞技场门和胜败结算。角色普通日语语音的 `VoiceService` 和 FMOD 原生事件另有各自的播放生命周期。[本轮证据与限制](../../../docs/delivery/2026-11-23-equipment-battle-review.md)
 
 Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音效。每次播放由 Bootstrap 对已安装且与传入对象相同的 AudioClip 单独持有 YooAsset 句柄，播放结束释放。窗口立即释放自身的预制和配置句柄，音效尾声继续引用所需音频包。启动内置音和运行时生成的 AudioClip 使用直接引用。该改动涉及 Common 与 Bootstrap AOT。

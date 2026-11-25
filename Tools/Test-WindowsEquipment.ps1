@@ -2,7 +2,10 @@
 param(
     [Parameter(Mandatory)][string]$Player,
     [Parameter(Mandatory)][int]$ExpectedRelease,
-    [Parameter(Mandatory)][uri]$Endpoint
+    [Parameter(Mandatory)][uri]$Endpoint,
+    [switch]$Enhancement,
+    [ValidateRange(640,7680)][int]$Width = 1280,
+    [ValidateRange(360,4320)][int]$Height = 720
 )
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -21,7 +24,11 @@ $start.FileName = $playerPath
 $start.WorkingDirectory = Split-Path $playerPath
 $start.EnvironmentVariables['ASTRAL_FOUNDATION_URL'] = $Endpoint.AbsoluteUri
 $start.EnvironmentVariables['ASTRAL_ARENA_PLAYER_NAME'] = 'Equip' + $run.Substring(0, 12)
-$start.Arguments = "-screen-fullscreen 0 -screen-width 1280 -screen-height 720 -force-d3d11 -astral-arena-battle-smoke -astral-equipment-smoke -logFile `"$log`""
+$start.Arguments = "-screen-fullscreen 0 -screen-width $Width -screen-height $Height -force-d3d11 -astral-arena-battle-smoke -astral-equipment-smoke -logFile `"$log`""
+if ($Enhancement) {
+    $start.Arguments += ' -astral-equipment-enhancement-smoke'
+    $start.EnvironmentVariables['ASTRAL_EQUIPMENT_CAPTURE_DIR'] = Join-Path $out 'captures'
+}
 $playerProcess = [Diagnostics.Process]::Start($start)
 try {
     if (!$playerProcess.WaitForExit(210000)) { throw "Timed out waiting for equipment smoke. See $log" }
@@ -33,8 +40,12 @@ try {
     }
     $values = [regex]::Match($body, 'ASTRAL_EQUIPMENT_PLAYER_OK items=7 health=(\d+),(\d+),(\d+)').Groups
     $health = @([int]$values[1].Value, [int]$values[2].Value, [int]$values[3].Value)
+    if ($Enhancement -and $body -notmatch 'ASTRAL_EQUIPMENT_ENHANCEMENT_PLAYER_OK partialXp=(\d+) intermediate=(\d+) maximum=15 main=6000 screen=(\d+)x(\d+)') {
+        throw "Native equipment enhancement verification failed. See $log"
+    }
     if ($health[1] -ne $health[0] + 80 -or $health[2] -ne $health[0]) { throw "Unexpected HP change. See $log" }
-    [ordered]@{release=$ExpectedRelease; endpoint=$Endpoint.AbsoluteUri; player=$playerPath; cards=7; health=$health; exitCode=$playerProcess.ExitCode} |
+    [ordered]@{release=$ExpectedRelease; endpoint=$Endpoint.AbsoluteUri; player=$playerPath; cards=7; health=$health; enhancement=[bool]$Enhancement;
+        screenRequested="$($Width)x$($Height)"; exitCode=$playerProcess.ExitCode} |
         ConvertTo-Json | Set-Content -LiteralPath (Join-Path $out 'verified.json')
     Write-Output "Native equipment inventory, equip and unequip passed. $out"
 } finally {

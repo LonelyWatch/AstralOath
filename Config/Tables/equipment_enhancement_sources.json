@@ -1,0 +1,53 @@
+{
+  "sourceRelease": "pack-15-r4262",
+  "tables": [
+    {
+      "name": "equip_item",
+      "sha256": "c68bb5218942397e746ea3140fe271aa7089799459e308c4beee5d9c3174af4a",
+      "bytes": 656447,
+      "rows": 2960
+    },
+    {
+      "name": "equip_stat",
+      "sha256": "35832c0f01366d0673a6359fbbdc444ebe2c3742c8c0b7431a3a8fa64412740f",
+      "bytes": 1428217,
+      "rows": 12819
+    },
+    {
+      "name": "item_equip_stat_revision",
+      "sha256": "dafa1f0ca26d34090d264f360a776c08914b04d88bac89ae7e16b5c72ea492d3",
+      "bytes": 1461,
+      "rows": 12
+    },
+    {
+      "name": "itemgrade",
+      "sha256": "e2174b9a81dafbb1fa0a0896989e11030398da0820bdf3af9171161b6ad68792",
+      "bytes": 692,
+      "rows": 6
+    },
+    {
+      "name": "itemenhance",
+      "sha256": "ad1924303c36c06f5bf0cd0b940d3e866700371f71465cdfdaa9e5e428b15e58",
+      "bytes": 2777,
+      "rows": 31
+    },
+    {
+      "name": "item_material",
+      "sha256": "f5ee36f0bdcb6d269681ac8bda279bf6e81e0a95e88bbae2a87e51d94145ed0a",
+      "bytes": 734847,
+      "rows": 3038
+    }
+  ],
+  "officialProbability": {
+    "source_page": "https://page.onstove.com/epicseven/global/view/7902683",
+    "source_api": "https://api.onstove.com/cwms/v3.0/article?article_id=7902683",
+    "edited_utc": "2026-11-17T06:41:15.307Z",
+    "body_probability_effective_date": "2022-05-25 after maintenance",
+    "warning": "Keep duplicate outcomes; probabilities are rounded to 3 decimals, not exact RNG weights. Not main-stat curves, initial-roll proof, or reforge/modified-stat rules."
+  },
+  "mainRuleEvidence": "raw main val_min * stat_revision.revise_max, floor fixed-stat basis before power; 2026-11-25 video85 boots displayed HP% +3=19/+6=26/+9=34 (69s,12%+22%); project uses ROUND_HALF_UP to integer displayed percentage points then BP, without claiming recovered hidden source precision; official table01 flat ATK100; 2026-11-17 video00:08.5 90 red/purple weapon525/armor310, helmet2835 supports fixed DEF floor62.5 before power5; intermediate speed rounding not separately verified",
+  "experienceEvidence": "ceil(item.xp * itemgrade.need_xp_rate * itemenhance[level-1].exp), cumulative; video 1982 to+3 with13 retained and next1050",
+  "economyScope": "recorded-economy-v1: recorded account effective costs, without inferring hidden discounts; project experience bonus is 0%",
+  "economyEvidence": "Screenrecorder-2026-11-25-19-54-45-217.mp4: 70.5/71.5/72.5s auto budgets147200/328000/684800; 74s17600;89-90s43200; powder1600/lesser14400/greater43200/epic129600",
+  "precisionBoundary": "Percentage main stats use ROUND_HALF_UP to integer displayed percentage points before BP as project policy; original internal BP precision is not recovered. Fixed-stat basis and enhanced fixed/speed values retain floor; intermediate speed rounding is not separately verified. Integer cumulative thresholds use ceil as a deterministic project quantizer; video magic-control+15 shows82031EXP versus project threshold82032, which may reflect retained fractions or special full-enhance handling, so that path does not verify ordinary threshold precision. Published probability weights are rounded official percentages normalized in each draw, not recovered original RNG weights. GM initial stat validation checks published numeric bounds and upgrade chronology; no initial-drop probability claim."
+}

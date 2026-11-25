@@ -80,6 +80,13 @@ namespace AstralOath.Editor
             bindings.AddRange(rosterBindings);
             BuildNativeArtifactManagement(root, bag, heroComposition, bindings);
             BuildOwnedEquipment(root, heroComposition, bindings);
+            BuildEquipmentEnhancement();
+            var enhancement = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(EquipmentEnhancementPath), root);
+            Place((RectTransform)enhancement.transform, 0, 0, 1, 1);
+            enhancement.SetActive(false);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(enhancement.transform);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(enhancement);
+            bindings.Add(("gearEnhancement", enhancement.GetComponent<BindingMap>()));
             ApplyHeroRosterPresentation(bindings);
             Bind(root, bindings.ToArray());
             roster.gameObject.SetActive(false);

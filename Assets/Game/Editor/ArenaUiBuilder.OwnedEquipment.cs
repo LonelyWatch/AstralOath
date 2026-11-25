@@ -245,8 +245,9 @@ namespace AstralOath.Editor
             Paint(Area(info,"Set band",.095f,.704f,.81f,.066f),null,statBand);
             controls.Add(("setIcon",Picture(info,"Set icon",null,.119f,.712f,.064f,.047f,true)));
             controls.Add(("set",Text(info,"Set name and count",null,23,.190f,.705f,.68f,.066f,Color.white)));
-            var unequip = Action(info,"Unequip", "home.gear.remove",24,.06f,.883f,.40f,.08f,out _,BagArt("_btn_small_black"),Color.white);
-            var apply = Action(info,"Equip",null,24,.51f,.883f,.43f,.08f,out var applyText,CommonArt("_btn_green"),Color.white);
+            var unequip = Action(info,"Unequip", "home.gear.remove",24,.04f,.883f,.29f,.08f,out _,BagArt("_btn_small_black"),Color.white);
+            var apply = Action(info,"Equip",null,24,.345f,.883f,.29f,.08f,out var applyText,BagArt("_btn_small_black"),Color.white);
+            controls.Add(("enhance",Action(info,"Enhance","home.gear.enhance",24,.66f,.883f,.30f,.08f,out _,SummonArt("_btn_blue_r_3"),Color.white)));
             controls.Add(("apply",apply));
             controls.Add(("applyLabel",applyText));
             controls.Add(("remove",unequip));

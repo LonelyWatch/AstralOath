@@ -40,9 +40,13 @@ namespace AstralOath.Editor
             keys.Add(("candidate", SingleSlotColumn(candidate, "singleChoosing", "singleNoChoice", false)));
 
             keys.Add(("unequip", Action(current, "Remove", "home.gear.singleRemove", 30,
-                .013f,.889f,.978f,.110f,out var unequipCaption,CommonArt("_btn_gold"),Color.white)));
+                .013f,.889f,.49f,.110f,out var unequipCaption,CommonArt("_btn_gold"),Color.white)));
             keys.Add(("equip", Action(candidate, "Wear", "home.gear.singleEquip", 30,
-                .013f,.889f,.978f,.110f,out var equipCaption,CommonArt("_btn_green"),Color.white)));
+                .013f,.889f,.49f,.110f,out var equipCaption,CommonArt("_btn_green"),Color.white)));
+            keys.Add(("currentEnhance",Action(current,"Enhance worn equipment","home.gear.enhance",30,
+                .52f,.889f,.47f,.110f,out _,SummonArt("_btn_blue_r_3"),Color.white)));
+            keys.Add(("candidateEnhance",Action(candidate,"Enhance selected equipment","home.gear.enhance",30,
+                .52f,.889f,.47f,.110f,out _,SummonArt("_btn_blue_r_3"),Color.white)));
             unequipCaption.fontStyle = equipCaption.fontStyle = FontStyles.Bold;
             unequipCaption.characterSpacing = equipCaption.characterSpacing = -6;
             Text(body, "Current sorting", "home.gear.singleSort", 27, .696f, .021f, .099f, .06f,
@@ -100,9 +104,11 @@ namespace AstralOath.Editor
             qualitySources.gameObject.SetActive(false);
             keys.Add(("popupItem",SingleSlotColumn(Area(panel,"Worn item",.060f,.055f,.880f,.832f),null,null,true)));
             keys.Add(("popupRemove",Action(panel,"Remove equipment","home.gear.singleRemove",27,
-                .151f,.857f,.337f,.089f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
+                .052f,.857f,.313f,.089f,out var removeCaption,BagArt("_btn_small_black"),Color.white)));
             keys.Add(("change",Action(panel,"Change equipment","home.gear.singleChange",27,
-                .512f,.857f,.337f,.089f,out var changeCaption,BagArt("_btn_small_black"),Color.white)));
+                .387f,.857f,.23f,.089f,out var changeCaption,BagArt("_btn_small_black"),Color.white)));
+            keys.Add(("popupEnhance",Action(panel,"Enhance worn item","home.gear.enhance",27,
+                .641f,.857f,.313f,.089f,out _,SummonArt("_btn_blue_r_3"),Color.white)));
             foreach (var caption in new[] { removeCaption, changeCaption })
             {
                 caption.fontStyle = FontStyles.Bold;

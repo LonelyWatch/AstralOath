@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace AstralOath.Client.FoundationDemo
 {
-    internal sealed class StartupNavigation
+    internal sealed partial class StartupNavigation
     {
         private readonly WindowCoordinator windows;
         private readonly ScreenFadeTransition fade;
@@ -164,6 +164,8 @@ namespace AstralOath.Client.FoundationDemo
             owner.Add(summon.Dispose);
             var navigation = new StartupNavigation(owner, fade, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
+            if (EquipmentPlayerSmoke.EnhancementRequested)
+                navigation.equipmentSmokeBearer = Bearer;
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
                 navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token));
             var first = navigation.firstReads.Heroes?.heroes?.OrderByDescending(hero => hero.level).FirstOrDefault();

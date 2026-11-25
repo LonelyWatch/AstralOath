@@ -16,7 +16,8 @@ namespace AstralOath.Editor
                 ?? AssetBundleCollectorSettingData.CreateGroup(package, "UiAudio");
             group.Collectors.Clear();
             foreach (string path in new[] { "Assets/Game/Common/Res/Sounds", "Assets/Game/Modules/Summon/Res/Presentation",
-                "Assets/Game/Modules/BattleScene/Res/Sounds/PvpGate" })
+                "Assets/Game/Modules/BattleScene/Res/Sounds/PvpGate",
+                "Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement" })
                 AssetBundleCollectorSettingData.CreateCollector(group, new AssetBundleCollector
                 {
                     CollectPath = path,

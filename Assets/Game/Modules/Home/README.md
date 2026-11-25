@@ -1,5 +1,7 @@
 # Home
 
+普通装备新增源素材强化页 `EquipmentEnhancement` / `EquipmentEnhancementBinder`，由装备协调器从背包、已穿详情和单槽以独立Scope打开。预览、数量/自动登记、权威回执、仅经验、橙/红角标与返回分开处理，未决请求跨窗口保留，关闭取消网络并渐出声音。[规则、来源、实际检查及精度边界](../../../../docs/development/equipment-enhancement.md)。魔控灰色入口、白绿和旧GM曲线不当作已实现强化。编辑入口为同名生成器与 `Tools/Arena/ImportEquipmentEnhancementArt.py`。
+
 11 月 24–25 日按授权原素材重新复核普通装备、管理页、神器与英雄阴影。普通已穿详情恢复品质纹理和原框完整收口；管理使用原蓝色面板、七列目录、六槽、筛选框和横幅确认；神器移除覆盖源梯度的实色层并恢复原卡框、卷草、进度槽和竖饰。共享横卡字号和长文滚动分别核验。英雄阴影沿用源图、源节点范围及引擎旋转转换，搜索恢复黑金框和白输入，蓝底筛选恢复新版原图。[来源、图录与未完成边界](../../../../docs/development/ui-material-reference.md)
 
 源材质中的淡白条与黑阴影不能直接沿用 Cocos 的 alpha 到 Unity Linear：管理页在表现层换算 tint/coverage；英雄阴影的用途副本将源节点透明度合入 alpha 后按黑色透射率转换，源 RGB 与共享原图保持。记录位于 Inventory 的 `material-restoration-source.json`、Equipment/Management 与 ArtifactRestore 各自的来源清单。

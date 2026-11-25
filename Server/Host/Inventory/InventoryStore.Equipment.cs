@@ -99,7 +99,8 @@ internal sealed partial class InventoryStore
         }
 
         var items = await ReadEquipmentItems(connection, tx, playerId, null, cancellation);
-        var result = new EquipmentInventory(capacity, items.Count, version, items);
+        var result = new EquipmentInventory(capacity, items.Count, version, items,
+            await ReadEquipmentEnhancementBalances(connection, tx, playerId, cancellation));
         if (request != null)
         {
             using var save = Command(connection, tx, """
@@ -225,8 +226,8 @@ internal sealed partial class InventoryStore
             string instance = Guid.NewGuid().ToString("N");
             using var add = Command(connection, tx, """
                 INSERT INTO inventory_equipment (instance_id,player_id,realm_id,template_id,slot,set_id,item_level,
-                    enhance_level,grade,main_kind,main_value,source_ref,source_index)
-                VALUES (@id,@player,@realm,@template,@slot,@set,@level,@enhance,@grade,@kind,@value,@source,@index);
+                    enhance_level,grade,main_kind,main_value,source_ref,source_index,experience,enhancement_profile_id)
+                VALUES (@id,@player,@realm,@template,@slot,@set,@level,@enhance,@grade,@kind,@value,@source,@index,@xp,@profile);
                 """, playerId);
             add.Parameters.AddWithValue("@id", instance);
             add.Parameters.AddWithValue("@template", item.TemplateId);
@@ -239,6 +240,9 @@ internal sealed partial class InventoryStore
             add.Parameters.AddWithValue("@value", item.MainStat.Value);
             add.Parameters.AddWithValue("@index", index);
             add.Parameters.AddWithValue("@source", source);
+            var profile = EquipmentEnhancementCatalog.Rules.Profiles.FirstOrDefault(p => p.Id == item.EnhancementProfileId);
+            add.Parameters.AddWithValue("@profile", item.EnhancementProfileId);
+            add.Parameters.AddWithValue("@xp", profile?.XpThresholds[item.EnhanceLevel] ?? 0L);
             await add.ExecuteNonQueryAsync(ct);
             for (int i = 0; i < item.Substats.Length; i++)
             {
@@ -264,7 +268,7 @@ internal sealed partial class InventoryStore
         if (heroInstanceIds is { Count: 0 }) return [];
         using var query = Command(connection, transaction, """
             SELECT e.instance_id,e.template_id,e.slot,e.set_id,e.item_level,e.enhance_level,e.grade,e.main_kind,e.main_value,
-                   h.instance_id,s.kind,s.stat_value
+                   h.instance_id,s.kind,s.stat_value,e.experience,e.enhancement_profile_id
             FROM inventory_equipment e
             LEFT JOIN inventory_equipment_loadout l ON l.instance_id = e.instance_id
             LEFT JOIN inventory_hero h ON h.acquisition_order = l.hero_order
@@ -291,10 +295,16 @@ internal sealed partial class InventoryStore
             if (items.Count == 0 || items[^1].InstanceId != id)
             {
                 substats = new List<OwnedEquipmentStat>();
+                var profile = reader.IsDBNull(13) ? null : EquipmentEnhancementCatalog.Rules.Profiles
+                    .FirstOrDefault(p => p.Id == reader.GetString(13));
+                bool supported = profile is { Supported: true } && profile.ItemLevel == reader.GetInt32(4) &&
+                    profile.Grade == reader.GetString(6) && profile.Slot == reader.GetString(2) &&
+                    profile.MainKind == reader.GetString(7) && profile.MainValues[reader.GetInt32(5)] == reader.GetInt32(8);
                 items.Add(new OwnedEquipment(id, reader.GetString(1), reader.GetString(2), reader.GetString(3),
                     reader.GetInt32(4), reader.GetInt32(5), reader.GetString(6),
                     new OwnedEquipmentStat(reader.GetString(7), reader.GetInt32(8)), substats,
-                    reader.IsDBNull(9) ? null : reader.GetString(9)));
+                    reader.IsDBNull(9) ? null : reader.GetString(9), reader.GetInt64(12), supported,
+                    supported ? null : profile?.BlockReason ?? "equipment_profile_unsupported"));
             }
             if (!reader.IsDBNull(10)) substats!.Add(new OwnedEquipmentStat(reader.GetString(10), reader.GetInt32(11)));
         }

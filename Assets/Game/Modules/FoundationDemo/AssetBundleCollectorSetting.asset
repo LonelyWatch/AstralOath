@@ -253,6 +253,14 @@ MonoBehaviour:
         FilterRuleName: UiAudioClipFilter
         AssetTags:
         UserData:
+      - CollectPath: Assets/Game/Modules/Home/Res/Sounds/EquipmentEnhancement
+        CollectorGUID: 5c745e01421b542cb0c5a8ed90ebc244
+        CollectorType: 0
+        AddressRuleName: UiAudioClipAddress
+        PackRuleName: PackDirectory
+        FilterRuleName: UiAudioClipFilter
+        AssetTags:
+        UserData:
   - PackageName: CharacterLab
     PackageDesc:
     EnableAddressable: 1

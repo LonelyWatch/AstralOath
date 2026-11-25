@@ -20,12 +20,15 @@ public sealed class EquipmentForgeRuleTests
             {
                 int rolls = index == 0 ? 1 + budget - count : 1;
                 var stat = tier.Stats.Single(rule => rule.Kind == kind);
-                return new GmForgeSubstat(kind, rolls * stat.RollMax, rolls);
+                var range = stat.GradeRanges!.Single(r => r.Grade == grade.Grade);
+                return new GmForgeSubstat(kind, rolls * range.RollMax, rolls);
             }).ToArray();
-            var forge = new GmForgeInput(tier.ItemLevel, level, grade.Grade, "speed", mainKind, substats);
+            var forge = new GmForgeInput(tier.ItemLevel, level, grade.Grade, "speed", mainKind, substats,
+                rules.EnhancementRulesVersion);
             var item = DevelopmentEquipmentForge.Create(slot.Slot, forge);
             var main = tier.Stats.Single(rule => rule.Kind == mainKind);
-            Assert.Equal(main.MainBase + main.MainStep * level, item.MainStat.Value);
+            Assert.Equal(main.MainValues![level], item.MainStat.Value);
+            Assert.NotNull(item.EnhancementProfileId);
             Assert.Equal(count, item.Substats.Length);
             Assert.Equal(tier.ItemLevel, item.ItemLevel);
         }

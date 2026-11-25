@@ -117,6 +117,7 @@ namespace AstralOath.Client.Home
             Listen(Get<GameButton>("cancel"), CloseDialog);
             Listen(Get<GameButton>("confirm"), () => { if (!busy && targetId != null) _ = SubmitAsync(scope.Token); });
             BindSingleSlot(scope);
+            BindEquipmentEnhancement(scope);
             BindManagementFilters(scope);
             api.RemoteInventoryChanged += OnRemoteInventory;
             scope.Add(() =>
@@ -134,6 +135,7 @@ namespace AstralOath.Client.Home
         {
             if (snapshot != null && incoming.version <= snapshot.version) return;
             AcceptSnapshot(incoming);
+            CloseEquipmentEnhancement();
             loadFailed = false;
             changed();
             if (busy || !ui.gameObject.activeInHierarchy) return;
@@ -252,9 +254,10 @@ namespace AstralOath.Client.Home
             Refresh();
         }
 
-        internal void Hide() { ResetSingleSlot(); ui.gameObject.SetActive(false); }
+        internal void Hide() { CloseEquipmentEnhancement(); ResetSingleSlot(); ui.gameObject.SetActive(false); }
         internal bool Back()
         {
+            if (CloseEquipmentEnhancement()) return true;
             if (!ui.gameObject.activeInHierarchy) return false;
             if (Get<GameObject>("dialog").activeSelf) { if (!busy) CloseDialog(); return true; }
             if (CloseManagementFilter()) return true;

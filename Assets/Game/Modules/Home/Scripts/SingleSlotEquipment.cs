@@ -19,7 +19,8 @@ namespace AstralOath.Client.Home
         {
             _ = Comparison; _ = Popup; _ = Candidates; _ = Row;
             Bindings.Require<Image>("popupPlate");
-            foreach (var key in new[] { "back", "equip", "unequip", "change", "popupRemove", "dismiss", "retry" })
+            foreach (var key in new[] { "back", "equip", "unequip", "change", "popupRemove", "dismiss", "retry",
+                "popupEnhance", "currentEnhance", "candidateEnhance" })
                 Bindings.Require<GameButton>(key);
             foreach (var key in new[] { "current", "candidate", "popupItem" })
             {

@@ -7,6 +7,8 @@ namespace AstralOath.Client.Common
         public override string PrefabPath => "common/notification-badge";
         internal Image Mark { get; private set; }
         internal GameText Label { get; private set; }
+        internal Image NormalPlate { get; private set; }
+        internal Image MaximumPlate { get; private set; }
 
         internal NotificationBadge(BindingMap instance) => Attach(instance.gameObject);
         public NotificationBadge() { }
@@ -15,6 +17,8 @@ namespace AstralOath.Client.Common
         {
             Mark = Bindings.Require<Image>("mark");
             Label = Bindings.Require<GameText>("label");
+            NormalPlate = Bindings.Require<Image>("normalPlate");
+            MaximumPlate = Bindings.Require<Image>("maximumPlate");
         }
     }
 }

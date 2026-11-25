@@ -1,5 +1,7 @@
 # FoundationDemo
 
+新GM锻造读取版本化 `MainValues` 和按品质 `GradeRanges`，提交同一 `rulesVersion`，不再向新客户端预览线性近似。资源页同时列装备/饰品强化材料。`Tools/Test-WindowsEquipment.ps1 -Enhancement` 在显式开发/回环访客下，先验旧穿脱，再实际GM发放、背包登记、仅经验、+3橙底、+15红底及返回，截图只写D盘；常规登录不创建这段验收委托。[规则与边界](../../../../docs/development/equipment-enhancement.md)
+
 Foundation 收集设置新增二维音频地址组 `UiAudio`，由 `UiAudioCollector.Refresh` 维护 Common、Summon 与竞技场门的音频目录。声音单独保留加载句柄，尾音结束后释放，详细范围及母包要求见 [复核记录](../../../../docs/delivery/2026-11-23-equipment-battle-review.md)。
 
 Windows 召唤冒烟从主页实际进入卡池，读取实时技能的 GPU 目标与窗口尺寸并写入 `ASTRAL_SUMMON_FEATURED_LIVE`，切换常驻池后再验证愿望单与结果页。[召唤预览来源](../../../../docs/delivery/2026-11-22-client-image-quality.md)

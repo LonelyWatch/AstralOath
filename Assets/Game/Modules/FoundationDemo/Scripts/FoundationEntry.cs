@@ -41,7 +41,7 @@ namespace AstralOath.Client.FoundationDemo
                     else if (verifyRoom)
                         ArenaRoomPlayerSmoke.Start(context, scope.Token);
                     else if (verifyEquipment)
-                        EquipmentPlayerSmoke.Start(context, scope.Token);
+                        EquipmentPlayerSmoke.Start(context, scope.Token, navigation);
                     else
                         ArenaBattlePlayerSmoke.StartIfRequested(context, scope.Token);
                     return;
