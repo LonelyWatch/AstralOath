@@ -20,6 +20,7 @@
 - 账号和英雄背包：[录像、数据模型与验收](plans/2026-11-17-hero-inventory.md)、[服务端接口与迁移](../Server/README.md)。
 - 游戏内邮件：[玩家收件、开发 GM 自发、服务端名单与整区投递的设计](plans/2026-11-22-game-mail.md)。
 - 普通装备：[背包、单槽配戴和管理页的原版画面与时间点](development/equipment-ui-reference.md)、[原作六部位、强化与套装规则及项目实施方案](plans/2026-11-21-equipment-system.md)、[11 月 25 日普通强化、角标与验收方案](plans/2026-11-25-equipment-enhancement.md)。
+- 当前本机试玩：[Windows0.1.26 / R36普通强化、签名与原生验收](delivery/2026-11-26-equipment-enhancement.md)，原版/修改前后、视听、文件位置与未完成内容集中列明。
 - 角色战斗力：[历史公式、官方变更、原包系数与复算边界](development/combat-power.md)。CP 与装备分数、实际战斗强弱分别讨论。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
 - 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。

@@ -1,5 +1,7 @@
 # FoundationDemo
 
+本机Windows0.1.26/R36最小母包与签名资源已配对交付，新启动器为 `.artifacts/windows-r36/Play-R36.exe`，本体位于同目录 `client/AstralOath.exe`。原生1080p和4K强化冒烟通过；隐藏截图无效与DPI采集问题单列，启动器冷恢复本地游戏服务和内容源通过，正常登录点击未自动验收。[回执与边界](../../../../docs/delivery/2026-11-26-equipment-enhancement.md)
+
 新GM锻造读取版本化 `MainValues` 和按品质 `GradeRanges`，提交同一 `rulesVersion`，不再向新客户端预览线性近似。资源页同时列装备/饰品强化材料。`Tools/Test-WindowsEquipment.ps1 -Enhancement` 在显式开发/回环访客下，先验旧穿脱，再实际GM发放、背包登记、仅经验、+3橙底、+15红底及返回，截图只写D盘；常规登录不创建这段验收委托。[规则与边界](../../../../docs/development/equipment-enhancement.md)
 
 Foundation 收集设置新增二维音频地址组 `UiAudio`，由 `UiAudioCollector.Refresh` 维护 Common、Summon 与竞技场门的音频目录。声音单独保留加载句柄，尾音结束后释放，详细范围及母包要求见 [复核记录](../../../../docs/delivery/2026-11-23-equipment-battle-review.md)。

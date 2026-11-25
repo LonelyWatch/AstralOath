@@ -6,7 +6,9 @@
 
 ## 默认选择与最小包
 
-2026-11-23 的二维界面音频淡出同时修改 Common 音源和 Bootstrap 的 YooAsset 句柄管理。交付这项改动需要为目标平台构建新 IL2CPP 母包，并配套含 `ui/audio/` 地址的 Foundation 签名资源。本次离线 Editor 验证包仅供验收，当前已分发的 Windows 0.1.25 / R35 尚未包含这项改动。[验收范围](../delivery/2026-11-23-equipment-battle-review.md)
+2026-11-26本机交付Windows **0.1.26 / R36** 最小IL2CPP母包，包含此前Common/Bootstrap音频淡出句柄管理及当前公共强化角标绑定。基线 `62ec32cd2fc54ebf81d0826c1d2fc6ae`，沿用可信开发公钥，签名源回环5304，游戏服127.0.0.4:7728、测试MySQL3307。原生新基线首装103项、2,249,651,657字节，1080p和4K两次重开业务下载均为零。新启动器 `.artifacts/windows-r36/Play-R36.exe`，本体 `client/AstralOath.exe`；本工作区开发包不等同可移动正式安装器。[构建、强更原因、证据与限制](../delivery/2026-11-26-equipment-enhancement.md)
+
+2026-11-23 的二维界面音频淡出同时修改 Common 音源和 Bootstrap 的 YooAsset 句柄管理。当时仅离线Editor验收，原0.1.25 / R35不包含该改动；现在由上述R36新母包交付。[当时验收范围](../delivery/2026-11-23-equipment-battle-review.md)
 
 本机 Windows R35 的业务源码为 `32715b06`，沿用 0.1.25 母包、内置公钥与基线 `e009595d3a8a4186a1ffaad76323e806`。R35 签名清单含 98 项，已有 R34 缓存可复用 85 项，变更的 10 个资源包及 3 个清单相关文件共 120,989,032 字节（115.38 MiB）。原训练启动器为 `.artifacts/windows-r32/Play-R32.exe`，其所在目录的 `client-r32/AstralOath.exe` 是游戏主程序。召唤预览引用实时技能定义和独立音轨，签名构建检查了 169 项预览依赖，其中没有旧预录 JPEG 图集。[签名差量回执](../../.artifacts/windows-r35/build/receipt.json) · [画质与原版对照](../delivery/2026-11-22-client-image-quality.md)
 
