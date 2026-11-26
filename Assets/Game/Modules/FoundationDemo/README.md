@@ -123,3 +123,5 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 同一原地刷新也用于开发GM资源写后的页面校准，GM关闭后不再重建英雄/装备/召唤页面；登录缓存先失效，真实材料和钱包重新读取，再补邮件摘要的独立资源revision。邮件发送本身不触发此发奖校准；仅领取/写入资源才改变真实数据。
 
 原生邮件诊断额外验证第二HTTP生产者投递后的事件流自动摘要/角标更新，准备信回执不直接写可见MailSession、不用手动摘要刷新掩盖通知失效。使用`-astral-arena-battle-smoke -astral-mail-smoke`；该显式Development回环诊断创建独立测试访客，不修改正常账号，不将同进程两个HTTP实例称作两个独立Windows进程。
+
+内容40原生已实际完成14个状态与余额断言，但末尾验收JSON仍以JsonUtility写入，跨程序集initial/final摘要漏写，外部脚本因此正确拒绝通过。仅诊断回执改用同一既有JsonConvert路径保留摘要，重新构建更高内容41，不覆盖40签名。历史失败在`.artifacts/mail-system-review/native-mail/runs/final40-qa1080/`；最终结果以41原生重跑为准。

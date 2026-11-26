@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using AstralOath.Client.Common;
 using AstralOath.Client.Core;
 using AstralOath.Client.Mail;
@@ -234,7 +235,7 @@ namespace AstralOath.Client.FoundationDemo
                 greaterCharmDelta = Balance(after,"greaterCharm") - Balance(before,"greaterCharm"),
                 goldDelta = Balance(after,"gold") - Balance(before,"gold"), energyDelta = Balance(after,"energy") - Balance(before,"energy"),
                 samePageRestored = true, reopened = true, captureCount = captureCount, historyVerified = true };
-            File.WriteAllText(Path.Combine(output, "mail-player.json"), JsonUtility.ToJson(receipt, true));
+            File.WriteAllText(Path.Combine(output, "mail-player.json"), JsonConvert.SerializeObject(receipt, Formatting.Indented));
             Debug.Log("ASTRAL_MAIL_PLAYER_OK uiSent=1 apiPrepared=3 claimed=4 count=0 giftClaims=1 goldDelta=10000 energyDelta=100 history=True reopened=True screen=" + Screen.width + "x" + Screen.height);
         }
 
