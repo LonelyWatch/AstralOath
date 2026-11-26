@@ -5,6 +5,7 @@ using AstralOath.Server.Foundation;
 using AstralOath.Server.Entry;
 using AstralOath.Server.Inventory;
 using AstralOath.Server.Summon;
+using AstralOath.Server.Mail;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting.WindowsServices;
@@ -32,6 +33,14 @@ if (args is ["migrate"])
     };
     await DatabaseMigrator.ApplyAsync(connectionString, deadline.Token);
     Console.WriteLine("MySQL migrations applied.");
+    return;
+}
+
+if (args.FirstOrDefault() == "mail")
+{
+    using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+    Console.CancelKeyPress += (_, signal) => { signal.Cancel = true; deadline.Cancel(); };
+    Environment.ExitCode = await MailCli.Run(args, connectionString, deadline.Token);
     return;
 }
 
@@ -66,6 +75,7 @@ builder.Services.AddArena();
 builder.Services.AddEntry();
 builder.Services.AddInventory();
 builder.Services.AddSummon();
+builder.Services.AddMail();
 
 var app = builder.Build();
 if (app.Configuration.GetValue<bool>(WebHostDefaults.PreferHostingUrlsKey)
@@ -80,8 +90,12 @@ app.MapArena();
 app.MapEntry();
 app.MapInventory();
 app.MapSummon();
+app.MapMail();
 if (isDevelopment && IPAddress.IsLoopback(bindAddress))
+{
     app.MapDevelopmentGm();
+    app.MapDevelopmentMail();
+}
 if (app.Configuration.GetValue<bool>("BattlePreview:Enabled"))
 {
     if (!isDevelopment || !IPAddress.IsLoopback(bindAddress))

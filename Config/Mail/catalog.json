@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "rulesVersion": 1,
+  "energy": { "initialBalance": 0, "naturalCap": 360, "absoluteCap": 1000000000 },
+  "letterTypes": [{"id":"standard","bulkEligible":true},{"id":"gm","bulkEligible":false}],
+  "senders": [{"id":"gm_yufine","name":"GM亚卡","icon":"npc1010_s"},{"id":"courier","name":"送货员","icon":"npc1004_s"}],
+  "resources": [
+    {"kind":"currency","key":"bookmarks","name":"誓约书签","icon":"to_covenant"},
+    {"kind":"currency","key":"skystones","name":"天空石","icon":"to_crystal"},
+    {"kind":"currency","key":"epicBookmarks","name":"圣约书签","icon":"to_epic"},
+    {"kind":"currency","key":"galaxyBookmarks","name":"银河书签","icon":"to_galaxy"},
+    {"kind":"currency","key":"mysticMedals","name":"神秘奖牌","icon":"to_mystic"},
+    {"kind":"currency","key":"goldTransmitStones","name":"金光传承石","icon":"to_goldtransmit"},
+    {"kind":"material","key":"gold","name":"金币","icon":"to_gold"},
+    {"kind":"material","key":"lesserCharm","name":"下级神器强化石","icon":"charm_artifact_1"},
+    {"kind":"material","key":"greaterCharm","name":"上级神器强化石","icon":"charm_artifact_2"},
+    {"kind":"material","key":"epicCharm","name":"传说神器强化石","icon":"charm_artifact_3"},
+    {"kind":"material","key":"bottle","name":"知识粉末瓶","icon":"bottle"},
+    {"kind":"material","key":"powder","name":"知识粉末","icon":"powder"},
+    {"kind":"energy","key":"energy","name":"行动力","icon":"to_stamina"},
+    {"kind":"hero","key":"c1001","name":"拉斯","icon":"c1001_s"},
+    {"kind":"hero","key":"c1005","name":"梅赛德丝","icon":"c1005_s"},
+    {"kind":"artifact","key":"ef301","name":"鲜血圣杯","icon":"art3_1"},
+    {"kind":"equipment","key":"training_speed_weapon","name":"训练用速度武器","icon":"weapon"},
+    {"kind":"equipment","key":"training_speed_helmet","name":"训练用速度头盔","icon":"helmet"}
+  ],
+  "bundles": [
+    {"id":"gm_gift","name":"GM礼物","icon":"gm_gift","presentation":"gmGift","cover":"gm_gift","attachments":[{"kind":"material","key":"epicCharm","quantity":2},{"kind":"currency","key":"bookmarks","quantity":5},{"kind":"material","key":"greaterCharm","quantity":5}]},
+    {"id":"starter_supplies","name":"补给礼包","icon":"supply_box","presentation":"bundle","cover":"","attachments":[{"kind":"energy","key":"energy","quantity":100},{"kind":"material","key":"gold","quantity":10000}]}
+  ],
+  "templates": [
+    {"id":"maintenance","purpose":"maintenance","letterType":"standard","senderId":"gm_yufine","title":"维护补偿","body":"维护已结束，感谢你的等待。请查收随信附上的奖励。","expiresInDays":7,"attachments":[{"kind":"currency","key":"bookmarks","quantity":5}]},
+    {"id":"event_reward","purpose":"event","letterType":"standard","senderId":"courier","title":"活动奖励","body":"感谢参与活动，请查收奖励。","expiresInDays":7,"attachments":[{"kind":"energy","key":"energy","quantity":100}]},
+    {"id":"gm_gift","purpose":"development","letterType":"gm","senderId":"gm_yufine","title":"GM的礼物","body":"送给继承者的礼物，请点击收信领取。","expiresInDays":7,"attachments":[{"kind":"bundle","key":"gm_gift","quantity":1}]},
+    {"id":"system_notice","purpose":"notification","letterType":"gm","senderId":"courier","title":"系统通知","body":"感谢你的支持。","expiresInDays":7,"attachments":[]}
+  ]
+}

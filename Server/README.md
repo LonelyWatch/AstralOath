@@ -1,5 +1,21 @@
 # AstralOath.Server
 
+2026-11-27新增游戏内邮件，入口为 [Mail模块](Host/Mail/README.md)，唯一目录 [Config/Mail/catalog.json](../Config/Mail/catalog.json)，新迁移017（未修改已应用011–016）。按owner→mailbox→delivery顺序锁定，同一个MySQL事务提交领取、真实钱包/材料/行动力、英雄/神器/装备实例、图鉴、回执、版本outbox和审计。收件上限100；历史为最近90天与最新100条的交集，裁剪查询不删除防重账本。打开详情只记已读；服务端UTC到期与权威领取才释放收件容量。
+
+玩家 `/api/mail/catalog`、`summary`、`inbox?cursor=&limit=`、`history?cursor=&limit=`、`{deliveryId}`、POST `claim`/`claim-all` 和NDJSON `events` 均使用Arena Bearer与固定已选区服。列表默认50，最大100；稳定游标由服务端生成。单领请求 `{requestId,deliveryId}`；批领 `{requestId,deliveryIds}` 固定最多100封快照，GM始终略过。每封多附件原子；批领仅对已领/过期/GM及受控容量或安全上限失败跳过，不吞数据库异常。无可领取返回409 `no_eligible_mail`。成功回执包含claimed/skipped、合并rewards、affectedKinds、summary及表现标识；同请求重试回原回执，同ID改参数409，同封换ID也不能再发奖。
+
+`summary.energy` 返回真实balance、naturalCap=360、absoluteCap=10亿及独立`revision`；`summary.balances`为`{revision,gold,crystals}`，crystals读取实际skystones钱包，不伪造未实现的PVP旗帜。两处revision同值，在同一个owner锁内读取持久材料流水与钱包流水总条数；GM设置或其他资源写入不必增长mailbox.version，实际余额改变会追加真实流水并增长资源revision。初始化/迁移前既有余额视为首次快照基线，此后按不裁剪的账本单调增长，不能直接删除/改写流水；未来归档须先迁移保留单调版本，不能裁剪后继续用Count。旧成功原回执缺字段时energy.revision为0、balances可为空，客户端不得覆盖更高资源版本，另重读summary。energy初始0，邮件可超过自然恢复上限，GM资源页设置同一个账本；本轮没有自然恢复或关卡消费。奖励的冻结规格和内部operation由服务器产生，材料流水先建operation并合并同类，装备一封内统一source_index，钱包/实例来源为 `mail-<deliveryId>`。
+
+开发自发仅在Development+回环listener注册 `/api/development/gm/mail/preview` 与`send`。前者接受模板、普通/GM、标题正文、发件人与附件/天数覆盖，后者仅 `{requestId,previewId}`；额外收件、区服、scope或其他未知字段400。身份只从当前Bearer取；正式或非回环Host404。发信只产生邮件，收信才发奖励。服务端运营只用本机 `mail preview/confirm/status/retry` 和 [中文Mail.ps1](Ops/Mail.ps1)，没有运营HTTP；IDs/白名单/显式全区恰选一项，黑名单只做减法，整区冻结已进区注册玩家。确认最多一批，断进程后worker续投，满箱只允许原批重试且不延到期。区服名册由选服同事务维护，迁移从曾进区注册账号回填；游客仅可自发，不混入全区名册。
+
+事件流先订阅后sync，后续只送版本；每次发送及15秒心跳复验Bearer，令牌轮换关闭旧流。mailbox.version与outbox在同一owner事务提交。MySQL自增outbox ID不是提交顺序，因此每Host仅对当前活跃订阅owner按最多100人的公平批次读取已提交mailbox.version，Hub独立高水位只推更高版本并合并慢连接。该校准完整覆盖跨账号乱序提交，重启只读当前header、不重放全历史、不删除全局outbox，也不需要新增consumer×outbox确认表。最后一个订阅关闭同时移除owner高水位；重新订阅以首次sync和最新header校准。后台和读取都纠正到期。权威审计键为 `mail.delivery`、`mail.claim`、`mail.batch.confirm`、`mail.batch.retry`、`development.gm.mail.send`，不包含标题、正文、名单原文或凭据。
+
+本轮独立MySQL schema为 `astraloath_mail_qa_20261127`，初次路由/事务失败、过期修正、溢出与null失败和最终回归证据位于 `.artifacts/mail-system-review/server/`。首轮完整Server回归641项实际通过（Mail42项），均启用真实MySQL，无跳过，结果为 `server-full-final.trx`。Production真实CLI冻结/名单/确认、隔离`.6` Host断批重启接续亦有 `cli-live.json`、`host-restart.json`；恢复脚本曾在等待启动子进程返回处阻塞，续投结果由独立SQL/Host状态复核，未把脚本退出记为通过。`.4`既有服务和库未修改。客户端画面/声音、签名包及分发由整轮交付另验，本节不把API通过等同视听还原或已分发。
+
+独立复审后新增四项回归，最终当前源码完整645/645通过、0跳过（`server-review-final.trx`，Mail46项）。`review-red.trx`先实际复现跨账号outbox乱序漏发、大写GUID已读未保存、资源摘要缺独立revision三项失败；修后`review-green.trx`三项通过，另验证205活跃owner分三批100/100/5全部收到。新Release候选SHA-256为`ECC7FF4BADBEF6F6B85D28E637F5E044755420E489727C1CCA56DF97C97F614A`，隔离`.6`PID41392；`qa-review-fixtures.json`记录新Host真实GM同邮箱版本资源变化、金币/天空石、规范ID持久已读、领奖与218ms版本事件。启动脚本改用仅继承NUL/日志句柄的隐藏原生进程，`start-return-green.json`实际capture调用1.703秒退出0；旧阻塞证据保留，不抹去历史失败。以上仅后端候选服，不代表客户端已分发。
+
+复验示例（私密连接仅从忽略目录读取，勿输出）：先初始化 `Tools/ProjectEnvironment.ps1`，设置 `ASTRALOATH_MYSQL_TEST` 为独立连接，再用 `.tools/dotnet/dotnet.exe test Server/Tests -p:TargetPlatformSdkPath=D:/UnityProjects/AstralOath/.tools -p:TargetPlatformDisplayName=Windows --logger "trx;LogFileName=server-full-final.trx" --results-directory .artifacts/mail-system-review/server`。SDK7.0探测会尝试读取受限C盘目录，因此本机显式给出D盘SDK探测目录；NuGet漏洞源离线警告不代表依赖升级，锁定包仍实际还原/编译。
+
 2026-11-26：迁移016为独立副属性行新增nullable `enhancement_count`。新生成初始掷值不计次数，既有词条每次实际强化+1，新解锁为0；GM合法配方保存Rolls-1，计数随数值同事务提交及幂等重放。响应新增`enhancementCountKnown`，已知才输出`enhancementCount`，不根据属性值反推旧GM次数。旧+0可确认0；旧+N只有完整唯一且无未来事件的历史才恢复，否则未知。迁移重入通过，迁移专用连接允许脚本变量，业务连接不变。完整服务端599项、独立候选服API的计数/强化/幂等/同类GM余额重读通过。[本轮细节及数据库状态](../docs/delivery/2026-11-26-equipment-followup.md)
 
 战斗响应中的 `cooldownReduction` 随技能结算给出实减的回合数。菲奥雷托满专注使用「蝴蝶斩击」时，三技能未强化减少 6 回合，强化到 +3 减少 5 回合，两种情况下剩余值均为零。旧响应缺少该字段时，新客户端按零读取。[战斗复核](../docs/delivery/2026-11-22-battle-followup.md)

@@ -198,6 +198,12 @@ internal sealed class EntryStore(string? connectionString)
             """, ("@id", player.Id));
         await expire.ExecuteNonQueryAsync(cancellation);
         await InventoryStore.EnsureStarters(connection, transaction, player.Id, cancellation);
+        using (var membership = Command(connection, transaction, """
+            INSERT INTO player_realm_membership(realm_id,player_id,first_entered_at,last_entered_at,registered)
+            VALUES (@realm,@player,UTC_TIMESTAMP(6),UTC_TIMESTAMP(6),TRUE)
+            ON DUPLICATE KEY UPDATE last_entered_at=UTC_TIMESTAMP(6),registered=TRUE;
+            """, ("@realm", EntryEndpoints.RealmId), ("@player", player.Id)))
+            await membership.ExecuteNonQueryAsync(cancellation);
         await OperationAudit.Record(connection, transaction, "entry.realm.select", "account", player.Id,
             "realm", EntryEndpoints.RealmId, null, cancellation);
         await transaction.CommitAsync(cancellation);

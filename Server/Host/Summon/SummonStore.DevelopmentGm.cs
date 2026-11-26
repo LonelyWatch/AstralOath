@@ -17,7 +17,7 @@ internal sealed record DevelopmentGmState(string PlayerId, string RealmId, Devel
 
 internal sealed partial class SummonStore
 {
-    private static readonly string[] GmMaterials = new[] { "gold", "lesserCharm", "greaterCharm", "epicCharm", "bottle", "powder" }
+    private static readonly string[] GmMaterials = new[] { "gold", "lesserCharm", "greaterCharm", "epicCharm", "bottle", "powder", "energy" }
         .Concat(EquipmentEnhancementCatalog.Rules.Materials.Select(material => material.Id)).ToArray();
     private static readonly Dictionary<string, string> GmWalletColumns = new(StringComparer.Ordinal)
     {
@@ -114,6 +114,10 @@ internal sealed partial class SummonStore
     }
 
     private static async Task SetGmCurrency(MySqlConnection connection, MySqlTransaction tx, string player, string request,
+        string column, int balance, int delta, CancellationToken ct) =>
+        await SetCurrencyBalance(connection,tx,player,"gm-"+request,column,balance,delta,ct);
+
+    private static async Task SetCurrencyBalance(MySqlConnection connection, MySqlTransaction tx, string player, string operation,
         string column, int balance, int delta, CancellationToken ct)
     {
         // Column names come exclusively from GmWalletColumns above. All account data is parameterized.
@@ -122,6 +126,6 @@ internal sealed partial class SummonStore
             : $"INSERT INTO summon_wallet_materials (player_id,realm_id,{column}) VALUES (@player,@realm,@balance) ON DUPLICATE KEY UPDATE {column}=@balance";
         using var update = Command(connection, tx, player, sql, ("@balance", balance));
         await update.ExecuteNonQueryAsync(ct);
-        await WalletLedger(connection, tx, player, "gm-" + request, column, delta, balance, ct);
+        await WalletLedger(connection, tx, player, operation, column, delta, balance, ct);
     }
 }
