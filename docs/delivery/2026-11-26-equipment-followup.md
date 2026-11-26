@@ -1,6 +1,16 @@
 # 装备界面、强化结果与英雄总加成复核
 
-本轮于11/26开始，跨夜11/27接续Windows0.1.26/R36，核对角标、强化按钮、金币底、自动登记、词条跳值/次数、换装战力、详情固定尺寸及英雄总加成。追加精确角标复核后修改了Common/AOT，交付改为Windows0.1.27/R37新母包。当前原生、签名构建及本机分发尚未执行，不引用旧R36原生回执冒充。
+本轮于11/26开始，跨夜11/27接续Windows0.1.26/R36，核对角标、强化按钮、金币底、自动登记、词条跳值/次数、换装战力、详情固定尺寸及英雄总加成。追加精确角标复核后修改了Common/AOT，已按源码`21a56349`构建、签名并完成Windows0.1.27/R37原生验收。随后用户追加邮件实施，[邮件计划](../plans/2026-11-27-mail-implementation.md)仍在进行；此处是装备阶段回执，不称整轮结束或提前关机。
+
+## R37包与原生结果
+
+- 母包归档`.artifacts/b37/Win64/player-v37-a98171d125d347d19130ca68d82653c1`，baseline `7445597f1ef645db8ef946c4964503fc`、runtime9.0.1、app0.1.27；构建实际exit0与schema3公钥验签通过。
+- 启动器`D:/UnityProjects/AstralOath/.artifacts/windows-r37/Play-R37.exe`，本体同目录`client/AstralOath.exe`；最小ZIP `AstralOath-0.1.27-Win64-minimal.zip` SHA256 `6c2cb92aeab1764c20ba957615b25a75cc6ebc15b772233f11355980a129c33f`。这是本工作区开发包，依赖D盘本地工具/服务/签名资源，不是可移动正式安装器。
+- 新baseline首次103项、2,250,490,334字节，随后1080p和3840×2160两次重开均0业务GET/0字节；全部18张真实可见PNG解码、尺寸/哈希/非黑验证，协调者实际看18状态联系表及1080/4K的+15原图。脚本用per-monitor-v2物理尺寸，不把DPI缩小或隐藏黑图当视觉通过。
+- 三次实际Player均校验训练头盔生命263→343→263、橙底/+15红底、四词条已知且额外强化总计5、直接读取显示的三个Image纹理均RGBA32、26×34。不同新QA角色的随机词条不同，未把不同输入当逐像素同态。
+- 精确核验旧7900服务身份并保存新一致性SQL/旧host后，只切本机`.4:7728`至R37 PID41440；沿用原DB、未停止MySQL。正常登录实测旧0.1.26选服426、新0.1.27选服200；不冒称开发guest通路也是正式强更。来源`server-candidate/r37-switch/32903d296b634c3594f05a07abe6a50a.json`，备份含既有016，不是迁移前旧结构，恢复演练未执行。
+- 启动器首测实际玩家已起，却因仅隐藏分支写PID/trace而被可见QA误判；保留失败后补两分支回归2/2并原生Launcher通过。签名封装脚本也曾误读历史LASTEXITCODE，核对已有文件哈希后重新独立验签并完成ZIP。没有把这些失败抹成首次全绿。
+- 完整包、源码/已保留355项构建输入哈希、原生18图与启动器回执为`.artifacts/windows-r37/delivery-verified.json`、`build-worktree.json`和`.artifacts/badge-followup/native-r37/`；非本任务预先存在的355项构建输入与R36一致、未混入任务提交。图录增加原生段落后同样以这些实际回执为准。
 
 ## 11/27角标重点复核
 
@@ -43,13 +53,13 @@ CP规则是`combat-power.project-v1.historical-p1.source-r4262-artifact.owned-pr
 
 ## 实际验证
 
-- `ui-sprite-final-green.xml`：最终33项Edit通过，0失败/跳过，包括Common几何与Image数字、旧神器快照置信、源切片、按钮、累计/次数、固定卡、安全适配、总增益及CP。`ui-final-green.xml`25项、`ui-geometry-confidence-green.xml`30项是各自历史阶段，不冒充最终源码。
-- `final-sprite-combined17.xml/.log`：最终17项Play通过，0失败/跳过，包括真实预制像素、两组连续重拍、隔离候选服强化/重开、超时和拒绝、英雄两次换装与卸装，以及5项管理/缩放/真实提交；`sprite-graphics-green.xml`5项是此前独立图形回执。
+- `digit-import/import-graphics-44-green.xml`：最终图形Editor44项通过、0失败/跳过；包括实际重导11项及此前33项。`ui-sprite-final-green.xml`33项、`ui-final-green.xml`25项、`ui-geometry-confidence-green.xml`30项是各自历史阶段，不冒充最终源码。
+- `final-lossless-combined17.xml/.log`：最终17项Play通过、0失败/跳过，包括真实预制像素、两组连续重拍、隔离候选服强化/重开、超时和拒绝、英雄两次换装与卸装，以及5项管理/缩放/真实提交；旧`final-sprite-combined17`及独立5Graphics为此前阶段回执。无损策略修复前后controls恰同SHA、0像素差，不能夸成这个平台该帧可见改善。
 - `final-play.xml`11项、`online-first.xml`5项仅为此前阶段历史回执；最终截图已由上述17项重新生成。
 - `numeric/cp-server-all.trx`：599项Server通过；含计数与CP纯计算。`server-candidate/api-counts-receipts.json`：独立0.5候选服7训练件初始0、新GM源件0、真实+15后总计5、GET重读、同请求重放、同类GM材料73及独立饰品41均实际核对。
 - 早期CP两个红XML被测试夹具异常挡住，不能作业务先红；有效业务红是`cp-quote-valid-red.xml`四项。结果最初五红XML被后续覆盖，仅保留实际观察记录，未伪造历史回执。新增未知神器总增加红为`bonus-unknown-red.xml`。
 
-候选服为`127.0.0.5:7728`、独立schema/最小权限用户；0.4旧服尚未替换。只读核对发现现有测试库已含016，来源为此前运行迁移回归，不能再称“尚未迁移”或“未触及该schema”。本轮后续未再写用户装备/余额；已保存当前一致性SQL及旧R36完整host备份，**这是含016的当前状态备份，不是迁移前旧结构**，恢复演练未执行。私密备份/连接/fixture不进Git、不放公开图录。
+业务先在`127.0.0.5:7728`独立schema验证，再按前述守卫切换本机0.4。只读核对现有测试库已含016，来源为此前运行迁移回归，不能称“尚未迁移”或“未触及该schema”。未重写用户装备/余额；备份、连接、fixture不进Git或公开图录。
 
 ## 视听、文件与剩余项
 
@@ -70,4 +80,4 @@ CP规则是`combat-power.project-v1.historical-p1.source-r4262-artifact.owned-pr
 - 旧缺历史装备次数保留未知；不会倒推。白色攻/血在神器GET失败时仍按既有equipment-only回退，橙总增加隐藏；下一步为白总值增加明确失败状态及重试，当前不称完整已确认值。
 - +15完整成功过程、大/超大成功、魔控、重铸仍缺本轮完整同状态参考/实现；原+15截图是既有装备，不能证明全过程。主强化大演出未在本轮全面恢复。
 - CP绝对数值/原作精度未核，当前为明示项目规则；音频听感未重新验收。
-- 原生、兼容签名包、安装升级、缓存复用和本机分发尚未执行。不得因文件已生成就称交付完成。
+- 当前R37母包、签名、安装、1080/4K暖重开及启动器已实际通过，范围见上节；邮件追加尚在实施，后续新代码不自动包含在R37中，需要独立验证与签名版本。

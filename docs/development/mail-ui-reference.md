@@ -24,3 +24,25 @@
 - 要实现「接收时间」的完整交互，还需点开或切换后的画面。当前录像可见初始按钮。若同版本支持无附件纯文本信、需要选择其一的附件，还需从收件行到处理完成的连续操作。
 - 已能对照历史中的「已过期」「已删除」。正在打开一封信时到期、100/100 时尝试投递，以及英雄或装备背包满时点单封「领取」的具体反馈尚缺。批量确认窗有背包满的规则文字，具体失败反馈与动效需另看实录。
 - 11 月 17 日 00:41.500 的大厅信封为 6、铃铛为 18，00:08.500 背包顶栏也有信封。11 月 21 日 01:34 配戴页的信封为 15。这些静态帧支持角标的跨页面外观，点击入口是否有效需逐页核对。原资源 `wnd/mail_list.csb` 还含第三个页签节点，本次实际邮箱只显示两个。[大厅](../../.artifacts/mail-reference/lobby-11-17-41s5.jpg) · [背包](../../.artifacts/mail-reference/bag-11-17-8s5.jpg) · [配戴页](../../.artifacts/mail-reference/gear-11-21-94s.jpg)
+
+## 2026-11-27 制作前再次核对
+
+用户再次指定同一录屏后，先把73,098,097字节的原附件复制至D盘本次证据目录，原文件与副本SHA256均为`ff30f333d063fac743de619703919b7957b8e2b6b9a072cd441dc92c9aea18b5`。本次实际重看25张2608×1200关键PNG及5段关键过程的172张连续源帧，源PTS由FFmpeg `-copyts`/`showinfo`保存，不以8fps联系图代替源帧。5段含原录音轨的短片均重新解码通过，但当前工具不提供听觉输入，本次未实际试听，不把历史相关匹配当听感验收。[可打开的原版图录](../../.artifacts/mail-system-review/index.html) · [来源与资源哈希](../../.artifacts/mail-system-review/reference-evidence.json) · [连续源PTS](../../.artifacts/mail-system-review/native-sequences.json) · [核验回执](../../.artifacts/mail-system-review/verification.json)
+
+### 可见动画与特殊礼包
+
+- 邮件入口在约1.565–1.769s为大厅和邮件层交叠、列表位移/淡入，未见整屏纯黑转场；GM正文约100.136–100.301s出现淡入/位移。录像帧率及输入延迟不足以确认原Tween精确曲线，制作时不能把估计写成原始曲线。[入口连续帧](../../.artifacts/mail-system-review/entry-native-contact-2.png) · [GM正文连续帧](../../.artifacts/mail-system-review/gm-open-native-contact-2.png)
+- 100.959s附近正文「收信」被按下，101.205s正文已关闭但仍为2封，101.329s奖励开始时变为1封。此前查看正文和附件不减计数。最后一封在106.177s附近出顶部亮条并显示空收件0/100，行动力随后从1,960滚至2,010；107.5s仍能看到空箱、灰色全部领取及无信封数字。[收信至奖励](../../.artifacts/mail-system-review/gm-claim-native-contact-2.png) · [最后一封](../../.artifacts/mail-system-review/final-energy-native-contact-1.png)
+- **特殊礼包有连续两段结果**：101.329–102.232s先在「获得奖励」中显示横向插画/封面；玩家点击后102.273s起再显示数量2、5、5的三件道具，103.4s附近关闭。这不是第二封投递，也不能只看102s图认定只发插画。已确认过程，封面对应的原资源/目录ID与原调用仍未追踪；普通礼包的直接多道具反馈与该状态分开验收。[两段结果](../../.artifacts/mail-system-review/gm-gift-followup.png)
+
+### 原素材、节点与类型边界
+
+只读解析9个邮件CSB，记录66个最小候选源资源与哈希；没有向Assets导入任何资源。常规行底为`img/_box_r_list.png`56×56，`mail_item.csb`中普通行原设计1130×120；邮件按钮使用**胶囊**`_btn_green_r/_btn_green_r_p`，行按钮200×61、全部领取210×61，不能与装备的直边`_btn_green`混为同款。GM正文`_box_popup.png`130×232对应960×510原设计，正文正常收信285×61，顶部两条`_bar_24`各450×25、一条X镜像，GM徽标`cm_icon_gm.png`41×28。九宫格cap尚未在本次解析器导出，制作时需另核，不能凭源宽高猜切片。[节点尺寸](../../.artifacts/mail-system-review/layout-geometry.txt) · [原素材联系图](../../.artifacts/mail-system-review/native-assets.png)
+
+实际打开并定位头像：GM亚卡蓝龙为`face/npc1010_s.png`，送货员梅露铃为`face/npc1004_s.png`；`face/icon_gm_s.png`是另一张卡通GM，不能拿来代替原片蓝龙。头像圆框可沿用已确认的共用组件。`mail_event_popup_vip`、`mail_select_popup`、第三页签等虽然存在源节点，本录屏没有相应成品流程；各种类型的业务配置与是否有原版画面依据分别记录，不从昵称或源文件存在推定类型行为。
+
+### 当前能力基线与缺口
+
+本次参考调查基线`21a56349`中，`ArenaUiBuilder.HomeMoreLayout.cs`只绘制Mail图标，没有游戏内收件/发信页面及业务实现；新增功能没有可冒用的项目修改前邮件页面。[基线证据](../../.artifacts/mail-system-review/baseline-before.json) 本次仅更新参考文档与D盘证据，不表示邮件功能或Player已完成。
+
+上节待补的「接收时间」展开、纯文字/选一附件、即时满箱/满背包/打开时到期，仍未在同一录屏看到。特殊封面奖励的身份也待确认。已拍到的收件/记录、普通直接领取、GM逐封收信、批量排除GM、汇总及空箱可以依照本次关键帧制作；未拍边界应分别交付真实逻辑验证和画面待核，不制造参考或宣称全部效果一致。

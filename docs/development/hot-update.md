@@ -6,6 +6,8 @@
 
 ## 默认选择与最小包
 
+2026-11-27装备角标追加修复新增Common/AOT `AuthoredHeightLayout`与`BitmapNumber`，已构建Windows **0.1.27 / R37**，baseline `7445597f1ef645db8ef946c4964503fc`，runtime仍9.0.1。原生首次103项2,250,490,334字节，1080p/4K重开均0业务下载，实际数字纹理RGBA32/26×34通过；本机准入最低0.1.27。启动器`.artifacts/windows-r37/Play-R37.exe`，本体`client/AstralOath.exe`，仍是本工作区开发包。新增Mail将以本归档实际兼容检查，不能因C#业务新增就预先声称可热更。[装备阶段实际交付与剩余](../delivery/2026-11-26-equipment-followup.md)
+
 2026-11-26本机交付Windows **0.1.26 / R36** 最小IL2CPP母包，包含此前Common/Bootstrap音频淡出句柄管理及当前公共强化角标绑定。基线 `62ec32cd2fc54ebf81d0826c1d2fc6ae`，沿用可信开发公钥，签名源回环5304，游戏服127.0.0.4:7728、测试MySQL3307。原生新基线首装103项、2,249,651,657字节，1080p和4K两次重开业务下载均为零。新启动器 `.artifacts/windows-r36/Play-R36.exe`，本体 `client/AstralOath.exe`；本工作区开发包不等同可移动正式安装器。[构建、强更原因、证据与限制](../delivery/2026-11-26-equipment-enhancement.md)
 
 2026-11-23 的二维界面音频淡出同时修改 Common 音源和 Bootstrap 的 YooAsset 句柄管理。当时仅离线Editor验收，原0.1.25 / R35不包含该改动；现在由上述R36新母包交付。[当时验收范围](../delivery/2026-11-23-equipment-battle-review.md)
