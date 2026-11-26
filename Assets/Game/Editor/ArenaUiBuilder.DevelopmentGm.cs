@@ -64,10 +64,12 @@ namespace AstralOath.Editor
                 layout.childForceExpandHeight = false;
             }
 
-            Command(modal, "resources", .145f, .122f, .165f, .083f);
-            Command(modal, "inventory", .325f, .122f, .165f, .083f);
-            Command(modal, "forge", .505f, .122f, .165f, .083f);
-            Command(modal, "diagnostics", .685f, .122f, .165f, .083f);
+            Command(modal, "resources", .10f, .122f, .15f, .083f);
+            Command(modal, "inventory", .263f, .122f, .15f, .083f);
+            Command(modal, "forge", .426f, .122f, .15f, .083f);
+            var mailTab = Action(modal, "mail", "gm.mail.tab", 25, .589f, .122f, .15f, .083f, out _, CommonArt("_btn_small_black"), Color.white);
+            keys.Add(("mail", mailTab));
+            Command(modal, "diagnostics", .752f, .122f, .15f, .083f);
             var editor = Area(modal, "Selected module", .145f, .22f, .71f, .59f);
             keys.Add(("editor", editor.gameObject));
             Stack(editor);
@@ -143,6 +145,7 @@ namespace AstralOath.Editor
             keys.Add(("forgeBudget", Text(forge, "Roll budget", null, 24, 0, .84f, .56f, .15f, Mist, TextAlignmentOptions.MidlineLeft)));
             Command(forge, "forgeMake", .67f, .83f, .33f, .16f, "_btn_green").FeedbackSound = GameUiFeedback.Sound.Confirm;
             forge.gameObject.SetActive(false);
+            BuildGmMailPanel(modal, keys);
             keys.Add(("report", Text(modal, "Diagnostics", null, 27, .17f, .26f, .66f, .39f,
                 Color.white, TextAlignmentOptions.Center, true)));
             Command(modal, "copy", .41f, .66f, .18f, .10f);

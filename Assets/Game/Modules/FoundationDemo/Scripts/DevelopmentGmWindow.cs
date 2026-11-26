@@ -22,6 +22,10 @@ namespace AstralOath.Client.FoundationDemo
         internal GameObject ForgePanel => Bindings.Require<GameObject>("forgePanel");
         internal TMP_InputField Field(string key) => Bindings.Require<TMP_InputField>(key);
         internal CanvasGroup ForgeRow(int index) => Bindings.Require<CanvasGroup>("forgeRow" + index);
+        internal GameObject MailPanel => Bindings.Require<GameObject>("mailPanel");
+        internal GameObject MailCompose => Bindings.Require<GameObject>("mailCompose");
+        internal GameObject MailPreview => Bindings.Require<GameObject>("mailPreview");
+        internal ScrollRect MailList(string key) => Bindings.Require<ScrollRect>(key);
 
         public override void Validate()
         {
@@ -36,6 +40,11 @@ namespace AstralOath.Client.FoundationDemo
                 _ = ForgeRow(index); _ = Button("forgeSub" + index); _ = Field("forgeRolls" + index);
                 _ = Field("forgeValue" + index); _ = Label("forgeRange" + index);
             }
+            _ = MailPanel; _ = MailCompose; _ = MailPreview;
+            foreach (string key in new[] { "mail", "mailType", "mailSender", "mailCategory", "mailAdd", "mailPreviewMake", "mailSend", "mailEdit", "mailAnother" }) _ = Button(key);
+            foreach (string key in new[] { "mailTitle", "mailBody", "mailExpiry", "mailQuantity", "mailSearch" }) _ = Field(key);
+            foreach (string key in new[] { "mailTemplates", "mailResources", "mailAttachments", "mailFrozen" }) _ = MailList(key);
+            _ = Label("mailFrozenText"); _ = Label("mailRecipient"); _ = Label("mailReceipt");
         }
     }
 }

@@ -164,10 +164,12 @@ namespace AstralOath.Client.FoundationDemo
             owner.Add(summon.Dispose);
             var navigation = new StartupNavigation(owner, fade, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
+            navigation.InstallMail(Bearer);
+            if (MailVerificationRequested) navigation.ConfigureMailVerification(Bearer);
             if (EquipmentPlayerSmoke.EnhancementRequested)
                 navigation.equipmentSmokeBearer = Bearer;
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
-                navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token));
+                navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token), navigation.PrepareMailAsync());
             var first = navigation.firstReads.Heroes?.heroes?.OrderByDescending(hero => hero.level).FirstOrDefault();
             if (first != null)
             {
@@ -214,8 +216,10 @@ namespace AstralOath.Client.FoundationDemo
                 firstReads.ReconcileInventories();
                 firstReads.ReconcileEquipment();
             }
-            new DevelopmentGmWindowBinder(gmView, windows, client, locale, Name, Reconcile,
-                () => refreshGmPage?.Invoke() ?? Task.CompletedTask).Install(lifetime);
+            var binder = new DevelopmentGmWindowBinder(gmView, windows, client, locale, Name, Reconcile,
+                () => refreshGmPage?.Invoke() ?? Task.CompletedTask);
+            binder.ConfigureMail(mailSession, new DevelopmentGmMailApi(endpoint, bearer));
+            binder.Install(lifetime);
         }
 
         private async Task OpenMore(CancellationToken cancellation)
@@ -283,11 +287,12 @@ namespace AstralOath.Client.FoundationDemo
             var presentation = await pages.Presentation.Get();
             var featuredLoop = await pages.SkillLoop.Get();
             cancellation.ThrowIfCancellationRequested();
-            await windows.ShowPageAsync(scope =>
+            await ShowPageWithMail(scope =>
             {
-                refreshGmPage = () => ShowSummonPageAsync(token, isolatedGuest);
-                scope.Add(() => refreshGmPage = null);
                 var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifactArt, presentation, featuredLoop, locale, ShowHome);
+                reconcileMailPage = binder.RefreshExternalAsync;
+                refreshGmPage = async () => { await binder.RefreshExternalAsync(scope.Token); await mailSession.RefreshAsync(scope.Token); };
+                scope.Add(() => { refreshGmPage = null; reconcileMailPage = null; });
                 return binder.OpenAsync(scope, isolatedGuest == null ? firstReads.TakeSummon() : null);
             });
             return view;
@@ -299,15 +304,16 @@ namespace AstralOath.Client.FoundationDemo
             var art = await pages.Heroes.Get();
             var artifactArt = await pages.Artifacts.Get();
             cancellation.ThrowIfCancellationRequested();
-            await windows.ShowPageAsync(scope =>
+            await ShowPageWithMail(scope =>
             {
-                refreshGmPage = () => OpenInventory(roster, token);
-                scope.Add(() => refreshGmPage = null);
                 Func<string, CancellationToken, Task> startTrial = null;
                 if (Debug.isDebugBuild && endpoint.IsLoopback)
                     startTrial = (hero, ct) => StartArtifactTrialAsync(hero, artifactArt, ct);
                 var binder = new HeroInventoryBinder(view, art, locale, firstReads.ReadHeroesAsync, ShowHome,
                     artifactArt, artifacts, startTrial, firstReads.ReadArtifactsAsync, portraits, equipment, firstReads.ReadEquipmentAsync);
+                reconcileMailPage = binder.RefreshExternalAsync;
+                refreshGmPage = async () => { await binder.RefreshExternalAsync(scope.Token); await mailSession.RefreshAsync(scope.Token); };
+                scope.Add(() => { refreshGmPage = null; reconcileMailPage = null; });
                 return binder.OpenAsync(roster, scope, firstReads.Heroes, firstReads.Artifacts, firstReads.Equipment);
             });
         }
@@ -337,7 +343,7 @@ namespace AstralOath.Client.FoundationDemo
             if (state?.room == null) throw new InvalidOperationException("Arena room response is missing.");
             roomId = state.room.id;
             activeDraftId = null;
-            return windows.ShowPageAsync(scope => room.OpenAsync(state, scope));
+            return ShowPageWithMail(scope => room.OpenAsync(state, scope));
         }
 
         private async Task OpenDraft(ArenaDraftState state)
@@ -353,7 +359,7 @@ namespace AstralOath.Client.FoundationDemo
                 var draftArt = await assets.LoadAsync<ArenaDraftArt>(ArenaDraftArt.Address, loading);
                 loading.Token.ThrowIfCancellationRequested();
                 if (roomId != state.roomId) return;
-                await windows.ShowPageAsync(scope =>
+                await ShowPageWithMail(scope =>
                 {
                     activeDraftId = state.id;
                     scope.Add(loading.Dispose);
@@ -406,9 +412,9 @@ namespace AstralOath.Client.FoundationDemo
         {
             roomId = null;
             activeDraftId = null;
-            return windows.ShowPageAsync(open);
+            return ShowPageWithMail(open);
         }
 
-        private Task ShowHome() => windows.ShowPageAsync(home.OpenAsync);
+        private Task ShowHome() => ShowPageWithMail(home.OpenAsync);
     }
 }

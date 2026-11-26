@@ -52,6 +52,7 @@ namespace AstralOath.Client.FoundationDemo
 
         internal void Install(BindingScope owner)
         {
+            OwnMail(owner);
             view.Show();
             var canvas = view.Root.AddComponent<Canvas>();
             canvas.overrideSorting = true;
@@ -130,19 +131,21 @@ namespace AstralOath.Client.FoundationDemo
             Tab("inventory", "hero");
             Tab("forge", "forgeEquipment");
             Tab("diagnostics", "diagnostics");
+            Tab("mail", "mail");
             foreach (var category in new[] { "hero", "artifact", "equipment" }) Tab(category, category);
             view.Filter.onValueChanged.AddListener(Search);
             scope.Add(() => view.Filter.onValueChanged.RemoveListener(Search));
             void Search(string _) { Select(null); DrawRows(); }
 
             view.Button("close").Bind(scope, _ => CloseAsync());
-            view.Button("refresh").Bind(scope, _ => FetchAsync(scope, true));
+            view.Button("refresh").Bind(scope, _ => kind == "mail" ? LoadMailCatalogAsync(scope) : FetchAsync(scope, true));
             void Submit()
             {
                 if (reading != scope && (write == null || write.IsCompleted)) write = SubmitAsync(scope);
             }
             Listen(view.Button("submit"), scope, Submit);
             BindForge(scope);
+            BindMail(scope);
             Listen(view.Button("forgeMake"), scope, Submit);
             Listen(view.Button("copy"), scope, () =>
             {
@@ -186,11 +189,11 @@ namespace AstralOath.Client.FoundationDemo
                 snapshot = await api.SendAsync(null, scope.Token);
                 scope.Token.ThrowIfCancellationRequested();
                 Draw();
-                Status(pending == null ? "refreshed" : "uncertain", pending?.key, pending?.value);
+                if (kind != "mail") Status(pending == null ? "refreshed" : "uncertain", pending?.key, pending?.value);
             }
             catch (OperationCanceledException) when (scope.Token.IsCancellationRequested) { }
-            catch (GmRejectedException error) { if (opening == scope) ShowRejection(error); }
-            catch (Exception) { if (opening == scope) Status("offline"); }
+            catch (GmRejectedException error) { if (opening == scope && kind != "mail") ShowRejection(error); }
+            catch (Exception) { if (opening == scope && kind != "mail") Status("offline"); }
             finally { if (reading == scope) reading = null; }
         }
 
@@ -278,13 +281,15 @@ namespace AstralOath.Client.FoundationDemo
         {
             bool diag = kind == "diagnostics";
             bool forge = kind == "forgeEquipment";
-            bool inventory = !diag && !forge && kind != "set";
-            view.Editor.SetActive(!diag && !forge);
+            bool mail = kind == "mail";
+            bool inventory = !diag && !forge && !mail && kind != "set";
+            view.Editor.SetActive(!diag && !forge && !mail);
             view.ForgePanel.SetActive(forge);
+            view.MailPanel.SetActive(mail);
             view.InventoryKinds.SetActive(inventory);
             view.Label("report").gameObject.SetActive(diag);
             view.Button("copy").gameObject.SetActive(diag);
-            foreach (var tab in new[] { "resources", "inventory", "forge", "diagnostics", "hero", "artifact", "equipment" })
+            foreach (var tab in new[] { "resources", "inventory", "forge", "diagnostics", "mail", "hero", "artifact", "equipment" })
             {
                 bool active = tab == kind || tab == "resources" && kind == "set" || tab == "inventory" && inventory ||
                     tab == "forge" && forge;
@@ -296,13 +301,14 @@ namespace AstralOath.Client.FoundationDemo
             view.Label("submitLabel").text = T(pending != null ? "retry" : kind == "set" ? "submit" : "grant");
             view.Label("amountLabel").text = T(kind == "set" ? "targetBalance" : "grantCount");
             if (forge) DrawForge();
+            if (mail) DrawMail();
             DrawRows();
         }
 
         private void DrawRows()
         {
             ClearRows();
-            if (snapshot == null || kind == "diagnostics" || kind == "forgeEquipment") return;
+            if (snapshot == null || kind == "diagnostics" || kind == "forgeEquipment" || kind == "mail") return;
             IEnumerable<string> keys = kind switch
             {
                 "set" => snapshot.resources.Select(row => row.key),
@@ -341,6 +347,7 @@ namespace AstralOath.Client.FoundationDemo
         private string Name(string key)
         {
             if (kind != "set") return itemName(kind, key) ?? key;
+            if (key == "energy") return T("resource.energy");
             try { return T("res." + key); }
             catch (KeyNotFoundException) { return key; }
         }

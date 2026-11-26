@@ -13,6 +13,8 @@ namespace AstralOath.Client.Home
     {
         private WindowCoordinator enhancementWindows;
         private CancellationToken enhancementLifetime;
+        private EquipmentEnhancementBinder activeEnhancement;
+        private Task enhancementLoading = Task.CompletedTask;
 
         private void BindEquipmentEnhancement(BindingScope scope)
         {
@@ -43,8 +45,10 @@ namespace AstralOath.Client.Home
                 var binder = new EquipmentEnhancementBinder(view, scope, locale, api,
                     () => { CloseEquipmentEnhancement(); }, OnEquipmentEnhanced, BindSlotArt, ItemName,
                     StatArt, StatValue, row => L(row.grade) + L(row.slot), row => SetProgress(row));
+                activeEnhancement = binder;
+                scope.Add(() => { if (activeEnhancement == binder) activeEnhancement = null; });
                 scope.Add(view.Hide);
-                _ = LoadEnhancementAsync(binder, item, scope.Token);
+                enhancementLoading = LoadEnhancementAsync(binder, item, scope.Token);
             });
         }
 

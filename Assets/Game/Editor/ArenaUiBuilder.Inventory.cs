@@ -28,6 +28,7 @@ namespace AstralOath.Editor
             font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
             labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
                 .ToDictionary(row => row.key, row => row.text);
+            GenerateMail();
             BuildSummonAssets();
             BuildInventoryAssets();
             SaveInventoryNavigation();

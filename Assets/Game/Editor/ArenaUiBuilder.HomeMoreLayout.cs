@@ -2,6 +2,7 @@ using AstralOath.Client.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 namespace AstralOath.Editor
 {
@@ -30,6 +31,17 @@ namespace AstralOath.Editor
             float right, float width, float height, bool dimmed = false)
         {
             var rect = HomeRightRect(root, name, right, (66 - height) / 2, width, height, Vector2.one);
+            if (texture == "cm_hud_top_btn_mail")
+            {
+                var go = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(MailEntryPath), rect);
+                var nested = (RectTransform)go.transform;
+                nested.anchorMin = Vector2.zero;
+                nested.anchorMax = Vector2.one;
+                nested.offsetMin = nested.offsetMax = Vector2.zero;
+                var image = (Image)go.GetComponent<BindingMap>().Require<GameButton>("button").targetGraphic;
+                image.color = dimmed ? new Color32(255, 255, 255, 100) : Color.white;
+                return image;
+            }
             return Paint(rect, Art(texture, Home), dimmed ? new Color32(255, 255, 255, 100) : Color.white);
         }
 

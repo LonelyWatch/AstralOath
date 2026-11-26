@@ -6,6 +6,7 @@ using AstralOath.Client.Arena;
 using AstralOath.Client.Bootstrap;
 using AstralOath.Client.Common;
 using AstralOath.Client.Home;
+using AstralOath.Client.Mail;
 using AstralOath.Client.Summon;
 using TMPro;
 using UnityEditor;
@@ -45,6 +46,8 @@ namespace AstralOath.Editor
             (SummonPresentationBuilder.AssetPath, SummonPresentation.Address),
             (FeaturedSkillAssetPath, SummonSkillLoop.Address),
             (GmPath, AstralOath.Client.FoundationDemo.DevelopmentGmWindow.Address),
+            (MailWindowPath, MailWindow.Address),
+            (MailEntryPath, MailEntry.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -65,6 +68,7 @@ namespace AstralOath.Editor
             font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
             labels = JsonUtility.FromJson<LabelFile>(File.ReadAllText(Assets[4].Path)).rows
                 .ToDictionary(row => row.key, row => row.text);
+            GenerateMail();
             Save(BuildHome(), Assets[0].Path);
             Save(BuildDevelopmentGmWindow(), GmPath);
             BuildPasswordEntryPrefabs();

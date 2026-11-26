@@ -1,0 +1,1232 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "base_menu",
+      "source": "img/base_menu.png",
+      "sha256": "0227c4e15795cd1ba9da3884dc7dfc83700197e7aec29ac95364da916b2aa447",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/base_menu.png",
+      "size": [
+        256,
+        144
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_box_r_list",
+      "source": "img/_box_r_list.png",
+      "sha256": "cdb27ec0a036f40188d698780d4dec578c195b13b179054ee41bbf27c5fe91e6",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_box_r_list.png",
+      "size": [
+        56,
+        56
+      ],
+      "border": [
+        21,
+        21,
+        21,
+        21
+      ]
+    },
+    {
+      "id": "_box_popup",
+      "source": "img/_box_popup.png",
+      "sha256": "9dbb380a473bef29a13f761dec2f154e790b251c75fb74b998b4fdad80ddde10",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_box_popup.png",
+      "size": [
+        130,
+        232
+      ],
+      "border": [
+        44,
+        48,
+        48,
+        44
+      ]
+    },
+    {
+      "id": "_bar_24",
+      "source": "img/_bar_24.png",
+      "sha256": "7159c23dcff9289f607d83b0232c5b24e6b301767f9d7b08c2c6efc016c061d9",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_bar_24.png",
+      "size": [
+        63,
+        25
+      ],
+      "border": [
+        22,
+        4,
+        38,
+        4
+      ]
+    },
+    {
+      "id": "_bar_1",
+      "source": "img/_bar_1.png",
+      "sha256": "ecfeb37e4bf3ad1994ea4a4c6a7cc753318e8e72aebe3516e668cd8651a11a67",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_bar_1.png",
+      "size": [
+        98,
+        14
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_bar_2",
+      "source": "img/_bar_2.png",
+      "sha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_bar_2.png",
+      "size": [
+        98,
+        10
+      ],
+      "border": [
+        32,
+        4,
+        32,
+        4
+      ]
+    },
+    {
+      "id": "_bar_5",
+      "source": "img/_bar_5.png",
+      "sha256": "06004d98df0583eb406cfe2268a98ee88eef38857cb3b79efe80c7954733db29",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_bar_5.png",
+      "size": [
+        98,
+        10
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_tap_select_blue",
+      "source": "img/_tap_select_blue.png",
+      "sha256": "ab555a1d69626eb0bf71410f16d1c023d8419fa0399faedb0027686df2bb99fe",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_tap_select_blue.png",
+      "size": [
+        116,
+        62
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_btn_green_r",
+      "source": "img/_btn_green_r.png",
+      "sha256": "75d3afda82ffd7635d3ce6b6f7bc8c6a395d553386fb9283c5edb8fd18682925",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_green_r.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        30,
+        14,
+        30,
+        12
+      ]
+    },
+    {
+      "id": "_btn_green_r_p",
+      "source": "img/_btn_green_r_p.png",
+      "sha256": "a313617d3ebbd7ebd39721b8157178f78b47a4b9f20133e5adb6d45915ec0841",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_green_r_p.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        30,
+        14,
+        30,
+        12
+      ]
+    },
+    {
+      "id": "_btn_white_r_p",
+      "source": "img/_btn_white_r_p.png",
+      "sha256": "79d885b7b4c8272a762687b5c072fc2b4f9804600e9e92f71489e29365102531",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_white_r_p.png",
+      "size": [
+        149,
+        61
+      ],
+      "border": [
+        30,
+        14,
+        30,
+        12
+      ]
+    },
+    {
+      "id": "_btn_blue_r_2",
+      "source": "img/_btn_blue_r_2.png",
+      "sha256": "2866a3f9e62e7e730eb03fd5ec22d3aa678f86967022ffd2e1a53acf1e616805",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_blue_r_2.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        30,
+        14,
+        30,
+        12
+      ]
+    },
+    {
+      "id": "_btn_blue_r_p_2",
+      "source": "img/_btn_blue_r_p_2.png",
+      "sha256": "e0d51353cccbf569c40d11296bfa4eccabaec4bffc0a4abb17dfd15e283a3e6e",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_blue_r_p_2.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        30,
+        14,
+        30,
+        12
+      ]
+    },
+    {
+      "id": "_btn_gold",
+      "source": "img/_btn_gold.png",
+      "sha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_gold.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_btn_gold_p",
+      "source": "img/_btn_gold_p.png",
+      "sha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_gold_p.png",
+      "size": [
+        152,
+        61
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_gm",
+      "source": "img/cm_icon_gm.png",
+      "sha256": "1461a5ccd007a06d07fd2d98d74e035ba25d8f7be0f77a5d8075512eb13e1b78",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_gm.png",
+      "size": [
+        41,
+        28
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_mail",
+      "source": "img/cm_icon_mail.png",
+      "sha256": "2dd821ef26f11b9bfc8c0ddf0fbbd06255ec958adf7dbba9557ff0ffba0683d0",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_mail.png",
+      "size": [
+        33,
+        27
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_mail_log",
+      "source": "img/cm_icon_mail_log.png",
+      "sha256": "abf44544bdccbbbea50718e267c9dfc1d40bcf05dc88585c20500c59c4991c17",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_mail_log.png",
+      "size": [
+        33,
+        31
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_etcdown",
+      "source": "img/cm_icon_etcdown.png",
+      "sha256": "df8b91a48190b38298247325fbe813355304b6f5869452de2316d3c8ccf54ecd",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_etcdown.png",
+      "size": [
+        40,
+        40
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_etctime_b",
+      "source": "img/cm_icon_etctime_b.png",
+      "sha256": "18498283d251aca5e2aaf3af40c50b90dfd4a07be136c99c44cf46e3343e67b8",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_etctime_b.png",
+      "size": [
+        28,
+        32
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_sorting",
+      "source": "img/_sorting.png",
+      "sha256": "af6636be567ea6ef58432679a4e9cbe00c4bbe8700582a50705e25cb96ac7c72",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_sorting.png",
+      "size": [
+        28,
+        23
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_itembg_stuff_1",
+      "source": "img/_itembg_stuff_1.png",
+      "sha256": "63c4dfcc900938c8e69f93eb6e115175336f2aa388179c5decb24385c9867afa",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_itembg_stuff_1.png",
+      "size": [
+        96,
+        96
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_itembg_stuff_2",
+      "source": "img/_itembg_stuff_2.png",
+      "sha256": "41a85df7b0dc1209dacc41a3377540b29b2e5e5e3b51eb8e2819e5655155a5bf",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_itembg_stuff_2.png",
+      "size": [
+        96,
+        96
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_box_black_white",
+      "source": "img/_box_black_white.png",
+      "sha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_box_black_white.png",
+      "size": [
+        116,
+        116
+      ],
+      "border": [
+        30,
+        30,
+        30,
+        30
+      ]
+    },
+    {
+      "id": "_box_big_blue",
+      "source": "img/_box_big_blue.png",
+      "sha256": "adb15d35e1ba6ebf0768b2124a51e8f9bc20a7e8f63c5a9fc7df2a4f3c957725",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_box_big_blue.png",
+      "size": [
+        548,
+        140
+      ],
+      "border": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "id": "_frame_s",
+      "source": "img/_frame_s.png",
+      "sha256": "f6eea12d6353f697d98667aa9e5be971079f2016acbfc761754fcdb50c614282",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_frame_s.png",
+      "size": [
+        225,
+        148
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_cm_popup_bg",
+      "source": "img/_cm_popup_bg.png",
+      "sha256": "507d92205452028b02899ce74fda3ddc4e64a421f35b7c7a15c6255869866d68",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_cm_popup_bg.png",
+      "size": [
+        530,
+        395
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_dim",
+      "source": "img/_dim.png",
+      "sha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_dim.png",
+      "size": [
+        160,
+        90
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_cm_popnoti_bg",
+      "source": "img/_cm_popnoti_bg.png",
+      "sha256": "c777f0234957bd5107edacb105cc3f6c93796d099802c9ad50c63dd08c39b897",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_cm_popnoti_bg.png",
+      "size": [
+        624,
+        140
+      ],
+      "border": [
+        50,
+        0,
+        50,
+        0
+      ]
+    },
+    {
+      "id": "cm_icon_etcinfor",
+      "source": "img/cm_icon_etcinfor.png",
+      "sha256": "96591c096eebcd71cb0e0cda2bac0c6e922d00b0746e06dacfab66268ba63f20",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_icon_etcinfor.png",
+      "size": [
+        27,
+        27
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_hud_top_btn_mail",
+      "source": "img/cm_hud_top_btn_mail.png",
+      "sha256": "73d7a6ee2e1c6b6a37a93ec09e3a528a52d075100d045f9122afdac8d1db971d",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_hud_top_btn_mail.png",
+      "size": [
+        59,
+        66
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "cm_hud_top_btn_mail_p",
+      "source": "img/cm_hud_top_btn_mail_p.png",
+      "sha256": "37a61beab8ec80cd09bdef9d7a07ffc60a98610f8b30789e36519f6a5dab9ce8",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cm_hud_top_btn_mail_p.png",
+      "size": [
+        59,
+        66
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_notification_num",
+      "source": "img/_notification_num.png",
+      "sha256": "a6bd8aa4d6022f8aceede6a9938de0a5d9888a5697c998bf7a8eae875035f9fc",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_notification_num.png",
+      "size": [
+        31,
+        30
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "renew_popup_bg_2_alpha",
+      "source": "img/renew_popup_bg_2_alpha.png",
+      "sha256": "5a6f560c1e9ca90bc466fa88b11ae1e4fc140e3da678e31fb2aef481186e8c20",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/renew_popup_bg_2_alpha.png",
+      "size": [
+        256,
+        410
+      ],
+      "border": [
+        0,
+        30,
+        0,
+        30
+      ]
+    },
+    {
+      "id": "renew_popup_bg",
+      "source": "img/renew_popup_bg.png",
+      "sha256": "e8bf7aadd73b22b3e1cdfc5f52b9843c99a3cf4b6fe3af78668e0c415542bfbe",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/renew_popup_bg.png",
+      "size": [
+        366,
+        578
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "_bar_23",
+      "source": "img/_bar_23.png",
+      "sha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_bar_23.png",
+      "size": [
+        74,
+        12
+      ],
+      "border": [
+        30,
+        4,
+        30,
+        4
+      ]
+    },
+    {
+      "id": "_btn_blue_r_3",
+      "source": "img/_btn_blue_r_3.png",
+      "sha256": "ec74a45cc93b0a9b0813fceb0633d9b49d17ff2f1fc54171fd772164f48ca9f6",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_blue_r_3.png",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "id": "_btn_blue_r_p_3",
+      "source": "img/_btn_blue_r_p_3.png",
+      "sha256": "3cfccfb1ed34de80ce970698ec4979f5fa25c9df6934c75b446b7f555e0e0add",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_blue_r_p_3.png",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "id": "_btn_gold_r_2",
+      "source": "img/_btn_gold_r_2.png",
+      "sha256": "847723d45c50505b6eae321dea329e1aebc9b4dcdf8ac32867056fb414375a48",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_gold_r_2.png",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "id": "_btn_gold_r_p_2",
+      "source": "img/_btn_gold_r_p_2.png",
+      "sha256": "1162ea8b10105440656301cf213b3828a96114aeeb6b696099a06bebb4ae67d2",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/_btn_gold_r_p_2.png",
+      "size": [
+        200,
+        128
+      ],
+      "border": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "id": "npc1010_s",
+      "source": "face/npc1010_s.png",
+      "sha256": "abddacfc97ae40ef3f8b8bc8164ee8fc8c2e963a64422363a94fdd9ac07570bd",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/npc1010_s.png",
+      "size": [
+        112,
+        112
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "npc1004_s",
+      "source": "face/npc1004_s.png",
+      "sha256": "382926278938ff06926202538ac248d44e0d025ea21c7b437c35b24e8254caf0",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/npc1004_s.png",
+      "size": [
+        112,
+        112
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "c1001_s",
+      "source": "face/c1001_s.png",
+      "sha256": "6ce6d389ace800dc8b123372c08ffa5145ebbd1bdda4218de3f3aea5a523842b",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/c1001_s.png",
+      "size": [
+        112,
+        112
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "c1005_s",
+      "source": "face/c1005_s.png",
+      "sha256": "1175c518974de77d3763c81918818fc502582b30bfd396c5a0f3ef7c5c9a5242",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/c1005_s.png",
+      "size": [
+        112,
+        112
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_stamina",
+      "source": "item/token_stamina.png",
+      "sha256": "916dc5191ebbd66540a0c1d9b8304b1fa0a57cbb4aa59beb91325827e7242eb4",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_stamina.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_crystal",
+      "source": "item/token_crystal.png",
+      "sha256": "64aa84cfda19556b303a0b86920e517346ff06af3a7d86a285bce39e7553efaf",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_crystal.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_covenant",
+      "source": "item/token_ticket_rare.png",
+      "sha256": "1ff9c137a6f89a3dfae0c9b46759ed51da41933990aeec834dab18f9139f1d36",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_covenant.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_gold",
+      "source": "item/token_gold.png",
+      "sha256": "ca0605538c5670319765b091ae49661f196830f27f56bc600fd8b550df82b03a",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_gold.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_epic",
+      "source": "item/token_ticket_rare.png",
+      "sha256": "1ff9c137a6f89a3dfae0c9b46759ed51da41933990aeec834dab18f9139f1d36",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_epic.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_galaxy",
+      "source": "item/token_ticket_moon.png",
+      "sha256": "78d28612dd8e5e6a15a86bec2f6d999e1b505f41688f402a2d92600348b5f077",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_galaxy.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_mystic",
+      "source": "item/token_ticket_special.png",
+      "sha256": "5d0b919fe8c7ae3dfc76cd98aa58f421c77baac36cacd829119af035696abeb6",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_mystic.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "to_goldtransmit",
+      "source": "item/token_rarecoin.png",
+      "sha256": "205ae4d9f34fb483cb2a1156012a89e87e2f1c3ebd8b1119b2f3d90a7c1bc355",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/to_goldtransmit.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "charm_artifact_1",
+      "source": "item/icon_stone_art1.png",
+      "sha256": "2dd06e333955e2b992b8dac9b19f869f4f57b9ad6c3c51b1115a4543089f42a3",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/charm_artifact_1.png",
+      "size": [
+        116,
+        128
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "charm_artifact_2",
+      "source": "item/icon_stone_art2.png",
+      "sha256": "3739842dec12806cc5dc01614fb0220c733afe51dd68b5d8aab15047e6a29dd8",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/charm_artifact_2.png",
+      "size": [
+        116,
+        128
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "charm_artifact_3",
+      "source": "item/icon_stone_art3.png",
+      "sha256": "f2bfc160ebdddf71f17f8d33749f0230684d8a8da2d7cfacbf4fcda08e30caa2",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/charm_artifact_3.png",
+      "size": [
+        116,
+        128
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bottle",
+      "source": "item/icon_bottle_01.png",
+      "sha256": "3628133e8da8464359bba384045dacef068bae055638e6c04bbe5260a0b9d5f3",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/bottle.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "powder",
+      "source": "item/token_powder.png",
+      "sha256": "080fc529255d145625ab4ec64eaa2d4068f771ea5c780401ecff4fb185a7287e",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/powder.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "gm_gift",
+      "source": "item/sp_promotion_package.png",
+      "sha256": "615d8e72972239917a58b07e82401072aff364e269edf3ea390a84354e6eb7b7",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/gm_gift.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "supply_box",
+      "source": "item/daily_reward_box.png",
+      "sha256": "23677c5e0d2297b03802f19718d0e1639795308d1bcb78dd566cdb8f335ae1cf",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/supply_box.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "art3_1",
+      "source": "item_arti/icon_art3_1.png",
+      "sha256": "8516514bba6f8c54dd76806640c92059707754c5793f0890d4a6ecdccb418387",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/art3_1.png",
+      "size": [
+        116,
+        128
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "weapon",
+      "source": "item/icon_eq_weapon_arena001.png",
+      "sha256": "3a865c2e519db54a8fd66a8d726385d0ecb3cacbef794f5f24e21a3b8bdec926",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/weapon.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "helmet",
+      "source": "item/icon_eq_helm_arena001.png",
+      "sha256": "46cdbb269d09071bbb46dc92a148c89507314b660acfc836de8581b63ee11d84",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/helmet.png",
+      "size": [
+        84,
+        84
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "MailOpen",
+      "source": "sound/ui1.bank event ui-main_hud-btn_mail_0.wav",
+      "bankSha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804",
+      "sha256": "f22dad8988e35fd47c65beca6bd3b0a0451f4db52bc7d97bc8675787d34c84d5",
+      "path": "Assets/Game/Modules/Mail/Res/Sounds/MailOpen.wav"
+    },
+    {
+      "id": "SingleReward",
+      "source": "sound/ui1.bank event ui-gain_rare_0.wav",
+      "bankSha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804",
+      "sha256": "e3d7e4b0a1d7b2682b7a82a5abe793c400c9fe60c505cecd160cb4015bc89469",
+      "path": "Assets/Game/Modules/Mail/Res/Sounds/SingleReward.wav"
+    },
+    {
+      "id": "BundleReward",
+      "source": "sound/ui1.bank event ui-price_clear_0.wav",
+      "bankSha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804",
+      "sha256": "7f38d07535abf04c6db8831fe31c44cf697fb9b387d2806b3e402dcbeb6b29e6",
+      "path": "Assets/Game/Modules/Mail/Res/Sounds/BundleReward.wav"
+    },
+    {
+      "id": "RewardTitle",
+      "source": "sound/ui1.bank event effect-uieff_msgbox_title_0.wav",
+      "bankSha256": "005c2f5479c9bd7c9557f4fbda6cca0dc5fdfcce3d5b67ffe13a74198f23e804",
+      "sha256": "d75739dc8ba39d63b8c8f86ad11aeb56827b7a5d08499798854f76ba11da6146",
+      "path": "Assets/Game/Modules/Mail/Res/Sounds/RewardTitle.wav"
+    },
+    {
+      "id": "RewardTitleFrames",
+      "sources": [
+        {
+          "path": "effect/uieff_msgbox_title.cfx",
+          "sha256": "5f81ef64c64a7b71bd28fc0c3bab37dbf14cf85f8cc87a3151a3cf3615a1f0cf"
+        },
+        {
+          "path": "effect/uieff_msgbox_title.scsp",
+          "sha256": "a5146ebb4e0cc93eb75ef34d55c01094ebd520516c2cd37aa4ed36c24ef662b9"
+        },
+        {
+          "path": "effect/uieff_msgbox_title.sct",
+          "sha256": "8510caed8e9c102378f9bbf755d45d2bc450298fb2b72c8a1b1f268c0cc03d1c"
+        },
+        {
+          "path": "effect/uieff_msgbox_title.atlas",
+          "sha256": "7d2b6320c8179bc57fa40ad66036eac4a41c9a8b4b84c3ad48b4ce2a6ef464a3"
+        }
+      ],
+      "path": "Assets/Game/Modules/Mail/Res/Textures/RewardTitleFrames.png",
+      "sha256": "95689e0fb420167cfb7b7a5d433c87edf0dda9724e153f0f41d8cf9a1e6e7d3f",
+      "frames": 24,
+      "fps": 30,
+      "cell": [
+        1024,
+        192
+      ],
+      "layout": [
+        4,
+        6
+      ],
+      "sourceScale": 0.2,
+      "sampleTimes": [
+        0.0,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.1,
+        0.13333333333333333,
+        0.16666666666666666,
+        0.2,
+        0.23333333333333334,
+        0.26666666666666666,
+        0.3,
+        0.3333333333333333,
+        0.36666666666666664,
+        0.4,
+        0.43333333333333335,
+        0.4666666666666667,
+        0.5,
+        0.5333333333333333,
+        0.5666666666666667,
+        0.6,
+        0.6333333333333333,
+        0.6666666666666666,
+        0.7,
+        0.7333333333333333,
+        0.7666666666666667
+      ]
+    },
+    {
+      "id": "fx_zodiac_star1",
+      "source": "particle/zodiac_star1.sct",
+      "sha256": "9f80904f690d2233af3390fc2aa9b406798758362d86e37d80d999fed5a84cee",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/fx_zodiac_star1.png",
+      "outputSha256": "4bb7595a4f506b6928ce6e7e384b990365353f79bdbe6751a94566ecb228f4d4"
+    },
+    {
+      "id": "fx_pati_03",
+      "source": "particle/pati_03.sct",
+      "sha256": "5b0dea52e1fb929af01a0ed52cfd671d8632532336e98cfec7948b66b42d74b0",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/fx_pati_03.png",
+      "outputSha256": "2f9a947909dd408411a6e000e19b7e24d62f7e03e173423cad10aebdcc8ba692"
+    },
+    {
+      "id": "reward-particles",
+      "source": "effect/ui_reward_popup_pati_blue_copy.particle",
+      "sha256": "0102cdfdc3ee9aa5335b6d7813b69818b3752d9e061b6d1311ef8a7a9296a4ed"
+    },
+    {
+      "id": "cover_gm_gift",
+      "source": "story/bg/img_event_3000days_1.webp",
+      "sha256": "64b4ce7b25293861bb710fbfcf3d8523f171dab62c13795a37f0fc0be86af0d9",
+      "path": "Assets/Game/Modules/Mail/Res/Textures/cover_gm_gift.png",
+      "size": [
+        2400,
+        1080
+      ],
+      "outputSha256": "16b456846fbc458c07b1555c251e4aa6d550cea9e2e6025a5c0fae911c2fde6d"
+    },
+    {
+      "id": "SingleRewardFrames",
+      "sources": [
+        {
+          "path": "effect/item_get_panel_1.scsp",
+          "sha256": "794f7597ced107dc209d27f8bf80af4f49bf3f2e933ea48215d18a043fe7944f"
+        },
+        {
+          "path": "effect/item_get_panel_1.sct",
+          "sha256": "8530089b5e7a6715b1a85d6a5328adc77e941d9d425cdb30c3760999c3fedaf9"
+        },
+        {
+          "path": "effect/item_get_panel_1.atlas",
+          "sha256": "d15fc480d32df35b9c86bb5f9bb7b517f6bc2dd09b22747d6b91a64ca5f29988"
+        },
+        {
+          "path": "effect/item_get_panel_eff_1.scsp",
+          "sha256": "57f656d5f374b71c00ecd4dc8e9f45bcd72893b50db9d1f599db7623ff5c6455"
+        },
+        {
+          "path": "effect/item_get_panel_eff_1.sct",
+          "sha256": "879d323ce8ed1f6e8e14e97580ccb947743b99f931fcba31de6f77ef2a6ddb70"
+        },
+        {
+          "path": "effect/item_get_panel_eff_1.atlas",
+          "sha256": "75ccc20e1719d46b86255a58df0b792f8b9511a0ff8a5896751d6dd029f8ebd0"
+        },
+        {
+          "path": "effect/item_get_panel.cfx",
+          "sha256": "c825e5bebd1e0656214b8f62bb123f1268e21346f08e55d776a062b7fa44fcd7"
+        },
+        {
+          "path": "effect/item_get_panel_eff.cfx",
+          "sha256": "178af4588fd6b3d81e7f69aab2fc62dfd2d63b5c24c6ff2a852cbd9e6b992bdc"
+        }
+      ],
+      "path": "Assets/Game/Modules/Mail/Res/Textures/SingleRewardFrames.png",
+      "sha256": "d34d2f9ddbc829830c970e312f2a078c157098f6da1a065a4284fdb657b740f5",
+      "frames": 64,
+      "fps": 30,
+      "cell": [
+        768,
+        192
+      ],
+      "layout": [
+        4,
+        16
+      ],
+      "sourceScale": 0.51,
+      "sampleTimes": [
+        0.0,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.1,
+        0.13333333333333333,
+        0.16666666666666666,
+        0.2,
+        0.23333333333333334,
+        0.26666666666666666,
+        0.3,
+        0.3333333333333333,
+        0.36666666666666664,
+        0.4,
+        0.43333333333333335,
+        0.4666666666666667,
+        0.5,
+        0.5333333333333333,
+        0.5666666666666667,
+        0.6,
+        0.6333333333333333,
+        0.6666666666666666,
+        0.7,
+        0.7333333333333333,
+        0.7666666666666667,
+        0.8,
+        0.8333333333333334,
+        0.8666666666666667,
+        0.9,
+        0.9333333333333333,
+        0.9666666666666667,
+        1.0,
+        1.0333333333333334,
+        1.0666666666666667,
+        1.1,
+        1.1333333333333333,
+        1.1666666666666667,
+        1.2,
+        1.2333333333333334,
+        1.2666666666666666,
+        1.3,
+        1.3333333333333333,
+        1.3666666666666667,
+        1.4,
+        1.4333333333333333,
+        1.4666666666666666,
+        1.5,
+        1.5333333333333334,
+        1.5666666666666667,
+        1.6,
+        1.6333333333333333,
+        1.6666666666666667,
+        1.7,
+        1.7333333333333334,
+        1.7666666666666666,
+        1.8,
+        1.8333333333333333,
+        1.8666666666666667,
+        1.9,
+        1.9333333333333333,
+        1.9666666666666666,
+        2.0,
+        2.033333333333333,
+        2.066666666666667,
+        2.1
+      ]
+    }
+  ],
+  "notes": "Native mail CSB caps and source hashes. Cover identity: img_event_3000days_1.webp and _frame_s.png, presentation only. Title source Spine sampled without runtime dependency; source particles use local deterministic randomness and calibrated units. Audio actual auditory review pending."
+}

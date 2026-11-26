@@ -1,6 +1,7 @@
 {
   "name": "AstralOath.Client.PlayMode",
   "references": [
+    "AstralOath.Client.Mail",
     "AstralOath.Battle",
     "AstralOath.Client.BattleScene",
     "AstralOath.Client.Arena",

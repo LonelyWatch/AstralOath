@@ -12,6 +12,22 @@ Windows 召唤冒烟从主页实际进入卡池，读取实时技能的 GPU 目�
 
 开发构建登录后显示 GM 悬浮入口。资源页设置钱包和材料的绝对余额，库存页可搜索并发放英雄、神器和训练装备，锻造页可为当前账号生成自定义普通装备，诊断页可查看和复制当前运行信息。独立窗口地址为 `development/gm-window`。操作沿用当前账号会话，断线重试沿用请求 ID，账号退出时释放窗口与绑定。
 
+### 开发 GM 邮件
+
+邮件作为独立的第五个模块，沿用用户确认的帮助入口和深色弹窗；制作前实际查看的样式依据是主工作区 `.artifacts/gm-r34/screens/inventory.png`。此前 GM 无发信页。左列滚动选择模板，中列编辑普通/GM行为类型、发件人、纯文本标题正文、有效期与已选附件，右列按服务器目录分类/搜索附件并填数量。维护、活动、通知等为独立模板用途，不从发件人名字判断信件类型。类型、发件人、合法资源、礼包和数量/长度边界统一读取 `GET /api/mail/catalog`，不另写奖励规则。
+
+`DevelopmentGmWindowBinder.ConfigureMail(MailSession session, DevelopmentGmMailApi api)` 在登录安装 GM 前注入；API 使用 `DevelopmentGmMailApi(Uri endpoint, Func<CancellationToken, Task<string>> bearer)`。`Install(owner)` 负责释放此 API 和登录级发送意图，不释放共享 MailSession。目录和预览读取受开窗 scope 取消；发送使用登录生命周期及20秒超时，关窗只取消界面等待，未决请求仍保留原 `previewId/requestId`。重开后可重试原请求，正在提交时锁定草稿并阻止双击重复 POST；收到成功回执后只能显式点「再发一封」才重新预览并创建新 request。明确拒绝后可修改草稿重新预览。
+
+点击「生成真实预览」调用 `/api/development/gm/mail/preview`，只提交类型、模板、正文、附件和有效期，不带收件身份字段。服务器冻结页只读显示当前玩家/区服、一位收件人、发件人、正文、附件、实际合计奖励及预览有效时刻，用户确认后调用 `/api/development/gm/mail/send`。发送只更新共享邮箱摘要，不触发库存/钱包校准；玩家领取后的入账归 MailSession 和主导航处理。多人/白名单/黑名单/整区入口只属于服务端运营工具，不在客户端 GM。
+
+编辑入口为 `Assets/Game/Editor/ArenaUiBuilder.DevelopmentGm{,.Mail}.cs`，调用 `ArenaUiBuilder.GenerateDevelopmentGmWindow` 输出同 GUID 的 `Res/Prefab/DevelopmentGmWindow.prefab`，地址仍是 `development/gm-window`。新预制绑定 `mailPanel/mailCompose/mailPreview`、四个滚动区域 `mailTemplates/mailResources/mailAttachments/mailFrozen` 与纯文本 `mailFrozenText`；业务 Binder 不挂预制。
+
+纯逻辑 `GmMailIntentTests` 已通过同一测试源的 .NET10 断言适配运行，实际 RED 为「预览期间 form 未锁」断言失败(exit1)，GREEN 覆盖预览/发送锁定、双击单次提交、关窗、丢回执、同 request/preview 重试、明确再发与关窗后迟到成功仍通知共享邮箱。`GmMailApiTests` 验证类型化自发草稿不带收件字段、send只带冻结意图和稳定错误不回显正文。独立 `.6:7728` QA账号的真实目录→预览→发送→同请求重试返回同delivery/batch，发送前后全部钱包/材料resources完全相同，未领取该信；原始实服回执在 `api-green.log`。命令入口及日志统一见 `.artifacts/mail-system-review/gm-tests/{GmTests.csproj,red.log,green.log,api-green.log}`。
+
+复审实际发现 `GameButton.Bind` 随隐藏区域 `OnDisable` 解绑，切模块返回后预览无响应。`GmMailBindingTests` 先取得有效 PlayMode RED（预览请求 expected1/actual0），改为随开窗作用域清理的 `Listen`、保留业务意图提交门闩后，图形 PlayMode 1/1通过，覆盖切模块、预览→修改→预览、发送→再发→预览→发送，并断言发送不调用钱包/库存校准。联合图形 EditMode 14/14通过，包括状态3/API2/新布局4/旧GM布局5；命令是Unity `-runTests -testPlatform PlayMode -testFilter GmMailBindingTests` 与 `-testPlatform EditMode -testFilter "GmMailIntentTests|GmMailApiTests|GmMailLayoutTests|DevelopmentGmLayoutTests"`。回执为 `gm-tests/{binding-red,binding-green,edit-green}.{log,xml}`，无许可阻塞冒充失败测试。
+
+制作后已实际逐张查看 `gm-tests/screens/gm-compose-{1080,4k,narrow}.png`、`gm-preview-1080.png` 与 `gm-sent-1080.png`，确认 1920×1080、3840×2160和1440×1080布局、模块分类、草稿、冻结预览及成功回执清晰且无重叠；标签字符串按纯文本显示。上述图形使用受控API响应及独立GM窗口，只证明该页的布局/交互，真实发信及余额证据独立记录，不冒充原生登录整合实测。新页此前不存在；旧 GM 图片仅作已认可风格依据。原生整合、本轮邮件热更分发尚未执行。未新增专属动画/音效，按钮复用现有反馈；本页按钮听感尚未实听。
+
 在 GM 的「锻造」页依次选择部位、装备等级、品质、套装和主属性，输入强化等级，页面会预览主属性数值，显示已经解锁的副属性行。每行选择属性、填写累计掷数和最终数值，百分比属性直接按百分数填写。70、85 级装备可选 +0 至 +15，90 级固定 +15。一次可生成 1 至 10 件。界面从当前开发服获取规则，检查重复属性、数值区间和可分配掷数，成功后再次进入背包可查看装备。缺少锻造规则的旧服会显示不可用。服务端的 15 项规则和接口测试已通过，Windows 开发母包中的可见性、生成、关窗返回与库存刷新需在目标版本实测。[锻造规则与验收范围](../../../../Server/README.md#开发-gm-自定义锻造)
 
 点击「生成」后，数量、强化等级、属性行和生成按钮会锁定。若回执丢失，按钮变为「重试原请求」，沿用原请求 ID 和完整配方。收到成功回执后可编辑下一件。PlayMode 用例 `GmActionsRetryAndRefreshTheAccount` 拦住一笔两件的请求，尝试点击数量框改为八件，再模拟 HTTP 503 和重试。修复前提交期间仍能编辑，修复后第一次和第二次请求的完整内容相同，界面始终显示两件。两次结果分别在 `.artifacts/equipment-manage-followup/revision/gm-forge-freeze-red.xml` 和 `gm-forge-freeze-green.xml`。
@@ -93,3 +109,11 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 登录黑屏期间并行取得英雄、神器、普通装备和召唤首屏数据，并预解析默认持有英雄的立绘。英雄页、背包和竞技场目录在同一个 GameHome 场景中切换。持有数据、页面资源、已经解析的英雄立绘由该账号本次登录持有，进入及退出战斗场景后继续复用。关闭页面释放演员、摄像机、渲染目标和页面事件，退出登录释放会话缓存。召唤和保管箱领取取得权威回执后，按实例 ID 把实发奖励加入对应库存。服务端明确拒绝时保留原库存，提交后失联等结果不确定的情况立即发起权威校准。神器穿脱、强化、锁定和出售沿用神器库存失效机制。召唤横幅与免费重置时间保留原有时效检查。[导航与账号隔离](../../../../docs/delivery/2026-11-21-hero-layout-and-navigation.md)
 
 普通装备在当前登录持有带版本的快照。穿戴、替换和卸下成功后，权威回执直接更新缓存。重复送达的旧版本回执不能覆盖新值。窗口回到前台时，用 HEAD 和已知版本验证装备库存。304 保留快照，版本变化才补读并通知打开的装备页。写入冲突或提交结果不确定也触发装备补读，英雄和神器继续使用各自快照。
+
+### 邮件登录协调（11/27，联调中）
+
+`StartupNavigation.Mail.cs`在登录作用域创建MailApi/MailSession，订阅失效、确定回执与已发送但结果不明事件。初次摘要读取限5秒，订阅断线由Mail重连补读；正文和列表是独立overlay，关闭保留底下原页面。领取/不明结果使FirstReads失效并原地刷新现有Binder，不能通过重开页面丢弃页签、筛选、实例选择或滚动。此项正与Home/Summon联合回归，尚非原生分发结论。
+
+`MailEntryBinder.cs`为缓存顶栏持有页面作用域监听，避免GameButton.Bind在更多菜单隐藏后解绑导致第二次点击失效；手动监听同样在页面销毁时移除并防重复打开。真实Unity失败1项→绿色1项回执在`.artifacts/mail-system-review/tests/header-reopen-{red,green}.xml`。图标和角标共用MailEntry嵌套预制，生成源ArenaUiBuilder.HomeMoreLayout；MailWindow由独立sorting100 Canvas持有，开发GM为150。登录退出销毁portal、取消订阅与未决请求。
+
+同一原地刷新也用于开发GM资源写后的页面校准，GM关闭后不再重建英雄/装备/召唤页面；登录缓存先失效，真实材料和钱包重新读取，再补邮件摘要的独立资源revision。邮件发送本身不触发此发奖校准；仅领取/写入资源才改变真实数据。

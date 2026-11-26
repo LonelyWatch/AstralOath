@@ -156,6 +156,56 @@ namespace AstralOath.Client.Home
             Refresh();
         }
 
+        internal async Task RefreshExternalAsync(EquipmentInventorySnapshot incoming, CancellationToken token)
+        {
+            using var linked = CancellationTokenSource.CreateLinkedTokenSource(token, scope.Token);
+            linked.CancelAfter(TimeSpan.FromSeconds(15));
+            while (submitting || animating) await Task.Delay(50, linked.Token);
+            linked.Token.ThrowIfCancellationRequested();
+            // A readback cannot rewrite an already dispatched recipe or its original expected version.
+            if (retryMaterials != null || target == null || incoming == null || inventory != null && incoming.version < inventory.version) return;
+            var fresh = incoming.items.FirstOrDefault(item => item.instanceId == target.instanceId);
+            if (fresh == null) { back(); return; }
+            bool targetChanged = JsonUtility.ToJson(target) != JsonUtility.ToJson(fresh);
+            inventory = incoming;
+            target = fresh;
+            if (targetChanged)
+            {
+                selected.Clear();
+                requestId = null;
+                lastResult = null;
+                resultDisplay = new EquipmentEnhancementResultDisplay(target);
+                resultSweepStart = -1;
+                UpdateResultSweeps();
+                if (rules != null)
+                    profile = rules.profiles.FirstOrDefault(row => row.itemLevel == target.itemLevel && row.grade == target.grade &&
+                        row.slot == target.slot && row.mainKind == target.mainStat.kind);
+                Get<GameObject>("quantityPopup").SetActive(false);
+                message = L("conflict");
+            }
+            else
+            {
+                foreach (string kind in selected.Keys.ToArray())
+                {
+                    int available = (int)Math.Min(int.MaxValue, Math.Max(0, Balance(kind)));
+                    if (available == 0) selected.Remove(kind);
+                    else selected[kind] = Math.Min(selected[kind], available);
+                }
+                if (Get<GameObject>("quantityPopup").activeSelf)
+                {
+                    int quantity = (int)Get<Slider>("quantitySlider").value;
+                    var material = materials.FirstOrDefault(row => row.id == quantityKind);
+                    Get<GameObject>("quantityPopup").SetActive(false);
+                    if (material != null)
+                    {
+                        OpenQuantity(material);
+                        Get<Slider>("quantitySlider").value = Mathf.Clamp(quantity, 1, Math.Max(1, quantityLimit));
+                    }
+                }
+            }
+            Refresh();
+        }
+
         private void BindLabels()
         {
             foreach (var key in new[] { "title", "materialsTitle", "scoreLabel", "overflow", "arcaneLabel", "quantityTitle", "quantityInstruction" })

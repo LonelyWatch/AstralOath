@@ -1,0 +1,11 @@
+{
+  "references": [
+    "AstralOath.Client.Core",
+    "AstralOath.Client.Common",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
+  ],
+  "name": "AstralOath.Client.Mail",
+  "autoReferenced": false,
+  "rootNamespace": "AstralOath.Client.Mail"
+}

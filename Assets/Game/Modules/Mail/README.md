@@ -1,0 +1,50 @@
+# Mail
+
+## 职责、地址与接入
+
+独立热更业务模块，仅引用Core/Common、TMP和UGUI。`MailWindow : UIBaseView` / `MailWindowBinder`为普通C#；MailWindow.prefab、MailEntry.prefab只挂BindingMap和基础控件，不挂业务组件。Foundation拥有登录scope和页面返回，Mail不反向引用Foundation/Home。
+
+- `MailWindow.Address = mail/window`；`MailEntry.Address = mail/header-entry`。Entry绑定button/count/counter/audio，audio为原btn_mail的AudioSource，按钮FeedbackSound=Silent。
+- `new MailApi(Uri endpoint, Func<CancellationToken,Task<string>> bearer)`；可注入HttpMessageHandler用于真实transport边界测试。协议使用后端camelCase契约，奖励规则唯一源为`Config/Mail/catalog.json`，客户端不决定奖励或重随机。
+- `new MailSession(IMailApi)`由每次登录持有。公开Summary、Changed、Invalidated、Claimed、Uncertain及RefreshAsync/ObserveAsync/ListAsync/ClaimAsync/ClaimAllAsync/RetryPendingAsync。退出账号Dispose，不能跨登录重用。
+- `new MailWindowBinder(MailWindow view, BindingScope scope, ILocaleService locale, MailSession session, Action close, Func<MailClaimReceipt,CancellationToken,Task> reconcile)`后调用InitializeAsync(token)。同一个缓存View可以每次新建Binder/scope；关闭不Dispose登录session。
+
+## 收信与一致性
+
+收件/历史按服务器结果展示。普通信直接领；GM先正文、点击收信才提交；打开正文/附件不减数。批领只提交确认时的deliveryIds快照，取消不POST；GM由服务端排除。奖励仅由权威回执显示，特殊gmGift同一次claim先封面、点击再道具，不第二次发奖。
+
+页面取消只结束等待；已dispatch请求由登录token继续。IO/超时/5xx等不确定结果触发一次Uncertain，保留原requestId。Claimed包含完整affectedKinds供登录级库存/钱包校准，页面关闭后仍触发。明确4xx移除已知失败意图且不触发Uncertain。重新开页先RetryPendingAsync，不依赖旧邮件行还可见；账号退出清理全部意图。
+
+mailbox.version、energy.revision和balances.revision分别单调合并；同邮箱版本可接受较高资源revision，新邮箱版本不能倒写旧余额。旧成功回执缺balances或revision为0时不覆盖已有新资源。首次摘要落后已知事件版本直接丢弃；serverUtc只向前更新。金币/天空石/行动力显示真实余额，未实现的PVP旗帜不造固定数字。
+
+HTTP20秒、事件心跳失活40秒；事件重连补摘要。NDJSON在累积第4097字符时中断，不先缓存整条无换行消息。迟到列表/正文有版本及tab/read意图generation守卫，切tab取消旧Read；关闭取消网络等待、移除监听/行实例/动画订阅。所有自由标题/正文richText=false，长正文可滚动。固定文案集中MailLabels稳定key，未完成的实现状态不放玩家提示。
+
+## 原素材与生成
+
+运行前初始化Tools/ProjectEnvironment.ps1。使用项目`.tools/character-assets/Scripts/python.exe Tools/Mail/ImportMailAssets.py`最小导入，D:/sevenepic只读；音频输入是本次原声审计导出的4条FMOD WAV，需保留`.artifacts/mail-reference/1122-audio/sources`。来源/原始哈希/输出哈希、尺寸、切片见`Res/mail-source.json`。当前为62张原PNG、2400×1080原WebP解码、2张原SCT粒子贴图解码、原标题24帧图集、单项蓝条64帧图集及4条原音；不含整目录导入。
+
+- 邮件胶囊绿按钮cap(30,12,92,35)→Unity(30,14,30,12)，不同于装备直边。正文_box_popup cap(44,44,38,140)→(44,48,48,44)；行_box_r_list边21；正文_bar_24 cap(22,4,3,17)并使用原蓝色(42,70,116)。确认金/蓝按钮200×128原cap(100,64,1,1)，不能按152×61绿色按钮切片。
+- GM蓝龙npc1010_s、送货员npc1004_s；紫金邮件礼物箱为实际查看后确认的item/sp_promotion_package.png，棕红sp_7th_giftbox不是该封箱。头像使用已有圆框，头像内缩避免盖框。
+- 第一阶段插画准确源为story/bg/img_event_3000days_1.webp；原框img/_frame_s.png。保留完整原图，在UI的217×123参考viewport等比放大裁切，不拉扁、不以纯色代替。源图/框的确认不意味着服务端授予了插画解锁；本项目该状态为礼包presentation。
+- 标题原源uieff_msgbox_title的SCSP/CFX曲线由现有Spine38离线采样成24帧30fps图集，1024×192单帧、4×6排列4096×1152。明确ImportOverride、RGBA32、sRGB=false、平台max4096；Unity测试实际重导后检查GPU尺寸/格式。运行时RawImage与既有UiTouchPulse材质，不增加Spine运行时依赖。单项原蓝条按item_get_panel.cfx / item_get_panel_eff.cfx实际指向的_1版Spine3.8 intro/loop及intro动画采样，保留SkeletonClipping；64帧30fps、768×192单帧、4×16排列3072×3072，显式RGBA32/max4096。所有采样时间与源链哈希由同一导入器生成到mail-source，不依赖手留的临时脚本。
+- 原ui_reward_popup_pati_blue_copy的3个emitter与原zodiac_star1/pati_03贴图接入UGUI；参数由导入器生成，不手改Generated数据。随机种子及显示单位缩放为项目复现参数，不能称逐粒子与录像一致。源音沿已有UiAudioPlayback AudioClip入口，关窗0.20秒淡出，没有扩Common/AOT音效枚举。
+
+`AstralOath.Editor.ArenaUiBuilder.GenerateMail`先生成MailEntry，再MailWindow；协调者全Generate额外重建各页嵌套顶栏。新增meta由Unity生成并保留，不重建旧GUID。
+
+## 实际验证与证据边界
+
+- 原片文件名日期2026-11-22，版本/原作发布日期/可见倍速未知。已实际查看原版收件、历史、正文、附件、批领确认/取消、两阶段礼包、单项提示、空箱及连续联系图。源封面与框调查为`.artifacts/mail-system-review/cover-reference/located/README.md`；紫金箱候选与精确源亦已实际查看。
+- 独立.NET10同源Session行为现8/8通过，保留每次真实RED→GREEN：旧GET防回退、同request重试、关页保留回执、Claimed、energy/balances独立revision、Uncertain+脱离旧行重试、首次落后事件摘要NRE。命令`.tools/dotnet/dotnet.exe run --project .artifacts/mail-system-review/session-tests/MailSessionTests.csproj`，各阶段txt在同目录。
+- Unity预制最初2/2实际RED（缺真实预制）后GREEN。最后联合Edit15/15实际通过，含真实HttpMessageHandler丢回执/4xx/NDJSON与实际GPU导入断言；该次回执`.artifacts/mail-system-review/tests/client-Edit.xml`。该次包含首次旧摘要回归。最后布局/数量适配另有下述实际图形验证；Root并行集成与Native仍需最终联合验收。
+- 受控图形完整流程已实际通过一次：5封→批领取消→5→2 GM→仅GM提示→正文/附件保留下层→同次封面/2-5-5→1→行动力→0→历史GM再看不写入。1080p、4K、4:3截图已经生成并实际查看；属于客户端受控权威响应，不能代替真实数据库或Native。迟到Read在Unity有效RED后修复，最后Play2/2已绿（`tests/client-Play.xml`）；奖励数量曾因小框省略，已新增实际字形可见断言并真RED1/2→GREEN2/2，回执`tests/reward-quantity-red.xml`。单项蓝条另录70连续帧与实测Time.unscaledTime，已实际看联系图，静默视频已编码/完整解码：after/single-bluebar-editor-silent.mp4、single-bluebar-times.csv；不是Native录像，不假定采样间隔为30fps。
+- 可打开原版/修改前基线/修改后图录为`.artifacts/mail-system-review/client-comparison.html`；修改前没有邮件页面。截图after目录会随最终联合回归更新，签名包/原生/分发状态由协调者交付文档给出，不能从旧截图外推。
+
+## 仍有差异与待核
+
+排序展开、纯文本/选一、即时满箱/满背包、开信时到期缺同版参考；排序当前保持接收时间新→旧，只提示该事实。特殊礼包封面身份已定位，奖励语义不由文件名推定。淡入曲线约0.20/0.16秒及行框运行时色调是复现参数，未证明原Tween精确曲线。
+
+单项蓝条的CFX资产调用链与骨骼动画已接入，原版业务调用的准确倍率、267ms附带粒子和与录像逐帧绝对同步仍未恢复；不把原源烘帧等同完整原效果。原粒子细节、所有状态原生1080p/4K、两账号实时通知与旧token、实际声音听感仍由协调者最终联合验收；本代理未实际试听，不把PCM/波形检查冒充听感。R37兼容检查、热更登记、签名R38和分发由协调者负责。源码/资源/README/变更日志须同批提交。
+
+11/27交接前最后修正：to_covenant改用既有Summon余额同源的item/token_ticket_rare.png，修正误用绿色友情书签；只改展示图索引，不改奖励数量或规则。受控after旧图里的绿色书签是该纠正前快照，最终分发版以协调者重拍Native图为准。
+
+`MailEntryBinder.Bind`提供顶栏入口的页面作用域监听，业务Binder命名与MailEntry预制一致；缓存入口隐藏不解绑，页面结束才精确移除自己的监听。Foundation只注入开窗动作，不再持有另一份入口业务绑定。

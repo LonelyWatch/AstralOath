@@ -1,6 +1,7 @@
 {
   "name": "AstralOath.Client.EditMode",
   "references": [
+    "AstralOath.Client.Mail",
     "AstralOath.Client.Core",
     "AstralOath.Client.Common",
     "AstralOath.Client.Home",
