@@ -19,6 +19,14 @@ mailbox.version、energy.revision和balances.revision分别单调合并；同邮
 
 HTTP20秒、事件心跳失活40秒；事件重连补摘要。NDJSON在累积第4097字符时中断，不先缓存整条无换行消息。迟到列表/正文有版本及tab/read意图generation守卫，切tab取消旧Read；关闭取消网络等待、移除监听/行实例/动画订阅。所有自由标题/正文richText=false，长正文可滚动。固定文案集中MailLabels稳定key，未完成的实现状态不放玩家提示。
 
+### 协议 JSON 与嵌套礼包（11/27 原生修复）
+
+Native候选39实际返回HTTP200且预览基础字段有效，但`JsonUtility`解析后的`mail/totalRewards`均为null，证据见 `.artifacts/mail-system-review/native-mail/runs/diagnostic39/player.log`。同源Mono对真实后台能解析，却产生递归`MailReward.children`的Unity TypeTree深度告警；因此Mono通过和AOT成员兼容检查都不足以证明该Native序列化桥接成立。
+
+MailApi与开发GM Mail API现统一沿用现有SummonApi已经Native验证的`JsonConvert.SerializeObject(object)` / `JsonConvert.DeserializeObject<T>(string)`，复用项目已安装及R37母包保留的Newtonsoft.Json预编译插件，没有新增库、版本、AOT或第三方改动。写请求、读普通响应/稳定错误码及事件行均使用同一路径；保持默认`TypeNameHandling.None`，不启用类型名构造或放宽库默认深度界。无效JSON包装为固定文案IOException，不携带正文片段。HTTP8Mi字符、20秒、NDJSON4096字符、40秒心跳、取消及`dispatched`时机均保持原语义，`[NonSerialized] dispatched`不写进协议。
+
+服务器允许礼包递归到depth8，客户端保留原`MailReward.children`完整树及服务端另行flatten的rewards，没有用一层leaf模型截掉嵌套信息。`GmMailWireTests`用JsonConvert写入合法八层bundle→末层137书签的HTTP fixture，覆盖玩家list/read/claim及GM preview/receipt，逐层核对children、末层数量、复合余额及无Unity TypeTree告警。旧实现实际RED2/2为零告警断言遇到2/3条原生TypeTree告警，叶数据在该Mono环境仍保留，不能表述为Mono丢树；Native39字段全null是独立实际失败。日志和XML在 `.artifacts/mail-system-review/gm-tests/wire-depth-{red,green}.{log,xml}`；最终Native内容40由协调者构建并验收，Editor结果不能替代原生闭环。
+
 ## 原素材与生成
 
 运行前初始化Tools/ProjectEnvironment.ps1。使用项目`.tools/character-assets/Scripts/python.exe Tools/Mail/ImportMailAssets.py`最小导入，D:/sevenepic只读；音频输入是本次原声审计导出的4条FMOD WAV，需保留`.artifacts/mail-reference/1122-audio/sources`。来源/原始哈希/输出哈希、尺寸、切片见`Res/mail-source.json`。当前为62张原PNG、2400×1080原WebP解码、2张原SCT粒子贴图解码、原标题24帧图集、单项蓝条64帧图集及4条原音；不含整目录导入。

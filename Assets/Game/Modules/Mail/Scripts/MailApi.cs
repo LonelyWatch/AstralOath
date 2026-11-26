@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
+using Newtonsoft.Json;
 using UnityEngine.Scripting;
 namespace AstralOath.Client.Mail
 {
@@ -45,7 +45,13 @@ namespace AstralOath.Client.Mail
             if (string.IsNullOrWhiteSpace(value)) throw new MailRequestException(HttpStatusCode.Unauthorized, "unauthorized");
             var request = new HttpRequestMessage(body == null ? HttpMethod.Get : HttpMethod.Post, new Uri(endpoint, "/api/mail/" + path));
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", value);
-            if (body != null) request.Content = new StringContent(JsonUtility.ToJson(body), Encoding.UTF8, "application/json");
+            if (body != null)
+            {
+                string json;
+                try { json = JsonConvert.SerializeObject(body); }
+                catch (JsonException) { throw new IOException("Invalid mail request."); }
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            }
             return request;
         }
         private async Task<T> Send<T>(string path, object body, CancellationToken token) where T : class
@@ -77,11 +83,11 @@ namespace AstralOath.Client.Mail
             if (!response.IsSuccessStatusCode)
             {
                 string code = "mail_request_failed";
-                try { code = JsonUtility.FromJson<Error>(content.ToString())?.error ?? code; } catch (ArgumentException) { }
+                try { code = JsonConvert.DeserializeObject<Error>(content.ToString())?.error ?? code; } catch (JsonException) { }
                 throw new MailRequestException(response.StatusCode, code);
             }
-            try { return JsonUtility.FromJson<T>(content.ToString()) ?? throw new IOException("Invalid mail response."); }
-            catch (ArgumentException) { throw new IOException("Invalid mail response."); }
+            try { return JsonConvert.DeserializeObject<T>(content.ToString()) ?? throw new IOException("Invalid mail response."); }
+            catch (JsonException) { throw new IOException("Invalid mail response."); }
         }
         public async Task WatchAsync(Action<long> version, CancellationToken token)
         {
@@ -101,7 +107,9 @@ namespace AstralOath.Client.Mail
                     string line = await ReadEventLineAsync(reader, deadline.Token);
                     if (line == null) return;
                     deadline.CancelAfter(TimeSpan.FromSeconds(40));
-                    var item = JsonUtility.FromJson<VersionEvent>(line);
+                    VersionEvent item;
+                    try { item = JsonConvert.DeserializeObject<VersionEvent>(line); }
+                    catch (JsonException) { throw new IOException("Invalid mail event."); }
                     if (item != null) version(item.version);
                 }
             }

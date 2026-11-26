@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -78,7 +79,13 @@ namespace AstralOath.Client.FoundationDemo
             if (string.IsNullOrWhiteSpace(credential)) throw new GmMailRejectedException(401, "unauthorized");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", credential);
             stage?.Invoke("serialize");
-            if (body != null) request.Content = new StringContent(JsonUtility.ToJson(body), Encoding.UTF8, "application/json");
+            if (body != null)
+            {
+                string json;
+                try { json = JsonConvert.SerializeObject(body); }
+                catch (JsonException) { throw new IOException("Invalid GM mail request."); }
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            }
             stage?.Invoke("headers");
             using var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
             stage?.Invoke("body_stream");
@@ -103,13 +110,14 @@ namespace AstralOath.Client.FoundationDemo
                 if (status < 500 && status != 408 && status != 429)
                 {
                     string code = "mail_request_failed";
-                    try { code = JsonUtility.FromJson<Problem>(content.ToString())?.error ?? code; } catch (ArgumentException) { }
+                    try { code = JsonConvert.DeserializeObject<Problem>(content.ToString())?.error ?? code; } catch (JsonException) { }
                     throw new GmMailRejectedException(status, code);
                 }
                 throw new IOException("GM mail service unavailable.");
             }
             stage?.Invoke("deserialize");
-            return JsonUtility.FromJson<T>(content.ToString()) ?? throw new IOException("Invalid GM mail response.");
+            try { return JsonConvert.DeserializeObject<T>(content.ToString()) ?? throw new IOException("Invalid GM mail response."); }
+            catch (JsonException) { throw new IOException("Invalid GM mail response."); }
         }
         public void Dispose() => http.Dispose();
     }

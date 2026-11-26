@@ -10,6 +10,16 @@ namespace AstralOath.Client.Tests
 {
     public sealed class GmMailApiTests
     {
+        [Test] public void NativePreviewDiagnosticsRequireDevelopmentLoopbackAndExplicitSmokeFlag()
+        {
+            var local = new Uri("http://127.0.0.6:7728");
+            var requested = new[] { "-astral-mail-smoke" };
+            Assert.That(DevelopmentGmMailApi.PreviewDiagnosticsAllowed(true, local, requested), Is.True);
+            Assert.That(DevelopmentGmMailApi.PreviewDiagnosticsAllowed(false, local, requested), Is.False);
+            Assert.That(DevelopmentGmMailApi.PreviewDiagnosticsAllowed(true, new Uri("https://example.invalid"), requested), Is.False);
+            Assert.That(DevelopmentGmMailApi.PreviewDiagnosticsAllowed(true, local, Array.Empty<string>()), Is.False);
+            Assert.That(DevelopmentGmMailApi.PreviewDiagnosticsAllowed(true, null, requested), Is.False);
+        }
 #if UNITY_EDITOR
         [UnityEngine.TestTools.UnityTest] public System.Collections.IEnumerator PreviewUsesTypedSelfDraftAndSendContainsOnlyItsFrozenIntentUnity() { var task = PreviewUsesTypedSelfDraftAndSendContainsOnlyItsFrozenIntent(); while (!task.IsCompleted) yield return null; task.GetAwaiter().GetResult(); }
         [UnityEngine.TestTools.UnityTest] public System.Collections.IEnumerator StableRejectionDoesNotPutDraftOrResponseBodyInExceptionTextUnity() { var task = StableRejectionDoesNotPutDraftOrResponseBodyInExceptionText(); while (!task.IsCompleted) yield return null; task.GetAwaiter().GetResult(); }
