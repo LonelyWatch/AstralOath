@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json;
 using AstralOath.Server.Inventory;
 using AstralOath.Server.Entry;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -6,6 +7,60 @@ using Xunit;
 
 public sealed class EquipmentEnhancementTests
 {
+    [Fact]
+    public void ExistingSubstatCountsAdvanceForEveryMilestoneWhileUnselectedStatsKeepZero()
+    {
+        var item = EpicWeapon() with { Substats = [new("healthPct", 400, 0), new("speed", 2, 0),
+            new("critChanceBp", 300, 0), new("critDamageBp", 400, 0)] };
+        var after = EquipmentEnhancementEngine.Calculate(item, [new("ma_est6e", 7)], _ => 0).After;
+        var rows = JsonSerializer.SerializeToElement(after.Substats, JsonSerializerOptions.Web);
+        Assert.Equal(5, rows[0].GetProperty("enhancementCount").GetInt32());
+        Assert.True(rows[0].GetProperty("enhancementCountKnown").GetBoolean());
+        Assert.All(rows.EnumerateArray().Skip(1), stat => Assert.Equal(0, stat.GetProperty("enhancementCount").GetInt32()));
+    }
+
+    [Fact]
+    public void UnknownExistingCountsStayUnknownButNewlyUnlockedSubstatsStartAtZero()
+    {
+        var item = EpicWeapon() with { Grade = "rare", Substats = [new("healthPct", 400), new("speed", 2)] };
+        var after = EquipmentEnhancementEngine.Calculate(item, [new("ma_est6e", 7)], _ => 0).After;
+        var rows = JsonSerializer.SerializeToElement(after.Substats, JsonSerializerOptions.Web);
+        Assert.False(rows[0].TryGetProperty("enhancementCount", out _));
+        Assert.False(rows[0].GetProperty("enhancementCountKnown").GetBoolean());
+        Assert.False(rows[1].TryGetProperty("enhancementCount", out _));
+        Assert.Equal(0, rows[2].GetProperty("enhancementCount").GetInt32());
+        Assert.Equal(0, rows[3].GetProperty("enhancementCount").GetInt32());
+    }
+
+    [Fact]
+    public void LegacyCountsRequireCompleteHistoryButWitnessedUnlocksCanRecoverIndependently()
+    {
+        var item = EpicWeapon() with { Grade = "rare", EnhanceLevel = 15 };
+        EquipmentEnhancementStep[] history = [new(3, "healthPct", 400, 800, false), new(6, "healthPct", 800, 1200, false),
+            new(9, "critChanceBp", 0, 300, true), new(12, "critDamageBp", 0, 400, true), new(15, "healthPct", 1200, 1600, false)];
+        var complete = EquipmentEnhancementEngine.RecoverEnhancementCounts(item, history);
+        Assert.Equal(new int?[] { 3, 0, 0, 0 }, complete.Substats.Select(stat => stat.EnhancementCount));
+        var incomplete = EquipmentEnhancementEngine.RecoverEnhancementCounts(item, history.Skip(1).ToArray());
+        Assert.Equal(new int?[] { null, null, 0, 0 }, incomplete.Substats.Select(stat => stat.EnhancementCount));
+        var missingLater = EquipmentEnhancementEngine.RecoverEnhancementCounts(item, history.Take(4).ToArray());
+        Assert.All(missingLater.Substats, stat => Assert.Null(stat.EnhancementCount));
+        Assert.All(EquipmentEnhancementEngine.RecoverEnhancementCounts(EpicWeapon(), []).Substats,
+            stat => Assert.Equal(0, stat.EnhancementCount));
+        Assert.All(EquipmentEnhancementEngine.RecoverEnhancementCounts(EpicWeapon() with { EnhanceLevel = 6 }, []).Substats,
+            stat => Assert.Null(stat.EnhancementCount));
+    }
+
+    [Fact]
+    public void FutureOrDuplicateHistoryCannotSupplyAKnownCount()
+    {
+        var item = EpicWeapon() with { EnhanceLevel = 3 };
+        EquipmentEnhancementStep[] future = [new(3, "healthPct", 0, 400, true), new(6, "healthPct", 400, 800, false)];
+        Assert.Null(EquipmentEnhancementEngine.RecoverEnhancementCounts(item, future).Substats[0].EnhancementCount);
+        EquipmentEnhancementStep[] duplicate = [new(3, "healthPct", 400, 800, false), new(3, "speed", 2, 4, false)];
+        Assert.All(EquipmentEnhancementEngine.RecoverEnhancementCounts(item, duplicate).Substats,
+            stat => Assert.Null(stat.EnhancementCount));
+    }
+
     [Fact]
     public async Task EnhancementRulesRequireAnAuthenticatedAccount()
     {

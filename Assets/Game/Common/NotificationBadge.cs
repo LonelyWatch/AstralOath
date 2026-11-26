@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AstralOath.Client.Common
@@ -9,6 +10,9 @@ namespace AstralOath.Client.Common
         internal GameText Label { get; private set; }
         internal Image NormalPlate { get; private set; }
         internal Image MaximumPlate { get; private set; }
+        internal RectTransform SourceGroup { get; private set; }
+        internal AuthoredHeightLayout ScaleLayout { get; private set; }
+        internal BitmapNumber Number { get; private set; }
 
         internal NotificationBadge(BindingMap instance) => Attach(instance.gameObject);
         public NotificationBadge() { }
@@ -19,6 +23,9 @@ namespace AstralOath.Client.Common
             Label = Bindings.Require<GameText>("label");
             NormalPlate = Bindings.Require<Image>("normalPlate");
             MaximumPlate = Bindings.Require<Image>("maximumPlate");
+            SourceGroup = Bindings.Require<RectTransform>("sourceGroup");
+            ScaleLayout = Bindings.Require<AuthoredHeightLayout>("scaleLayout");
+            Number = Bindings.Require<BitmapNumber>("number");
         }
     }
 }

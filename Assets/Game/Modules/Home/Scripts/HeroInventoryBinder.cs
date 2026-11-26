@@ -66,9 +66,13 @@ namespace AstralOath.Client.Home
                     () => selected, ClassForTemplate, HeroNameForInstance, OnArtifactsChanged, fetchArtifacts, EquipmentWearerPortrait,
                     id => snapshot?.heroes?.FirstOrDefault(hero => hero.instanceId == id));
             if (equipmentApi != null)
+            {
                 equipment = new EquipmentInventoryBinder(view.Root.GetComponent<BindingMap>(),locale,equipmentApi,readEquipment,
                     () => snapshot?.heroes ?? Array.Empty<HeroInventoryItem>(), () => selected, EquipmentHeroName,
                     BaseStats, id => artifacts?.EquippedStats(id) ?? (0,0), EquipmentWearerPortrait, OnArtifactsChanged);
+                if (artifacts != null)
+                    equipment.ConfigureCombatPower(id => artifacts.EquippedProgress(id));
+            }
         }
 
         public Task OpenAsync(bool roster, BindingScope scope) => OpenAsync(roster, scope, null, null);
@@ -82,6 +86,9 @@ namespace AstralOath.Client.Home
             tab = Tab.Heroes;
             classFilter = "all";
             view.Show();
+            view.FitEquipmentLayout();
+            Canvas.willRenderCanvases += view.FitEquipmentLayout;
+            scope.Add(() => Canvas.willRenderCanvases -= view.FitEquipmentLayout);
             if (roster) GameUiFeedback.Play(view.Back, GameUiFeedback.Sound.HeroPageOpen);
             view.FitInventoryLayout(roster);
             Scroll = roster ? view.RosterScroll : view.BagScroll;
@@ -483,19 +490,32 @@ namespace AstralOath.Client.Home
 
         private void SetDetailStats()
         {
-            var stats = BaseStats(selected);
+            var basis = BaseStats(selected);
+            var stats = basis;
             if (stats != null && equipment != null)
                 stats = EquipmentStatCalculator.Calculate(stats,equipment.Pieces(selected.instanceId));
             var (artifactAttack, artifactHealth) = selected == null
                 ? (0, 0) : artifacts?.EquippedStats(selected.instanceId) ?? (0, 0);
-            view.DetailStat("attack").text = StatNumber(stats?.Attack + artifactAttack);
-            view.DetailStat("defense").text = StatNumber(stats?.Defense);
-            view.DetailStat("health").text = StatNumber(stats?.MaxHealth + artifactHealth);
-            view.DetailStat("speed").text = StatNumber(stats?.Speed);
-            view.DetailStat("critChance").text = StatPercent(stats?.CritChanceBp);
-            view.DetailStat("critDamage").text = StatPercent(stats?.CritDamageBp);
-            view.DetailStat("effectiveness").text = StatPercent(stats?.EffectivenessBp);
-            view.DetailStat("resistance").text = StatPercent(stats?.EffectResistanceBp);
+            bool artifactKnown = artifacts == null || selected == null || artifacts.EquippedProgress(selected.instanceId).Stars >= 0;
+            Paint("attack", stats?.Attack + artifactAttack, basis?.Attack, bonusKnown: artifactKnown);
+            Paint("defense", stats?.Defense, basis?.Defense);
+            Paint("health", stats?.MaxHealth + artifactHealth, basis?.MaxHealth, bonusKnown: artifactKnown);
+            Paint("speed", stats?.Speed, basis?.Speed);
+            Paint("critChance", stats?.CritChanceBp, basis?.CritChanceBp, true);
+            Paint("critDamage", stats?.CritDamageBp, basis?.CritDamageBp, true);
+            Paint("effectiveness", stats?.EffectivenessBp, basis?.EffectivenessBp, true);
+            Paint("resistance", stats?.EffectResistanceBp, basis?.EffectResistanceBp, true);
+
+            void Paint(string key, int? total, int? plain, bool percent = false, bool bonusKnown = true)
+            {
+                view.DetailStat(key).text = percent ? StatPercent(total) : StatNumber(total);
+                int bonus = total.HasValue && plain.HasValue ? total.Value - plain.Value : 0;
+                var label = view.DetailBonus(key);
+                bool showBonus = bonusKnown && bonus > 0;
+                label.text = showBonus ? (percent ? StatPercent(bonus) : StatNumber(bonus)) : "";
+                label.gameObject.SetActive(showBonus);
+                view.DetailBonusArrow(key).gameObject.SetActive(showBonus);
+            }
         }
 
         private static string StatNumber(int? value) => value?.ToString(CultureInfo.InvariantCulture) ?? "";

@@ -119,14 +119,10 @@ namespace AstralOath.Editor
                 Link("remove" + i, Button(tile, BagArt("cm_item_slot_arti"), Color.white));
                 Link("material" + i, Picture(tile, "Material icon", null, 0, 0, 1, 1, true));
             }
-            var submit = Area(center, "Enhance", 0, .776f, 1, .217f);
-            var submitButton = Button(submit, CommonArt("_btn_green"), Color.white);
-            PressSprites(submitButton, CommonArt("_btn_green"), CommonArt("_btn_green_p"));
+            var submitButton = InventoryAction(center, "Enhance", ArtifactInventoryPrefix + "enhance", 29,
+                0, .776f, 1, .217f, out _, "GreenCost");
             Link("submit", submitButton);
-            Text(submit, "Enhance label", ArtifactInventoryPrefix + "enhance", 29, .48f, 0, .47f, 1, Color.white, TextAlignmentOptions.Center);
-            Picture(submit, "Gold price plate", BagArt("_btn_small_black"), .034f, .18f, .41f, .65f);
-            Picture(submit, "Gold price icon", ArtFor("token_gold"), .022f, .13f, .13f, .75f, true);
-            Label("cost", submit, .143f, .14f, .298f, .72f, 23, new Color32(255, 219, 83, 255), TextAlignmentOptions.Center);
+            Link("cost", submitButton.GetComponent<BindingMap>().Require<GameText>("cost"));
             Label("status", page, .32f, .81f, .36f, .06f, 23, gold, TextAlignmentOptions.Center);
             var sort = Area(page, "Material sort", .72f, .118f, .095f, .062f);
             Link("sort", Button(sort, BagArt("_btn_small_black"), Color.white));

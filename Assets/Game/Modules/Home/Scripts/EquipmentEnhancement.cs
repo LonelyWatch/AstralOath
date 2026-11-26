@@ -18,6 +18,10 @@ namespace AstralOath.Client.Home
             Bindings.Require<GameObject>("quantityPopup"); Bindings.Require<GameObject>("autoPopup");
             Bindings.Require<BindingMap>("card"); Bindings.Require<BindingMap>("thumbnail");
             for (int i = 0; i < 4; i++) Bindings.Require<BindingMap>("row" + i);
+            Bindings.Require<Image>("powderOnlyCheck");
+            for (int stage = 3; stage <= 15; stage += 3) Bindings.Require<Image>("auto" + stage + "Selected");
+            for (int i = 0; i < 4; i++) Bindings.Require<RawImage>("subSweep" + i);
+            Bindings.Require<RawImage>("scoreSweep");
             Bindings.Require<AudioSource>("audio");
         }
     }

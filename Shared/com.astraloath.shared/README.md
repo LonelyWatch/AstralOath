@@ -1,5 +1,7 @@
 # AstralOath.Shared
 
+`CombatPowerCalculator.Calculate`接收已且仅一次包含装备/套装/神器攻血的最终永久面板、真实神器星级/实例等级及显式技能/专武/转职系数。规则ID为`combat-power.project-v1.historical-p1.source-r4262-artifact.owned-progress-zero`，采用历史P1与已核33条神器原表，decimal最后floor；47项纯回归通过。当前项目尚无技能强化/专武/转职进度，Home显式传0，不猜模板进度。未知神器不能用确认未穿的(0,0)代替。这是明示项目CP，不称2026原版绝对CP还原；详细来源与边界见[专题](../../docs/development/combat-power.md)。
+
 `BattleFlowEvent.CooldownReduction` 是技能效果实际扣除的冷却回合数，`Amount` 继续表示扣除后的剩余值。常规回合递减及设置技能冷却时，前者为零。塔玛林尔在偶像状态下可见的技能由 `BattleSkillResolver.IsSkillVisibleInForm` 判定，战斗命令校验和客户端技能栏共用此规则。[行为和样例](../../docs/delivery/2026-11-22-battle-followup.md)
 
 反击动作通过已有可空 `StatusKind` 区分反击状态与被动、闪避或神器来源。来源取自本次触发的权威分支，客户端可据此选择效果词图标。[反击与回放约定](../../docs/delivery/2026-11-22-battle-action-recovery.md)
@@ -16,7 +18,7 @@
 
 ## 单件装备分数
 
-角色战斗力 CP 的历史 P1/P2、万分比换算、神器/技能系数、原包校核和三个数值复算见[专题](../../docs/development/combat-power.md)。当前 Shared 没有生产 CP 计算器，账号技能/觉醒/专属装备等输入尚不完整；不要以单件装备分数替代整只英雄 CP，也不要以历史公式复算通过宣称当前原作精度一致。
+角色战斗力CP的历史P1/P2、万分比换算、神器/技能系数、原包校核和三个数值复算见[专题](../../docs/development/combat-power.md)。Shared现有文首明示版本的项目计算器，未来账号技能/专属装备/转职输入仍待接入；不要以单件装备分数替代整只英雄CP，也不要以历史样本复算通过宣称当前原作精度一致。
 
 `EquipmentScoreCalculator.Calculate` 接受单件装备，或一条主属性和至多四条副属性。每条数值按主、副分别加权，合计后向下取整。使用装备当前的词条数值即可，穿戴者、已激活的套装、装备等级和强化等级均无需另加分。内部整数计算保留十万分之一分；协议中 1300 万分点等于界面 13%。
 

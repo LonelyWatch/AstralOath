@@ -2484,6 +2484,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6896202649764892646, guid: fc3dae0edbad437d8f6855644e86ec78, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.792
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896202649764892646, guid: fc3dae0edbad437d8f6855644e86ec78, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.792
+      objectReference: {fileID: 0}
     - target: {fileID: 8416689223191736904, guid: fc3dae0edbad437d8f6855644e86ec78, type: 3}
       propertyPath: m_Name
       value: NotificationBadge

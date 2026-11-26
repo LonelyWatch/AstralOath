@@ -1,0 +1,22 @@
+{
+  "source": "effect/itemupgrade_statup",
+  "sourceSha256": {
+    "scsp": "9b4796754531a78fafad353201a8f4f7ebd223dbba6544af778bdbe6b44dd22d",
+    "atlas": "375abb57b08da6c4ba041fd50bd3d239b08af531efca54165289a5801d1693e8",
+    "sct": "ffd6db1fdda770172eed3e7767379a3a118eb64e86831a5944fa5b1704813829"
+  },
+  "outputSha256": "67b703eec51c438120c2db796c1f27e0e13a58ad493480ba3e941fb390b1375b",
+  "fps": 30,
+  "sourceDuration": 1.0333,
+  "frames": 32,
+  "columns": 8,
+  "rows": 4,
+  "cellPixels": [
+    512,
+    192
+  ],
+  "scale": 0.5,
+  "blend": "RGB contains PMA normal layers plus additive energy; alpha contains only normal layer coverage. Reuses Common UiTouchPulse material.",
+  "referenceBoundary": "Blue flame/wide ribbon/purple tail match observed 79.554 and 92.104s; source Lua invocation unavailable. Source curves sampled at1x; no numeric interpolation.",
+  "curveSemantics": null
+}

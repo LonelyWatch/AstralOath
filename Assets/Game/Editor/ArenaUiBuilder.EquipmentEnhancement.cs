@@ -32,12 +32,14 @@ namespace AstralOath.Editor
             }
             GameButton Control(string key, RectTransform p, float x, float y, float w, float h, string sprite)
             {
-                var normal = sprite == "_btn_blue" ? ArtFor(sprite) : CommonArt(sprite);
-                var button = Button(Area(p, key, x, y, w, h), normal, Color.white);
-                var pressed = sprite == "_btn_blue" ? ArtFor(sprite + "_p") : CommonArt(sprite + "_p");
-                if (pressed) PressSprites(button, normal, pressed);
+                string style = sprite == "_btn_blue" ? "Blue" : sprite == "_btn_gold" ? "Gold" :
+                    sprite == "_btn_green" ? "Green" : sprite == "check" ? "Check" : "Black";
+                if (key == "submit") style = "GreenCost";
+                var button = InventoryAction(p, key, null, 30, x, y, w, h, out var label, style);
+                label.fontSharedMaterial = Load<Material>(Home + "Res/Materials/EquipmentDetailText.mat");
                 Link(key, button);
-                Label(key + "Label", (RectTransform)button.transform, 0, 0, 1, 1, 30, Color.white, TextAlignmentOptions.Center);
+                Link(key + "Label", label);
+                RecordInventoryButton(button.gameObject);
                 return button;
             }
             Link("background", Paint(root, InventoryArt("base_unit_hero"), Color.white, true));
@@ -69,12 +71,30 @@ namespace AstralOath.Editor
             for (int i = 0; i < 4; i++)
             {
                 float y = .31f + i * .045f;
-                Label("subName" + i, left, 0, y, .58f, .043f, 28, Mist);
+                Label("subName" + i, left, 0, y, .58f, .043f, 28, Mist).richText = true;
                 Label("subValue" + i, left, .59f, y, .41f, .043f, 30, Mist, TextAlignmentOptions.MidlineRight).richText = true;
             }
             Paint(Area(left, "Sub property rule", 0, .49f, 1, .01f), BagArt("_bar_2"), gold, sliced: true);
             Label("scoreLabel", left, 0, .514f, .7f, .055f, 31, new Color32(255, 221, 90, 255));
-            Label("score", left, .67f, .514f, .33f, .055f, 34, new Color32(255, 221, 90, 255), TextAlignmentOptions.MidlineRight);
+            Label("score", left, .55f, .514f, .45f, .055f, 34, new Color32(255, 221, 90, 255), TextAlignmentOptions.MidlineRight).richText = true;
+            // The original result is a direct number change followed by this blue/purple source sweep.
+            // Sampled Spine source curves retain their duration; the effect never settles inventory.
+            for (int i = 0; i < 5; i++)
+            {
+                string key = i < 4 ? "subSweep" + i : "scoreSweep";
+                float centerY = i < 4 ? .3315f + i * .045f : .5415f;
+                // Original92.309/92.350s bright bounds normalize to216x94 at1080h.
+                // A fixed662.323px frame projects the baked169x72 bright region to219x93.
+                // Keep the source root at pixel(256,128), slightly left of the combined value text.
+                var rect = Area(left, key, .8f, centerY, 0, 0);
+                rect.pivot = new Vector2(.5f, 1f / 3f);
+                rect.sizeDelta = new Vector2(662.3232f, 248.3712f);
+                var sweep = rect.gameObject.AddComponent<RawImage>();
+                sweep.texture = Load<Texture2D>(InventoryTextures + "EquipmentEnhancement/ResultSweep.png");
+                sweep.material = Load<Material>(Common + "Materials/UiTouchPulse.mat");
+                sweep.raycastTarget = false; sweep.enabled = false;
+                Link(key, sweep);
+            }
             Paint(Area(left, "Set backing", 0, .584f, 1, .064f), null, new Color32(255, 255, 255, 5));
             Label("set", left, .012f, .584f, .97f, .064f, 27, Color.white);
             Label("status", left, 0, .69f, 1, .21f, 25, Mist, TextAlignmentOptions.TopLeft, true);
@@ -129,10 +149,7 @@ namespace AstralOath.Editor
             Label("arcaneLabel", root, .349f, .775f, .253f, .08f, 29, new Color32(192, 160, 198, 255), TextAlignmentOptions.Center);
             Control("clear", root, .349f, .881f, .097f, .086f, "_btn_gold");
             var submit = Control("submit", root, .452f, .881f, .178f, .086f, "_btn_green");
-            Place(keys.Find(k => k.Key == "submitLabel").Target is GameText caption ? caption.rectTransform : null, .64f, 0, .34f, 1);
-            Picture((RectTransform)submit.transform, "Price backing", CommonArt("_btn_small_black_p"), .03f, .18f, .48f, .64f).color = new Color32(255,255,255,127);
-            Picture((RectTransform)submit.transform, "Gold price", InventoryArt("ArtifactEnhancement/token_gold"), .02f, .12f, .18f, .76f, true);
-            Label("cost", (RectTransform)submit.transform, .18f, .12f, .34f, .76f, 27, new Color32(255, 218, 75, 255), TextAlignmentOptions.Center);
+            Link("cost", submit.GetComponent<BindingMap>().Require<GameText>("cost"));
             Label("materialsTitle", root, .665f, .116f, .28f, .055f, 31, gold);
             Paint(Area(root, "Material heading rule", .665f, .161f, .25f, .008f), BagArt("_bar_2"), gold, sliced: true);
             for (int i = 0; i < 4; i++)
@@ -157,9 +174,27 @@ namespace AstralOath.Editor
             Control("auto", root, .705f, .881f, .178f, .086f, "_btn_blue");
 
             var auto = Area(root, "Automatic registration", .705f, .338f, .178f, .525f);
-            Paint(auto, InventoryArt("Roster/SourceSearch/_box_black_gold"), Color.white, true, true); Link("autoPopup", auto.gameObject);
-            Control("powderOnly", auto, .05f, .025f, .90f, .115f, "_btn_small_black");
-            for (int i = 0; i < 5; i++) Control("auto" + (15 - i * 3), auto, .04f, .22f + i * .15f, .92f, .14f, "_btn_small_black");
+            // The source sprite includes a 32px transparent shadow outside its visible frame.
+            // Keep the original opaque black body over the full authored menu, with the shadow outside.
+            var autoHit = Paint(auto, null, Color.clear, raycast: true);
+            autoHit.canvasRenderer.cullTransparentMesh = false;
+            var autoFrame = Area(auto, "Native frame", 0, 0, 1, 1);
+            autoFrame.offsetMin = -Vector2.one * 32f * BagDesignScale;
+            autoFrame.offsetMax = Vector2.one * 32f * BagDesignScale;
+            Paint(autoFrame, InventoryArt("Roster/SourceSearch/_box_black_gold"), Color.white, sliced: true).pixelsPerUnitMultiplier = 1f / BagDesignScale;
+            Link("autoPopup", auto.gameObject);
+            var powder = Control("powderOnly", auto, .05f, .025f, .90f, .115f, "check");
+            Link("powderOnlyCheck", powder.GetComponent<BindingMap>().Require<Image>("check"));
+            var ruleTint = (Color)new Color32(146, 109, 62, 255);
+            ruleTint.a = Mathf.GammaToLinearSpace(127f / 255);
+            Paint(Area(auto, "Powder rule", .05f, .174f, .90f, .018f), BagArt("_bar_2"),
+                ruleTint, sliced: true).pixelsPerUnitMultiplier = 1f / BagDesignScale;
+            for (int i = 0; i < 5; i++)
+            {
+                string key = "auto" + (15 - i * 3);
+                var stage = Control(key, auto, .04f, .22f + i * .15f, .92f, .14f, "_btn_small_black");
+                Link(key + "Selected", stage.GetComponent<BindingMap>().Require<Image>("selected"));
+            }
             auto.gameObject.SetActive(false);
             var quantityPopup = Area(root, "Material quantity popup", 0, 0, 1, 1); Link("quantityPopup", quantityPopup.gameObject);
             Link("quantityCancel", Button(Area(quantityPopup, "Dismiss quantity", 0, 0, 1, 1), null, Black(.64f)));

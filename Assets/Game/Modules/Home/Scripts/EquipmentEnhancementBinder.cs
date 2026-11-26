@@ -44,6 +44,10 @@ namespace AstralOath.Client.Home
         private int quantityLimit, autoLevel = 3;
         private bool powderOnly, submitting, animating, startPlayed, finishPlayed;
         private float animationStart, idleStart;
+        private float resultSweepStart = -1;
+        private readonly bool[] resultSweepRows = new bool[4];
+        private bool resultSweepScore;
+        private EquipmentEnhancementResultDisplay resultDisplay;
         private string message;
         private T Get<T>(string key) where T : UnityEngine.Object => view.Map.Require<T>(key);
         private string L(string key) => locale.Resolve(Prefix + key);
@@ -79,7 +83,7 @@ namespace AstralOath.Client.Home
             });
             Hook("submit", () => { if (!submitting && !animating) _ = SubmitAsync(); });
             Hook("clear", () => { if (Editable) { selected.Clear(); lastResult = null; Play("slotOutSound"); Refresh(); } });
-            Hook("auto", () => { if (Editable) Get<GameObject>("autoPopup").SetActive(!Get<GameObject>("autoPopup").activeSelf); });
+            Hook("auto", () => { if (Editable) { RefreshAutoLabels(); Get<GameObject>("autoPopup").SetActive(!Get<GameObject>("autoPopup").activeSelf); } });
             Hook("powderOnly", () => { powderOnly = !powderOnly; RefreshAutoLabels(); });
             for (int i = 0; i < 5; i++)
             {
@@ -120,6 +124,7 @@ namespace AstralOath.Client.Home
             {
                 Canvas.willRenderCanvases -= Animate; sounds.FadeOut();
                 Get<GameObject>("quantityPopup").SetActive(false); Get<GameObject>("autoPopup").SetActive(false);
+                resultSweepStart = -1; UpdateResultSweeps();
                 selected.Clear(); target = null; inventory = null;
             });
             BindLabels();
@@ -128,6 +133,9 @@ namespace AstralOath.Client.Home
         internal async Task ShowAsync(EquipmentInventorySnapshot inventory, EquipmentInventoryItem target, CancellationToken token)
         {
             this.inventory = inventory; this.target = target; idleStart = Time.unscaledTime;
+            resultDisplay = new EquipmentEnhancementResultDisplay(target);
+            resultSweepStart = -1;
+            UpdateResultSweeps();
             message = L("loading"); Refresh();
             rules = await api.FetchEnhancementRulesAsync(token);
             token.ThrowIfCancellationRequested();
@@ -159,9 +167,16 @@ namespace AstralOath.Client.Home
 
         private void RefreshAutoLabels()
         {
-            Get<GameText>("powderOnlyLabel").text = L(powderOnly ? "powderOnlyChecked" : "powderOnly");
+            // The source uses separate checkbox images; do not render the old text-square prefix.
+            Get<GameText>("powderOnlyLabel").text = L("powderOnly").TrimStart('□', '☑', ' ');
+            Get<Image>("powderOnlyCheck").enabled = powderOnly;
             for (int stage = 3; stage <= 15; stage += 3)
+            {
                 Get<GameText>("auto" + stage + "Label").text = F("stage", stage);
+                Get<GameText>("auto" + stage + "Label").fontStyle = stage == autoLevel ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
+                Get<GameText>("auto" + stage + "Label").color = stage == autoLevel ? Color.white : new Color32(191, 191, 191, 255);
+                Get<Image>("auto" + stage + "Selected").enabled = stage == autoLevel;
+            }
         }
 
         private void OpenQuantity(EquipmentEnhancementMaterialRule material)
@@ -235,13 +250,17 @@ namespace AstralOath.Client.Home
             for (int i = 0; i < 4; i++)
             {
                 var stat = i < target.substats.Length ? target.substats[i] : null;
-                var change = stat == null ? null : lastResult?.changes?.FirstOrDefault(row => row.kind == stat.kind && row.after != row.before);
-                Get<GameText>("subName" + i).text = stat == null ? "" : StatName(stat.kind);
-                Get<GameText>("subValue" + i).text = stat == null ? "" : statValue(stat) + (change == null ? "" : " <color=#FF7E00>" +
-                    F("delta", statValue(new EquipmentStatValue { kind = stat.kind, value = change.after - change.before })) + "</color>");
-                Get<GameText>("subValue" + i).color = change == null ? new Color32(171, 179, 191, 255) : Color.white;
+                int delta = stat == null ? 0 : resultDisplay?.SubstatDelta(stat) ?? 0;
+                Get<GameText>("subName" + i).text = stat == null ? "" : StatName(stat.kind) + EquipmentEnhancementResultDisplay.CountSuffix(stat);
+                Get<GameText>("subValue" + i).text = stat == null ? "" : statValue(stat) + (delta <= 0 ? "" : " <color=#FF7E00>" +
+                    F("delta", statValue(new EquipmentStatValue { kind = stat.kind, value = delta })) + "</color>");
+                Color color = delta <= 0 ? (Color)new Color32(171, 179, 191, 255) : Color.white;
+                Get<GameText>("subName" + i).color = color;
+                Get<GameText>("subValue" + i).color = color;
             }
-            Get<GameText>("score").text = Number(EquipmentScoreCalculator.Calculate(target.ToPiece()));
+            int scoreDelta = resultDisplay?.ScoreDelta(target) ?? 0;
+            Get<GameText>("score").text = Number(EquipmentScoreCalculator.Calculate(target.ToPiece())) +
+                (scoreDelta <= 0 ? "" : "<color=#FF7E00>" + F("delta", Number(scoreDelta)) + "</color>");
             Get<GameText>("balance").text = Number(inventory.materials?.gold ?? 0);
             Get<GameText>("cost").text = Number(Cost());
             Get<GameText>("gain").text = exp == 0 ? "" : F("experienceGain", Number(exp));
@@ -362,12 +381,53 @@ namespace AstralOath.Client.Home
             if (animating && elapsed >= 2.25f)
             {
                 inventory = presentedReceipt;
+                int previousScore = EquipmentScoreCalculator.Calculate(target.ToPiece());
                 target = inventory.items.First(row => row.instanceId == target.instanceId);
+                for (int i = 0; i < resultSweepRows.Length; i++)
+                    resultSweepRows[i] = i < target.substats.Length && lastResult.changes != null &&
+                        lastResult.changes.Any(row => row.kind == target.substats[i].kind && row.after != row.before);
+                resultSweepScore = previousScore != EquipmentScoreCalculator.Calculate(target.ToPiece());
+                resultSweepStart = Time.unscaledTime;
                 presentedReceipt = null;
                 animating = false; selected.Clear(); message = lastResult.returnedPowderQuantity > 0
                     ? F("successWithRefund", Number(lastResult.returnedPowderQuantity)) : target.enhanceLevel == 15 ? L("maximum") : L("success"); Refresh();
             }
+            UpdateResultSweeps();
+        }
+
+        private void UpdateResultSweeps()
+        {
+            // Source animation:32 samples at30fps, 1.0333s. It is a visual tail only.
+            float elapsed = resultSweepStart < 0 ? -1 : Time.unscaledTime - resultSweepStart;
+            bool active = elapsed >= 0 && elapsed < 1.0333f;
+            int frame = active ? Mathf.Min(31, Mathf.FloorToInt(elapsed * 30)) : 0;
+            var uv = new Rect(frame % 8 / 8f, 1 - (frame / 8 + 1) / 4f, 1f / 8, 1f / 4);
+            for (int i = 0; i < 5; i++)
+            {
+                var image = Get<RawImage>(i < 4 ? "subSweep" + i : "scoreSweep");
+                image.enabled = active && (i < 4 ? resultSweepRows[i] : resultSweepScore);
+                if (image.enabled) image.uvRect = uv;
+            }
         }
         private static void SetAlpha(Image image, float alpha) { var color = image.color; color.a = alpha; image.color = color; }
+    }
+
+    // Each newly opened page owns this baseline; consecutive authoritative replies do not replace it.
+    internal sealed class EquipmentEnhancementResultDisplay
+    {
+        private readonly Dictionary<string, int> openingSubstats = new Dictionary<string, int>(StringComparer.Ordinal);
+        private readonly int openingScore;
+
+        internal EquipmentEnhancementResultDisplay(EquipmentInventoryItem opening)
+        {
+            openingScore = EquipmentScoreCalculator.Calculate(opening.ToPiece());
+            foreach (var stat in opening.substats) openingSubstats[stat.kind] = stat.value;
+        }
+
+        public int SubstatDelta(EquipmentStatValue stat) => stat.value -
+            (openingSubstats.TryGetValue(stat.kind, out var initial) ? initial : 0);
+        public int ScoreDelta(EquipmentInventoryItem item) => EquipmentScoreCalculator.Calculate(item.ToPiece()) - openingScore;
+        public static string CountSuffix(EquipmentStatValue stat) => stat.enhancementCountKnown && stat.enhancementCount > 0
+            ? " <color=#FF7E00>(" + stat.enhancementCount.ToString(CultureInfo.InvariantCulture) + ")</color>" : "";
     }
 }

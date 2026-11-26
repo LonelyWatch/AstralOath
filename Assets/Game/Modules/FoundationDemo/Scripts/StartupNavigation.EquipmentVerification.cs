@@ -85,6 +85,9 @@ namespace AstralOath.Client.FoundationDemo
             VerifyClick(enhancement, "back");
             if (enhancement.gameObject.activeSelf || !pane.gameObject.activeInHierarchy)
                 throw new InvalidDataException("Enhancement did not restore the original bag page.");
+            if (maximum.substats.Any(stat => !stat.enhancementCountKnown) || maximum.substats.Sum(stat => stat.enhancementCount) != 5)
+                throw new InvalidDataException("Newly forged equipment must retain all five authoritative enhancement counts.");
+            Debug.Log("ASTRAL_ENHANCEMENT_COUNTS_PLAYER_OK total=5 known=True");
             Debug.Log("ASTRAL_EQUIPMENT_ENHANCEMENT_PLAYER_OK partialXp=" + partialItem.xp + " intermediate=" + raised.enhanceLevel +
                 " maximum=" + maximum.enhanceLevel + " main=" + maximum.mainStat.value + " screen=" + Screen.width + "x" + Screen.height);
         }

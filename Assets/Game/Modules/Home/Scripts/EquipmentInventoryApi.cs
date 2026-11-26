@@ -28,6 +28,9 @@ namespace AstralOath.Client.Home
     {
         public string kind;
         public int value;
+        // Older snapshots omit both fields. Zero becomes meaningful only when the authority marks it known.
+        public int enhancementCount;
+        public bool enhancementCountKnown;
         internal EquipmentStat ToStat() => new EquipmentStat(kind, value);
     }
 

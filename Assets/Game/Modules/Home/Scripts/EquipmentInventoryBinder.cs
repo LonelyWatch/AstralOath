@@ -470,7 +470,6 @@ namespace AstralOath.Client.Home
             Get<GameText>("change").text = lines.Count == 0 ? L("noStatChange") : string.Join("\n",lines);
             if (Managing)
             {
-                Get<GameText>("manageSummary").text = Get<GameText>("summary").text;
                 PaintManagementQuote(first,last,lines);
             }
         }

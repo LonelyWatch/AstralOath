@@ -80,8 +80,8 @@ namespace AstralOath.Editor
             {
                 string label = action == "change" ? "home.gear.singleChange" : action == "unequip"
                     ? "home.gear.singleRemove" : ArtifactInventoryPrefix + action;
-                var control = Action(actions, action, label, 24, 0, 0, 1, 1, out var text,
-                    action == "enhance" ? SummonArt("_btn_blue") : BagArt("_btn_small_black"), Color.white);
+                var control = InventoryAction(actions, action, label, 24, 0, 0, 1, 1, out var text,
+                    action == "enhance" ? "Blue" : "Black");
                 control.gameObject.AddComponent<LayoutElement>().flexibleWidth = action == "enhance" ? 1.45f : 1;
                 if (action == "change") Link("Change", control);
                 else { Link("Action_" + action, control); Link("ActionLabel_" + action, text); }

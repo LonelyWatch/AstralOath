@@ -247,12 +247,14 @@ internal sealed partial class InventoryStore
             for (int i = 0; i < item.Substats.Length; i++)
             {
                 using var sub = new MySqlCommand("""
-                    INSERT INTO inventory_equipment_substat (instance_id,position,kind,stat_value) VALUES (@id,@pos,@kind,@value);
+                    INSERT INTO inventory_equipment_substat (instance_id,position,kind,stat_value,enhancement_count)
+                    VALUES (@id,@pos,@kind,@value,@count);
                     """, connection, tx);
                 sub.Parameters.AddWithValue("@id", instance);
                 sub.Parameters.AddWithValue("@pos", i);
                 sub.Parameters.AddWithValue("@kind", item.Substats[i].Kind);
                 sub.Parameters.AddWithValue("@value", item.Substats[i].Value);
+                sub.Parameters.AddWithValue("@count", item.Substats[i].EnhancementCount);
                 await sub.ExecuteNonQueryAsync(ct);
             }
         }
@@ -268,7 +270,7 @@ internal sealed partial class InventoryStore
         if (heroInstanceIds is { Count: 0 }) return [];
         using var query = Command(connection, transaction, """
             SELECT e.instance_id,e.template_id,e.slot,e.set_id,e.item_level,e.enhance_level,e.grade,e.main_kind,e.main_value,
-                   h.instance_id,s.kind,s.stat_value,e.experience,e.enhancement_profile_id
+                   h.instance_id,s.kind,s.stat_value,e.experience,e.enhancement_profile_id,s.enhancement_count
             FROM inventory_equipment e
             LEFT JOIN inventory_equipment_loadout l ON l.instance_id = e.instance_id
             LEFT JOIN inventory_hero h ON h.acquisition_order = l.hero_order
@@ -306,8 +308,25 @@ internal sealed partial class InventoryStore
                     reader.IsDBNull(9) ? null : reader.GetString(9), reader.GetInt64(12), supported,
                     supported ? null : profile?.BlockReason ?? "equipment_profile_unsupported"));
             }
-            if (!reader.IsDBNull(10)) substats!.Add(new OwnedEquipmentStat(reader.GetString(10), reader.GetInt32(11)));
+            if (!reader.IsDBNull(10)) substats!.Add(new OwnedEquipmentStat(reader.GetString(10), reader.GetInt32(11),
+                reader.IsDBNull(14) ? null : reader.GetInt32(14)));
         }
+        await reader.DisposeAsync();
+        if (items.All(item => item.Substats.All(stat => stat.EnhancementCount.HasValue))) return items;
+        using var rolls = Command(connection, transaction, """
+            SELECT instance_id,milestone,kind,before_value,after_value,added FROM inventory_equipment_enhancement_roll
+            WHERE player_id=@player AND realm_id=@realm ORDER BY instance_id,milestone;
+            """, playerId);
+        var history = new Dictionary<string, List<EquipmentEnhancementStep>>(StringComparer.Ordinal);
+        await using var events = await rolls.ExecuteReaderAsync(cancellation);
+        while (await events.ReadAsync(cancellation))
+        {
+            string id = events.GetString(0);
+            if (!history.TryGetValue(id, out var steps)) history[id] = steps = [];
+            steps.Add(new(events.GetInt32(1), events.GetString(2), events.GetInt32(3), events.GetInt32(4), events.GetBoolean(5)));
+        }
+        for (int i = 0; i < items.Count; i++)
+            items[i] = EquipmentEnhancementEngine.RecoverEnhancementCounts(items[i], history.GetValueOrDefault(items[i].InstanceId) ?? []);
         return items;
     }
 }

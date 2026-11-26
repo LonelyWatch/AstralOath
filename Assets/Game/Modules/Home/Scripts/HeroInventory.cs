@@ -12,6 +12,19 @@ namespace AstralOath.Client.Home
         private Vector2 previousWindow;
         private bool rosterSized;
         private RectTransform inventoryHeader, rosterComposition, rosterHeader;
+        private RectTransform equipmentBounds, managementComposition;
+        private Vector2 previousEquipmentSize;
+
+        internal void FitEquipmentLayout()
+        {
+            if (!Root || !equipmentBounds) return;
+            Vector2 available = equipmentBounds.rect.size;
+            if (available.x <= 0f || available.y <= 0f || previousEquipmentSize == available) return;
+            previousEquipmentSize = available;
+            var design = new Vector2(2217.6f,1080f);
+            float scale = Mathf.Min(available.x / design.x,available.y / design.y);
+            FitFrame(managementComposition,design,scale,.5f);
+        }
 
         internal void FitInventoryLayout(bool roster)
         {
@@ -73,6 +86,8 @@ namespace AstralOath.Client.Home
         internal GameText DetailZodiacName => Bindings.Require<GameText>("detailZodiacName");
         internal Image DetailStar(int index) => Bindings.Require<Image>("detailStar" + index);
         internal GameText DetailStat(string key) => Bindings.Require<GameText>("detailStat_" + key);
+        internal GameText DetailBonus(string key) => Bindings.Require<GameText>("detailBonus_" + key);
+        internal Image DetailBonusArrow(string key) => Bindings.Require<Image>("detailBonusArrow_" + key);
         internal GameButton TabHeroes => Bindings.Require<GameButton>("tabHeroes");
         internal GameButton TabEquipment => Bindings.Require<GameButton>("tabEquipment");
         internal GameButton TabArtifacts => Bindings.Require<GameButton>("tabArtifacts");
@@ -115,6 +130,10 @@ namespace AstralOath.Client.Home
         public override void Validate()
         {
             inventoryHeader = Bindings.Require<RectTransform>("inventoryHeader");
+            var equipment = Bindings.Require<BindingMap>("gearBrowser");
+            equipmentBounds = (RectTransform)equipment.transform;
+            managementComposition = equipment.Require<RectTransform>("manageComposition");
+            previousEquipmentSize = Vector2.zero;
             _ = RosterShading;
             rosterComposition = Bindings.Require<RectTransform>("rosterComposition");
             rosterHeader = Bindings.Require<RectTransform>("rosterHeaderComposition");
@@ -129,6 +148,11 @@ namespace AstralOath.Client.Home
             _ = RosterCollapsedFooter; _ = RosterSortCaption; _ = EmptyEquipment; _ = EmptyArtifacts;
             _ = RosterFilterButton; _ = RosterSearchButton; RosterTools.Validate();
             _ = DetailElementName; _ = DetailRoleName; _ = DetailZodiac; _ = DetailZodiacName;
+            foreach (string key in new[] { "attack", "defense", "health", "speed", "critChance", "critDamage", "effectiveness", "resistance" })
+            {
+                _ = DetailBonus(key);
+                _ = DetailBonusArrow(key);
+            }
             for (int index = 0; index < 6; ++index)
                 _ = DetailStar(index);
             foreach (string name in ClassNames)

@@ -11,6 +11,79 @@ using Xunit;
 public sealed class EquipmentEnhancementIntegrationTests
 {
     [MySqlFact]
+    public async Task ForgedCountsPersistAndLegacyCountsRecoverOnlyWhenHistoryProvesThem()
+    {
+        string connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+        var ct = timeout.Token;
+        await DatabaseMigrator.ApplyAsync(connection, ct);
+        using var factory = new WebApplicationFactory<Program>();
+        using var app = factory.WithWebHostBuilder(b => b.UseEnvironment("Development").ConfigureAppConfiguration((_, c) =>
+            c.AddInMemoryCollection(new Dictionary<string, string?> { ["ConnectionStrings:MySql"] = connection,
+                ["Entry:AllowLegacyArenaGuests"] = "true", ["Inventory:DevelopmentEquipmentGrant"] = "false" })));
+        using var client = app.CreateClient();
+        string owner = await InventoryTests.OpenGuest(client, "counts_" + Id()[..12], ct);
+        await using var db = new MySqlConnection(connection);
+        await db.OpenAsync(ct);
+        try
+        {
+            async Task Forge(int level, int rolls)
+            {
+                using var response = await client.PostAsJsonAsync("/api/development/gm/actions", new
+                {
+                    requestId = Id(), action = "forgeEquipment", key = "weapon", value = 1,
+                    forge = new { itemLevel = 85, enhanceLevel = level, grade = "epic", setId = "speed", mainKind = "attack",
+                        rulesVersion = "equipment.enhancement.source-r4262.recorded-economy-v1",
+                        substats = new[] { new {kind="healthPct",value=400*rolls,rolls}, new {kind="speed",value=2,rolls=1},
+                            new {kind="critChanceBp",value=300,rolls=1}, new {kind="critDamageBp",value=400,rolls=1} } }
+                }, ct);
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            }
+            async Task Forget(string id)
+            {
+                using var clear = new MySqlCommand("UPDATE inventory_equipment_substat SET enhancement_count=NULL WHERE instance_id=@id", db);
+                clear.Parameters.AddWithValue("@id", id);
+                await clear.ExecuteNonQueryAsync(ct);
+            }
+            await Forge(6, 3);
+            var bag = await Read(client, ct);
+            var forged = Assert.Single(bag.GetProperty("items").EnumerateArray());
+            Assert.Equal(2, forged.GetProperty("substats")[0].GetProperty("enhancementCount").GetInt32());
+            Assert.True(forged.GetProperty("substats")[0].GetProperty("enhancementCountKnown").GetBoolean());
+            Assert.False(forged.GetProperty("mainStat").GetProperty("enhancementCountKnown").GetBoolean());
+            await Forget(forged.GetProperty("instanceId").GetString()!);
+            bag = await Read(client, ct);
+            Assert.All(bag.GetProperty("items")[0].GetProperty("substats").EnumerateArray(), stat =>
+            {
+                Assert.False(stat.GetProperty("enhancementCountKnown").GetBoolean());
+                Assert.False(stat.TryGetProperty("enhancementCount", out _));
+            });
+            await Forge(0, 1);
+            bag = await Read(client, ct);
+            string fresh = bag.GetProperty("items")[1].GetProperty("instanceId").GetString()!;
+            await Set(client, "gold", 2_000_000, ct);
+            await Set(client, "ma_est6e", 20, ct);
+            using var enhanced = await client.PostAsJsonAsync("/api/inventory/equipment/" + fresh + "/enhance",
+                new { requestId = Id(), expectedVersion = bag.GetProperty("version").GetInt64(),
+                    materials = new[] {new {kind="ma_est6e",quantity=7}} }, ct);
+            Assert.Equal(HttpStatusCode.OK, enhanced.StatusCode);
+            var receipt = await enhanced.Content.ReadFromJsonAsync<JsonElement>(ct);
+            var expected = receipt.GetProperty("inventory").GetProperty("items")[1].GetProperty("substats")
+                .EnumerateArray().Select(stat => stat.GetProperty("enhancementCount").GetInt32()).ToArray();
+            Assert.Equal(5, expected.Sum());
+            await Forget(fresh);
+            var restored = (await Read(client, ct)).GetProperty("items")[1].GetProperty("substats");
+            Assert.Equal(expected, restored.EnumerateArray().Select(stat => stat.GetProperty("enhancementCount").GetInt32()));
+        }
+        finally
+        {
+            using var clean = new MySqlCommand("DELETE FROM arena_player WHERE id=@id", db);
+            clean.Parameters.AddWithValue("@id", owner);
+            await clean.ExecuteNonQueryAsync(CancellationToken.None);
+        }
+    }
+
+    [MySqlFact]
     public async Task EnhancementPersistsExperienceBalancesAndOriginalReceiptWhileRejectingStaleOrForeignWrites()
     {
         string connection = Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
@@ -43,6 +116,8 @@ public sealed class EquipmentEnhancementIntegrationTests
             var item = Assert.Single(before.GetProperty("items").EnumerateArray());
             Assert.Equal(100, item.GetProperty("mainStat").GetProperty("value").GetInt32());
             Assert.True(item.GetProperty("enhancementSupported").GetBoolean());
+            Assert.All(item.GetProperty("substats").EnumerateArray(), stat =>
+                Assert.Equal(0, stat.GetProperty("enhancementCount").GetInt32()));
             string instance = item.GetProperty("instanceId").GetString()!;
             var request = new { requestId = Id(), expectedVersion = before.GetProperty("version").GetInt64(),
                 materials = new[] {new {kind="ma_est1e",quantity=2},new {kind="ma_est2e",quantity=1}} };
@@ -75,6 +150,8 @@ public sealed class EquipmentEnhancementIntegrationTests
                 expectedVersion=after.GetProperty("version").GetInt64(),request.materials}, ct);
             Assert.Equal(HttpStatusCode.Conflict, insufficient.StatusCode);
             var final = await Read(client, ct);
+            Assert.Equal(result.GetProperty("afterLevel").GetInt32() / 3,
+                final.GetProperty("items")[0].GetProperty("substats").EnumerateArray().Sum(stat => stat.GetProperty("enhancementCount").GetInt32()));
             Assert.Equal(after.GetProperty("version").GetInt64(), final.GetProperty("version").GetInt64());
             Assert.Equal(98, Balance(final, "ma_est1e"));
             Assert.Equal(99, Balance(final, "ma_est2e"));

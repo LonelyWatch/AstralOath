@@ -87,10 +87,12 @@ internal sealed partial class InventoryStore
         {
             var stat = plan.After.Substats[position];
             using var add = new MySqlCommand("""
-                INSERT INTO inventory_equipment_substat(instance_id,position,kind,stat_value) VALUES(@item,@position,@kind,@value);
+                INSERT INTO inventory_equipment_substat(instance_id,position,kind,stat_value,enhancement_count)
+                VALUES(@item,@position,@kind,@value,@count);
                 """, connection, tx);
             add.Parameters.AddWithValue("@item", instanceId); add.Parameters.AddWithValue("@position", position);
             add.Parameters.AddWithValue("@kind", stat.Kind); add.Parameters.AddWithValue("@value", stat.Value);
+            add.Parameters.AddWithValue("@count", stat.EnhancementCount);
             await add.ExecuteNonQueryAsync(ct);
         }
         await OperationAudit.Record(connection, tx, "inventory.equipment.enhance", "arena_player", playerId,

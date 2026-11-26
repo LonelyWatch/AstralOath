@@ -1,0 +1,163 @@
+{
+  "assets": [
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_blue.png",
+      "source": "img/_btn_blue.png",
+      "sourceSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "outputSha256": "caf8e5af4da6d8222ec1fa2b2ae5fcd8c51dce3e40bdff535cda2144928a815a",
+      "unityBorderLbrt": [
+        45,
+        14,
+        45,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_blue_p.png",
+      "source": "img/_btn_blue_p.png",
+      "sourceSha256": "98d0f5503b405d49091e3e0b19254b946b36b3191f8a07199a92ef7210023603",
+      "outputSha256": "98d0f5503b405d49091e3e0b19254b946b36b3191f8a07199a92ef7210023603",
+      "unityBorderLbrt": [
+        45,
+        14,
+        45,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_green.png",
+      "source": "img/_btn_green.png",
+      "sourceSha256": "209315cc9f3ff33da7740008b56768301bcb296dd4b0e1ea0f45f5e999eb0832",
+      "outputSha256": "209315cc9f3ff33da7740008b56768301bcb296dd4b0e1ea0f45f5e999eb0832",
+      "unityBorderLbrt": [
+        40,
+        11,
+        40,
+        11
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_green_p.png",
+      "source": "img/_btn_green_p.png",
+      "sourceSha256": "f552287f6c24fa79539f7a2234a3b8af9b6d7b5ad99f6dc14b92c8c095960994",
+      "outputSha256": "f552287f6c24fa79539f7a2234a3b8af9b6d7b5ad99f6dc14b92c8c095960994",
+      "unityBorderLbrt": [
+        40,
+        11,
+        40,
+        11
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_gold.png",
+      "source": "img/_btn_gold.png",
+      "sourceSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "outputSha256": "4c4861a4aae376a620c706ac2fa3c778f5bf221537187cac8f17a7f9e57d699b",
+      "unityBorderLbrt": [
+        40,
+        11,
+        40,
+        11
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_gold_p.png",
+      "source": "img/_btn_gold_p.png",
+      "sourceSha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "outputSha256": "d56ef788bbdb080bbfb92c5b5af10d1e026bf4d7a5b88642191d64f2daf5dfbf",
+      "unityBorderLbrt": [
+        40,
+        11,
+        40,
+        11
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_small_black.png",
+      "source": "img/_btn_small_black.png",
+      "sourceSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "outputSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "unityBorderLbrt": [
+        14,
+        16,
+        14,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_small_black_p.png",
+      "source": "img/_btn_small_black_p.png",
+      "sourceSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "outputSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "unityBorderLbrt": [
+        14,
+        16,
+        14,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_small_white.png",
+      "source": "img/_btn_small_white.png",
+      "sourceSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "outputSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "unityBorderLbrt": [
+        14,
+        16,
+        14,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/_btn_small_white_p.png",
+      "source": "img/_btn_small_white_p.png",
+      "sourceSha256": "e985671f76133703de319a0aa3dd8ef0b2d5d1d733c053d2d31f216ba8f71956",
+      "outputSha256": "e985671f76133703de319a0aa3dd8ef0b2d5d1d733c053d2d31f216ba8f71956",
+      "unityBorderLbrt": [
+        14,
+        16,
+        14,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/cost_plate.png",
+      "source": "img/_btn_small_black_p.png",
+      "sourceSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "outputSha256": "2914fbba0c18b779fd4d029086339b4c42b9faacbe859acd7905a0b6bd901986",
+      "unityBorderLbrt": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "conversion": "Source node opacity127 integrated into alpha, then sRGB black transmission converted to linear alpha."
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/InventoryButtons/token_gold.png",
+      "source": "item/token_gold.png",
+      "sourceSha256": "ca0605538c5670319765b091ae49661f196830f27f56bc600fd8b550df82b03a",
+      "outputSha256": "ca0605538c5670319765b091ae49661f196830f27f56bc600fd8b550df82b03a",
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "referenceLayouts": [
+    {
+      "source": "wnd/inventory_equip_popup.csb",
+      "sha256": "76ab192af2c5a6973c448488c9411abd08f0adb058f11efd88b55fcd0b5552a0"
+    },
+    {
+      "source": "wnd/unit_item_upgrade.csb",
+      "sha256": "5f7e2b08ed3c0ac17f5a035cebe350449d837dce1fa0ee6d851c6578778e07a5"
+    },
+    {
+      "source": "wnd/equip_belt.csb",
+      "sha256": "052cf9c4a1885e0bd6e25df91381188fb57b846fcd261195c61dbbd8e9b1a0f2"
+    }
+  ]
+}

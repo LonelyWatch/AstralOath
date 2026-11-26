@@ -53,7 +53,7 @@ namespace AstralOath.Editor
 
             var badgeInstance = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath), art);
             var badgeRect = (RectTransform)badgeInstance.transform;
-            Place(badgeRect, .65f, -.055f, .405f, .29f);
+            Place(badgeRect, .67f, -.055f, .405f, .29f);
             badgeInstance.SetActive(false);
             PrefabUtility.RecordPrefabInstancePropertyModifications(badgeRect);
             PrefabUtility.RecordPrefabInstancePropertyModifications(badgeInstance);

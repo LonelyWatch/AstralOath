@@ -12,9 +12,13 @@ namespace AstralOath.Editor
     {
         private static void BuildEquipmentManager(RectTransform frame, List<(string Key,Object Target)> keys, string[] slots,string[] authored)
         {
-            var pane = Area(frame,"Manage equipment",0,0,1,1);
-            keys.Add(("pickerSurface",pane.gameObject));
-            Paint(pane,InventoryArt("base_unit_hero"),Color.white,true);
+            var surface = Area(frame,"Manage equipment",0,0,1,1);
+            keys.Add(("pickerSurface",surface.gameObject));
+            Paint(surface,InventoryArt("base_unit_hero"),Color.white,true);
+            // Keep the original 2464x1200 game-area composition together when fitting the safe area.
+            var pane = Area(surface,"Management composition",0,0,1,1);
+            PlaceHeroControl(pane,.5f,.5f,1478.4f,720f);
+            keys.Add(("manageComposition",pane));
             // equip_base.csb: these are source scale-nine panels and gradients, not replacement fills.
             Paint(Area(pane,"Loadout source panel",-.20f,.092f,.677f,1.02f),ManagementArt("_btn_small_black_5"),
                 ManagementSourceTint(30,144,255,229),false,true).pixelsPerUnitMultiplier = 1f / HomeDesignScale;
@@ -136,6 +140,10 @@ namespace AstralOath.Editor
                 keys.Add((group.Item1 + "Set",Text(group.Item2,"Active sets",null,23,.14f,.929f,.84f,.070f,Mist)));
             }
             var info = Area(pane,"Candidate details",.033f,.175f,.217f,.800f);
+            info.anchorMin = info.anchorMax = new Vector2(.033f,.825f);
+            info.pivot = new Vector2(0,1);
+            info.anchoredPosition = Vector2.zero;
+            info.sizeDelta = new Vector2(320f,576f) * HomeDesignScale;
             keys.Add(("detail",info.gameObject));
             var plate = Paint(Area(info,"Source equipment grade panel",-.085f,-.035f,1.17f,1.065f),
                 InventoryArt("Equipment/_box_equip_1"),Color.white,false,true);
@@ -253,6 +261,10 @@ namespace AstralOath.Editor
         private static void BuildManagementQuote(RectTransform dialog,List<(string Key,Object Target)> keys)
         {
             var panel=Area(dialog,"Confirm loadout change",0,.185f,1,.63f);
+            panel.anchorMin = new Vector2(0,.5f);
+            panel.anchorMax = new Vector2(1,.5f);
+            panel.sizeDelta = new Vector2(0,690f);
+            panel.anchoredPosition = Vector2.zero;
             keys.Add(("managementQuote",panel.gameObject));
             PaintSourceMessageBox(panel,true);
             keys.Add(("manageQuoteTitle",Text(panel,"Title","home.gear.manageChange",38,.25f,.058f,.50f,.10f,Color.white,TextAlignmentOptions.Center)));
@@ -260,27 +272,32 @@ namespace AstralOath.Editor
             ornament.type = Image.Type.Sliced;
             ornament.color = ManagementSourceTint(255,255,255,102);
             keys.Add(("manageSummary",Text(panel,"Summary",null,27,.25f,.29f,.50f,.10f,Mist,TextAlignmentOptions.Center,true)));
-            var headingBand = Area(panel,"Comparison headings",.35f,.41f,.30f,.045f);
-            keys.Add(("manageQuoteHeadings",headingBand.gameObject));
-            headingBand.gameObject.SetActive(false);
-            string[] columns = { "Metric","Before","After","Delta" };
-            for (int i = 0; i < columns.Length; i++)
+            var comparison = Area(panel,"Combat power comparison",0,0,1,1);
+            PlaceHeroControl(comparison,.5f,.43f,640f,150f);
+            var powerColor = new Color32(51,152,238,255);
+            var gainColor = new Color32(255,120,0,255);
+            for (int i = 0; i < 2; i++)
             {
-                string column = columns[i];
-                float x = .35f + i * .083f;
-                var align = i == 0 ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.TopRight;
-                var heading = Text(panel,column,"home.gear.quote" + column,24,x,.41f,.075f,.045f,Mist,align);
-                heading.gameObject.SetActive(false);
-                keys.Add(("manageQuoteHeading" + column,heading));
-                var values = Text(panel,column + " values",null,29,x,.46f,.075f,.23f,Color.white,align);
-                values.richText = column == "Delta";
-                values.lineSpacing = 4;
+                string column = i == 0 ? "Before" : "After";
+                float x = i == 0 ? .04f : .68f;
+                Picture(comparison,column + " combat power symbol",RosterArt("cm_icon_etcbp"),x,.08f,.043f,.18f,true).color = powerColor;
+                keys.Add(("manageQuote" + column + "Title",Text(comparison,column + " title","home.gear.combatPower",29,x+.055f,.06f,.25f,.22f,powerColor)));
+                var values = Text(comparison,column + " combat power",null,58,x,.30f,.29f,.43f,Color.white,TextAlignmentOptions.MidlineLeft);
+                values.fontStyle = FontStyles.Bold;
                 values.enableAutoSizing = true;
-                values.fontSizeMin = 15;
-                values.fontSizeMax = 29;
+                values.fontSizeMin = 34;
+                values.fontSizeMax = 58;
                 keys.Add(("manageQuote" + column,values));
             }
-            keys.Add(("manageChange",Text(panel,"Transaction notes",null,22,.30f,.70f,.40f,.075f,Mist,TextAlignmentOptions.Center,true)));
+            var direction = Picture(comparison,"Change direction",ManagementArt("cm_icon_etcarrow"),.475f,.17f,.040f,.16f,true);
+            direction.rectTransform.localEulerAngles = new Vector3(0,0,90);
+            direction.color = gainColor;
+            keys.Add(("manageQuoteDirection",direction));
+            var deltaArrow = Picture(comparison,"Combat power delta arrow",RosterArt("cm_icon_etccompu"),.43f,.51f,.023f,.07f,true);
+            deltaArrow.color = gainColor;
+            keys.Add(("manageQuoteDeltaArrow",deltaArrow));
+            keys.Add(("manageQuoteDelta",Text(comparison,"Combat power delta",null,31,.465f,.43f,.19f,.24f,gainColor)));
+            keys.Add(("manageChange",Text(panel,"Transaction notes",null,21,.30f,.71f,.40f,.07f,Mist,TextAlignmentOptions.Center,true)));
             var gold = Load<Sprite>(SummonPath + "Res/Textures/_btn_gold_r_2.png");
             var goldPressed = Load<Sprite>(SummonPath + "Res/Textures/_btn_gold_r_p_2.png");
             var cancel = Action(panel,"Cancel","home.gear.cancel",29,.36f,.807f,.135f,.145f,out _,gold,Color.white);

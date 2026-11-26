@@ -16,6 +16,12 @@ GameButton 的按压覆盖整颗按钮的子图和 TMP 文本。控件已有按�
 
 Common 提供通用组件和资源，业务文案、图标数据、事件和生命周期由调用方持有。
 
+2026-11-26–27：装备及神器入口共用 `Res/Prefab/Styles/{Blue,Black,Green,GreenCost,Check}/ConfirmButton.prefab` 和 `Styles/Gold/CancelButton.prefab`，继承现有通用 button/label 契约；金币底、勾框、选中底作为嵌套绑定管理。编辑入口为 `ArenaUiBuilder.CommonInventoryButtons.cs`，源图由 `Tools/Arena/ImportInventoryButtons.py` 最小导入。大横幅或其他原版样式不自动合并为装备蓝按钮，范围见[本轮验收](../../../docs/delivery/2026-11-26-equipment-followup.md)。
+
+强化角标两张源图均为30×30，cap(12,11,3,8)换算为Unity border(12,11,15,11)，不能以显示宽39/44计算右边界。`AuthoredHeightLayout`按宿主高度统一缩放原尺寸组，数字和底板不分别拉伸；`NotificationBadgeBinder`按当前上限选择普通39/满级44宽，通知点恢复31宽。原图坐标补偿保留暗边/阴影留白。
+
+`BitmapNumber`直接以默认UGUI Image绘制原`itxt_num*_b.png`，每字26×34、源比例.57、前缀步长15/数字16，个位→十位→加号的遮盖顺序与原节点层次对应；字位按需创建并复用。隐藏的GameText只保留旧`label.text`读取契约，不重复绘制。早期`EquipmentEnhancementDigits.asset`/生成器仍供该兼容字段使用，不作为最终数字显示路径。两项通用组件只做显示，无业务模块引用或全局事件。它们及Binder变更位于AOT，须R37新母包交付，不能当作兼容R36业务热更。
+
 装备卡左上物品等级使用 `Res/Fonts/EquipmentItemLevelDigits.asset`。这个静态 TMP 字体从项目已有的 EpicSeven.ttf 烘焙 0–9，内含数字图集和带细暗边、短阴影的材质。方形缩略图与网格共用同一份预制。右上红标显示该实例的强化等级。
 
 普通装备网格使用 `EquipmentItemCard.prefab`，包含品质底、装备图、等级、套装、佩戴者、选中框、主属性以及嵌套的强化角标。装备详情、单槽比较使用 `EquipmentStatRow.prefab`，名称靠左，数值靠右。两份预制只挂基础控件与 BindingMap，使用它们的装备 View/Binder 归属 Home 热更程序集。父页面可在嵌套实例上调整尺寸和字级。[原版录屏及复用范围](../../../docs/development/equipment-ui-reference.md)

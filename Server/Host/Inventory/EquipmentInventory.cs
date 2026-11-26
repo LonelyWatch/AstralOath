@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AstralOath.Server.Inventory;
 
@@ -7,7 +8,11 @@ internal sealed record EquipmentInventory(int Capacity, int Used, long Version, 
 internal sealed record OwnedEquipment(string InstanceId, string TemplateId, string Slot, string SetId, int ItemLevel,
     int EnhanceLevel, string Grade, OwnedEquipmentStat MainStat, IReadOnlyList<OwnedEquipmentStat> Substats, string? EquippedHeroId,
     long Xp = 0, bool EnhancementSupported = false, string? EnhancementBlockReason = null);
-internal sealed record OwnedEquipmentStat(string Kind, int Value);
+internal sealed record OwnedEquipmentStat(string Kind, int Value,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? EnhancementCount = null)
+{
+    public bool EnhancementCountKnown => EnhancementCount.HasValue;
+}
 internal sealed record EquipmentGrant(string TemplateId, string Slot, string SetId, int ItemLevel, int EnhanceLevel,
     string Grade, OwnedEquipmentStat MainStat, OwnedEquipmentStat[] Substats, string? EnhancementProfileId = null);
 internal sealed record EquipmentMutation(string? RequestId, string? Action, string? InstanceId,

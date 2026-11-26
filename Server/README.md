@@ -1,5 +1,7 @@
 # AstralOath.Server
 
+2026-11-26：迁移016为独立副属性行新增nullable `enhancement_count`。新生成初始掷值不计次数，既有词条每次实际强化+1，新解锁为0；GM合法配方保存Rolls-1，计数随数值同事务提交及幂等重放。响应新增`enhancementCountKnown`，已知才输出`enhancementCount`，不根据属性值反推旧GM次数。旧+0可确认0；旧+N只有完整唯一且无未来事件的历史才恢复，否则未知。迁移重入通过，迁移专用连接允许脚本变量，业务连接不变。完整服务端599项、独立候选服API的计数/强化/幂等/同类GM余额重读通过。[本轮细节及数据库状态](../docs/delivery/2026-11-26-equipment-followup.md)
+
 战斗响应中的 `cooldownReduction` 随技能结算给出实减的回合数。菲奥雷托满专注使用「蝴蝶斩击」时，三技能未强化减少 6 回合，强化到 +3 减少 5 回合，两种情况下剩余值均为零。旧响应缺少该字段时，新客户端按零读取。[战斗复核](../docs/delivery/2026-11-22-battle-followup.md)
 
 开发版 GM 在回环地址的 Development 游戏服注册 `GET /api/development/gm` 与 `POST /api/development/gm/actions`。已有会话的任一账号可查看和设置自己的目录余额（含装备/饰品强化材料），按目录发放英雄、神器及训练装备。绝对余额的范围为 0 至 10 亿，每次发放 1 至 10 件。账号取自 Bearer 会话，服务端在同一账号锁和事务内检查容量、登记请求、写库存及审计。同一请求 ID 的同参数重试读取当前结果，参数冲突返回 409。正式环境和对外监听不注册这组路由。测试入口为 `DevelopmentGmTests`。

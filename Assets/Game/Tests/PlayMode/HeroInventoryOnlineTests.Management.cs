@@ -173,7 +173,13 @@ namespace AstralOath.Client.Tests
             Task<string> Token(CancellationToken _) => Task.FromResult(bearer);
             using var heroes = new HeroInventoryApi(endpoint,Token,scope.Token);
             using var equipment = new EquipmentInventoryApi(endpoint,Token,scope.Token);
-            var opening = OpenArtifactWindow(true,scope,heroes,null,null,equipment);
+            using var artifacts = new ArtifactInventoryApi(endpoint,Token,scope.Token);
+            var artifactRead = artifacts.FetchAsync(scope.Token);
+            yield return Wait(() => artifactRead.IsCompleted,"Could not confirm the fixture's artifact progress.");
+            var artifactSnapshot = artifactRead.GetAwaiter().GetResult();
+            Assert.That(artifactSnapshot.artifacts,Is.Empty,"This project's CP fixture has confirmed no equipped artifact.");
+            var artifactArt = UnityEditor.AssetDatabase.LoadAssetAtPath<ArtifactArtCatalog>("Assets/Game/Modules/Home/Configs/ArtifactArtCatalog.asset");
+            var opening = OpenArtifactWindow(true,scope,heroes,artifacts,artifactArt,equipment,initialArtifacts: artifactSnapshot);
             yield return Wait(() => opening.IsCompleted,"Hero screen did not open.");
             var page = opening.GetAwaiter().GetResult();
             var browser = page.Require<BindingMap>("gearBrowser");
@@ -228,11 +234,14 @@ namespace AstralOath.Client.Tests
             yield return Capture("equipment-manager-preview-21x9",1920,823);
             Click(browser,"apply");
             Assert.That(browser.Require<GameObject>("managementQuote").activeInHierarchy,Is.True);
-            Assert.That(browser.Require<GameText>("manageQuoteBefore").text,Does.Contain("53"));
-            Assert.That(browser.Require<GameText>("manageQuoteAfter").text,Does.Contain(proposed));
+            // Target changed from per-stat 53 -> 83 to versioned project CP for the same owned fixture.
+            Assert.That(browser.Require<GameText>("manageQuoteBefore").text,Is.EqualTo("1,103"));
+            Assert.That(browser.Require<GameText>("manageQuoteAfter").text,Is.EqualTo("1,240"));
             var deltaText = browser.Require<GameText>("manageQuoteDelta");
-            Assert.That(deltaText.text,Does.Contain("+30"));
-            Assert.That(deltaText.richText,Is.True);
+            Assert.That(deltaText.text,Is.EqualTo("137"));
+            Assert.That(browser.Require<GameText>("manageQuoteBeforeTitle").text,Is.EqualTo("战斗力"));
+            Assert.That(browser.Require<GameText>("manageQuoteAfterTitle").text,Is.EqualTo("战斗力"));
+            Assert.That(browser.Require<Image>("manageQuoteDeltaArrow").enabled,Is.True);
             yield return Capture("equipment-manager-confirm",1478,720);
             Click(browser,"manageCancel");
             read = equipment.FetchAsync(scope.Token);

@@ -15,23 +15,56 @@ namespace AstralOath.Editor
         {
             var badge = Root("NotificationBadge");
             PlaceHeroControl(badge, .5f, .5f, 31, 30);
-            var mark = Picture(badge, "Red mark", Load<Sprite>(Common + "Textures/_notification_num.png"), 0, 0, 1, 1, true);
+            var sourceGroup = Area(badge, "Authored source group", 0, 0, 1, 1);
+            sourceGroup.anchorMin = sourceGroup.anchorMax = new Vector2(1,.5f);
+            sourceGroup.pivot = new Vector2(1,.5f);
+            sourceGroup.sizeDelta = new Vector2(44,30) * HomeDesignScale;
+            sourceGroup.anchoredPosition = Vector2.zero;
+            var scaleLayout = badge.gameObject.AddComponent<AuthoredHeightLayout>();
+            var layoutSettings = new SerializedObject(scaleLayout);
+            layoutSettings.FindProperty("content").objectReferenceValue = sourceGroup;
+            layoutSettings.FindProperty("authoredHeight").floatValue = 30 * HomeDesignScale;
+            layoutSettings.ApplyModifiedPropertiesWithoutUndo();
+            var mark = Picture(sourceGroup, "Red mark", Load<Sprite>(Common + "Textures/_notification_num.png"), 0, 0, 1, 1, true);
             mark.color = new Color32(255, 48, 38, 255);
-            var label = Text(badge, "Enhancement", null, 22f, .045f, .05f, .91f, .90f,
+            mark.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
+            var label = Text(sourceGroup, "Enhancement", null, 22f, .045f, .05f, .91f, .90f,
                 Color.white, TextAlignmentOptions.Center);
-            // This label only displays an ASCII plus sign and decimal digits.
-            // Its static atlas has no dependency on a module's localization fallback.
-            label.font = Load<TMP_FontAsset>("Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset");
+            // Source n_num uses shaded bitmap numerals, not the general UI font.
+            label.font = EnhancementBitmapDigits();
             label.fontSharedMaterial = label.font.material;
-            label.enableAutoSizing = true;
-            label.fontSizeMin = 13f;
-            label.fontSizeMax = 22f;
+            label.fontSize = 34f * .57f * HomeDesignScale;
+            label.enableAutoSizing = false;
+            label.overflowMode = TextOverflowModes.Overflow;
+            label.alignment = TextAlignmentOptions.CenterGeoAligned;
             label.enabled = false;
-            var normalPlate = Picture(badge, "Normal enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_orange.png"), 0, 0, 1, 1, true);
-            var maximumPlate = Picture(badge, "Maximum enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_red.png"), 0, 0, 1, 1, true);
+            // The source CSB draws individual sprite numerals. Keep the old label only as a readback contract.
+            var numberRoot = Area(sourceGroup,"Original numeral sprites",0,0,0,0);
+            numberRoot.anchorMin = numberRoot.anchorMax = new Vector2(1,.5f);
+            numberRoot.pivot = new Vector2(.5f,.5f);
+            numberRoot.sizeDelta = Vector2.zero;
+            var prefix = Picture(numberRoot,"Prefix",Load<Sprite>(Common + "Textures/EnhancementDigits/itxt_numplus_b.png"),0,0,0,0,true);
+            var template = Picture(numberRoot,"Digit template",Load<Sprite>(Common + "Textures/EnhancementDigits/itxt_num0_b.png"),0,0,0,0,true);
+            template.gameObject.SetActive(false);
+            var number = numberRoot.gameObject.AddComponent<BitmapNumber>();
+            var numberSettings = new SerializedObject(number);
+            var digitSprites = numberSettings.FindProperty("digitSprites");
+            digitSprites.arraySize = 10;
+            for (int i = 0; i < 10; i++)
+                digitSprites.GetArrayElementAtIndex(i).objectReferenceValue = Load<Sprite>(Common + "Textures/EnhancementDigits/itxt_num" + i + "_b.png");
+            numberSettings.FindProperty("prefixSprite").objectReferenceValue = prefix.sprite;
+            numberSettings.FindProperty("prefixImage").objectReferenceValue = prefix;
+            numberSettings.FindProperty("digitTemplate").objectReferenceValue = template;
+            numberSettings.FindProperty("prefixAdvance").floatValue = 15;
+            numberSettings.FindProperty("digitAdvance").floatValue = 16;
+            numberSettings.ApplyModifiedPropertiesWithoutUndo();
+            numberRoot.gameObject.SetActive(false);
+            var normalPlate = Picture(sourceGroup, "Normal enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_orange.png"), 0, 0, 1, 1, true);
+            var maximumPlate = Picture(sourceGroup, "Maximum enhancement plate", Load<Sprite>(Common + "Textures/_upgrade_num_red.png"), 0, 0, 1, 1, true);
             normalPlate.gameObject.SetActive(false);
             maximumPlate.gameObject.SetActive(false);
-            Bind(badge, ("mark", mark), ("label", label), ("normalPlate", normalPlate), ("maximumPlate", maximumPlate));
+            Bind(badge, ("mark", mark), ("label", label), ("normalPlate", normalPlate), ("maximumPlate", maximumPlate),
+                ("sourceGroup",sourceGroup),("scaleLayout",scaleLayout),("number",number));
             Save(badge.gameObject, BadgePrefabPath);
             UIViewRegistry.ValidatePrefab<NotificationBadge>(Load<GameObject>(BadgePrefabPath));
 
@@ -45,7 +78,7 @@ namespace AstralOath.Editor
             item.enabled = false;
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath), slot);
             var corner = (RectTransform)instance.transform;
-            Place(corner, .73f, -.04f, 31f / 98f, 30f / 99f);
+            Place(corner, .77f, -.04f, 31f / 98f, 30f / 99f);
             instance.SetActive(false);
             PrefabUtility.RecordPrefabInstancePropertyModifications(corner);
             PrefabUtility.RecordPrefabInstancePropertyModifications(instance);
@@ -94,7 +127,7 @@ namespace AstralOath.Editor
             Place(symbol.rectTransform, (centerX - 16.5f) / width, 1f - (centerY + 16.5f) / height,
                 33f / width, 33f / height);
             var corner = (RectTransform)bindings.Require<BindingMap>("badge").transform;
-            Place(corner, 1f - 27f / width, -4f / height, 31f / width, 30f / height);
+            Place(corner, 1f - 23f / width, -4f / height, 31f / width, 30f / height);
             PrefabUtility.RecordPrefabInstancePropertyModifications(symbol.rectTransform);
             PrefabUtility.RecordPrefabInstancePropertyModifications(corner);
             return (RectTransform)bindings.transform;

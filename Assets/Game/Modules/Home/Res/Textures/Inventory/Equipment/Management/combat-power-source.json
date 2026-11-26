@@ -1,0 +1,59 @@
+{
+  "sourceRelease": "pack-15-r4262",
+  "layout": "wnd/equip_change_popup.csb",
+  "layoutSha256": "50b0a1a9e8d6f3f4c0e23e81cca9716ce6df2e2e7588c3f0dba2be495c4d1259",
+  "assets": [
+    {
+      "source": "img/cm_icon_etcarrow.png",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Equipment/Management/cm_icon_etcarrow.png",
+      "sourceSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
+      "outputSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
+      "size": [
+        18,
+        12
+      ],
+      "reused": false,
+      "slicing": "native sprite; no scale-nine borders",
+      "sourceNode": "Layer/n_show_eff/arrow_item",
+      "sourcePosition": [
+        639,
+        227
+      ],
+      "sourceScale": [
+        1.25,
+        1.25
+      ],
+      "sourceRotationSkew": [
+        -90,
+        -90
+      ],
+      "unityRotationZ": 90,
+      "sourceRgb": [
+        255,
+        120,
+        0
+      ]
+    },
+    {
+      "source": "img/cm_icon_etcbp.png",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/Roster/cm_icon_etcbp.png",
+      "sourceSha256": "dd9cea9b6f9d5c54a90c08a8f2023d4368cf836c23ce6a7fedf4485f0d06a107",
+      "outputSha256": "dd9cea9b6f9d5c54a90c08a8f2023d4368cf836c23ce6a7fedf4485f0d06a107",
+      "size": [
+        27,
+        26
+      ],
+      "reused": true,
+      "slicing": "native sprite; no scale-nine borders",
+      "sourceNodes": [
+        "Layer/n_show_eff/n_stat1/power",
+        "Layer/n_show_eff/n_stat2/power"
+      ],
+      "sourceRgb": [
+        51,
+        152,
+        238
+      ]
+    }
+  ]
+}

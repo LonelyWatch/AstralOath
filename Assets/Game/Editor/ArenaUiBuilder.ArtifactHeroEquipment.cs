@@ -46,12 +46,12 @@ namespace AstralOath.Editor
             void Act(RectTransform parent, string key, string caption, float size, float x, float y, float w, float h,
                 Sprite sprite)
             {
-                var button = Action(parent, key, caption, size, x, y, w, h, out var label, sprite, Color.white);
-                if (sprite && sprite.name == "_btn_blue_r_3")
-                {
-                    PressSprites(button,sprite,SummonArt("_btn_blue_r_p_3"));
-                    ((Image)button.targetGraphic).pixelsPerUnitMultiplier=2.5f;
-                }
+                string style = sprite && sprite.name == "_btn_blue" ? "Blue" :
+                    sprite && sprite.name == "_btn_small_black" ? "Black" :
+                    sprite && sprite.name == "_btn_green" ? "Green" : sprite && sprite.name == "_btn_gold" ? "Gold" : null;
+                GameText label;
+                var button = style == null ? Action(parent, key, caption, size, x, y, w, h, out label, sprite, Color.white) :
+                    InventoryAction(parent, key, caption, size, x, y, w, h, out label, style);
                 label.fontStyle = FontStyles.Bold;
                 Link(key, button);
                 Link(key + "Label", label);
@@ -118,11 +118,11 @@ namespace AstralOath.Editor
             Caption(content,"level",null,38,.74f,.467f,.247f,.069f,new Color32(253,166,67,255)).alignment=TextAlignmentOptions.Right;
             Paint(Area(content,"Skill divider",.503f,.531f,.495f,.014f),BagArt("_bar_2"),new Color32(152,166,192,148),sliced:true);
             Caption(content,"body",null,29,.517f,.55f,.477f,.218f,Color.white,true).alignment=TextAlignmentOptions.TopLeft;
-            Act(content,"training",ArtifactInventoryPrefix+"enhance",25,.727f,.78f,.247f,.091f,SummonArt("_btn_blue_r_3"));
+            Act(content,"training",ArtifactInventoryPrefix+"enhance",25,.727f,.78f,.247f,.091f,InventoryButtonArt("_btn_blue"));
             Act(content,"equip","home.gear.singleEquip",30,.519f,.881f,.455f,.105f,CommonArt("_btn_green"));
             Act(content,"unequip","home.gear.singleRemove",30,.519f,.881f,.455f,.105f,CommonArt("_btn_gold"));
             Caption(pick,"status",null,25,.13f,.38f,.55f,.16f,Mist,true).alignment=TextAlignmentOptions.Center;
-            Act(pick,"retry","home.hero_inventory.retry",27,.315f,.57f,.16f,.068f,SummonArt("_btn_blue_r_3"));
+            Act(pick,"retry","home.hero_inventory.retry",27,.315f,.57f,.16f,.068f,InventoryButtonArt("_btn_blue"));
 
             var popup=Area(page,"Worn artifact details",0,0,1,1);
             Link("popup",popup.gameObject);
@@ -173,7 +173,7 @@ namespace AstralOath.Editor
             ApplyWornArtifactInsets(popupBody.rectTransform);
             Act(inside,"remove","home.gear.singleRemove",24,.016f,.902f,.269f,.088f,BagArt("_btn_small_black"));
             Act(inside,"change","home.gear.singleChange",24,.294f,.902f,.27f,.088f,BagArt("_btn_small_black"));
-            Act(inside,"enhance",ArtifactInventoryPrefix+"enhance",26,.652f,.902f,.328f,.088f,SummonArt("_btn_blue_r_3"));
+            Act(inside,"enhance",ArtifactInventoryPrefix+"enhance",26,.652f,.902f,.328f,.088f,InventoryButtonArt("_btn_blue"));
             Caption(popup,"dismissHint","home.gear.singleDismiss",21,.3f,.936f,.4f,.055f,Mist).alignment=TextAlignmentOptions.Center;
 
             var painting=Area(page,"View painting",0,0,1,1);

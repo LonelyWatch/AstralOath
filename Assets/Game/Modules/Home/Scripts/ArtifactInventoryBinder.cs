@@ -41,6 +41,7 @@ namespace AstralOath.Client.Home
         private readonly List<ArtifactInventoryCardBinder> cards = new List<ArtifactInventoryCardBinder>();
 
         private ArtifactInventorySnapshot snapshot;
+        private ArtifactInventorySnapshot unconfirmedProgressSnapshot;
         private ArtifactInventoryItem[] visible = Array.Empty<ArtifactInventoryItem>();
         private ArtifactInventoryItem selected;
         private HeroInventoryItem pickerHero;
@@ -78,6 +79,11 @@ namespace AstralOath.Client.Home
 
         internal void Bind(BindingScope scope)
         {
+            if (api != null)
+            {
+                api.InventoryMayChange += InvalidateEquippedProgress;
+                scope.Add(() => api.InventoryMayChange -= InvalidateEquippedProgress);
+            }
             BindHeroEquipment(scope);
             BindListOptions(scope);
             BindBagDetail(scope);
@@ -177,6 +183,21 @@ namespace AstralOath.Client.Home
             return (entry?.combatIcon, match.level, entry?.template.Stars ?? 0, match.locked);
         }
 
+        internal (int Stars, int Level) EquippedProgress(string hero)
+        {
+            if (string.IsNullOrEmpty(hero) || snapshot?.artifacts == null || busy || loading ||
+                ReferenceEquals(snapshot, unconfirmedProgressSnapshot)) return (-1, -1);
+            var match = snapshot.artifacts.FirstOrDefault(item => item.heroInstanceId == hero);
+            if (match == null) return (0, 0);
+            if (!art || match.level < 0 || match.level > 30) return (-1, -1);
+            var template = art.Find(match.templateId)?.template;
+            return template == null ? (-1, -1) : (template.Stars, match.level);
+        }
+
+        // API writes invalidate this exact prior snapshot, including writes in the separate enhancement page.
+        // Closing a local popup cannot confirm it; successful authoritative readback supplies a new snapshot.
+        private void InvalidateEquippedProgress() => unconfirmedProgressSnapshot = snapshot;
+
         internal (int Attack, int Health) EquippedStats(string hero)
         {
             var match = snapshot?.artifacts?.FirstOrDefault(item => item.heroInstanceId == hero);
@@ -271,12 +292,14 @@ namespace AstralOath.Client.Home
                 var read = initial == null ? fetch(token) : Task.FromResult(initial);
                 if (!read.IsCompleted) Refresh(reset: false);
                 snapshot = await read;
+                unconfirmedProgressSnapshot = null;
             }
             catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
             catch (Exception error)
             {
                 Debug.LogWarning("Unable to load artifact inventory: " + error.GetType().Name);
                 failed = true;
+                InvalidateEquippedProgress();
             }
             finally { loading = false; }
             if (token.IsCancellationRequested) return;

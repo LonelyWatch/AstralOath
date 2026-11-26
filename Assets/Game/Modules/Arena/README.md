@@ -1,5 +1,7 @@
 # Arena
 
+共享中文目录`Configs/arena-zh-hans.json`本轮新增`home.gear.combatPower`与`home.gear.manageChangeSummary`，供Home换装战力确认使用；Arena选禁与战斗流程没有因此变更。原版布局、项目CP规则及验收边界见[装备复核](../../../../docs/delivery/2026-11-26-equipment-followup.md)。
+
 共用 `arena-zh-hans.json` 新增普通装备强化、结果返粉及开发GM各部位强化材料的稳定中文key，供Home/Foundation使用；竞技场规则未改。[强化实现与边界](../../../../docs/development/equipment-enhancement.md)
 
 主页共用的简中文案表 `Configs/arena-zh-hans.json` 补齐装备套装效果、管理页主副能力值和英雄搜索提示；本轮仅调整这些 Home 使用的文案，不改变竞技场权威规则。[原素材复核](../../../../docs/development/ui-material-reference.md)

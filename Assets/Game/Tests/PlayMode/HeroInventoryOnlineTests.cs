@@ -874,6 +874,10 @@ namespace AstralOath.Client.Tests
                 {
                     Assert.That(weaponSlot.enabled,Is.True);
                     Assert.That(page.Require<GameText>("detailStat_attack").text,Is.Not.EqualTo(initialAttack));
+                    Assert.That(page.Require<GameText>("detailBonus_attack").text,
+                        Is.EqualTo((int.Parse(page.Require<GameText>("detailStat_attack").text) - int.Parse(initialAttack)).ToString()),
+                        "The hero page must show the complete current bonus, including after replacing a weapon.");
+                    Assert.That(page.Require<Image>("detailBonusArrow_attack").gameObject.activeInHierarchy,Is.True);
                     Assert.That(weaponSlot.sprite.name,Is.EqualTo(trainingWeaponIcons[index]));
                 }
             }
@@ -889,6 +893,8 @@ namespace AstralOath.Client.Tests
                 Click(single,"popupRemove");
                 yield return Wait(() => !weaponSlot.enabled,"Unequipping the weapon must clear its icon.");
                 Assert.That(page.Require<GameText>("detailStat_attack").text,Is.EqualTo(initialAttack));
+                Assert.That(page.Require<GameText>("detailBonus_attack").gameObject.activeSelf,Is.False);
+                Assert.That(page.Require<Image>("detailBonusArrow_attack").gameObject.activeSelf,Is.False);
                 yield return Capture("equipment-removed",1478,720);
             }
             else

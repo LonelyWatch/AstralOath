@@ -111,7 +111,7 @@ internal static class DevelopmentEquipmentForge
             if (stat.Value < rule.RollMin * stat.Rolls || stat.Value > rule.RollMax * stat.Rolls ||
                 stat.Value % rule.Step != 0) throw Invalid();
             laterUpgrades += stat.Rolls - 1;
-            substats[index] = new(stat.Kind, stat.Value);
+            substats[index] = new(stat.Kind, stat.Value, stat.Rolls - 1);
         }
         if (unlocked + laterUpgrades != grade.InitialSubstats + enhance / 3) throw Invalid();
         return new("gm_forge_" + slot.Slot, slot.Slot, input.SetId!, input.ItemLevel, input.EnhanceLevel,
@@ -148,7 +148,7 @@ internal static class DevelopmentEquipmentForge
             if (stat.Value < range.RollMin * stat.Rolls || stat.Value > range.RollMax * stat.Rolls ||
                 stat.Value % range.Step != 0) throw Invalid();
             laterUpgrades += stat.Rolls - 1;
-            stats[index] = new(stat.Kind, stat.Value);
+            stats[index] = new(stat.Kind, stat.Value, stat.Rolls - 1);
         }
         if (unlocked + laterUpgrades != grade.InitialSubstats + enhance / 3) throw Invalid();
         return new("gm_forge_" + slot.Slot, slot.Slot, input.SetId!, input.ItemLevel, enhance, grade.Grade,

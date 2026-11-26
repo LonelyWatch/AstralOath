@@ -35,6 +35,7 @@ namespace AstralOath.Editor
 
         private static void BuildInventoryAssets()
         {
+            BuildCommonInventoryButtons();
             BuildEquipmentSlotAssets();
             Save(BuildHomeMoreMenu(), HomeMoreMenuPrefabPath);
             Save(BuildHeroInventory(), HeroInventoryPrefabPath);

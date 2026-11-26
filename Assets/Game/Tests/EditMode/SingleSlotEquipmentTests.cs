@@ -10,15 +10,17 @@ namespace AstralOath.Client.Tests
     public sealed class SingleSlotEquipmentTests
     {
         [Test]
-        public void EquippedPopupKeepsPortraitProportionsAndNativeQualitySurface()
+        public void EquippedPopupKeepsFixedDesignDimensionsAndNativeQualitySurface()
         {
             var window = AssetDatabase.LoadAssetAtPath<GameObject>(
                 "Assets/Game/Modules/Home/Res/Prefab/SingleSlotEquipment.prefab").GetComponent<BindingMap>();
-            var panel = window.Require<GameObject>("popup").transform.Find("Detail safe area/Equipment details");
-            var ratio = panel.GetComponent<AspectRatioFitter>();
-            Assert.That(ratio, Is.Not.Null);
-            Assert.That(ratio.aspectMode, Is.EqualTo(AspectRatioFitter.AspectMode.FitInParent));
-            Assert.That(ratio.aspectRatio, Is.InRange(.64f,.68f));
+            var panel = (RectTransform)window.Require<GameObject>("popup").transform.Find("Detail safe area/Equipment details");
+            Assert.That(panel.GetComponent<AspectRatioFitter>(), Is.Null, "The worn detail must not resize itself to its available height.");
+            Assert.That(panel.anchorMin, Is.EqualTo(Vector2.one * .5f));
+            Assert.That(panel.anchorMax, Is.EqualTo(Vector2.one * .5f));
+            Assert.That(panel.pivot, Is.EqualTo(Vector2.one * .5f));
+            Assert.That(panel.anchoredPosition, Is.EqualTo(Vector2.zero));
+            Assert.That(panel.sizeDelta, Is.EqualTo(new Vector2(585, 900)));
             var surface = window.Require<Image>("popupPlate");
             Assert.That(surface, Is.SameAs(window.Require<Image>("popupPlate")));
             Assert.That(surface.sprite.name, Is.EqualTo("_box_equip_1"));

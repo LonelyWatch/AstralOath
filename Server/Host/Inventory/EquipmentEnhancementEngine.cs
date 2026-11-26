@@ -51,7 +51,7 @@ internal static class EquipmentEnhancementEngine
                 string[] available = LegalSubstats(item.Slot, item.MainStat.Kind).Except(substats.Select(s => s.Kind)).ToArray();
                 string kind = available[random(available.Length)];
                 int value = RollValue(item.ItemLevel, item.Grade, kind, random);
-                substats.Add(new(kind, value));
+                substats.Add(new(kind, value, 0));
                 steps.Add(new(level, kind, 0, value, true));
             }
             else
@@ -59,7 +59,7 @@ internal static class EquipmentEnhancementEngine
                 int index = random(substats.Count);
                 var stat = substats[index];
                 int value = checked(stat.Value + RollValue(item.ItemLevel, item.Grade, stat.Kind, random));
-                substats[index] = stat with { Value = value };
+                substats[index] = stat with { Value = value, EnhancementCount = stat.EnhancementCount + 1 };
                 steps.Add(new(level, stat.Kind, stat.Value, value, false));
             }
         }
@@ -82,6 +82,27 @@ internal static class EquipmentEnhancementEngine
     internal static EquipmentEnhancementProfile? Profile(OwnedEquipment item) =>
         EquipmentEnhancementCatalog.Rules.Profiles.FirstOrDefault(p => p.ItemLevel == item.ItemLevel && p.Grade == item.Grade &&
             p.Slot == item.Slot && p.MainKind == item.MainStat.Kind);
+
+    // Legacy forged items did not retain their initial roll allocation. Only a complete
+    // milestone history, or a witnessed unlock followed by complete history, proves a count.
+    internal static OwnedEquipment RecoverEnhancementCounts(OwnedEquipment item, IReadOnlyList<EquipmentEnhancementStep> history)
+    {
+        if (history.Any(step => step.Milestone < 3 || step.Milestone > item.EnhanceLevel || step.Milestone % 3 != 0)) return item;
+        var milestones = history.GroupBy(step => step.Milestone).ToDictionary(group => group.Key, group => group.ToArray());
+        bool CompleteFrom(int first) => Enumerable.Range(first / 3, item.EnhanceLevel / 3 - first / 3 + 1)
+            .All(index => milestones.TryGetValue(index * 3, out var steps) && steps.Length == 1);
+        bool complete = history.Count == item.EnhanceLevel / 3 && CompleteFrom(3);
+        return item with { Substats = item.Substats.Select(stat =>
+        {
+            if (stat.EnhancementCount.HasValue) return stat;
+            var additions = history.Where(step => step.Kind == stat.Kind && step.Added).ToArray();
+            bool witnessedUnlock = additions.Length == 1 && additions[0].Milestone <= item.EnhanceLevel &&
+                CompleteFrom(additions[0].Milestone);
+            return complete || witnessedUnlock
+                ? stat with { EnhancementCount = history.Count(step => step.Kind == stat.Kind && !step.Added) }
+                : stat;
+        }).ToArray() };
+    }
 
     internal static string[] LegalSubstats(string slot, string mainKind)
     {

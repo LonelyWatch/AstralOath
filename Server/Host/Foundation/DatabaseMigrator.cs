@@ -8,7 +8,7 @@ public static class DatabaseMigrator
 {
     public static async Task ApplyAsync(string connectionString, CancellationToken cancellationToken)
     {
-        var settings = new MySqlConnectionStringBuilder(connectionString) { Pooling = false };
+        var settings = new MySqlConnectionStringBuilder(connectionString) { Pooling = false, AllowUserVariables = true };
         if (string.IsNullOrWhiteSpace(settings.Database))
             throw new InvalidOperationException("The migration connection must name a database.");
 

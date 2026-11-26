@@ -5,6 +5,18 @@ using Xunit;
 public sealed class EquipmentForgeRuleTests
 {
     [Fact]
+    public void SourceForgeRetainsOnlyEnhancementRollsAfterEachInitialSubstatRoll()
+    {
+        var input = new GmForgeInput(85, 6, "epic", "speed", "attack",
+            [new("healthPct", 1200, 3), new("speed", 2, 1), new("critChanceBp", 300, 1), new("critDamageBp", 400, 1)],
+            "equipment.enhancement.source-r4262.recorded-economy-v1");
+        var forged = DevelopmentEquipmentForge.Create("weapon", input);
+        var rows = System.Text.Json.JsonSerializer.SerializeToElement(forged.Substats, System.Text.Json.JsonSerializerOptions.Web);
+        Assert.Equal(2, rows[0].GetProperty("enhancementCount").GetInt32());
+        Assert.All(rows.EnumerateArray().Skip(1), stat => Assert.Equal(0, stat.GetProperty("enhancementCount").GetInt32()));
+    }
+
+    [Fact]
     public void EachAdvertisedSlotGradeAndMilestoneCanProduceAllItsMainStats()
     {
         var rules = DevelopmentEquipmentForge.Rules;

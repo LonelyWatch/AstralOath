@@ -223,6 +223,17 @@ namespace AstralOath.Editor
                     TextAlignmentOptions.MidlineRight);
                 bindings.Add(("detailStat_" + key, value));
                 bindings.Add(("detailStatLabel_" + key, label));
+                var bonusColor = new Color32(255, 120, 0, 255);
+                var arrow = Picture(detail, "Total bonus arrow " + key, RosterArt("cm_icon_etccompu"), 0, 0, 0, 0, true);
+                PlaceHeroControl(arrow.rectTransform, .224f, 1f - y - .018f, 13f * .7f, 9f * .7f);
+                arrow.color = bonusColor;
+                arrow.gameObject.SetActive(false);
+                var bonus = Text(detail, "Total bonus " + key, null, 23, .231f, y, .072f, .036f,
+                    bonusColor, TextAlignmentOptions.MidlineLeft);
+                bonus.fontSharedMaterial = Resources.Load<Material>("AstralOathPlayerNameShadow");
+                bonus.gameObject.SetActive(false);
+                bindings.Add(("detailBonus_" + key, bonus));
+                bindings.Add(("detailBonusArrow_" + key, arrow));
             }
         }
 

@@ -96,10 +96,17 @@ namespace AstralOath.Client.FoundationDemo
                 throw new InvalidOperationException("The bag and slot picker disagree on the helmet description or score.");
             Click(single, "equip");
             await Until(() => !browser.gameObject.activeSelf && item.enabled && item.sprite && health.text == (baseline + 80).ToString(), "equip and add 80 HP", token);
+            if (hero.Require<GameText>("detailBonus_health").text != "80" ||
+                !hero.Require<Image>("detailBonusArrow_health").gameObject.activeInHierarchy)
+                throw new InvalidOperationException("The hero panel must show the complete current 80 HP bonus.");
             Click(hero, "gearOpen_helmet");
             await Until(() => single.Require<GameObject>("popup").activeInHierarchy, "inspect the equipped helmet", token);
             Click(single, "popupRemove");
             await Until(() => !browser.gameObject.activeSelf && !item.enabled && health.text == baseline.ToString(), "restore the unequipped panel", token);
+            if (hero.Require<GameText>("detailBonus_health").gameObject.activeSelf ||
+                hero.Require<Image>("detailBonusArrow_health").gameObject.activeSelf)
+                throw new InvalidOperationException("Unequipping must clear the hero's zero HP bonus.");
+            Debug.Log("ASTRAL_EQUIPMENT_BONUS_PLAYER_OK healthBonus=80 cleared=True");
             Debug.Log("ASTRAL_EQUIPMENT_PLAYER_OK items=7 health=" + baseline + "," + (baseline + 80) + "," + baseline +
                 " helmetScore=" + score + " descriptionMatches=True");
         }

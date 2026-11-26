@@ -16,12 +16,36 @@ SPRITES = (
 )
 
 
+def import_hero_bonus_arrow(root, check):
+    relative = "img/cm_icon_etccompu.png"
+    data = read_source(root, relative)
+    with Image.open(io.BytesIO(data)) as image:
+        if image.format != "PNG" or image.size != (13, 9):
+            raise ValueError("Unexpected original hero bonus arrow: " + relative)
+    path = DEST / "Roster/cm_icon_etccompu.png"
+    write(path, data, check)
+    importer = texture_importer(path, sprite=True).replace("textureCompression: 1", "textureCompression: 0")
+    importer = importer.replace("  userData:", "  userData: AstralOath.ImportOverride")
+    metadata(path, check, importer)
+    source = {"asset": path.relative_to(REPO).as_posix(), "source": relative,
+              "sourceSha256": digest(data), "outputSha256": digest(data), "width": 13, "height": 9,
+              "sourceNode": "wnd/unit_detail.csb/Layer/n_menu_equipment/left_equipment/detail_stats/stats/n_01/diff_arrow_01"}
+    manifest = path.parent / "hero-stat-bonus-source.json"
+    write(manifest, (json.dumps(source, ensure_ascii=False, indent=2) + "\n").encode(), check)
+    metadata(manifest, check, "TextScriptImporter:\n  externalObjects: {}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("D:/sevenepic"))
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--hero-bonus-arrow", action="store_true", help="Import/check only the original hero total-bonus arrow.")
     opt = parser.parse_args()
     root = (opt.source / SOURCE_FOLDER).resolve(strict=True)
+    if opt.hero_bonus_arrow:
+        import_hero_bonus_arrow(root, opt.check)
+        print("Verified hero bonus arrow." if opt.check else "Imported hero bonus arrow.")
+        return
     assets = []
     for stem in SPRITES:
         relative = f"img/{stem}.png"

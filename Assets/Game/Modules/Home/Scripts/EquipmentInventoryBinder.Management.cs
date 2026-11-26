@@ -48,45 +48,25 @@ namespace AstralOath.Client.Home
 
         private void PaintManagementQuote(int[] before, int[] after, List<string> notes)
         {
-            var changed = before == null ? Array.Empty<int>() : Enumerable.Range(0, before.Length)
-                .Where(index => before[index] != after[index]).ToArray();
-            Get<GameText>("manageQuoteMetric").text = string.Join("\n", changed.Select(i => L(PanelKeys[i])));
-            Get<GameText>("manageQuoteBefore").text = string.Join("\n", changed.Select(i => PanelValue(i,before[i])));
-            Get<GameText>("manageQuoteAfter").text = string.Join("\n", changed.Select(i => "→ " + PanelValue(i,after[i])));
-            Get<GameText>("manageQuoteDelta").text = string.Join("\n", changed.Select(i =>
-            {
-                int delta = after[i] - before[i];
-                return delta > 0 ? "<color=#FFA652>+" + PanelValue(i,delta) + "</color>" :
-                    "<color=#7AB8FF>" + PanelValue(i,delta) + "</color>";
-            }));
-            Get<GameText>("manageChange").text = notes.Count != 0 ? string.Join("\n",notes) :
-                changed.Length == 0 ? L("noStatChange") : "";
-            var panel = (RectTransform)Get<GameObject>("managementQuote").transform;
-            var noteText = Get<GameText>("manageChange");
-            float width = ((RectTransform)panel.parent).rect.width * .40f;
-            float notesHeight = string.IsNullOrEmpty(noteText.text) ? 0f :
-                Mathf.Max(30f, noteText.GetPreferredValues(noteText.text, width, float.PositiveInfinity).y + 12f);
-            float valuesHeight = Mathf.Max(1,changed.Length) * 34f;
-            float notesTop = 304f + valuesHeight + 18f;
-            float panelHeight = Mathf.Max(680f,notesTop + notesHeight + 158f);
-            float height = panelHeight / 1080f;
-            panel.anchorMin = new Vector2(0,.50f - height / 2f);
-            panel.anchorMax = new Vector2(1,.50f + height / 2f);
-            void PlaceVertically(RectTransform rect, float top, float extent)
-            {
-                rect.anchorMin = new Vector2(rect.anchorMin.x,1f-(top+extent)/panelHeight);
-                rect.anchorMax = new Vector2(rect.anchorMax.x,1f-top/panelHeight);
-                rect.offsetMin = rect.offsetMax = Vector2.zero;
-            }
-            PlaceVertically(Get<GameText>("manageQuoteTitle").rectTransform,24f,48f);
-            PlaceVertically(Get<GameText>("manageSummary").rectTransform,202f,50f);
-            foreach (string column in new[] {"Metric","Before","After","Delta"})
-            {
-                PlaceVertically(Get<GameText>("manageQuote"+column).rectTransform,304f,valuesHeight);
-            }
-            PlaceVertically(noteText.rectTransform,notesTop,notesHeight);
-            PlaceVertically((RectTransform)Get<GameButton>("manageCancel").transform,panelHeight-136f,96f);
-            PlaceVertically((RectTransform)Get<GameButton>("manageConfirm").transform,panelHeight-136f,96f);
+            Get<GameText>("manageSummary").text = L("manageChangeSummary");
+            Get<GameText>("manageQuoteBeforeTitle").text = L("combatPower");
+            Get<GameText>("manageQuoteAfterTitle").text = L("combatPower");
+            bool known = TryCombatPowerQuote(before, after, out int current, out int proposed);
+            Get<GameText>("manageQuoteBefore").text = known ? CombatPowerNumber(current) : "—";
+            Get<GameText>("manageQuoteAfter").text = known ? CombatPowerNumber(proposed) : "—";
+            int delta = proposed - current;
+            var change = Get<GameText>("manageQuoteDelta");
+            change.text = known ? CombatPowerNumber(Math.Abs(delta)) : "—";
+            var color = delta < 0 ? new Color32(56,148,240,255) : new Color32(255,120,0,255);
+            change.color = known && delta != 0 ? color : Color.white;
+            var direction = Get<Image>("manageQuoteDirection");
+            direction.enabled = known;
+            direction.color = color;
+            var arrow = Get<Image>("manageQuoteDeltaArrow");
+            arrow.enabled = known && delta != 0;
+            arrow.color = color;
+            arrow.rectTransform.localEulerAngles = new Vector3(0,0,delta < 0 ? 180f : 0f);
+            Get<GameText>("manageChange").text = string.Join("\n",notes);
         }
 
         private int[] PanelValues(string hero, BattleStats plain, EquipmentPiece[] pieces)
