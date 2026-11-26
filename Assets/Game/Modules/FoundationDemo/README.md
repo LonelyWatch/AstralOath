@@ -1,6 +1,6 @@
 # FoundationDemo
 
-装备开发冒烟增加本轮校验：真实穿训练头盔后左侧总生命增加80、卸下后零值隐藏；新锻造装备实际强化至+15后，GET的四条副属性必须已知且强化次数合计5。成功分别记录`ASTRAL_EQUIPMENT_BONUS_PLAYER_OK`与`ASTRAL_ENHANCEMENT_COUNTS_PLAYER_OK`。此为显式开发回环验证路径，常规登录不执行；目标Player是否已运行见[本轮回执](../../../../docs/delivery/2026-11-26-equipment-followup.md)。
+装备开发冒烟增加本轮校验：真实穿训练头盔后左侧总生命增加80、卸下后零值隐藏；新锻造装备实际强化至+15后，GET的四条副属性必须已知且强化次数合计5。成功分别记录`ASTRAL_EQUIPMENT_BONUS_PLAYER_OK`与`ASTRAL_ENHANCEMENT_COUNTS_PLAYER_OK`。+15实际显示的三个数字Image另读取其Sprite纹理格式及26×34源尺寸，必须为RGBA32，记录`ASTRAL_ENHANCEMENT_DIGITS_PLAYER_OK`；不从源meta声明推断Player格式，也不倒推旧版本已发生BC失真。此为显式开发回环验证路径，常规登录不执行；目标Player是否已运行见[本轮回执](../../../../docs/delivery/2026-11-26-equipment-followup.md)。
 
 本机Windows0.1.26/R36最小母包与签名资源已配对交付，新启动器为 `.artifacts/windows-r36/Play-R36.exe`，本体位于同目录 `client/AstralOath.exe`。原生1080p和4K强化冒烟通过；隐藏截图无效与DPI采集问题单列，启动器冷恢复本地游戏服务和内容源通过，正常登录点击未自动验收。[回执与边界](../../../../docs/delivery/2026-11-26-equipment-enhancement.md)
 

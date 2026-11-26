@@ -22,6 +22,8 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 
 `BitmapNumber`直接以默认UGUI Image绘制原`itxt_num*_b.png`，每字26×34、源比例.57、前缀步长15/数字16，个位→十位→加号的遮盖顺序与原节点层次对应；字位按需创建并复用。隐藏的GameText只保留旧`label.text`读取契约，不重复绘制。早期`EquipmentEnhancementDigits.asset`/生成器仍供该兼容字段使用，不作为最终数字显示路径。两项通用组件只做显示，无业务模块引用或全局事件。它们及Binder变更位于AOT，须R37新母包交付，不能当作兼容R36业务热更。
 
+11张数字字图使用现有`AstralOath.ImportOverride`，显式RGBA32/Uncompressed、26×34、不缩NPOT、不生成mip；保持原PNG及GUID。只写meta无压缩会被通用导入器重新覆盖，`ImportEnhancementDigits.py --check`现同时检查导入配置，`EnhancementDigitImportTests`强制走实际导入后检查Texture2D及目标平台设置。11例有效先红后绿，图形Editor44项通过；不能从旧Compressed配置倒推旧小图实际发生GPU BC失真，Native格式另由开发Player验收。
+
 装备卡左上物品等级使用 `Res/Fonts/EquipmentItemLevelDigits.asset`。这个静态 TMP 字体从项目已有的 EpicSeven.ttf 烘焙 0–9，内含数字图集和带细暗边、短阴影的材质。方形缩略图与网格共用同一份预制。右上红标显示该实例的强化等级。
 
 普通装备网格使用 `EquipmentItemCard.prefab`，包含品质底、装备图、等级、套装、佩戴者、选中框、主属性以及嵌套的强化角标。装备详情、单槽比较使用 `EquipmentStatRow.prefab`，名称靠左，数值靠右。两份预制只挂基础控件与 BindingMap，使用它们的装备 View/Binder 归属 Home 热更程序集。父页面可在嵌套实例上调整尺寸和字级。[原版录屏及复用范围](../../../docs/development/equipment-ui-reference.md)

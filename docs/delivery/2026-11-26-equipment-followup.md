@@ -14,6 +14,12 @@
 
 Common布局组件与数字渲染新增AOT类型、Binder调用改变，R36母包不能通过热更替换这些实现；按默认构建边界采用R37新母包。旧图、原始附件、同框裁图、每阶段源码/回执分别保留。
 
+### 构建输入发现的导入覆盖
+
+首轮R37构建一致性复核发现11张新数字PNG虽然源meta写无压缩，`GameAssetImportRules`实际导入又把Standalone/Android配置覆盖为Automatic/Compressed。`ImportEnhancementDigits.py --check`此前仅核PNG哈希和meta存在，未证明实际导入格式。保留完整171文件到`before/image-compressed-phase/`，停止精确核验属于本轮的UnityWindows PID39448；该目录没有package.complete，未验收、未签名分发。停止记录`r37-first-build-stopped.json/.log`。目录名记录的是配置阶段，**不能据此认定图像已发生GPU BC失真**：后续有效红测实际Texture2D为RGBA32 26×34，而导入配置为Compressed；无图形环境可能解压或回退，最终需图形Editor和Native Player分别验证。
+
+修复采用项目现有`AstralOath.ImportOverride`，只针对11张26×34数字，保持GUID与原PNG字节。有效`digit-import/import-red.xml`11/11失败于缺override；旧importer --check当时仍绿，补检查后在同一旧输入真实失败，再生成及复核绿。图形Editor强制重导的`import-graphics-44-green.xml`44/44通过，11张实际Texture2D均RGBA32、26×34、单mip，Default/Standalone/Android显式RGBA32/Uncompressed且目标平台override。新增原生开发烟测将读取+15显示的三个Image纹理，不能以Editor代替Player；重新打包结果随后记录。
+
 ## 原版、修改前与修改后
 
 可打开的逐项图录：`D:/UnityProjects/AstralOath/.artifacts/badge-followup/index.html`。原版来自用户11/21、11/25国服实录和只读`D:/sevenepic`，版本/可见倍速未知，不从文件名日期推断客户端版本。时间及节点记录于`reference/report.md`、`reference-evidence.json`、`extended-layout-evidence.json`。本轮图与R36修前图的装备/角色/余额并非全部相同，比较布局与行为，不宣称不同输入逐像素一致。

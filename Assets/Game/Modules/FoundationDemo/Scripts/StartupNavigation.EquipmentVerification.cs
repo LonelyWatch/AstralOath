@@ -81,6 +81,13 @@ namespace AstralOath.Client.FoundationDemo
                 enhancement.Require<BindingMap>("card").Require<BindingMap>("badge").Require<Image>("mark").sprite.name != "_upgrade_num_red" ||
                 enhancement.Require<GameButton>("submit").interactable)
                 throw new InvalidDataException("Maximum enhancement or cap display is incorrect.");
+            var digitImages = enhancement.Require<BindingMap>("card").Require<BindingMap>("badge")
+                .GetComponentsInChildren<Image>().Where(image => image.isActiveAndEnabled && image.sprite &&
+                    image.sprite.name.StartsWith("itxt_num", StringComparison.Ordinal)).ToArray();
+            if (digitImages.Length != 3 || digitImages.Any(image => image.sprite.texture.format != TextureFormat.RGBA32 ||
+                    image.sprite.texture.width != 26 || image.sprite.texture.height != 34))
+                throw new InvalidDataException("The native enhancement digits must retain their original uncompressed RGBA32 textures.");
+            Debug.Log("ASTRAL_ENHANCEMENT_DIGITS_PLAYER_OK glyphs=3 format=RGBA32 source=26x34");
             await CaptureEquipmentVerification("red-plus15", cancellation);
             VerifyClick(enhancement, "back");
             if (enhancement.gameObject.activeSelf || !pane.gameObject.activeInHierarchy)
