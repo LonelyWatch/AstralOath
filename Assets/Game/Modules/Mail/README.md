@@ -1,5 +1,9 @@
 # Mail
 
+## 当前验收：内容41本机运行
+
+产品739ec080复用R37/app0.1.27母包，实际IL2CPP/D3D11的1080p与4K各14状态、GM自发、独立HTTP生产者事件通知、领取真实资源、礼包一次回执两阶段、历史与原页重开通过；前后摘要完整保留。API修后受影响Edit20/20，后端645/645，普通启动助手通过。38/39线上复杂字段解析和40诊断摘要漏写失败均保留，不把旧候选当交付。最终入口/准确文件/原版对照与未完成内容见[本机交付](../../../../docs/delivery/2026-11-27-mail-system.md)。267ms粒子、业务倍率/绝对同步、聚合排序差异与试听仍列边界；下文Editor历史不代替最终原生。
+
 ## 职责、地址与接入
 
 独立热更业务模块，仅引用Core/Common、TMP和UGUI。`MailWindow : UIBaseView` / `MailWindowBinder`为普通C#；MailWindow.prefab、MailEntry.prefab只挂BindingMap和基础控件，不挂业务组件。Foundation拥有登录scope和页面返回，Mail不反向引用Foundation/Home。

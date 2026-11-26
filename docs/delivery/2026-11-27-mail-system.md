@@ -1,6 +1,37 @@
-# 邮件系统实施与验收（联调中）
+# 邮件系统本机交付：Windows0.1.27／内容41
 
-本轮承接R37装备修订，按用户11月22日国服录像新增Mail、开发GM当前账号自发与服务端便捷邮件运营。修改前基线42c8d6da只有顶部信封图片；不存在可冒用的旧邮件页面。后端源码已提交775a5b41；客户端最终联合生成、R37兼容检查及原生R38仍在进行，以下不表示已分发。
+本轮承接R37装备修订，新增Mail、开发GM当前账号自发与服务端便捷邮件运营。签名内容41已在本机发布并实际加载，IL2CPP/D3D11的1080p与4K各14状态、真实收发领取和余额断言通过；普通用户权限启动助手也已启动本体。未称所有原作边界、声音听感和全部特效均还原。产品源码739ec0806bd79dab33b6132c3c3c7f73e13ea86e，后端产品775a5b41；后续文档提交不改变签名产品快照。
+
+## 最终入口与实际验收
+
+- 启动：[Play-R41.exe](../../.artifacts/windows-r41/Play-R41.exe)；本体：[client/AstralOath.exe](../../.artifacts/windows-r41/client/AstralOath.exe)。助手准备本机服务后开本体，不是另一款游戏。
+- 服务端：[发送邮件.cmd](../../.artifacts/windows-r41/发送邮件.cmd)，无参数中文交互；现有私密环境自动读取，不要求填连接串。支持多个玩家、白名单减黑名单、明确整区；只列黑名单不隐含群发。[本机操作说明](../../.artifacts/windows-r41/README.md)
+- GM「邮件」可选模板/类型/发件人，编辑标题正文、有效期和附件，服务器冻结预览后发当前登录账号；所有开发版账号可用，Release隐藏。发送只投递，领取才入账。业务类型standard/gm，用途模板maintenance/event_reward/gm_gift/system_notice；货币、材料、行动力、英雄、神器、装备与确定性礼包由[目录](../../Config/Mail/catalog.json)配置，八层礼包树保留。选一附件尚未实现。
+- [最终逐区域原版／修改前／Native41对照](../../.artifacts/mail-system-review/delivery.html)、[全部原片及连续PTS](../../.artifacts/mail-system-review/index.html)、[完整改动绝对路径](../../.artifacts/mail-system-review/changed-files.md)与[源SHA快照](../../.artifacts/mail-system-review/final-source-files.json)可直接打开。此前基线42c8d6da仅信封静图，无邮件业务页面，未重建假想历史画面。
+
+1080p使用`.6`独立库新测试访客，4K使用当前`.4`主开发服的新测试访客，不给正常账号发验收奖励。两次均退出0、14张正确尺寸非空PNG、完整initial/final摘要。这里4K为实际3840×2160游戏渲染与Framebuffer截图；桌面采集器暴露1440×2560逻辑坐标，受DPI及窗口裁切影响，未宣称物理4K屏幕完整呈现。实际由GM界面发1封，第二HTTP客户准备3封；可见session只经事件流自动到4，未直接写生产者回执/手动强刷。数量4→3→2→0；总增量10书签、2传说石、5上级石、10000金币、100行动力；礼包两阶段成功领取回执仅1次，历史回看不重发，关闭恢复Home同一实例且空箱可重开。按钮通过真实listener调用，未冒充人工鼠标测试；两个HTTP客户也不是两个独立Windows进程。
+
+[1080p回执](../../.artifacts/mail-system-review/native-mail/runs/final41-qa1080/verified.json) · [1080p全部状态](../../.artifacts/mail-system-review/native-mail/runs/final41-qa1080/native-14-state-contact.png) · [4K回执](../../.artifacts/mail-system-review/native-mail/runs/final41-main4k/verified.json) · [4K全部状态](../../.artifacts/mail-system-review/native-mail/runs/final41-main4k/native-14-state-contact.png) · [Limited普通启动回执](../../.artifacts/mail-system-review/native-mail/launcher-r41-verified.json)
+
+后端645/645、0跳过；联合图形Edit57/57、Play9/9，原页校准5/5；JSON修复后受影响API/session/八层树/响应界联合Edit20/20、0跳过，范围有重叠不相加。[20项](../../.artifacts/mail-system-review/gm-tests/wire-depth-green.xml) 服务端便捷包装在真实`.4`用三新账号验证A/B/B减黑B只投A；预览后改原文件，确认仍冻结的A与37行动力，重复确认/重试同批不续期，A收1、B/C0、发送不发奖。[运营回执](../../.artifacts/mail-system-review/server/ops-main-qa/final-receipt.json) 注册因既有SMTP配置503，使用同ECC7Host+真实MySQL+回环SMTP夹具后再真实`.4`登录选服，没有手写账号/成员，不称外部SMTP已正常。
+
+## 最终包、增量与本机服务
+
+复用已分发R37母包，Windows x64/IL2CPP、应用0.1.27/runtime9.0.1、baseline7445597f1ef645db8ef946c4964503fc。33个母包文件180,889,815字节逐SHA相同；无AOT变化，未强更。内容41为105项2,284,270,002字节；清单SHA256 d2425fa5a3f6a892fdcee66029b1e7c9ec940489011b341b148ccdec70c90711，签名SHA256 5ee1aee2f41870593c3f47d2f438313b961eff880b5ddba5dab84f48b05671e8。
+
+R37→41签名清单理论复用92项，新增/变化13项119,978,118字节。本次已有40缓存，实际下载6项3,440,222字节；随后4K、重跑与普通启动新增业务payload为0。理论清单差异和实际网络日志分开，未重新制作另一份相同全量安装ZIP，原R37最小包可复用。[签名/Feed总回执](../../.artifacts/mail-system-review/package/final41/execution-verified.json) · [最终包与运行回执](../../.artifacts/windows-r41/delivery-verified.json) · [37→41理论差异](../../.artifacts/windows-r41/payload-diff-r37-r41.json) · [最终直接视觉复核](../../.artifacts/mail-system-review/visual-review-final.json)
+
+当前`.4:7728`后端实际仍windows-r38/server/host，PID34944；Host SHA256 ECC7FF4BADBEF6F6B85D28E637F5E044755420E489727C1CCA56DF97C97F614A。R41启动/发信仅代理已验证R38入口，不复制另一份数据库。017迁移已应用；切换前有一致性备份，未停止/还原MySQL或回退用户数据。5305合作切源41，只在本机开发服，未部署生产。356项既有工作区改动逐SHA保留，355项构建输入与R37保留快照/镜像一致，不混入任务提交。
+
+## 最终未完成与证据边界
+
+- 参考不足：排序按钮展开、无附件独立原流程、选一、即时满箱/满背包、打开中到期。已索要同版时间段；当前只接收时间新→旧并提示该事实，选一未实现。服务端边界绿不能代替未知画面还原。
+- 原演出差异：单项蓝条原CFX/SCSP和裁切已接入，约267ms附带粒子、业务精确倍率和逐帧绝对同步未全恢复；原标题/三组粒子使用源素材，但随机种子/单位缩放/淡入为项目参数。最终礼包权威聚合顺序书签5→石2→石5，与原片/Editor石2→书签5→石5不同，未称顺序完全一致。书签已改正确token_ticket_rare，旧绿色图仅历史。
+- 连续原生录制：前两次GDI窗口/桌面尝试分别得到残留Splash、超出DPI逻辑区域，判为失败并保留。最终按1440×810桌面逻辑区域录得实际1080渲染过程，完整解码并实际查看17–22.5秒的55张10fps连续取样，另保留14–22.5秒静默剪段；与源蓝条连续PTS实际比看。桌面受安全提示整体变暗，颜色以Framebuffer原图为准；只证明实际演出过程，未称原绝对同步/全部附带粒子通过。[原生连续剪段](../../.artifacts/mail-system-review/native-mail/runs/final41-desktopcrop1080/mail-flow-native-silent.mp4) · [连续帧](../../.artifacts/mail-system-review/native-mail/runs/final41-desktopcrop1080/effects-17-22.5-contact.png)。未自动授权公共网络，音频没有采入。
+- 听感未验收：原入口/单项/确认/礼包/标题声音已定位绑定，关窗0.20秒淡出沿公共播放路径；当前没有音频输入完成实际试听，音量、叠加、取消尾声不以波形/绑定冒充通过，源音与原片供复听。
+- 未执行/范围：双独立Windows进程通知、Android、关机后MySQL冷启动未实测；外部SMTP受既有配置限制。行动力未接自然恢复/关卡消费，naturalCap360是项目配置。R37旧装备的CP绝对值、未知累计次数和特殊演出限制继续保留。
+
+## 阶段记录（以下历史待办以最终结果为准）
 
 ## 原版、修改前与本轮目标
 
@@ -27,7 +58,7 @@ GM只给当前已鉴权账号预览和发信，不接受额外收件人。开发
 ## 文件与生成入口
 
 - `Assets/Game/Modules/Mail/`：API、登录session、View/Binder、表现、prefab/原资源/来源哈希。
-- `Assets/Game/Modules/FoundationDemo/Scripts/StartupNavigation.Mail.cs`、`MailEntryBinder.cs`、DevelopmentGmMail系列：登录/跨页/GM；`StartupNavigation.MailVerification.cs`为显式Development loopback原生诊断，正常玩家不准备验收邮件。
+- `Assets/Game/Modules/FoundationDemo/Scripts/StartupNavigation.Mail.cs`与DevelopmentGmMail系列：登录/跨页/GM；`StartupNavigation.MailVerification.cs`为显式Development loopback原生诊断，正常玩家不准备验收邮件。`MailEntryBinder.cs`实际归属`Assets/Game/Modules/Mail/Scripts/`，与MailEntry预制命名一致。
 - `Assets/Game/Editor/ArenaUiBuilder.Mail*.cs`、`Tools/Mail/ImportMailAssets.py`：原源最小导入、可复现烘帧与预制生成。全页集成使用 `ArenaUiBuilder.GenerateMailIntegration`，不改原GUID。
 - Home/Summon新ExternalChanges系列与强化窄刷新：真实数据原地校准。
 - `Server/Host/Mail/`、Inventory/Summon的MailRewards、迁移017、`Config/Mail/`、`Server/Ops/Mail.ps1`：权威业务/配置/运营。

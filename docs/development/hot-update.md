@@ -6,6 +6,8 @@
 
 ## 默认选择与最小包
 
+2026-11-27邮件已实际兼容R37归档，以签名内容 **R41** 热更本机Windows0.1.27。33个母包文件逐SHA相同，不重新打相同exe或强更。R37→41清单理论新增/变化13项119,978,118字节；本次已有40缓存实际6项3,440,222字节，后续4K与暖重开0业务payload。105项总内容2,284,270,002字节不是本次全部下载量。原生1080p/4K各14状态及Limited普通启动助手通过，38/39/40失败历史保留；听感/部分特效和未知原流程不冒充完成。入口`.artifacts/windows-r41/Play-R41.exe`、本体`client/AstralOath.exe`，内容源5305、后端仍已验证R38路径；这是本工作区本机交付，未部署生产。[邮件包、证据与边界](../delivery/2026-11-27-mail-system.md)
+
 2026-11-27装备角标追加修复新增Common/AOT `AuthoredHeightLayout`与`BitmapNumber`，已构建Windows **0.1.27 / R37**，baseline `7445597f1ef645db8ef946c4964503fc`，runtime仍9.0.1。原生首次103项2,250,490,334字节，1080p/4K重开均0业务下载，实际数字纹理RGBA32/26×34通过；本机准入最低0.1.27。启动器`.artifacts/windows-r37/Play-R37.exe`，本体`client/AstralOath.exe`，仍是本工作区开发包。新增Mail将以本归档实际兼容检查，不能因C#业务新增就预先声称可热更。[装备阶段实际交付与剩余](../delivery/2026-11-26-equipment-followup.md)
 
 2026-11-26本机交付Windows **0.1.26 / R36** 最小IL2CPP母包，包含此前Common/Bootstrap音频淡出句柄管理及当前公共强化角标绑定。基线 `62ec32cd2fc54ebf81d0826c1d2fc6ae`，沿用可信开发公钥，签名源回环5304，游戏服127.0.0.4:7728、测试MySQL3307。原生新基线首装103项、2,249,651,657字节，1080p和4K两次重开业务下载均为零。新启动器 `.artifacts/windows-r36/Play-R36.exe`，本体 `client/AstralOath.exe`；本工作区开发包不等同可移动正式安装器。[构建、强更原因、证据与限制](../delivery/2026-11-26-equipment-enhancement.md)
