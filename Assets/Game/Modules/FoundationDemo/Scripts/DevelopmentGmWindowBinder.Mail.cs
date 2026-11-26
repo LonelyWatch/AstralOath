@@ -157,7 +157,12 @@ namespace AstralOath.Client.FoundationDemo
             }
             catch (OperationCanceledException) when (scope.Token.IsCancellationRequested) { }
             catch (GmMailRejectedException error) { if (opening == scope) { DrawMail(); MailError(error); } }
-            catch (Exception) { if (opening == scope) { DrawMail(); MailStatus("offline"); } }
+            catch (Exception error)
+            {
+                if (mailApi?.PreviewDiagnosticsEnabled == true)
+                    Debug.LogWarning("GM_MAIL_PREVIEW_UI_FAILURE type=" + error.GetType().FullName + ";stack=" + error.StackTrace);
+                if (opening == scope) { DrawMail(); MailStatus("offline"); }
+            }
         }
         private async Task SendMailAsync(BindingScope scope)
         {
