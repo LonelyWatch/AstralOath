@@ -18,6 +18,9 @@ namespace AstralOath.Client.Mail
     }
     public sealed class MailApi : IMailApi
     {
+        // Lists contain up to 100 full 8000-character bodies; JSON escaping can expand each
+        // UTF-16 code unit to six characters. Keep a bound that admits the current catalog.
+        private const int MaximumResponseCharacters = 8 * 1024 * 1024;
         [Serializable, Preserve] private sealed class Error { public string error; }
         [Serializable, Preserve] private sealed class VersionEvent { public string kind; public long version; }
         private readonly HttpClient http;
@@ -64,7 +67,7 @@ namespace AstralOath.Client.Mail
                 int count;
                 while ((count = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
-                    if (content.Length + count > 2 * 1024 * 1024) throw new IOException("Mail response exceeds limit.");
+                    if (content.Length + count > MaximumResponseCharacters) throw new IOException("Mail response exceeds limit.");
                     content.Append(buffer, 0, count);
                 }
             }

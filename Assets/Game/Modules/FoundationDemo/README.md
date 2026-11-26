@@ -117,3 +117,5 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 `MailEntryBinder.cs`为缓存顶栏持有页面作用域监听，避免GameButton.Bind在更多菜单隐藏后解绑导致第二次点击失效；手动监听同样在页面销毁时移除并防重复打开。真实Unity失败1项→绿色1项回执在`.artifacts/mail-system-review/tests/header-reopen-{red,green}.xml`。图标和角标共用MailEntry嵌套预制，生成源ArenaUiBuilder.HomeMoreLayout；MailWindow由独立sorting100 Canvas持有，开发GM为150。登录退出销毁portal、取消订阅与未决请求。
 
 同一原地刷新也用于开发GM资源写后的页面校准，GM关闭后不再重建英雄/装备/召唤页面；登录缓存先失效，真实材料和钱包重新读取，再补邮件摘要的独立资源revision。邮件发送本身不触发此发奖校准；仅领取/写入资源才改变真实数据。
+
+原生邮件诊断额外验证第二HTTP生产者投递后的事件流自动摘要/角标更新，准备信回执不直接写可见MailSession、不用手动摘要刷新掩盖通知失效。使用`-astral-arena-battle-smoke -astral-mail-smoke`；该显式Development回环诊断创建独立测试访客，不修改正常账号，不将同进程两个HTTP实例称作两个独立Windows进程。

@@ -122,7 +122,9 @@ namespace AstralOath.Client.FoundationDemo
             var energy = await MailVerificationSendFixture(sending, catalog, "event_reward", run, null, cancellation);
             var gold = await MailVerificationSendFixture(sending, catalog, "maintenance", run,
                 new[] { new GmMailAttachment { kind = "material", key = "gold", quantity = 10000 } }, cancellation);
-            await mailSession.RefreshAsync(cancellation);
+            await MailVerificationUntil(() => mailSession.Summary?.effectiveCount == 4,
+                "external-client version event and automatic header refresh", cancellation);
+            Debug.Log("ASTRAL_MAIL_EVENT_PLAYER_OK source=secondHttpClient counter=4");
             if (mailSession.Summary.effectiveCount != 4)
                 throw new InvalidDataException("Exactly four QA letters must be present before opening the inbox.");
             int giftClaimReceipts = 0;
@@ -246,7 +248,8 @@ namespace AstralOath.Client.FoundationDemo
             if (preview.playerId != mailSession.Summary.playerId || preview.realmId != mailSession.Summary.realmId || preview.recipientCount != 1)
                 throw new InvalidDataException("QA fixture preview targeted a different owner.");
             var receipt = await sending.SendAsync(new GmMailSendRequest { requestId = Guid.NewGuid().ToString("N"), previewId = preview.previewId }, cancellation);
-            mailSession.ApplySummary(receipt.summary);
+            // A different HTTP client produces this event; the visible login must learn it
+            // through its live subscription rather than applying the producer's receipt.
             return receipt;
         }
 

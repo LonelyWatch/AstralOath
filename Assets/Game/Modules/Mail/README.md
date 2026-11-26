@@ -48,3 +48,9 @@ HTTP20秒、事件心跳失活40秒；事件重连补摘要。NDJSON在累积第
 11/27交接前最后修正：to_covenant改用既有Summon余额同源的item/token_ticket_rare.png，修正误用绿色友情书签；只改展示图索引，不改奖励数量或规则。受控after旧图里的绿色书签是该纠正前快照，最终分发版以协调者重拍Native图为准。
 
 `MailEntryBinder.Bind`提供顶栏入口的页面作用域监听，业务Binder命名与MailEntry预制一致；缓存入口隐藏不解绑，页面结束才精确移除自己的监听。Foundation只注入开窗动作，不再持有另一份入口业务绑定。
+
+### 列表响应字符上限（11/27边界回归）
+
+HTTP普通响应以`StreamReader`解码后的JSON字符数限为8×1024×1024，仍在追加下一块前拒绝超限；事件流独立保持4096字符行界。收件/历史最多100封，当前接口返回完整正文，单封正文可达8000个UTF-16代码单元。ASP.NET默认编码虽保留普通中文，仍会把合法的U+3000全角空格和U+2028分隔符写为六字符转义；原2Mi字符界会拒绝合法长正文页。当前18种资源/2礼包的保守完整页上界实测6,695,066字符，8Mi界覆盖它；未来扩充嵌套礼包或目录需重验，不能无界增加响应。
+
+`MailResponseBoundsTests`在真实Unity JsonUtility和同源MailApi上实际1失败+1通过→2/2通过、0跳过：100封各3000全角空格+5000中文能完整读回；超过8Mi的响应仍提前拒绝。回执`.artifacts/mail-system-review/tests/response-bounds-{red,green}.xml`，调查与纯.NET真实Host DTO/Freeze/Results.Ok测量见`.artifacts/mail-system-review/response-bounds.md`。该工具未启动监听或访问数据库，不替代Native/数据库联调。
