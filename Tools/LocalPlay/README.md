@@ -1,5 +1,7 @@
 # Windows 本机试玩入口
 
+R44新增独立`Ensure-R44GameService.ps1`和Identity/Common/Test。默认只恢复已激活44；主库迁移与R38替换须先独立`-SwitchToR44`只读预检，再用15分钟内同输入回执显式`-Execute`。执行核准旧Host并只停该Host，保持MySQL，真实备份并只向唯一隔离schema恢复演练，逐表行数/EXTENDED CHECKSUM匹配才应用018/019/020和启动新Host；失败不向主库恢复、不初始化数据目录、不杀未知进程。以Social路由401、Entry0.1.27和实际SHA判断新服，无虚构Version字段。历史R38工具只复用不改动；函数装载作用域阻断有真实RED，修后离线24/24。尚未真实切服/断电恢复，命令与状态见`.artifacts/windows-r44/server/README.md`，不能把离线绿当实际通过。[任务依据](../../docs/development/home-profile-chat-reference.md)
+
 0.1.23 / R22 完整解压后，首次运行双击包根目录的 `启动试玩.cmd`。服务启动后，每次双击同目录的 `AstralOath-Play.exe` 都会另开一个客户端。该版本的游戏、签名内容与数据库端口分别为 7728、5295、5327。[新母包、旧版升级与验证记录](../../docs/delivery/2026-11-21-windows-r22.md)
 
 已有 0.1.21 / R18 试玩包可使用 `AstralOath-Play.exe`。先启动本机试玩服务，再从解压目录双击该文件，每次打开一个游戏窗口。多个窗口共用同一套服务，关闭其中一个窗口后，其他窗口和服务可以继续运行。

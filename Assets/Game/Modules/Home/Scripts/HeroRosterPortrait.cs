@@ -97,12 +97,8 @@ namespace AstralOath.Client.Home
                     }
                     camera.transform.localPosition = new Vector3(center.x, center.y, -10f);
                 }
+                camera.enabled = animated;
                 EnsureTarget();
-                if (!animated)
-                {
-                    camera.enabled = false;
-                    camera.Render();
-                }
                 if (!authoredMaterial) material = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
                 output.material = authoredMaterial ? authoredMaterial : material;
                 source = next;
@@ -119,14 +115,16 @@ namespace AstralOath.Client.Home
         public bool SetVisible(bool active)
         {
             visible = active && player != null;
-            if (stage) stage.SetActive(visible);
+            if (stage) stage.SetActive(visible && output && output.gameObject.activeInHierarchy);
             if (output) output.enabled = visible;
             return visible;
         }
 
         public void Tick()
         {
-            if (!visible || lastFrame == Time.frameCount) return;
+            bool active = visible && output && output.isActiveAndEnabled;
+            if (stage && stage.activeSelf != active) stage.SetActive(active);
+            if (!active || lastFrame == Time.frameCount) return;
             lastFrame = Time.frameCount;
             if (animated) EnsureTarget();
             player?.Tick(Time.unscaledDeltaTime);
@@ -143,17 +141,27 @@ namespace AstralOath.Client.Home
             size = Mathf.Clamp(size, 1, UiRenderSurface.MaxDimension);
             if (target && target.width == size) return;
             var previous = target;
-            target = new RenderTexture(size, size, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
-            if (previous && previous.IsCreated())
+            var replacement = new RenderTexture(size, size, 16, RenderTextureFormat.ARGB32) { name = "Owned hero portrait" };
+            if (!replacement.Create())
             {
-                var priorActive = RenderTexture.active;
-                try { Graphics.Blit(previous, target); }
-                finally { RenderTexture.active = priorActive; }
+                Object.Destroy(replacement);
+                throw new InvalidOperationException("Cannot allocate a hero portrait surface.");
             }
-            camera.targetTexture = target;
+            camera.targetTexture = replacement;
+            // A canvas resize can arrive after the scene camera has rendered. Draw the
+            // source at the new density before publishing, rather than upscaling old pixels.
+            try { camera.Render(); }
+            catch
+            {
+                camera.targetTexture = previous;
+                replacement.Release();
+                Object.Destroy(replacement);
+                throw;
+            }
+            target = replacement;
             output.texture = target;
             output.canvasRenderer.SetTexture(target);
-            if (previous) Object.Destroy(previous);
+            if (previous) { previous.Release(); Object.Destroy(previous); }
         }
 
         private void Clear()

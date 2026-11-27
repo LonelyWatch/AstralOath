@@ -1,6 +1,8 @@
 {
   "name": "AstralOath.Client.Editor",
   "references": [
+    "AstralOath.Client.ChannelChat",
+    "AstralOath.Client.PlayerProfile",
     "AstralOath.Client.Mail",
     "AstralOath.Client.Bootstrap",
     "AstralOath.Client.Core",

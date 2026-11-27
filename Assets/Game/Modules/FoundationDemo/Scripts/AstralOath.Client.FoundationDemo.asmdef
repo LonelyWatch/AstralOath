@@ -1,6 +1,8 @@
 {
   "name": "AstralOath.Client.FoundationDemo",
   "references": [
+    "AstralOath.Client.ChannelChat",
+    "AstralOath.Client.PlayerProfile",
     "AstralOath.Client.Mail",
     "AstralOath.Client.Core",
     "AstralOath.Client.Common",

@@ -49,6 +49,10 @@ namespace AstralOath.Editor
             (MailWindowPath, MailWindow.Address),
             (MailEntryPath, MailEntry.Address),
             (SourceTextVariantsPath, "common/source-text-variants"),
+            (FeatureNoticePath, AstralOath.Client.FoundationDemo.FeatureNotice.Address),
+            ("Assets/Game/Modules/PlayerProfile/Res/Prefab/PlayerProfile.prefab", AstralOath.Client.PlayerProfile.PlayerProfile.Address),
+            ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChannelChat.prefab", AstralOath.Client.ChannelChat.ChannelChat.Address),
+            ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab", AstralOath.Client.ChannelChat.ChatEntry.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);

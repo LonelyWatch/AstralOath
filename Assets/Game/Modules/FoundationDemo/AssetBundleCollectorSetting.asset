@@ -227,6 +227,38 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Common/Res/Prefab/FeatureNotice.prefab
+        CollectorGUID: 59d5961ce52148f48a493a9c0738a7ac
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/PlayerProfile/Res/Prefab/PlayerProfile.prefab
+        CollectorGUID: b236c9cf69c40a84b98219753b94d1c3
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/ChannelChat/Res/Prefab/ChannelChat.prefab
+        CollectorGUID: 27762c722f0cc8546a19a9b0d64b5d4d
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab
+        CollectorGUID: 36e09b2923e79b74f9c9aeb6d60f9e4d
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: EntryTheme
       GroupDesc: 
       AssetTags: 

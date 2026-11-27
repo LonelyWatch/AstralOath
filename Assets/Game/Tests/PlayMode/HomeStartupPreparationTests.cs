@@ -16,6 +16,9 @@ using AstralOath.Client.Common;
 using AstralOath.Client.Arena;
 using AstralOath.Client.Core;
 using AstralOath.Client.FoundationDemo;
+using AstralOath.Client.ChannelChat;
+using AstralOath.Client.Mail;
+using AstralOath.Client.PlayerProfile;
 using AstralOath.Client.Home;
 using NUnit.Framework;
 using UnityEditor;
@@ -58,7 +61,14 @@ namespace AstralOath.Client.Tests
         {
             private readonly TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
             private readonly Task worker;
+            // This fixture predates Mail/Profile/ChannelChat. Keep its original four-read
+            // and GM/room accounting exact; login-owned background reads belong to a separate contract.
             internal readonly ConcurrentQueue<string> Calls = new ConcurrentQueue<string>();
+            internal readonly ConcurrentQueue<string> SupplementaryCalls = new ConcurrentQueue<string>();
+            internal readonly ConcurrentQueue<string> UnexpectedSupplementaryCalls = new ConcurrentQueue<string>();
+            internal readonly ConcurrentQueue<string> PreparationWarnings = new ConcurrentQueue<string>();
+            private readonly TaskCompletionSource<bool> supplementaryEventsClosed =
+                new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             internal readonly TaskCompletionSource<bool> AllowResponse = new TaskCompletionSource<bool>();
             internal readonly TaskCompletionSource<bool> SignalRoomChange = new TaskCompletionSource<bool>();
             internal readonly TaskCompletionSource<bool> AllowDirectoryList = new TaskCompletionSource<bool>();
@@ -79,7 +89,63 @@ namespace AstralOath.Client.Tests
             internal volatile bool BattleEnded;
             private volatile bool stopping;
             internal Uri Address => new Uri("http://127.0.0.1:" + ((IPEndPoint)listener.LocalEndpoint).Port);
-            internal ReadServer() { listener.Start(); worker = Task.Run(Run); }
+            internal ReadServer()
+            {
+                Application.logMessageReceived += OnLog;
+                listener.Start(); worker = Task.Run(Run);
+            }
+            private void OnLog(string message, string stack, LogType type)
+            {
+                if (type == LogType.Warning && (message.StartsWith("Social preparation:", StringComparison.Ordinal) ||
+                    message.StartsWith("Mail preparation:", StringComparison.Ordinal))) PreparationWarnings.Enqueue(message);
+            }
+            private static bool IsSupplementary(string path) => path.StartsWith("/api/mail/", StringComparison.Ordinal) ||
+                path.StartsWith("/api/profile/", StringComparison.Ordinal) || path.StartsWith("/api/chat/", StringComparison.Ordinal);
+            private static string ProfileId(string authorization)
+            {
+                const string prefix = "Bearer test-token-";
+                return authorization != null && authorization.StartsWith(prefix, StringComparison.Ordinal) &&
+                    int.TryParse(authorization.Substring(prefix.Length), out int login) && login > 0 ? "p" + login : "test";
+            }
+            private static string MailSummary(string player) => "{\"realmId\":\"test-realm\",\"playerId\":\"" + player +
+                "\",\"serverUtc\":\"2030-01-01T00:00:00Z\",\"nextExpiryAt\":null,\"version\":1,\"effectiveCount\":0,\"capacity\":100," +
+                "\"energy\":{\"balance\":0,\"naturalCap\":360,\"absoluteCap\":20000,\"revision\":1}," +
+                "\"balances\":{\"revision\":1,\"gold\":30,\"crystals\":250}}";
+            private async Task RespondSupplementary(NetworkStream stream, string method, string target, string authorization)
+            {
+                string path = target.Split('?')[0];
+                string player = ProfileId(authorization);
+                if (method == "GET" && (path == "/api/mail/events" || path.StartsWith("/api/chat/channels/", StringComparison.Ordinal) && path.EndsWith("/events", StringComparison.Ordinal)))
+                {
+                    string first = path == "/api/mail/events" ? "{\"kind\":\"sync\",\"version\":1}\n" : "{\"kind\":\"sync\"}\n";
+                    var header = Encoding.ASCII.GetBytes("HTTP/1.1 200 OK\r\nContent-Type: application/x-ndjson\r\nConnection: close\r\n\r\n" + first);
+                    await stream.WriteAsync(header, 0, header.Length).ConfigureAwait(false);
+                    // Do not let the arena's SignalRoomChange terminate or mutate unrelated login streams.
+                    await supplementaryEventsClosed.Task.ConfigureAwait(false);
+                    return;
+                }
+                string body = null;
+                if (method == "GET")
+                {
+                    if (path == "/api/mail/summary") body = MailSummary(player);
+                    else if (path == "/api/mail/inbox" || path == "/api/mail/history") body = "{\"items\":[],\"nextCursor\":null,\"summary\":" + MailSummary(player) + "}";
+                    else if (path == "/api/profile/me") body = "{\"playerId\":\"" + player + "\",\"realmId\":\"test-realm\",\"displayName\":\"Prepared-" + player +
+                        "\",\"avatarId\":\"c1001\",\"version\":1,\"isSelf\":true,\"canEdit\":true,\"greetingIsDefault\":true,\"greeting\":\"\",\"representativeConfigured\":false,\"representativeHero\":null," +
+                        "\"visibility\":{\"seasonVisible\":true,\"bestVisible\":true},\"rank\":{\"available\":false,\"value\":null},\"seasonRecord\":{\"available\":false,\"visible\":true,\"data\":null},\"bestRecord\":{\"available\":false,\"visible\":true,\"data\":null}}";
+                    else if (path == "/api/chat/preferences") body = "{\"version\":1,\"favoriteChannel\":null,\"notifications\":{\"hero5\":true,\"artifact5\":true,\"guildPromotion\":true,\"generalChat\":true},\"keywords\":[],\"transparentBackground\":false}";
+                    else if (path.StartsWith("/api/chat/channels/", StringComparison.Ordinal) && path.EndsWith("/messages", StringComparison.Ordinal) &&
+                        int.TryParse(path.Split('/')[4], out int channel) && channel >= 1 && channel <= 9999)
+                        body = "{\"channel\":" + channel + ",\"messages\":[],\"nextAfter\":\"0\",\"hasMore\":false}";
+                }
+                string status = "200 OK";
+                if (body == null)
+                {
+                    UnexpectedSupplementaryCalls.Enqueue(method + " " + target);
+                    status = "501 Not Implemented"; body = "{\"code\":\"unexpected_fixture_route\"}";
+                }
+                var data = Encoding.ASCII.GetBytes("HTTP/1.1 " + status + "\r\nContent-Type: application/json\r\nConnection: close\r\nContent-Length: " + body.Length + "\r\n\r\n" + body);
+                await stream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
+            }
             private async Task Run()
             {
                 var connections = new List<Task>();
@@ -104,14 +170,18 @@ namespace AstralOath.Client.Tests
                     using var stream = client.GetStream();
                     using var reader = new StreamReader(stream, Encoding.ASCII, false, 1024, true);
                     var line = (await reader.ReadLineAsync()).Split(' ');
-                    Calls.Enqueue(line[0] + " " + line[1]);
-                    string validator = null, field;
+                    if (IsSupplementary(line[1])) SupplementaryCalls.Enqueue(line[0] + " " + line[1]);
+                    else Calls.Enqueue(line[0] + " " + line[1]);
+                    string validator = null, field, authorization = null;
                     int contentLength = 0;
                     bool sendContinue = false;
                     while (!string.IsNullOrEmpty(field = await reader.ReadLineAsync()))
                     {
-                        if (line[1].StartsWith("/api/development/gm") && field.StartsWith("Authorization: "))
-                            GmAuthorization = field.Substring("Authorization: ".Length);
+                        if (field.StartsWith("Authorization: ", StringComparison.OrdinalIgnoreCase))
+                        {
+                            authorization = field.Substring("Authorization: ".Length);
+                            if (line[1].StartsWith("/api/development/gm")) GmAuthorization = authorization;
+                        }
                         if (field.StartsWith("If-None-Match:", StringComparison.OrdinalIgnoreCase))
                             validator = field.Substring("If-None-Match:".Length).Trim();
                         else if (field.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
@@ -139,6 +209,11 @@ namespace AstralOath.Client.Tests
                         if (gmPayload != null) GmRequests.Enqueue(gmPayload.ToString());
                     }
                     await AllowResponse.Task.ConfigureAwait(false);
+                    if (IsSupplementary(line[1]))
+                    {
+                        await RespondSupplementary(stream, line[0], line[1], authorization).ConfigureAwait(false);
+                        return;
+                    }
                     if (line[0] == "HEAD" && line[1] == "/api/inventory/equipment")
                     {
                         LastEquipmentValidator = validator;
@@ -234,7 +309,9 @@ namespace AstralOath.Client.Tests
             public void Dispose()
             {
                 stopping = true;
+                Application.logMessageReceived -= OnLog;
                 listener.Stop();
+                supplementaryEventsClosed.TrySetResult(true);
                 SignalRoomChange.TrySetResult(true);
                 AllowResponse.TrySetResult(true);
                 ReleaseGmFailure.TrySetResult(true);
@@ -364,6 +441,8 @@ namespace AstralOath.Client.Tests
                     yield return new WaitUntil(() => opening.IsCompleted);
                     opening.GetAwaiter().GetResult();
                     var nav = opening.GetType().GetProperty("Result").GetValue(opening);
+                    AssertPreparedSupplementarySessions(nav, "p" + login);
+                    AssertSupplementaryReads(server, login);
                     var cache = navigationType.GetField("firstReads", PrivateInstance).GetValue(nav);
                     object Value(string name) => cache.GetType().GetProperty(name, PrivateInstance).GetValue(cache);
                     Task Fetch(string name) => (Task)cache.GetType().GetMethod(name, PrivateInstance)
@@ -546,6 +625,35 @@ namespace AstralOath.Client.Tests
             finally { Object.Destroy(canvas); }
         }
 
+        private static void AssertSupplementaryReads(ReadServer server, int logins)
+        {
+            var calls = server.SupplementaryCalls.ToArray();
+            Assert.That(calls.Count(call => call == "GET /api/profile/me"), Is.EqualTo(logins), "Each new login prepares its own profile.");
+            Assert.That(calls.Count(call => call == "GET /api/chat/preferences"), Is.EqualTo(logins), "Chat preferences are prepared once per login.");
+            Assert.That(calls.Count(call => call == "GET /api/mail/summary"), Is.GreaterThanOrEqualTo(logins));
+            Assert.That(calls.Any(call => call == "GET /api/chat/channels/1/messages?after=0&waitMs=0"), Is.True, "A new account joins public channel one.");
+            Assert.That(calls.Where(call => call.StartsWith("GET /api/chat/channels/", StringComparison.Ordinal))
+                .All(call => call.StartsWith("GET /api/chat/channels/1/", StringComparison.Ordinal)), Is.True);
+            Assert.That(calls.All(call => call.StartsWith("GET ", StringComparison.Ordinal)), Is.True, "Preparation never writes Mail/Profile/Chat data.");
+            Assert.That(server.UnexpectedSupplementaryCalls, Is.Empty, "New module endpoints need a deliberate fixture response.");
+            Assert.That(server.PreparationWarnings, Is.Empty, "Invalid fixture responses must not be hidden behind optional preparation warnings.");
+        }
+        private static void AssertPreparedSupplementarySessions(object navigation, string player)
+        {
+            object Field(string name) => navigation.GetType().GetField(name, PrivateInstance).GetValue(navigation);
+            var profile = ((PlayerProfileSession)Field("profileSession")).Self;
+            Assert.That(profile, Is.Not.Null); Assert.That(profile.playerId, Is.EqualTo(player));
+            Assert.That(profile.isSelf && profile.canEdit, Is.True); Assert.That(profile.displayName, Is.EqualTo("Prepared-" + player));
+            var chat = (ChannelChatSession)Field("chatSession");
+            Assert.That(chat.Channel, Is.EqualTo(1)); Assert.That(chat.Preferences, Is.Not.Null);
+            Assert.That(chat.Preferences.favoriteChannel, Is.Null); Assert.That(chat.Preferences.keywords, Is.Empty);
+            Assert.That(chat.Preferences.notifications.hero5 && chat.Preferences.notifications.artifact5 &&
+                chat.Preferences.notifications.guildPromotion && chat.Preferences.notifications.generalChat, Is.True);
+            var summary = ((MailSession)Field("mailSession")).Summary;
+            Assert.That(summary, Is.Not.Null); Assert.That(summary.playerId, Is.EqualTo(player));
+            Assert.That(summary.realmId, Is.EqualTo("test-realm")); Assert.That(summary.energy, Is.Not.Null); Assert.That(summary.balances, Is.Not.Null);
+        }
+
         private static IEnumerator Check(bool cancel, bool fail, bool crossFreeReset = false, bool failFirstArtifact = false, bool recoverRoom = false, bool slowDirectory = false, bool waitInArena = false, bool sampleFade = false, bool gm = false)
         {
             using var server = new ReadServer { CrossFreeReset = crossFreeReset, FailFirstArtifact = failFirstArtifact, KeepArenaRoom = recoverRoom, SlowDirectory = slowDirectory };
@@ -622,6 +730,9 @@ namespace AstralOath.Client.Tests
                     "Equipment must load during the login curtain, before the first page opens.");
                 Assert.That(server.Calls.Count, Is.EqualTo(4), string.Join(", ", server.Calls));
                 Assert.That(server.Calls.All(x => x.StartsWith("GET ")), Is.True);
+                AssertSupplementaryReads(server, 1);
+                Assert.That(Page("HomeWindow").Require<GameText>("profile").text, Is.EqualTo("Prepared-test"),
+                    "The server's self profile must update the home header, rather than being swallowed as an optional read failure.");
                 int beforeClicks = assets.Loaded.Count;
                 var home = Page("HomeWindow");
                 if (gm)

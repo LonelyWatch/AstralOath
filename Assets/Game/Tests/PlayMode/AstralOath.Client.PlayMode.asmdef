@@ -1,6 +1,8 @@
 {
   "name": "AstralOath.Client.PlayMode",
   "references": [
+    "AstralOath.Client.ChannelChat",
+    "AstralOath.Client.PlayerProfile",
     "AstralOath.Client.Mail",
     "AstralOath.Battle",
     "AstralOath.Client.BattleScene",

@@ -36,11 +36,15 @@ internal sealed partial class ArenaStore(string? connectionString, ArenaRoomEven
         var player = new ArenaPlayer(Guid.NewGuid().ToString("N"), name, avatar);
         byte[] secret = RandomNumberGenerator.GetBytes(32);
         await using var connection = await Open(token);
-        using var insert = Command(connection, null, """
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, token);
+        try { await AstralOath.Server.Entry.PlayerNicknameRegistry.Initial(connection, transaction, name, player.Id, false, token); }
+        catch (AstralOath.Server.Entry.EntryProblem problem) { throw new ArenaProblem(problem.Status, problem.Code); }
+        using var insert = Command(connection, transaction, """
             INSERT INTO arena_player (id, token_hash, display_name, avatar_id, created_at)
             VALUES (@id, @hash, @name, @avatar, UTC_TIMESTAMP(6));
             """, ("@id", player.Id), ("@hash", SHA256.HashData(secret)), ("@name", name), ("@avatar", avatar));
         await insert.ExecuteNonQueryAsync(token);
+        await transaction.CommitAsync(token);
         return new ArenaSession(Convert.ToHexStringLower(secret), player);
     }
 

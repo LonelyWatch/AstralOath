@@ -1,0 +1,28 @@
+{
+  "layout": "wnd/msgbox_renewal.csb",
+  "layoutSha256": "b4823826f6d72667fd51102b16174a89d0ca611dab60346ecfa9f6aa55ae5e2d",
+  "reference": "Screenrecorder-2026-11-28-02-29-26-914.mp4 @61.5s",
+  "panel": "Existing Common SourceMessageBox retains corrected low-alpha line coverage and Point sampling.",
+  "assets": [
+    {
+      "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/_bar_23.png",
+      "source": "img/_bar_23.png",
+      "sourceSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "outputSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "size": [
+        74,
+        12
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/cm_icon_etcarrow.png",
+      "source": "img/cm_icon_etcarrow.png",
+      "sourceSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
+      "outputSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
+      "size": [
+        18,
+        12
+      ]
+    }
+  ]
+}

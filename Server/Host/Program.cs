@@ -6,6 +6,7 @@ using AstralOath.Server.Entry;
 using AstralOath.Server.Inventory;
 using AstralOath.Server.Summon;
 using AstralOath.Server.Mail;
+using AstralOath.Server.Social;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting.WindowsServices;
@@ -76,6 +77,7 @@ builder.Services.AddEntry();
 builder.Services.AddInventory();
 builder.Services.AddSummon();
 builder.Services.AddMail();
+builder.Services.AddSocial();
 
 var app = builder.Build();
 if (app.Configuration.GetValue<bool>(WebHostDefaults.PreferHostingUrlsKey)
@@ -91,6 +93,7 @@ app.MapEntry();
 app.MapInventory();
 app.MapSummon();
 app.MapMail();
+app.MapSocial();
 if (isDevelopment && IPAddress.IsLoopback(bindAddress))
 {
     app.MapDevelopmentGm();

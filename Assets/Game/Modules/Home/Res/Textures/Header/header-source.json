@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "source": "item/border/icon_border_base.png",
+      "sourceSha256": "47c51617372351ec76810898e427c8fe133f2c30c55a121e2ccc3a5446ea86f5",
+      "output": "Assets/Game/Modules/Home/Res/Textures/Header/ProfileBorderBase.png",
+      "outputSha256": "47c51617372351ec76810898e427c8fe133f2c30c55a121e2ccc3a5446ea86f5"
+    },
+    {
+      "source": "img/cm_icon_booster_arti.png",
+      "sourceSha256": "fee9753665b3b1e64ed0c02c033bae2fccefa0864d78c339ccfed05ea7c2b0c8",
+      "output": "Assets/Game/Modules/Home/Res/Textures/Header/BoosterIcon.png",
+      "outputSha256": "fee9753665b3b1e64ed0c02c033bae2fccefa0864d78c339ccfed05ea7c2b0c8"
+    }
+  ],
+  "sourceLayout": "wnd/lobby_ui_renew.csb",
+  "sourceLayoutSha256": "b3feab99142e1b78607e8b880137df4e666a3db187b9049ec8ae7b02282d3aa2",
+  "notes": "Byte-identical original PNG. Base ring is presentation default; no earned season frame, booster count, Rank or experience is fabricated."
+}

@@ -133,3 +133,13 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 原生邮件诊断额外验证第二HTTP生产者投递后的事件流自动摘要/角标更新，准备信回执不直接写可见MailSession、不用手动摘要刷新掩盖通知失效。使用`-astral-arena-battle-smoke -astral-mail-smoke`；该显式Development回环诊断创建独立测试访客，不修改正常账号，不将同进程两个HTTP实例称作两个独立Windows进程。
 
 内容40原生已实际完成14个状态与余额断言，但末尾验收JSON仍以JsonUtility写入，跨程序集initial/final摘要漏写，外部脚本因此正确拒绝通过。仅诊断回执改用同一既有JsonConvert路径保留摘要，重新构建更高内容41，不覆盖40签名。历史失败在`.artifacts/mail-system-review/native-mail/runs/final40-qa1080/`；最终结果以41原生重跑为准。
+
+### 主页资料和公共频道组合（11/28，R44候选）
+
+`StartupNavigation.Social.cs`按登录拥有PlayerProfileSession/ChannelChatSession。首次读取限5秒；新账号默认频道1，有收藏时仅新登录优先进入收藏频道，打开/关闭抽屉保留当前频道。聊天观察由登录Owner启动，正文、关键词和令牌不进诊断日志。本人资料回执立即更新Home名字/头像，未知Rank/经验不伪造值。普通角色页、召唤、背包、邮件及更多菜单顶栏共用ChatEntry原素材预制，页面监听在自己的Scope解绑；缓存Mail入口只由每次Mail opening持有，避免底下页面扫描后让聊天越过Mail关闭仍残留。
+
+资料、聊天和通用未完成提示分别使用`SocialPanel`的独立WindowCoordinator/BindingScope及Canvas层。未完成提示盖住更多菜单，点击关闭恢复原菜单；聊天头像打开共用只读资料页，关闭只回到原聊天。退出登录或父页面关闭立即取消输入/加载、销毁portal并释放资源，不用主协调器的单一overlay强行替换原窗口。Common只保存FeatureNotice素材预制，普通View/Binder留在既有热更FoundationDemo，Home通过回调访问业务模块，未新增Common/AOT类型。
+
+正式原生诊断使用Development显式`-astral-social-smoke`且严格限制`127.0.0.6`，入口`SocialPlayerSmoke`及`SocialChatSettingsSmoke`。它创建独立QA身份，真实UI修改昵称/问候语/隐私并用独立API核对，测试主页及更多所有灰入口、两账号文字/原表情和事件流入站、头像只读资料、收藏/频道/通知/关键词/透明设置及重开。25状态截图是Player帧缓冲，另保存召唤12帧连续idle及实际七个RT尺寸、名字几何斜度、短时idle帧间隔；不把HTTP第二账号称作第二个Windows进程，不把诊断断言当视觉或人工试听通过。输出必须为D盘新目录，失败保留证据且不覆盖旧回执。
+
+当前真实联合Editor53/53、Play14/14通过；修复前布局三项、关键词慢回执/不确定回执、TMP斜体及首次诊断编译失败均保留。主服务安全切服、签名构建和Native实包仍待协调者执行，结果入口见[本轮参考和边界](../../../../docs/development/home-profile-chat-reference.md)。

@@ -1,5 +1,7 @@
 using AstralOath.Client.Bootstrap;
 using AstralOath.Client.Common;
+using AstralOath.Client.Home;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +18,7 @@ namespace AstralOath.Editor
         private static GameObject BuildHome()
         {
             var root = Root("HomeWindow");
+            var keys=new List<(string Key,UnityEngine.Object Target)>();
             Paint(Area(root, "Stage base", 0, 0, 1, 1), null, Deep);
             Cover(root, "Native lobby stage", Art("lobby_bg3", Home));
             var portraitArea = Area(root, "Charlotte portrait", .233f, -.035f, .55f, 1.10f);
@@ -41,34 +44,35 @@ namespace AstralOath.Editor
             Picture(root, "Lobby heart sticker", Art("ma_sticker_emo1", Home), .761f, .472f, .176f, .411f, true).color
                 = new Color32(226, 226, 226, 255);
 
-            DrawHomeShortcutRail(root);
-            var profile = Area(root, "Profile", .015f, .023f, .25f, .112f);
-            var avatar = Avatar(profile, "Avatar", 0, 0, .27f, 1);
-            avatar.Require<Image>("portrait").sprite = Art("c5009_s", Home);
-            avatar.Require<Image>("frame").sprite = Art("icon_border_pvp_season20_rank_3", Home);
-            Paint(Area(profile, "Profile shade", .24f, -.04f, .57f, .83f), Art("_box_r_op80"),
-                new Color32(105, 120, 147, 195), sliced: true);
-            var profileName = Text(profile, "Profile Name", "home.profile", 32, .30f, .02f, .66f, .45f);
-            Picture(profile, "Profile gauge backing", Art("renew_gauge_profile_bg", Home), .30f, .71f, .45f, .09f);
-            Picture(profile, "Profile gauge", Art("renew_gauge_profile_bar", Home), .30f, .71f, .45f, .09f);
+            DrawHomeShortcutRail(root,keys);
+            var profile=HomeRightRect(root,"Profile",0,0,310,120,new Vector2(0,1));profile.anchorMin=profile.anchorMax=Vector2.up;
+            var avatar=Avatar(profile,"Avatar",0,0,1,1);var avatarRect=(RectTransform)avatar.transform;
+            avatarRect.anchorMin=avatarRect.anchorMax=Vector2.up;avatarRect.pivot=Vector2.one*.5f;avatarRect.anchoredPosition=new Vector2(61,-55.509f)*HomeDesignScale;avatarRect.sizeDelta=Vector2.one*71.68f*HomeDesignScale;
+            var face=avatar.Require<Image>("portrait");face.sprite=null;face.enabled=false;
+            var avatarFrame=avatar.Require<Image>("frame");avatarFrame.sprite=Load<Sprite>(Home+"Res/Textures/Header/ProfileBorderBase.png");Place(avatarFrame.rectTransform,-.1475f,-.1475f,1.295f,1.295f);
+            RectTransform HeaderRect(string name,float x,float y,float w,float h){var r=HomeRightRect(profile,name,x,y,w,h,new Vector2(0,1));r.anchorMin=r.anchorMax=Vector2.up;return r;}
+            var nameRect=HeaderRect("Player name",107,22.44f,200,24);var profileName=Text(nameRect,"Name",null,32.34f,0,0,1,1);profileName.richText=false;
+            Paint(HeaderRect("Original Rank prefix",107,48,50.4f,18),Art("hero_rank",Home),Color.white);
+            var rankRect=HeaderRect("Account rank",158,47,90,20);var rank=Text(rankRect,"Rank",null,27,0,0,1,1,new Color32(255,137,0,255));rank.text="—";rank.richText=false;
+            var gauge=HeaderRect("Profile gauge backing",105,74,160,9);Paint(gauge,Art("renew_gauge_profile_bg",Home),Color.white);
+            var fill=Picture(gauge,"Profile gauge fill",Art("renew_gauge_profile_bar",Home),0,0,1,1);fill.type=Image.Type.Filled;fill.fillMethod=Image.FillMethod.Horizontal;fill.fillAmount=0;fill.enabled=false;
+            var percent=Text(HeaderRect("Account experience percent",166.25f,70.5f,45,15),"Percent",null,19.5f,0,0,1,1,Color.white,TextAlignmentOptions.Center);percent.text="";percent.richText=false;
+            var profileOpen=Button(HeaderRect("Open player profile",12,10,290,82),null,Color.clear);
+            var boost=Button(HeaderRect("Unavailable booster",105,94,160,26),null,Color.clear);keys.Add(("feature.boost",boost));
+            Picture((RectTransform)boost.transform,"Original boost symbol",Load<Sprite>(Home+"Res/Textures/Header/BoosterIcon.png"),0,.17f,.14f,.65f,true).color=new Color32(180,180,180,100);
+            var boostText=Text((RectTransform)boost.transform,"Booster caption",null,21,.25f,0,.75f,1,new Color32(180,180,180,100));boostText.text=HomeFeatureLabels.Text("boost");boostText.richText=false;
             DrawHomeNavigationBackground(root);
-            var navigation = Area(root, "Arena entry", .852f, .522f, .132f, .073f);
-            var arena = Action(navigation, "Arena", "home.arena", 36, 0, 0, 1, 1, out var label,
-                Art("_box_r_op80"), new Color32(184, 197, 222, 164));
-            Picture(navigation, "Arena icon", Art("main_hud_btn_arena", Home), .065f, .18f, .20f, .64f, true);
-            Place((RectTransform)label.transform, .26f, .04f, .72f, .92f);
-            label.enableAutoSizing = true;
-            label.fontSizeMin = 21;
-            label.fontSizeMax = 36;
+            var navigation=Area(root,"Native right navigation",0,0,1,1);DrawHomeMainLinks(navigation,false,keys);
 
             DrawHomeTopRule(root);
             var displayRect = HomeRightRect(root, "Desktop display control", -313, 14, 121, 39, Vector2.one);
             var displayMode = Action(displayRect, "Display mode", "home.window.fullscreen", 24, 0, 0, 1, 1,
                 out var windowLabel, Art("_box_r_op80"), Color.white);
-            var (more, bag) = BuildNativeTopBarIcons(root);
-            Bind(root, ("arena", arena), ("arenaLabel", label), ("arenaNavigation", navigation), ("profile", profileName),
-                ("displayMode", displayMode), ("displayModeLabel", windowLabel), ("more", more), ("bag", bag),
-                ("lobbyPortrait", raw));
+            displayMode.gameObject.SetActive(false);
+            var (more, bag,bell) = BuildNativeTopBarIcons(root);
+            keys.AddRange(new (string Key,UnityEngine.Object Target)[]{("arenaNavigation",navigation),("profile",profileName),("profileOpen",profileOpen),("profileAvatar",face),("profileFrame",avatarFrame),("profileRank",rank),("profileExperienceFill",fill),("profileExperiencePercent",percent),
+                ("displayMode",displayMode),("displayModeLabel",windowLabel),("more",more),("bag",bag),("feature.notifications",bell),("lobbyPortrait",raw)});
+            QuietUnavailableHomeButtons(keys);Bind(root,keys.ToArray());
             return root.gameObject;
         }
 

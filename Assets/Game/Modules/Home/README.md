@@ -1,5 +1,19 @@
 # Home
 
+11/28主页原素材导航、玩家摘要、未完成灰入口已通过联合Editor中的`HomeNavigationPrefabTests`2项；该组53/53，Play14/14中涵盖独立弹窗父子生命周期。Foundation回调打开资料、召唤、现有模拟竞技场和背包；资料昵称回执即时更新左上卡，无权威Rank/经验不写参考账号数值。更多顶部背包与主入口保持可用，所有未来格子/音乐灰态可点并开公共提示。F11快捷键保留，原版没有的可见大型F11调试板默认隐藏。Native与签名交付另验，自动断言不等于原版视觉通过。[本轮记录](../../../../docs/development/home-profile-chat-reference.md)
+
+11/28主页资料/公共频道接入进行中：`HomeWindowBinder`保留原构造，新增`ConfigureNavigation(profile,summon,unavailable)`，前两者为`Func<CancellationToken,Task>`，未完提示为`Func<string,CancellationToken,Task>`。`ApplyPlayerHeader(displayName,avatar,frame=null,rank=null,experience=null)`仅接受组合层已加载权威值：昵称/头像立即刷新，空框回原基本金环，未知Rank显示「—」，无经验数据隐藏填充与百分比，不造参考账号Rank4/29.3%。Home不引用PlayerProfile程序集。区分左上账号详情与英雄详情，左上账号块是独立可点区域。
+
+主右侧恢复Episode/支线/战斗/竞技场/召唤/商店六个原布局入口，竞技场接现有模拟战、召唤接现有召唤，其他项置暗但保持可点。展开菜单的三列四行图标、四个底部入口与既有音乐控件也成为真实GameButton；英雄/竞技场/召唤和顶栏背包保留可用，其余以稳定key `home.feature.<id>`回调统一未完提示。键与中文标题集中`HomeFeatureLabels`，不改Arena本地化配置。`HomeMoreMenuBinder.ConfigureNavigation(arena,unavailable,bag=null)`补齐回调；旧构造保留。未完入口本身Silent，由公共提示播放一次反馈，避免叠加两次点击声。原录像灰暗表示该账号未解锁，本项目灰暗表示功能尚未完成；不复制原作Rank/剧情门槛冒充项目进度。
+
+原参考没有大型黑底「全屏(F11)」调试控制，因此主界面默认隐藏该可见按钮；既有displayMode/displayModeLabel绑定仍保留，DesktopDisplayMode自身的F11键盘功能不改，不新增AOT组件。不会用调试板遮挡顶栏币栏，余额由原权威wallet/Mail组合层继续绑定，不绘制录屏固定余额。
+
+所有`DrawHomeTopIcon(chat)`嵌套同一`ChannelChat/Res/Prefab/ChatEntry.prefab`，契约`button`；登录组合层统一扫描绑定，不向Home引入ChannelChat引用。MailEntry继续原嵌套。生成入口`ArenaUiBuilder.BuildHomeNavigationAssets()`只保存HomeWindow/HomeMoreMenu，需先有ChatEntry；主生成器也复用同一方法组。基础头像环与增益符号由`Tools/Profile/ImportHomeHeaderAssets.py`仅取两张原图，源/输出哈希在`Res/Textures/Header/header-source.json`，没有默认高阶竞技场奖励框或增益次数。
+
+参考已实际查看11/28录屏00:00.5主页和01:10完整抽屉，解析只读`lobby_ui_renew.csb` / `quick_menu_renew.csb` / `top_bar.csb`，源JSON与图录在`.artifacts/home-profile-chat-review/source`及`index.html`。01:07实际是宠物门槛横板，不能把该帧当作抽屉完整状态。当前项目既有音乐条保留置暗入口，新录像01:10未显示该条；它不是本轮原样式完全一致的证据。主背景/角色/装饰仍是当前项目已授权皮肤，不将不同皮肤画面当同源像素比较。未完入口和资料卡在窄窗、1080/4K、热更包中的实际表现尚待统一生成与原生验收；源码不当已分发。
+
+`HomeNavigationPrefabTests`两项覆盖六入口、未知数据、ChatEntry真实嵌套和未完按钮可点。生成器改前实际持久化YAML契约RED（非Unity执行）在`.artifacts/home-profile-chat-review/client-tests/home-static-red.json`，原Home缺10键、More缺25键，进程退出1并保留旧预制哈希。协调者随后实际Unity RED位于`client-tests/panels-editor.xml`：整组17项15过2失败，且两失败仅Home缺feature.episode、More缺feature.guide；不可把该组称全绿。生成后的GREEN、回调行为及视听请以协调者后续实际回执为准。
+
 11/28邮件角标修订后，主页、更多菜单及装备入口的顶栏继续嵌套同一个MailEntry预制，随生成器重建保存；布局与业务无新增分支。角标原字体/切片与本轮实际验证见[邮件UI复核](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)。
 
 内容43再次保存上述嵌套入口，包含原静态数字图集的初始化特殊字形；TMP描边程序由Foundation显式SVC收集。Home本身没有新增运行时逻辑，实际包效果按43单独复核。

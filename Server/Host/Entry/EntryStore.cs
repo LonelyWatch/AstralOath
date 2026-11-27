@@ -103,10 +103,11 @@ internal sealed class EntryStore(string? connectionString)
         try
         {
             // The Arena row supplies the same identity even when the user signs in again.
+            string displayName = await PlayerNicknameRegistry.Initial(connection, transaction, username, id, true, cancellation);
             using var player = Command(connection, transaction, """
                 INSERT INTO arena_player (id, token_hash, display_name, avatar_id, created_at)
                 VALUES (@id, @unissued, @name, 'c1001', UTC_TIMESTAMP(6));
-                """, ("@id", id), ("@unissued", RandomNumberGenerator.GetBytes(32)), ("@name", username));
+                """, ("@id", id), ("@unissued", RandomNumberGenerator.GetBytes(32)), ("@name", displayName));
             await player.ExecuteNonQueryAsync(cancellation);
             using var account = Command(connection, transaction, """
                 INSERT INTO entry_account (player_id, user_key, email, password_salt, password_hash,
@@ -186,6 +187,26 @@ internal sealed class EntryStore(string? connectionString)
             await using var reader = await read.ExecuteReaderAsync(cancellation);
             if (!await reader.ReadAsync(cancellation)) throw new EntryProblem(401, "unauthorized");
             player = new ArenaPlayer(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+        }
+
+        using (var membership = Command(connection, transaction,
+            "SELECT 1 FROM player_realm_membership WHERE realm_id=@realm AND player_id=@id;",
+            ("@realm", EntryEndpoints.RealmId), ("@id", player.Id)))
+        {
+            if (await membership.ExecuteScalarAsync(cancellation) is null)
+            {
+                // A registered identity may wait before first realm entry while
+                // another player claims its initial display name in that realm.
+                string safeName = await PlayerNicknameRegistry.Initial(connection, transaction,
+                    player.DisplayName, player.Id, true, cancellation);
+                if (safeName != player.DisplayName)
+                {
+                    using var rename = Command(connection, transaction,
+                        "UPDATE arena_player SET display_name=@name WHERE id=@id;", ("@name", safeName), ("@id", player.Id));
+                    await rename.ExecuteNonQueryAsync(cancellation);
+                    player = player with { DisplayName = safeName };
+                }
+            }
         }
 
         var (token, tokenHash) = NewToken();

@@ -1,8 +1,13 @@
 using AstralOath.Client.Common;
+using AstralOath.Client.Home;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using Object=UnityEngine.Object;
 
 namespace AstralOath.Editor
 {
@@ -14,6 +19,23 @@ namespace AstralOath.Editor
 
         private static Sprite HomeMoreArt(string name) =>
             Load<Sprite>(InventoryTextures + "More/" + name + ".png");
+
+        [MenuItem("Tools/游戏主页/生成主页导航")]
+        public static void BuildHomeNavigationAssets()
+        {
+            font=Load<TMP_FontAsset>(Common+"Fonts/EpicSeven.asset");
+            labels=JsonUtility.FromJson<LabelFile>(File.ReadAllText(Arena+"Configs/arena-zh-hans.json")).rows.ToDictionary(x=>x.key,x=>x.text);
+            Save(BuildHome(),Home+"Res/Prefab/HomeWindow.prefab");Save(BuildHomeMoreMenu(),HomeMoreMenuPrefabPath);
+            UIViewRegistry.ValidatePrefab<HomeWindow>(Load<GameObject>(Home+"Res/Prefab/HomeWindow.prefab"));
+            UIViewRegistry.ValidatePrefab<HomeMoreMenu>(Load<GameObject>(HomeMoreMenuPrefabPath));AssetDatabase.SaveAssets();
+        }
+
+        private static void QuietUnavailableHomeButtons(List<(string Key,Object Target)> keys)
+        {
+            foreach(var row in keys)
+                if(row.Key.StartsWith("feature.")&&row.Key!="feature.arena"&&row.Key!="feature.summon"&&row.Key!="feature.heroes"&&row.Target is GameButton button)
+                    button.FeedbackSound=GameUiFeedback.Sound.Silent;
+        }
 
         // top_bar.csb and quick_menu_renew.csb use a 720-high design, anchored against the usable right edge.
         private static RectTransform HomeRightRect(RectTransform parent, string name, float right, float down,
@@ -31,9 +53,10 @@ namespace AstralOath.Editor
             float right, float width, float height, bool dimmed = false)
         {
             var rect = HomeRightRect(root, name, right, (66 - height) / 2, width, height, Vector2.one);
-            if (texture == "cm_hud_top_btn_mail")
+            if (texture == "cm_hud_top_btn_mail" || texture == "cm_hud_top_btn_chatting")
             {
-                var go = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(MailEntryPath), rect);
+                var source=texture=="cm_hud_top_btn_mail"?MailEntryPath:"Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab";
+                var go = (GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(source), rect);
                 var nested = (RectTransform)go.transform;
                 nested.anchorMin = Vector2.zero;
                 nested.anchorMax = Vector2.one;
@@ -45,25 +68,26 @@ namespace AstralOath.Editor
             return Paint(rect, Art(texture, Home), dimmed ? new Color32(255, 255, 255, 100) : Color.white);
         }
 
-        private static void DrawQuietHomeBell(RectTransform root, bool dimmed = false)
+        private static GameButton DrawQuietHomeBell(RectTransform root, bool dimmed = false)
         {
             var rect = HomeRightRect(root, "Notifications", -272, 33, 48, 48, new Vector2(.5f, .5f));
-            Paint(rect, HomeMoreArt("cm_icon_account_alram"), dimmed ? new Color32(255, 255, 255, 100) : Color.white);
+            return Button(rect, HomeMoreArt("cm_icon_account_alram"), new Color32(180, 180, 180, 100));
         }
 
-        private static void DrawNativeTopBarIcons(RectTransform root, bool dimmed = false, bool drawerOpen = false)
+        private static GameButton DrawNativeTopBarIcons(RectTransform root, bool dimmed = false, bool drawerOpen = false)
         {
-            DrawQuietHomeBell(root, dimmed);
+            var bell=DrawQuietHomeBell(root, dimmed);
             DrawHomeTopIcon(root, "Mail", "cm_hud_top_btn_mail", -125, 59, 66, dimmed);
             DrawHomeTopIcon(root, "Chat", "cm_hud_top_btn_chatting", -68, 59, 66);
             DrawHomeTopIcon(root, "Bag", "cm_hud_top_btn_bag", -184, 59, 66);
             if (!drawerOpen)
                 DrawHomeTopIcon(root, "More", "cm_hud_top_btn_quick", 0, 68, 66, dimmed);
+            return bell;
         }
 
-        private static (GameButton More, GameButton Bag) BuildNativeTopBarIcons(RectTransform root)
+        private static (GameButton More, GameButton Bag,GameButton Bell) BuildNativeTopBarIcons(RectTransform root)
         {
-            DrawQuietHomeBell(root);
+            var bell=DrawQuietHomeBell(root);
             DrawHomeTopIcon(root, "Mail", "cm_hud_top_btn_mail", -125, 59, 66);
             DrawHomeTopIcon(root, "Chat", "cm_hud_top_btn_chatting", -68, 59, 66);
 
@@ -76,7 +100,7 @@ namespace AstralOath.Editor
             var bagSprite = Art("cm_hud_top_btn_bag", Home);
             var bag = Button(bagRect, bagSprite, Color.white);
             PressSprites(bag, bagSprite, HomeMoreArt("cm_hud_top_btn_bag_p"));
-            return (more, bag);
+            return (more, bag,bell);
         }
 
         private static void DrawHomeNavigationBackground(RectTransform root)
@@ -85,7 +109,7 @@ namespace AstralOath.Editor
             Paint(background, HomeMoreArt("renew_glow_quick_2"), Color.white);
         }
 
-        private static void DrawHomeShortcutRail(RectTransform root)
+        private static void DrawHomeShortcutRail(RectTransform root,List<(string Key,Object Target)> keys)
         {
             // lobby_ui_renew.csb LEFT: retain the rendered shortcut order and their original icons.
             var shade = HomeRightRect(root, "Shortcut side shade", -40, 0, 520, 720, new Vector2(0, 1));
@@ -108,10 +132,12 @@ namespace AstralOath.Editor
                 float y = 161 + 78 * i;
                 var icon = HomeRightRect(root, key + " icon", 57, y, width, height, center);
                 icon.anchorMin = icon.anchorMax = Vector2.up;
-                Paint(icon, Art(sprite, Home), Color.white);
+                Paint(icon, Art(sprite, Home), new Color32(180,180,180,100));
                 var caption = HomeRightRect(root, key + " caption", 57, y + 33, 112, 28, center);
                 caption.anchorMin = caption.anchorMax = Vector2.up;
-                Text(caption, "Text", MorePrefix + key, 25, 0, 0, 1, 1, color, TextAlignmentOptions.Center);
+                var text=Text(caption, "Text", null, 25, 0, 0, 1, 1, new Color32(180,180,180,100), TextAlignmentOptions.Center);text.text=HomeFeatureLabels.Text(key);text.richText=false;
+                var hit=HomeRightRect(root,key+" unavailable",57,y+16,112,106,center);hit.anchorMin=hit.anchorMax=Vector2.up;
+                keys.Add(("feature."+key,Button(hit,null,Color.clear)));
             }
         }
 
@@ -126,6 +152,7 @@ namespace AstralOath.Editor
         private static GameObject BuildHomeMoreMenu()
         {
             var root = Root("HomeMoreMenu");
+            var keys=new List<(string Key,Object Target)>();
             root.gameObject.AddComponent<RectMask2D>();
             var outside = Button(Area(root, "Outside click", 0, 0, 1, 1), null, Black(.24f));
             outside.FeedbackSound = GameUiFeedback.Sound.Back;
@@ -139,14 +166,16 @@ namespace AstralOath.Editor
             Paint(HomeRightRect(drawer, "Drawer hit area", 0, 66, 399, 654, Vector2.one), null, Color.clear, true);
 
             DrawHomeTopRule(root);
-            DrawNativeTopBarIcons(root, drawerOpen: true);
+            var bell=DrawNativeTopBarIcons(root, drawerOpen: true);keys.Add(("feature.notifications",bell));
+            var bagImage=drawer.parent.GetComponentsInChildren<Image>(true).First(image=>image.name=="Bag");
+            var bag=bagImage.gameObject.AddComponent<GameButton>();bag.targetGraphic=bagImage;PressSprites(bag,Art("cm_hud_top_btn_bag",Home),HomeMoreArt("cm_hud_top_btn_bag_p"));keys.Add(("bag",bag));
             var closeRect = HomeRightRect(root, "Close more", -9, 0, 64, 66, Vector2.one);
             var closeIcon = InventoryArt("quick_esc");
             var close = Button(closeRect, closeIcon, new Color32(116, 171, 253, 255));
             close.FeedbackSound = GameUiFeedback.Sound.Back;
             PressSprites(close, closeIcon, InventoryArt("quick_esc_p"));
 
-            var summon = DrawMoreMainLinks(drawer);
+            DrawHomeMainLinks(drawer,true,keys);
             var entries = new (string Key, string Sprite)[]
             {
                 ("guide", "icon_lobby_master_guide"), ("collection", "renew_icon_quick_dictionary"), (null, null),
@@ -160,11 +189,12 @@ namespace AstralOath.Editor
                 if (key == null) continue;
                 var x = -327 + 125 * (i % 3);
                 var y = 140 + 116 * (i / 3);
-                bool locked = key == "imprint";
-                var tint = locked ? new Color32(255, 255, 255, 64) : new Color32(255, 255, 255, 255);
+                bool locked = true;
+                var tint = new Color32(180,180,180,100);
                 var icon = HomeRightRect(drawer, key + " icon", x, y, 64, 64, new Vector2(.5f, .5f));
                 Paint(icon, HomeMoreArt(sprite), tint);
-                DrawMoreCaption(drawer, key + " caption", MorePrefix + key, x, y, (byte)(locked ? 82 : 255));
+                DrawMoreCaption(drawer, key + " caption", key, x, y, 100);
+                var hit=HomeRightRect(drawer,key+" unavailable",x,y+16,112,106,new Vector2(.5f,.5f));keys.Add(("feature."+key,Button(hit,null,Color.clear)));
                 if (locked)
                 {
                     var badge = HomeRightRect(drawer, "Imprint locked", x + 20, y + 12, 23, 26, new Vector2(.5f, .5f));
@@ -177,11 +207,12 @@ namespace AstralOath.Editor
             var heroIcon = Picture(heroRect, "Hero icon", InventoryArt("renew_icon_quick_hero"),
                 24f / 112, 5f / 98, 64f / 112, 64f / 98);
             PressDecorations(heroes, (heroIcon, InventoryArt("renew_icon_quick_hero_p")));
-            var heroCaption = DrawMoreCaption(drawer, "Hero caption", InventoryPrefix + "heroes", -77, 140);
-            DrawMoreBottom(drawer);
+            var heroCaption = DrawMoreCaption(drawer, "Hero caption", "heroes", -77, 140);
+            keys.Add(("feature.heroes",heroes));
+            DrawMoreBottom(drawer,keys);
 
-            Bind(root, ("heroes", heroes), ("heroesLabel", heroCaption), ("close", close), ("outside", outside),
-                ("drawer", drawer), ("shade", shade), ("summon", summon));
+            keys.AddRange(new (string Key,Object Target)[]{("heroes",heroes),("heroesLabel",heroCaption),("close",close),("outside",outside),("drawer",drawer),("shade",shade)});
+            QuietUnavailableHomeButtons(keys);Bind(root,keys.ToArray());
             return root.gameObject;
         }
 
@@ -190,63 +221,63 @@ namespace AstralOath.Editor
             var rect = HomeRightRect(root, name, x, y + 36, 121, 29, new Vector2(.5f, .5f));
             var color = MoreCaptionColor;
             color.a = alpha / 255f;
-            return Text(rect, "Text", key, 24, 0, 0, 1, 1, color, TextAlignmentOptions.Center);
+            var text=Text(rect,"Text",null,24,0,0,1,1,color,TextAlignmentOptions.Center);text.text=HomeFeatureLabels.Text(key);text.richText=false;return text;
         }
 
-        private static GameButton DrawMoreMainLinks(RectTransform root)
+        private static void DrawHomeMainLinks(RectTransform root,bool expanded,List<(string Key,Object Target)> keys)
         {
             // CN labels have different advances from the Korean template. Plate widths below
             // are measured in the 720-high recording, with the phone's left margin excluded.
             var entries = new (string Key, int CenterY, int Width)[]
             {
-                (MorePrefix + "episode", 184, 112), (MorePrefix + "side_story", 259, 102),
-                (MorePrefix + "battle", 324, 60), ("home.arena", 389, 80),
-                (MorePrefix + "summon", 454, 60), (MorePrefix + "shop", 519, 60)
+                ("episode",184,112),("side_story",259,102),("battle",324,60),("arena",389,80),("summon",454,60),("shop",519,60)
             };
-            GameButton summon = null;
             foreach (var (key, y, width) in entries)
             {
-                bool episode = key == MorePrefix + "episode";
-                float right = key == MorePrefix + "shop" ? -421f : episode ? -424f : -422f;
+                bool episode = key == "episode",available=HomeFeatureLabels.MainAvailable(key);
+                float right = (key == "shop" ? -421f : episode ? -424f : -422f)+(expanded?0:377);
                 var background = HomeRightRect(root, key + " backing", right + 12, y + 14, width,
                     episode ? 28f : 28f * .85f, new Vector2(1f, .5f));
                 var plate = Paint(background, HomeMoreArt("renew_main_hud_btn_deco_1"),
                     new Color32(255, 255, 255, QualitySettings.activeColorSpace == ColorSpace.Linear ? (byte)22 : (byte)76), sliced: true);
                 plate.pixelsPerUnitMultiplier = 1f / HomeDesignScale;
                 var rect = HomeRightRect(root, key, right, episode ? y + 3 : y, 182, 46, new Vector2(1f, .5f));
-                if (key == MorePrefix + "summon") summon = Button(rect, null, Color.clear);
+                var button=Button(rect,null,Color.clear);keys.Add(("feature."+key,button));
 
                 // quick_menu_renew.csb has a second faint white label two pixels right
                 // and three pixels below the foreground. Keep both on the same reference grid.
                 float size = 50f * (episode ? .57f : .47f) * HomeDesignScale;
-                var echo = Text(rect, "Label decoration", key, size, 0, 0, 1, 1,
-                    new Color32(255, 255, 255, 25), TextAlignmentOptions.MidlineRight);
+                var echo = Text(rect, "Label decoration", null, size, 0, 0, 1, 1,
+                    new Color32(255, 255, 255,available?(byte)25:(byte)9), TextAlignmentOptions.MidlineRight);echo.text=HomeFeatureLabels.Text(key);echo.richText=false;
                 echo.rectTransform.anchoredPosition += new Vector2(2f, -3f) * HomeDesignScale;
-                Text(rect, "Text", key, size, 0, 0, 1, 1, alignment: TextAlignmentOptions.MidlineRight);
+                var label=Text(rect,"Text",null,size,0,0,1,1,available?Color.white:new Color32(180,180,180,100),TextAlignmentOptions.MidlineRight);label.text=HomeFeatureLabels.Text(key);label.richText=false;keys.Add(("featureLabel."+key,label));
+                if(!available)Picture(rect,"Unavailable source lock",Art("cm_icon_etclock"),1.015f,.31f,.075f,.43f,true);
+                if(key=="arena"){keys.Add(("arena",button));keys.Add(("arenaLabel",label));}
+                if(key=="summon")keys.Add(("summon",button));
             }
-            return summon;
         }
 
-        private static void DrawMoreBottom(RectTransform root)
+        private static void DrawMoreBottom(RectTransform root,List<(string Key,Object Target)> keys)
         {
             var icons = new[] { "renew_icon_quick_notice", "renew_icon_quick_lobby_custom",
                 "renew_icon_quick_pub", "renew_icon_quick_setting" };
             for (int i = 0; i < icons.Length; ++i)
             {
                 var icon = HomeRightRect(root, icons[i], -339 + i * 92, 590, 48, 48, new Vector2(.5f, .5f));
-                Paint(icon, HomeMoreArt(icons[i]), new Color32(197, 211, 219, 255));
+                var ids=new[]{"notice","lobby_custom","pub","settings"};
+                keys.Add(("feature."+ids[i],Button(icon,HomeMoreArt(icons[i]),new Color32(180,180,180,100))));
             }
             var player = HomeRightRect(root, "Music player", -385, 628, 370, 74, new Vector2(0, 1));
-            Paint(player, HomeMoreArt("renew_music_player_bg"), Color.white, sliced: true);
+            var music=Button(player,HomeMoreArt("renew_music_player_bg"),new Color32(180,180,180,100));((Image)music.targetGraphic).type=Image.Type.Sliced;keys.Add(("feature.music",music));
             Picture(player, "Music album art", HomeMoreArt("music_s_epi1_intro1"), .026f, .20f, .122f, .61f);
-            Text(player, "Music title", MorePrefix + "music", 20, .163f, .246f, .50f, .30f);
-            Text(player, "Music empty", MorePrefix + "music_empty", 16, .163f, .535f, .50f, .25f,
-                new Color32(163, 178, 198, 255));
+            var title=Text(player,"Music title",null,20,.163f,.246f,.50f,.30f,new Color32(180,180,180,100));title.text=HomeFeatureLabels.Text("music");title.richText=false;
             var previous = Picture(player, "Previous track", HomeMoreArt("icon_menu_playerff"), .686f, .370f, .052f, .260f);
             var play = Picture(player, "Play track", HomeMoreArt("icon_menu_play_music"), .765f, .297f, .081f, .405f);
             var next = Picture(player, "Next track", HomeMoreArt("icon_menu_playerff"), .884f, .370f, .052f, .260f);
             next.rectTransform.localScale = new Vector3(-1, 1, 1);
             previous.color = play.color = next.color = new Color32(255, 255, 255, 140);
+            foreach(var item in new[]{("music_prev",previous),("music_play",play),("music_next",next)})
+            {var button=item.Item2.gameObject.AddComponent<GameButton>();button.targetGraphic=item.Item2;keys.Add(("feature."+item.Item1,button));}
         }
     }
 }

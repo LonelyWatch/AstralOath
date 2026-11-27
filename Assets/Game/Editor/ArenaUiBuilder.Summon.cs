@@ -439,12 +439,14 @@ namespace AstralOath.Editor
                 var owned = Text(ownership, key + "Owned", null, 24 * .65f * SummonCanvasScale, 0, 0, 1, 1,
                     new Color32(210, 210, 210, 255), TextAlignmentOptions.Center);
                 owned.fontStyle = FontStyles.Italic;
+                owned.richText = true;
                 bindings.Add((key + "Owned", owned));
 
                 var label = Text(card, key + "Name", null, 24 * .89f * SummonCanvasScale,
                     (139 - 141 * .89f) / 138, (720 - 274 - 56 * .89f) / 720, 141 * .89f / 138,
                     56 * .89f / 720, alignment: TextAlignmentOptions.BottomRight, wrap: true);
                 label.fontStyle = FontStyles.Italic;
+                label.richText = true;
                 label.fontSharedMaterial = nameOutline;
                 bindings.Add((key + "Name", label));
 

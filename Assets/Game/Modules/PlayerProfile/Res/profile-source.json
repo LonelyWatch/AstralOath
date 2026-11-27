@@ -1,0 +1,604 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "D:\\sevenepic\\原始资源",
+  "layouts": [
+    {
+      "source": "wnd/user_profile.csb",
+      "sha256": "cb9b6b6dac4155bd9b4e9702d8d5b4b21f811f32c325e69aa70b0fcc2e8173ec"
+    },
+    {
+      "source": "wnd/user_profile_nickname.csb",
+      "sha256": "1dae229455e69e8b2d12645b780f28bb45698fd2990adb40da42b1957c810b60"
+    },
+    {
+      "source": "wnd/_z_input.csb",
+      "sha256": "6ae3429eeeb1cfb8ebb81fddcff992dac3bf5085e77ddde9fbd221cb44cb78f1"
+    }
+  ],
+  "geometry": "user_profile main980x631 ->1470x946.5 fixed design; forest378x558 at .95*1.5. Nickname573x400: source frame364/558.382, title282/331, buttons85/57/153x65 and238/57/248x65; original PNG white rule is ~32px inside its transparent116px rectangle, cap unchanged. Greeting uses _z_input frame556x406 at642/137, n_topY26, both buttons192x61 at89/30 and278/30; top-left input text. Source record bg537x205 tint0/0/0 opacity63; lowerline537x1 opacity25; rotated z_tile_bar185x4 opacity76 cap32/1/1/2; source_grow_s_white20x113 scale30.89/4.73 tint8/14/23 opacity76 rotation-90.",
+  "sourceOpacityCoverage": {
+    "Divider": {
+      "sourceNodeOpacity": 127,
+      "sourceCapXywh": [
+        30,
+        4,
+        14,
+        4
+      ]
+    },
+    "GreetingDivider": {
+      "sourceNodeOpacity": 127,
+      "sourceCapXywh": [
+        32,
+        4,
+        10,
+        4
+      ]
+    },
+    "RecordColumnRule": {
+      "sourceNodeOpacity": 76,
+      "sourceCapXywh": [
+        32,
+        1,
+        1,
+        2
+      ]
+    },
+    "method": "White pixels: effectiveAlpha=(PNG alpha)*(source node opacity)/255, then IEC sRGB transfer to linear coverage, rounded to8bit. Other RGB shadow pixels retain RGB and effectiveAlpha. Runtime Image opacity=1; never apply source node opacity again. Pure white record lower line uses GammaToLinearSpace(25/255) in Image.color because its source PNG is fully opaque."
+  },
+  "portraitComposition": {
+    "reference": "11/28 recording 00:13; compared with profile-candidate/01-self-default.png at1080-height normalization",
+    "basis": "Measured runtime composition; actor is not stored in user_profile.csb. Not an original CSB actor constant.",
+    "squareSideRelativeToForestHeight": 1.3,
+    "topDesignUnits": 31,
+    "horizontalAlignment": "centered; square RenderTexture enlarged and clipped by forest RectMask2D, no nonuniform stretch"
+  },
+  "assets": [
+    {
+      "source": "img/renew_popup_bg_alpha.png",
+      "sourceSha256": "7aa82d305f97434ab9f4044915a879b23f14814cb8bcd1cca7f4386b6995e270",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/ProfileFrame.png",
+      "outputSha256": "3c127ad3e17c1c4232025564754576ec413fe2f8299487d50ebc03e308a1e720",
+      "size": [
+        366,
+        578
+      ],
+      "sourceCapXywh": [
+        54,
+        54,
+        258,
+        470
+      ],
+      "unityBorder": [
+        54,
+        54,
+        54,
+        54
+      ],
+      "conversion": "Original RGB/gradient preserved; only white frame-rule alpha sRGB coverage converted to linear (34->4,115->44), as established Common confirmation rule correction; Point sampling avoids alpha seam."
+    },
+    {
+      "source": "profile/bg/profile_bg13.png",
+      "sourceSha256": "640c700d80d4d5415e347133e74373cc6c1b2cd89aa57b90c64b5bdc266d1c06",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Forest.png",
+      "outputSha256": "640c700d80d4d5415e347133e74373cc6c1b2cd89aa57b90c64b5bdc266d1c06",
+      "size": [
+        378,
+        558
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_box_black_white.png",
+      "sourceSha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/NicknameFrame.png",
+      "outputSha256": "31af3c642dc2d6a665bc016e31ea33cf2d5f3006b63cf8b388c78818bb0e81b1",
+      "size": [
+        116,
+        116
+      ],
+      "sourceCapXywh": [
+        44,
+        44,
+        24,
+        24
+      ],
+      "unityBorder": [
+        44,
+        48,
+        48,
+        44
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_box_w4.png",
+      "sourceSha256": "fcbd98abaf22584390fc69a9edf9e75512cf1b24e21ec03ff1e680ac612081ba",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Letter.png",
+      "outputSha256": "fcbd98abaf22584390fc69a9edf9e75512cf1b24e21ec03ff1e680ac612081ba",
+      "size": [
+        37,
+        35
+      ],
+      "sourceCapXywh": [
+        16,
+        16,
+        5,
+        3
+      ],
+      "unityBorder": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_btn_small_black.png",
+      "sourceSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/SmallBlack.png",
+      "outputSha256": "5d2458be3abf2d92a1f75d77b58d741d69c62571052ae80c4524c7ed0969a966",
+      "size": [
+        36,
+        34
+      ],
+      "sourceCapXywh": [
+        14,
+        12,
+        8,
+        6
+      ],
+      "unityBorder": [
+        14,
+        16,
+        14,
+        12
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_btn_small_black_p.png",
+      "sourceSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/SmallBlackPressed.png",
+      "outputSha256": "a890885cd4d3c14f36114f4877771d47618eb31164ef388aaa298b03008f4df7",
+      "size": [
+        36,
+        34
+      ],
+      "sourceCapXywh": [
+        14,
+        12,
+        8,
+        6
+      ],
+      "unityBorder": [
+        14,
+        16,
+        14,
+        12
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_btn_small_white.png",
+      "sourceSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/SmallWhite.png",
+      "outputSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "size": [
+        36,
+        34
+      ],
+      "sourceCapXywh": [
+        14,
+        12,
+        8,
+        6
+      ],
+      "unityBorder": [
+        14,
+        16,
+        14,
+        12
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_btn_small_white_p.png",
+      "sourceSha256": "e985671f76133703de319a0aa3dd8ef0b2d5d1d733c053d2d31f216ba8f71956",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/SmallWhitePressed.png",
+      "outputSha256": "e985671f76133703de319a0aa3dd8ef0b2d5d1d733c053d2d31f216ba8f71956",
+      "size": [
+        36,
+        34
+      ],
+      "sourceCapXywh": [
+        14,
+        12,
+        8,
+        6
+      ],
+      "unityBorder": [
+        14,
+        16,
+        14,
+        12
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_btn_small_white.png",
+      "sourceSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/NameInput.png",
+      "outputSha256": "3b85ccabaa3c1c8de92be4aba6cb51f7ae3371bc96be84d4e9d0b9bfe090f077",
+      "size": [
+        36,
+        34
+      ],
+      "sourceCapXywh": [
+        14,
+        14,
+        4,
+        2
+      ],
+      "unityBorder": [
+        14,
+        18,
+        18,
+        14
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_bar_23.png",
+      "sourceSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Divider.png",
+      "outputSha256": "2ba652c2e343c780b85404c42972a7cb9e5e0519e951d073c4dd3731d1e48ffd",
+      "size": [
+        74,
+        12
+      ],
+      "sourceCapXywh": [
+        30,
+        4,
+        14,
+        4
+      ],
+      "unityBorder": [
+        30,
+        4,
+        30,
+        4
+      ],
+      "conversion": "Purpose copy: source node opacity127 folded into PNG alpha before white sRGB-to-linear coverage conversion; original RGB preserved, nonwhite shadow effective alpha preserved. Runtime opacity1. Source PNG is untouched.",
+      "sourceNodeOpacity": 127
+    },
+    {
+      "source": "img/_bar_23.png",
+      "sourceSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/GreetingDivider.png",
+      "outputSha256": "2ba652c2e343c780b85404c42972a7cb9e5e0519e951d073c4dd3731d1e48ffd",
+      "size": [
+        74,
+        12
+      ],
+      "sourceCapXywh": [
+        32,
+        4,
+        10,
+        4
+      ],
+      "unityBorder": [
+        32,
+        4,
+        32,
+        4
+      ],
+      "conversion": "Purpose copy: source node opacity127 folded into PNG alpha before white sRGB-to-linear coverage conversion; original RGB preserved, nonwhite shadow effective alpha preserved. Runtime opacity1. Source PNG is untouched.",
+      "sourceNodeOpacity": 127
+    },
+    {
+      "source": "img/_white.png",
+      "sourceSha256": "cb800045f3248a8956eb2935805bb29fd189cb0d1c97c34d6533603cc09102fb",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/RecordWhite.png",
+      "outputSha256": "cb800045f3248a8956eb2935805bb29fd189cb0d1c97c34d6533603cc09102fb",
+      "size": [
+        40,
+        40
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/z_tile_bar.png",
+      "sourceSha256": "71bc4f474863e96eb4d15ecc0d4079e8af5931ff4eebca620a8d85112e20517b",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/RecordColumnRule.png",
+      "outputSha256": "c389f71a528ec5aedc870b8dfef6989b7f8de5aebbd0f6a882d04d59573af076",
+      "size": [
+        64,
+        4
+      ],
+      "sourceCapXywh": [
+        32,
+        1,
+        1,
+        2
+      ],
+      "unityBorder": [
+        32,
+        1,
+        31,
+        1
+      ],
+      "conversion": "Purpose copy: source node opacity76 folded into PNG alpha before white sRGB-to-linear coverage conversion; original RGB preserved, nonwhite shadow effective alpha preserved. Runtime opacity1. Source PNG is untouched.",
+      "sourceNodeOpacity": 76
+    },
+    {
+      "source": "img/_grow_s_white.png",
+      "sourceSha256": "0b59b48e0f453c38b1c35529d58f19459ac3465ec5e156ea6b576a73b5491e04",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/RecordShade.png",
+      "outputSha256": "0b59b48e0f453c38b1c35529d58f19459ac3465ec5e156ea6b576a73b5491e04",
+      "size": [
+        20,
+        113
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/icon_menu_blind.png",
+      "sourceSha256": "85810bc5e8b5bbb6aff503b19a4e4a8e26ee8b9bdb369511c3375b838caf9ad3",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Eye.png",
+      "outputSha256": "85810bc5e8b5bbb6aff503b19a4e4a8e26ee8b9bdb369511c3375b838caf9ad3",
+      "size": [
+        100,
+        100
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/icon_clans.png",
+      "sourceSha256": "d2f419e3cbc8fa54d42895d132fdfacdf84ef69be51e460dafdef65e7add2e54",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Clan.png",
+      "outputSha256": "d2f419e3cbc8fa54d42895d132fdfacdf84ef69be51e460dafdef65e7add2e54",
+      "size": [
+        112,
+        112
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/icon_menu_write.png",
+      "sourceSha256": "04fe0874db14b4f318381c1375c39e3928ffc43f073fa334be9752dbde1b054e",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Pencil.png",
+      "outputSha256": "04fe0874db14b4f318381c1375c39e3928ffc43f073fa334be9752dbde1b054e",
+      "size": [
+        100,
+        100
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_etcclose.png",
+      "sourceSha256": "fe1a6febd787400ae2febc905a07ad62c804eaf51764b94842d82293db368cfa",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Close.png",
+      "outputSha256": "fe1a6febd787400ae2febc905a07ad62c804eaf51764b94842d82293db368cfa",
+      "size": [
+        20,
+        20
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_hero_s_frame_ally.png",
+      "sourceSha256": "2f6c420bf7f6f60be177f87d1cfae9a11d69bc0fd8961b1df6181f6ae51dd48b",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/PortraitFrame.png",
+      "outputSha256": "2f6c420bf7f6f60be177f87d1cfae9a11d69bc0fd8961b1df6181f6ae51dd48b",
+      "size": [
+        126,
+        126
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/_hero_s_bg_ally.png",
+      "sourceSha256": "5ff52755be6568efb40c8e94f3371cac9706b4d7ebce2f40a13d6e84732c3817",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/PortraitBackground.png",
+      "outputSha256": "5ff52755be6568efb40c8e94f3371cac9706b4d7ebce2f40a13d6e84732c3817",
+      "size": [
+        112,
+        112
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_main.png",
+      "sourceSha256": "552842baf8fa74133587678ab519b9f48278d1506e449fbceaa6accb8526529c",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_main.png",
+      "outputSha256": "552842baf8fa74133587678ab519b9f48278d1506e449fbceaa6accb8526529c",
+      "size": [
+        48,
+        40
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_warrior.png",
+      "sourceSha256": "8a495611dc9cceed733eece570871af8a94df2a3ab798aa775ec03544f8e65ad",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_warrior.png",
+      "outputSha256": "8a495611dc9cceed733eece570871af8a94df2a3ab798aa775ec03544f8e65ad",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_knight.png",
+      "sourceSha256": "60c3726db162bbf110bc2efd77b95e993d9ee4c50c26474dbed758c33b33c865",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_knight.png",
+      "outputSha256": "60c3726db162bbf110bc2efd77b95e993d9ee4c50c26474dbed758c33b33c865",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_assassin.png",
+      "sourceSha256": "85474576376e56826ca261c3a9558b5782b8984dc63739524075b8ff902b2661",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_assassin.png",
+      "outputSha256": "85474576376e56826ca261c3a9558b5782b8984dc63739524075b8ff902b2661",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_ranger.png",
+      "sourceSha256": "1a6c24ed21aca8a0656dabaded15d9b744dc517bdfd80af3d788154109967768",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_ranger.png",
+      "outputSha256": "1a6c24ed21aca8a0656dabaded15d9b744dc517bdfd80af3d788154109967768",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_mage.png",
+      "sourceSha256": "89265e1f1a814291c1d2d406f010fa3f68cac1d8d21bc367a35b381dfa3083b9",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_mage.png",
+      "outputSha256": "89265e1f1a814291c1d2d406f010fa3f68cac1d8d21bc367a35b381dfa3083b9",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    },
+    {
+      "source": "img/cm_icon_role_manauser.png",
+      "sourceSha256": "e91413f8640d8f8eb4ecb256dc066c43b206e08ae13c32240146958a3438bb60",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/Role_manauser.png",
+      "outputSha256": "e91413f8640d8f8eb4ecb256dc066c43b206e08ae13c32240146958a3438bb60",
+      "size": [
+        46,
+        46
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+    }
+  ],
+  "reference": "11/28 recording 00:13 own profile, 00:04 nickname, 00:18 greeting; game version/publish date/speed unknown",
+  "limits": "No unviewed representative/support/frame/custom-card selector UI imported. Forest is presentation default, not a persisted chosen custom card."
+}

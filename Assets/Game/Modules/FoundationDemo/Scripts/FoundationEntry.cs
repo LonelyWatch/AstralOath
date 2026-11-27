@@ -34,10 +34,13 @@ namespace AstralOath.Client.FoundationDemo
                 bool verifyRoom = ArenaRoomPlayerSmoke.IsRequested();
                 bool verifyEquipment = EquipmentPlayerSmoke.IsRequested();
                 bool verifyMail = StartupNavigation.MailVerificationRequested;
-                if (context.ShowHome || verifySummon || verifyRoom || verifyEquipment || verifyMail)
+                bool verifySocial = SocialPlayerSmoke.Requested;
+                if (context.ShowHome || verifySummon || verifyRoom || verifyEquipment || verifyMail || verifySocial)
                 {
                     var navigation = await StartupNavigation.StartAsync(context, scope);
-                    if (verifyMail)
+                    if (verifySocial)
+                        navigation.StartSocialVerification(scope.Token);
+                    else if (verifyMail)
                         navigation.StartMailVerification(scope.Token);
                     else if (verifySummon)
                         await SummonPlayerSmoke.RunAsync(context, navigation, scope.Token);

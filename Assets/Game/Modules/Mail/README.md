@@ -1,5 +1,7 @@
 # Mail
 
+11/28 R44候选重新生成共享顶栏ChatEntry嵌套；Mail不拥有公共聊天业务，Foundation只在当前Mail opening scope绑定该入口。主页面全树扫描排除缓存Mail portal，关Mail会取消由它打开的Chat，重开只绑定一次；实际Play行为回归通过。共享确认文字用源灰180、常规字重/.06细轮廓；43纯白/过重被用户否定，失败图保留，不能因功能通过声称视觉一致。联合Editor53/53、Play14/14；Native44/包结果另验。[本轮上下文](../../../../docs/development/home-profile-chat-reference.md)
+
 11/28后续用户复核明确43说明过白、按钮过粗，因此43下文仅是功能/构建阶段历史。当前44文字候选在Common共享预制中统一修为RGB180说明、同号内容和.06细白描边；实拍核心灰180、按钮255。当前MailPrefab8/8与邮件Play7/7通过，Native44尚待集成验证，不计入其他组件的测试数量。失败的117灰候选保留，不能把预先linear转换写作通用规则。[本轮现状](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)
 
 ## 邮件UI修订（11/28内容43交付）

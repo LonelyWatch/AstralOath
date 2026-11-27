@@ -14,6 +14,8 @@ namespace AstralOath.Client.Home
         internal GameText HeroesLabel => Bindings.Require<GameText>("heroesLabel");
         internal GameButton Close => Bindings.Require<GameButton>("close");
         internal GameButton Outside => Bindings.Require<GameButton>("outside");
+        public GameButton Feature(string id)=>Bindings.Require<GameButton>("feature."+id);
+        public GameButton Bag=>Bindings.Require<GameButton>("bag");
         private RectTransform Drawer => Bindings.Require<RectTransform>("drawer");
         private CanvasGroup Shade => Bindings.Require<CanvasGroup>("shade");
 
@@ -21,6 +23,10 @@ namespace AstralOath.Client.Home
         {
             _ = Heroes; _ = Summon; _ = HeroesLabel; _ = Close; _ = Outside;
             _ = Drawer; _ = Shade;
+            _ = Bag;
+            foreach(var id in HomeFeatureLabels.Main)_=Feature(id);
+            foreach(var id in HomeFeatureLabels.Drawer)_=Feature(id);
+            foreach(var id in HomeFeatureLabels.Bottom)_=Feature(id);
         }
 
         internal async Task AnimateOpeningAsync(CancellationToken token)

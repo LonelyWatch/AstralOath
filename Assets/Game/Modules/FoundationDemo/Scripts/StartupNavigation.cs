@@ -165,11 +165,13 @@ namespace AstralOath.Client.FoundationDemo
             var navigation = new StartupNavigation(owner, fade, home, directory, create, room, views, assets, scenes,
                 context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
             navigation.InstallMail(Bearer);
+            navigation.InstallSocial(Bearer, account);
             if (MailVerificationRequested) navigation.ConfigureMailVerification(Bearer);
             if (EquipmentPlayerSmoke.EnhancementRequested)
                 navigation.equipmentSmokeBearer = Bearer;
             await Task.WhenAll(navigation.pages.PrepareAsync(owner.Token),
-                navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token), navigation.PrepareMailAsync());
+                navigation.firstReads.PrepareAsync(Bearer, summon, owner.Token), navigation.PrepareMailAsync(), navigation.PrepareSocialAsync());
+            navigation.ApplyProfileHeader(navigation.profileSession.Self);
             var first = navigation.firstReads.Heroes?.heroes?.OrderByDescending(hero => hero.level).FirstOrDefault();
             if (first != null)
             {
@@ -232,6 +234,7 @@ namespace AstralOath.Client.FoundationDemo
                 home.HideArenaWhile(scope);
                 var binder = new HomeMoreMenuBinder(view, locale, OpenHeroes, OpenSummon,
                     () => windows.CloseOverlay(MoreOverlay));
+                binder.ConfigureNavigation(OpenDirectory, OpenUnavailableAsync, ct => OpenInventory(false, ct));
                 binder.Open(scope);
             });
         }

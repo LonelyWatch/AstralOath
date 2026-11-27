@@ -72,6 +72,8 @@ Luban 严格校验范围、引用和主键；脚本继续检查文案 key、非�
 
 `Config/HotUpdate/assemblies.json` 与 `Config/HotUpdate/characterlab-assemblies.json` 是两套构建配置的代码清单，不参与 Luban 生成。前者用于 Foundation 签名更新，后者用于独立 CharacterLab 离线 Windows 测试包；不能互换入口、包名或母包归档。登记和发布边界见[热更与强更构建](../docs/development/hot-update.md)。
 
+11/28 Foundation清单新增独立热更业务程序集`AstralOath.Client.PlayerProfile`、`AstralOath.Client.ChannelChat`，由既有FoundationDemo组合并在冷启动载入；Common/Core不引用新业务。新增资源地址`profile/window`、`chat/window`、`chat/header-entry`、`common/feature-notice`由ArenaUiBuilder收集。是否可复用R37母包以实际兼容检查及Player结果为准，新增模块本身不自动要求强更。[参考和当前验证](../docs/development/home-profile-chat-reference.md)
+
 主动技能可用 `burnPresentationId` 引用独立的原始演出图。共享效果行可指定满专注分支、额外技能、复活目标、持续伤害与恢复、生命保护和冷却免疫。角色实验室的音频 ID 与界面文案 key 独立校验。 [角色批次](../docs/delivery/2026-11-14-roster21-30.md)
 
 法济斯的反击动作使用 battle_skills.csv 的可选字段 `counterPresentationId`。留空时沿用原有反击演出选择。修改技能行为后同步生成战斗目录，并用两端共用的权威配表执行实际技能命令。[第 31–40 名角色与实测记录](../docs/delivery/2026-11-20-roster31-40.md)

@@ -120,10 +120,13 @@ namespace AstralOath.Client.FoundationDemo
             await windows.ShowPageAsync(async scope =>
             {
                 var bound = new HashSet<BindingMap>();
+                var chatBound = new HashSet<BindingMap>();
                 BindMailEntries(parent.gameObject, scope, bound);
+                BindChatEntries(parent.gameObject, scope, chatBound);
                 await open(scope);
                 scope.Token.ThrowIfCancellationRequested();
                 BindMailEntries(parent.gameObject, scope, bound);
+                BindChatEntries(parent.gameObject, scope, chatBound);
             });
         }
 
@@ -192,6 +195,7 @@ namespace AstralOath.Client.FoundationDemo
                 var binder = new MailWindowBinder(loaded, scope, locale, mailSession,
                     () => { if (mailClosing == null || mailClosing.IsCompleted) mailClosing = CloseMailAsync(scope); },
                     (receipt, ct) => Task.CompletedTask);
+                BindChatEntries(loaded.Root, scope, new HashSet<BindingMap>(), pageHeaders: false);
                 initialize = binder.InitializeAsync(scope.Token);
             });
             try { await initialize; }

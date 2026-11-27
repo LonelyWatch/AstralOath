@@ -1,5 +1,11 @@
 # AstralOath.Server
 
+## 玩家资料与公共频道（2026-11-28）
+
+新增 [Social模块与准确API契约](Host/Social/README.md)，资料读取复用本人/他人投影，支持免费改昵称/查重、50字问候语、双战绩可见开关、真实头像/库存代表摘要。没有权威账号Rank/榜单时明确available=false。公共聊天独立于竞技场房间，按服务器realm+频道1–9999隔离，支持文字/67目录表情、游标/长轮询/NDJSON、收藏与通知偏好；默认频道1，骑士团广播不冒充实现。
+
+候选服务启用前需专用身份依次应用新增迁移018/019/020（新增八表SELECT/INSERT/UPDATE），旧同名不清洗、不对原列加UNIQUE；Entry初始身份/首次入区与Social改名通过同一数据库名字键仲裁，登录凭据与稳定ID不变。公共频道从分配ID至提交持有独立channel数据库X锁，避免乱序提交永久漏游标，不串行其他频道。写入/幂等/审计同事务，audit不存自由文本，通知四字段缺失400。隔离MySQL实际Social32/32、完整Server677/677通过0跳过，含真实15秒Token复核断流；RED与GREEN收据在 `.artifacts/home-profile-chat-review/server-tests/`。本轮未迁移主库、替换主服务或分发；客户端视听另行验收。[计划与参考边界](../docs/plans/2026-11-28-home-profile-chat.md)。
+
 2026-11-27新增游戏内邮件，入口为 [Mail模块](Host/Mail/README.md)，唯一目录 [Config/Mail/catalog.json](../Config/Mail/catalog.json)，新迁移017（未修改已应用011–016）。按owner→mailbox→delivery顺序锁定，同一个MySQL事务提交领取、真实钱包/材料/行动力、英雄/神器/装备实例、图鉴、回执、版本outbox和审计。收件上限100；历史为最近90天与最新100条的交集，裁剪查询不删除防重账本。打开详情只记已读；服务端UTC到期与权威领取才释放收件容量。
 
 玩家 `/api/mail/catalog`、`summary`、`inbox?cursor=&limit=`、`history?cursor=&limit=`、`{deliveryId}`、POST `claim`/`claim-all` 和NDJSON `events` 均使用Arena Bearer与固定已选区服。列表默认50，最大100；稳定游标由服务端生成。单领请求 `{requestId,deliveryId}`；批领 `{requestId,deliveryIds}` 固定最多100封快照，GM始终略过。每封多附件原子；批领仅对已领/过期/GM及受控容量或安全上限失败跳过，不吞数据库异常。无可领取返回409 `no_eligible_mail`。成功回执包含claimed/skipped、合并rewards、affectedKinds、summary及表现标识；同请求重试回原回执，同ID改参数409，同封换ID也不能再发奖。

@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties:
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -41,7 +41,7 @@ Material:
     - _PerspectiveFilter: 0.875
     - _ScaleRatioA: 0.875
     - _ScaleRatioB: 1
-    - _ScaleRatioC: 0.7109375
+    - _ScaleRatioC: 0.4571875
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0

@@ -86,9 +86,10 @@ namespace AstralOath.Client.Summon
             featuredPortrait = new HeroRosterPortrait(view.Raw("upPortrait"), renderSize: 1024, positionOffset: 2000, framing: 1.04f, headFocus: .23f);
             revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), renderSize: 1024, positionOffset: 3000, framing: .90f, headFocus: .26f);
             wishPortraits = Enumerable.Range(0, 7).Select(index => new HeroRosterPortrait(view.Raw("wishHero" + index),
-                renderSize: 480, animated: false, positionOffset: 4000 + index * 1000, framing: .83f, headFocus: .30f)).ToArray();
+                renderSize: 480, animated: true, positionOffset: 4000 + index * 1000, framing: .83f, headFocus: .30f)).ToArray();
             Canvas.willRenderCanvases += featuredPortrait.Tick;
             Canvas.willRenderCanvases += revealPortrait.Tick;
+            foreach (var portrait in wishPortraits) Canvas.willRenderCanvases += portrait.Tick;
             scope.Add(() =>
             {
                 playback?.Cancel();
@@ -96,7 +97,11 @@ namespace AstralOath.Client.Summon
                 Canvas.willRenderCanvases -= revealPortrait.Tick;
                 featuredPortrait.Dispose();
                 revealPortrait.Dispose();
-                foreach (var portrait in wishPortraits) portrait.Dispose();
+                foreach (var portrait in wishPortraits)
+                {
+                    Canvas.willRenderCanvases -= portrait.Tick;
+                    portrait.Dispose();
+                }
                 player.Dispose();
                 if (!view.Root) return;
                 foreach (string list in new[] { "infoHeroColumn", "infoArtifactColumn", "wishItems", "wishSelectedHeroes", "wishSelectedArtifacts", "storageItems", "resultItems" })
@@ -320,9 +325,14 @@ namespace AstralOath.Client.Summon
                 card.SetActive(true);
                 wishPortraits[index].Show(selected);
                 var ownership = view.Text(key + "Owned");
-                ownership.text = L("wish.unowned_badge");
+                ownership.richText = true;
+                ownership.text = "<i angle=18>" + L("wish.unowned_badge") + "</i>";
                 ownership.transform.parent.gameObject.SetActive(!owned.Contains(selected.id));
-                view.Text(key + "Name").text = selected.name;
+                var name = view.Text(key + "Name");
+                name.richText = true;
+                // gacha_wish.csb uses a local ten-degree skew. Keep the main font's
+                // default italic angle intact for every other screen.
+                name.text = "<i angle=18>" + selected.name + "</i>";
                 SetImage(view.Image(key + "Role"), selected.role);
                 SetImage(view.Image(key + "Element"), selected.element);
             }
