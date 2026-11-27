@@ -28,12 +28,12 @@ namespace AstralOath.Editor
             labelMaterial.CopyPropertiesFromMaterial(font.material);
             labelMaterial.EnableKeyword("OUTLINE_ON");
             labelMaterial.SetColor("_OutlineColor",Color.white);
-            // Cocos TextOptions: outline enabled, default size1, no shadow. Convert its
-            // scaled radius to TMP's signed-distance span; keep the original regular face.
-            float labelSize=50f*.75f*SourceMessageButtonScale;
-            float outlineRadius=.75f*SourceMessageButtonScale;
-            labelMaterial.SetFloat("_OutlineWidth",Mathf.Clamp01(2*outlineRadius*font.faceInfo.pointSize/
-                (labelSize*labelMaterial.GetFloat("_GradientScale"))));
+            // Keep the original regular face. Cocos's 1px outline cannot be transferred
+            // directly to a TMP SDF span: the old .28 white contour inflated both glyphs.
+            // Calibrated against the reference and rendered candidate at the same frame height;
+            // each final Player still needs its own visual check.
+            labelMaterial.SetFloat("_FaceDilate",0);
+            labelMaterial.SetFloat("_OutlineWidth",.06f);
             EditorUtility.SetDirty(labelMaterial);
             foreach (bool cancel in new[] { false, true })
                 Directory.CreateDirectory(Path.GetDirectoryName(SourceMessageButtonPath(cancel)));
@@ -69,6 +69,7 @@ namespace AstralOath.Editor
                 label.fontSharedMaterial = labelMaterial;
                 label.text = "";
                 label.fontStyle = FontStyles.Normal;
+                label.fontWeight = FontWeight.Regular;
                 label.fontSize = 50f * .75f * SourceMessageButtonScale;
                 label.alignment = TextAlignmentOptions.Center;
                 Place(label.rectTransform, .04f, 0, .92f, 1);
@@ -79,10 +80,15 @@ namespace AstralOath.Editor
             var panel = Root("SourceConfirmation");
             panel.sizeDelta = new Vector2(1920, 585);
             var surface = PaintSourceMessageBox(panel);
+            // These are the leading question and the details in n_content/text, not
+            // the separate white n_title heading. Preserve source RGB180 at full opacity.
+            // Canvas already converts vertex color for the Linear renderer. Author
+            // the source sRGB color once; pre-linearizing it made the captured ink too dark.
+            Color promptInk=new Color32(180,180,180,255);
             var title = Text(panel, "Title", null, 29, .15f, .18f, .70f, .14f,
-                Color.white, TextAlignmentOptions.Center, true);
-            var body = Text(panel, "Body", null, 27, .15f, .35f, .70f, .29f,
-                Color.white, TextAlignmentOptions.Center, true);
+                promptInk, TextAlignmentOptions.Center, true);
+            var body = Text(panel, "Body", null, 29, .15f, .35f, .70f, .29f,
+                promptInk, TextAlignmentOptions.Center, true);
             title.richText = body.richText = false;
             GameButton AddButton(bool cancel, float x, out GameText label)
             {

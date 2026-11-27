@@ -6,6 +6,10 @@
 
 ## 默认选择与最小包
 
+当前本机Feed仍为下述43，用户已明确其文字颜色/字重视觉不通过；44正校准共享文字并集成新增主页/资料/频道需求，尚未分发。43的签名、母包复用、行为和暖缓存证据不外推为44已通过。
+
+2026-11-28邮件UI修订以产品源`824d49ee`发布签名内容 **R43**，复用R37/app0.1.27/runtime9.0.1，33个母包文件逐SHA不变，baseline `7445597f1ef645db8ef946c4964503fc`。仅显式收集现有TMP四种描边shader变体，不改AOT或GraphicsSettings；实际bundle和Player均核对。41→43及42→43清单理论变化11项113,618,231字节（108.35MiB）、复用94项；首轮实际下载未开标记未测，后续4K暖重开实测0新增Yoo业务payload，不含签名清单探测。105项总2,284,588,514字节不是本次全量下载。最终Editor43/43、Play7/7、原生1080/4K各14状态通过。5305本机Feed已切43，新入口`.artifacts/windows-r43/Play-R43.exe`，实际本体`client/AstralOath.exe`；旧41/42助手已受控转发并分别Limited实际启动43通过，原exe/签名release不改、主服务/MySQL不换。本次不强更、不重新生成相同母包zip、不部署生产。[四处对照、准确包哈希与边界](../delivery/2026-11-28-mail-ui-followup.md)
+
 2026-11-27邮件已实际兼容R37归档，以签名内容 **R41** 热更本机Windows0.1.27。33个母包文件逐SHA相同，不重新打相同exe或强更。R37→41清单理论新增/变化13项119,978,118字节；本次已有40缓存实际6项3,440,222字节，后续4K与暖重开0业务payload。105项总内容2,284,270,002字节不是本次全部下载量。原生1080p/4K各14状态及Limited普通启动助手通过，38/39/40失败历史保留；听感/部分特效和未知原流程不冒充完成。入口`.artifacts/windows-r41/Play-R41.exe`、本体`client/AstralOath.exe`，内容源5305、后端仍已验证R38路径；这是本工作区本机交付，未部署生产。[邮件包、证据与边界](../delivery/2026-11-27-mail-system.md)
 
 2026-11-27装备角标追加修复新增Common/AOT `AuthoredHeightLayout`与`BitmapNumber`，已构建Windows **0.1.27 / R37**，baseline `7445597f1ef645db8ef946c4964503fc`，runtime仍9.0.1。原生首次103项2,250,490,334字节，1080p/4K重开均0业务下载，实际数字纹理RGBA32/26×34通过；本机准入最低0.1.27。启动器`.artifacts/windows-r37/Play-R37.exe`，本体`client/AstralOath.exe`，仍是本工作区开发包。新增Mail将以本归档实际兼容检查，不能因C#业务新增就预先声称可热更。[装备阶段实际交付与剩余](../delivery/2026-11-26-equipment-followup.md)

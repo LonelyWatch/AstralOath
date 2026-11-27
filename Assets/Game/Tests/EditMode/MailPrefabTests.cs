@@ -10,6 +10,36 @@ namespace AstralOath.Client.Tests
 {
     public sealed class MailPrefabTests
     {
+        [TestCase("confirmTitle")]
+        [TestCase("confirmBody")]
+        public void ClaimAllPromptUsesSourceGrayInkRatherThanPureWhite(string key)
+        {
+            var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/Mail/Res/Prefab/MailWindow.prefab");
+            var label=prefab.GetComponent<BindingMap>().Require<GameText>(key);
+            // The leading question and details are both content in the reference, not a white dialog heading.
+            Color expected=new Color32(180,180,180,255);
+            Assert.That(label.color.r,Is.EqualTo(expected.r).Within(.003f),key+" must author source gray once; Canvas owns color-space conversion");
+            Assert.That(label.color.g,Is.EqualTo(expected.g).Within(.003f));
+            Assert.That(label.color.b,Is.EqualTo(expected.b).Within(.003f));
+            Assert.That(label.color.a,Is.EqualTo(1),"Use gray ink, not a translucent white approximation");
+            Assert.That(prefab.GetComponent<BindingMap>().Require<GameText>("confirmBody").fontSize,
+                Is.EqualTo(prefab.GetComponent<BindingMap>().Require<GameText>("confirmTitle").fontSize),
+                "The leading question and the details belong to the same source content style");
+        }
+
+        [TestCase("Styles/RoundedBlue/ConfirmButton")]
+        [TestCase("Styles/RoundedGold/CancelButton")]
+        public void SharedMessageButtonsDoNotInflateRegularGlyphsWithThickWhiteContours(string path)
+        {
+            var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Common/Res/Prefab/"+path+".prefab");
+            var label=prefab.GetComponent<BindingMap>().Require<GameText>("label");
+            Assert.That(label.fontStyle,Is.EqualTo(TMPro.FontStyles.Normal));
+            Assert.That(label.fontWeight,Is.EqualTo(TMPro.FontWeight.Regular));
+            Assert.That(label.fontSharedMaterial.GetFloat("_FaceDilate"),Is.Zero);
+            Assert.That(label.fontSharedMaterial.GetFloat("_OutlineWidth"),Is.InRange(0f,.10f),
+                "A regular face with the old .28 white contour still looks artificially bold in the actual Player");
+        }
+
         [Test]
         public void MailConfirmationReloadsSharedPrefabWithItsLabelsAndSourceAudio()
         {

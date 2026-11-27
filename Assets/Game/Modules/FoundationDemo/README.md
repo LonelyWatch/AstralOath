@@ -1,10 +1,12 @@
 # FoundationDemo
 
-11/28邮件UI修订只重存开发GM所在页的共享MailEntry顶栏，保留自发当前账号及原收发协议；无启动/AOT改动。签名42、本机入口兼容及原生验收状态另见[本轮复核](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)，不以此前内容41证明新UI已分发。
+11/28追加反馈后，43确认文字视觉被否定；44候选修正共享文字，并继续集成用户新要求的主页资料/公共频道。下述43为功能/打包阶段事实，不能代表44完成或全部视觉通过；当前候选Native/分发尚待。
 
-Foundation内容43新增显式资源地址`common/source-text-variants`，仅收集原TMP Mobile描边及两种UI裁切关键字的四组合SVC；由Yoo合入shader bundle。它不是开窗业务组件，不加载新AOT接口，不变更现有业务地址或服务协议。
+11/28邮件UI修订只重存开发GM所在页的共享MailEntry顶栏，保留自发当前账号及原收发协议；无启动/AOT改动。最终产品源824d49ee的签名内容43已本机发布，Editor43/43、Play7/7及真实IL2CPP 1080/4K帧缓冲各14状态通过，旧41/42入口Limited实际启动43通过，原主服务/MySQL不换。人工试听等未完见[本轮复核](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)，不以前内容41或42行为结果替代最终图。
 
-当前邮件本机交付为R37母包/app0.1.27的签名内容41，产品739ec080。IL2CPP 1080p/4K各14状态及完整摘要、GM当前账号自发、收领/历史/原页恢复通过；Limited用户`Play-R41.exe`实际启动原本体通过。后端仍已验证R38路径，41助手仅代理，不复制数据库。暖重开0业务payload；38/39/40失败分别保留。声音/原特效/参考不足等边界见[最终回执](../../../../docs/delivery/2026-11-27-mail-system.md)，下列旧版本记录不作为本次全部通过的证明。
+Foundation内容43新增显式资源地址`common/source-text-variants`，仅收集原TMP Mobile描边及两种UI裁切关键字的四组合SVC；由Yoo合入shader bundle。实际43包vertex/fragment各8程序且四个描边组合均保留，解决Editor正常而Player字细；它不是开窗业务组件，不加载新AOT接口，不变更现有业务地址或服务协议。
+
+邮件系统首次本机交付为R37母包/app0.1.27的签名内容41，产品739ec080。IL2CPP 1080p/4K各14状态及完整摘要、GM当前账号自发、收领/历史/原页恢复通过；Limited用户`Play-R41.exe`实际启动原本体通过。后端仍已验证R38路径，41助手仅代理，不复制数据库。暖重开0业务payload；38/39/40失败分别保留。声音/原特效/参考不足等边界见[当时回执](../../../../docs/delivery/2026-11-27-mail-system.md)，下列旧版本记录不作为本次全部通过的证明。
 
 装备开发冒烟增加本轮校验：真实穿训练头盔后左侧总生命增加80、卸下后零值隐藏；新锻造装备实际强化至+15后，GET的四条副属性必须已知且强化次数合计5。成功分别记录`ASTRAL_EQUIPMENT_BONUS_PLAYER_OK`与`ASTRAL_ENHANCEMENT_COUNTS_PLAYER_OK`。+15实际显示的三个数字Image另读取其Sprite纹理格式及26×34源尺寸，必须为RGBA32，记录`ASTRAL_ENHANCEMENT_DIGITS_PLAYER_OK`；不从源meta声明推断Player格式，也不倒推旧版本已发生BC失真。此为显式开发回环验证路径，常规登录不执行；目标Player是否已运行见[本轮回执](../../../../docs/delivery/2026-11-26-equipment-followup.md)。
 

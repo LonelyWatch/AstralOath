@@ -1,5 +1,7 @@
 # Common UI
 
+11/28用户再次否定内容43的文字视觉，44候选直接修共享SourceConfirmation：首问/说明采用源RGB180全不透明并同29号；圆角按钮保持原字体/Normal/400，白色SDF描边从.28降至.06。Canvas已转换顶点色，预先.linear的候选实拍117灰失败，直接RGB180后实拍180，与原片核心灰度一致。实际测试MailPrefab8项、Play7项及受控图片已通过，Native44/新包仍待本轮集成，不称已分发。源参数、材质字段或Editor通过不能替代实际Player的灰度/笔画检查；43shader缺失修复虽然正确，字色/字重仍需另行比对。
+
 邮件等原版大横幅确认现可嵌套 `Res/Prefab/SourceConfirmation.prefab`，统一 `surface/title/body/cancel/confirm/cancelLabel/confirmLabel` 契约。圆角蓝/金按钮分别嵌套 `Styles/RoundedBlue/ConfirmButton.prefab`、`Styles/RoundedGold/CancelButton.prefab`，保留原节点388×128、.53缩放后的切片端帽与 UiAccept/UiCancel 原声。它们与装备直边样式各自独立，业务不再直接拼底图。编辑入口 `ArenaUiBuilder.SourceMessageBox.cs`，最小导入 `Tools/Arena/ImportMessageBoxButtons.py`；调用者改嵌套文案后须记录 prefab overrides。详情与当前验收边界见[邮件UI复核](../../../docs/delivery/2026-11-28-mail-ui-followup.md)。未修改Common运行时代码，不因新增预制资产自动要求强更。
 
 普通装备强化角标用原 `_upgrade_num_orange` / `_upgrade_num_red` 九宫格纹理，`NotificationBadgeBinder.Set` 接收当前最大强化等级（普通装备 15；神器随突破增加）。+0 隐藏编号，未满橙底、满级红底，通知红点仍使用原通知纹理。复用时重置纹理、颜色和标签；同一等级的上限改变也会重画。生成入口 `ArenaUiBuilder.BuildEquipmentSlotAssets`，来源清单 `Res/Textures/equipment-enhancement-badge-source.json`。[强化方案与验收行为](../../../docs/plans/2026-11-25-equipment-enhancement.md)
@@ -12,7 +14,7 @@ Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音
 
 `SourceMessageBox`的覆盖率校正图使用Point采样：白色低alpha细线与不透明深色相邻，普通直通alpha双线性插值会在二者交界生成比原线更亮的1px接缝。11/28实际图形复拍中峰值中位约124降至60–86（随底层内容不同），PNG/GUID不改、只修此特定源图的采样，其他UI继续原过滤方式。原帧与修前/修后见本轮邮件复核。
 
-原文字描边还依赖编译后的shader变体。42实际DX11包的TMP Mobile shader虽保存OUTLINE_ON名称和正确材质，却剔除了四种对应程序组合，导致Editor正常、Player变细。`ArenaUiBuilder.SourceTextVariants.cs`生成SVC，通过Foundation显式`common/source-text-variants`收集器/PackShaderVariants进入shared shader bundle；不向只允许层级组件的BindingMap塞入资源，不修改Common/AOT或GraphicsSettings。验收检查实际shaderbundle两个stage的编译组合，再看Native图，不以SVC.Contains代替。
+原文字描边还依赖编译后的shader变体。42实际DX11包的TMP Mobile shader虽保存OUTLINE_ON名称和正确材质，却剔除了四种对应程序组合，导致Editor正常、Player变细。`ArenaUiBuilder.SourceTextVariants.cs`生成SVC，通过Foundation显式`common/source-text-variants`收集器/PackShaderVariants进入shared shader bundle；不向只允许层级组件的BindingMap塞入资源，不修改Common/AOT或GraphicsSettings。43实际bundle vertex/fragment各8程序、四种描边组合完整，1080/4K原生确认图已实际查看并恢复描边；验收检查实际shaderbundle两个stage的编译组合，再看Native图，不以SVC.Contains代替。
 
 启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭后声音可继续播放，根 Canvas 关闭时才开始淡出。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
 
