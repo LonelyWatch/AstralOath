@@ -22,4 +22,8 @@ Mail原实现直接拼局部提示，Message只设置active而无计时，未使
 
 扩展Common Edit检查曾42/43通过，一项ChoiceBinder在EditMode触发真实播放而调用DontDestroyOnLoad失败。该用例移到PlayMode进行真实生命周期验证，不修改音频运行时或静音掩盖错误；最终Edit42/42、Play7/7实际通过，XML与日志为`.artifacts/mail-ui-followup/final-{edit,play}.{xml,log}`。首次新材质生成用严格Load导致缺文件异常，改为AssetDatabase首次加载/创建后生成通过，失败日志generate5保留。
 
-签名内容42构建与Native验收仍待进行。运行源、最终截图、包身份与完整文件清单完成后补齐；当前未称已发布。
+签名42已构建/验签并临时接入5305，1080实际14状态行为通过；仍未交付最终效果。原生截图显示白描边消失，解析实际TMP Mobile shader bundle发现vertex/fragment各只有4个无OUTLINE的程序，四种所需描边组合全部缺失；材质仍为OUTLINE_ON/.28、原TTF/cmap也支持四字，不归咎fallback。真实42编译RED在`badge-reference/compiled-variants42-red.json`。另外原生有MailCountDigits缺下划线特殊字形警告，新增Editor断言实际RED，保存在`underscore-red.xml`。
+
+43候选显式收集SourceTextVariants，并在原静态数字图集补入`_`/空格，不换font/atlas/material GUID。最初尝试把SVC作为BindingMap资源引用，被通用层级契约真实拒绝；改为标准Foundation资源收集，不放宽验证、不改AOT。42release保留不可变，43实际编译组合/Native图、最终传输和入口验收完成后补齐。
+
+内容43候选最终Editor43/43、Play7/7通过（`final43-{edit,play}.{xml,log}`），图在`after-final43`。43测试通过只证明SVC保存/显式收集和客户端行为；实际包shader程序及Native描边尚待本轮最终确认。

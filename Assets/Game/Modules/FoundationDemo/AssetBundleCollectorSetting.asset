@@ -219,6 +219,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Common/Res/Materials/SourceTextVariants.shadervariants
+        CollectorGUID: 2a2dda9ea9426a243b1779a4d139200f
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackShaderVariants
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: EntryTheme
       GroupDesc: 
       AssetTags: 

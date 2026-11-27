@@ -39,6 +39,7 @@ namespace AstralOath.Client.Tests
             Assert.That(label.rectTransform.anchoredPosition, Is.EqualTo(new Vector2(-1, 2.5f) * 1.5f));
             Assert.That(label.font.atlasPopulationMode, Is.EqualTo(AtlasPopulationMode.Static));
             foreach (char digit in "0123456789") Assert.That(label.font.HasCharacter(digit), Is.True);
+            Assert.That(label.font.HasCharacter('_'),Is.True,"TMP初始化需要下划线特殊字形，即使角标不画下划线");
         }
 
         [TestCase(0, false, 31)]

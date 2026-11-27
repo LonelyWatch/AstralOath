@@ -48,6 +48,7 @@ namespace AstralOath.Editor
             (GmPath, AstralOath.Client.FoundationDemo.DevelopmentGmWindow.Address),
             (MailWindowPath, MailWindow.Address),
             (MailEntryPath, MailEntry.Address),
+            (SourceTextVariantsPath, "common/source-text-variants"),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -154,7 +155,7 @@ namespace AstralOath.Editor
                     CollectPath = path,
                     CollectorGUID = AssetDatabase.AssetPathToGUID(path),
                     AddressRuleName = nameof(HomeArenaAddressRule),
-                    PackRuleName = path == OnlineBattleScene || path == SummonPresentationBuilder.AssetPath ||
+                    PackRuleName = path == SourceTextVariantsPath ? nameof(PackShaderVariants) : path == OnlineBattleScene || path == SummonPresentationBuilder.AssetPath ||
                         path == FeaturedSkillAssetPath ? nameof(PackSeparately) : nameof(PackDirectory)
                 });
             UiAudioCollector.Refresh();

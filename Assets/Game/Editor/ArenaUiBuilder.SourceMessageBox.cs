@@ -21,6 +21,7 @@ namespace AstralOath.Editor
         // entire control width: the horizontal middle disappears and it becomes an ellipse.
         private static void BuildSourceMessageBoxControls()
         {
+            SourceTextVariants();
             const string labelMaterialPath=Common+"Materials/SourceMessageButtonLabel.mat";
             var labelMaterial=AssetDatabase.LoadAssetAtPath<Material>(labelMaterialPath);
             if(!labelMaterial){labelMaterial=new Material(font.material);AssetDatabase.CreateAsset(labelMaterial,labelMaterialPath);}

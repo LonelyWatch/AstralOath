@@ -52,7 +52,7 @@ namespace AstralOath.Editor
                 var source = Load<Font>(MailRes + "Fonts/MailCount.ttf");
                 asset = TMP_FontAsset.CreateFontAsset(source, 64, 8, GlyphRenderMode.SDFAA,
                     256, 256, AtlasPopulationMode.Dynamic, false);
-                if (!asset || !asset.TryAddCharacters("0123456789"))
+                if (!asset || !asset.TryAddCharacters("0123456789_ "))
                     throw new InvalidDataException("Unable to bake the original mail count digits.");
                 asset.name = "MailCountDigits";
                 asset.atlasPopulationMode = AtlasPopulationMode.Static;
@@ -61,6 +61,15 @@ namespace AstralOath.Editor
                 AssetDatabase.CreateAsset(asset, path);
                 AssetDatabase.AddObjectToAsset(asset.atlasTexture, asset);
                 AssetDatabase.AddObjectToAsset(asset.material, asset);
+            }
+            if(!asset.HasCharacter('_'))
+            {
+                // TMP initializes this support glyph even when no underline is displayed.
+                // Update the existing atlas without replacing its GUID or subassets.
+                asset.atlasPopulationMode=AtlasPopulationMode.Dynamic;
+                try { if(!asset.TryAddCharacters("_ "))throw new InvalidDataException("Unable to bake mail count support glyphs."); }
+                finally { asset.atlasPopulationMode=AtlasPopulationMode.Static; }
+                EditorUtility.SetDirty(asset.atlasTexture);
             }
             asset.material.EnableKeyword("OUTLINE_ON");
             asset.material.SetFloat("_FaceDilate", 0);

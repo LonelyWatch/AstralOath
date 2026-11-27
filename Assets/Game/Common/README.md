@@ -12,6 +12,8 @@ Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音
 
 `SourceMessageBox`的覆盖率校正图使用Point采样：白色低alpha细线与不透明深色相邻，普通直通alpha双线性插值会在二者交界生成比原线更亮的1px接缝。11/28实际图形复拍中峰值中位约124降至60–86（随底层内容不同），PNG/GUID不改、只修此特定源图的采样，其他UI继续原过滤方式。原帧与修前/修后见本轮邮件复核。
 
+原文字描边还依赖编译后的shader变体。42实际DX11包的TMP Mobile shader虽保存OUTLINE_ON名称和正确材质，却剔除了四种对应程序组合，导致Editor正常、Player变细。`ArenaUiBuilder.SourceTextVariants.cs`生成SVC，通过Foundation显式`common/source-text-variants`收集器/PackShaderVariants进入shared shader bundle；不向只允许层级组件的BindingMap塞入资源，不修改Common/AOT或GraphicsSettings。验收检查实际shaderbundle两个stage的编译组合，再看Native图，不以SVC.Contains代替。
+
 启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭后声音可继续播放，根 Canvas 关闭时才开始淡出。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
 
 战斗技能图标可保持按住时的原亮度。共用角色滑条在玩家输入或惯性带动卡片跨过焦点时播放原版短音，初始化、筛选和代码定位保持安静。[原声匹配及回归](../../../docs/development/roster-scroll-audio.md)

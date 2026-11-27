@@ -2,6 +2,8 @@
 
 ## 2026-11-28 邮件公共提示、角标、物品卡与确认框
 
+42 Native14状态行为通过后，实际对图发现文字仍细：直接解析发布shaderbundle证实DX11 vertex/fragment均没有OUTLINE_ON四组合，材质参数与原字库四字cmap均正确。内容43改为显式收集SourceTextVariants，保留四组合，待最终编译与Player图核对；不改AOT/Settings、不改字体来遮盖。数字字体补TMP初始化下划线支持字形，保留原GUID；真实缺字回归RED保留。
+
 重查11/22原录像和用户R41四处反馈。提示条绕过Common而无计时，回归实际RED；现嵌套GameToast并恢复2秒生命周期和原操作/受限音，错误刷新避免重复播。角标从比例拉伸/通用粗字改源位置、九宫格与Dinmed数字。物品卡改原_box_equip_0、固定内容尺寸和阴影留白、方形物品底与类型/描述；书签原日文数据已定位，简中译文边界单列。确认框用Common原源线性覆盖率底板与完整SourceConfirmation嵌套圆角按钮，修正源节点缩放丢失导致的椭圆。声音试听、目标Player和签名包状态逐项记录，不以源/Editor通过替代。[本轮验收](../delivery/2026-11-28-mail-ui-followup.md)
 
 ## 2026-11-27 R41旧服务占用导致无法启动
