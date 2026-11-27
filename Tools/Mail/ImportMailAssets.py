@@ -12,6 +12,7 @@ ART.update({'art3_1':'item_arti/icon_art3_1.png','weapon':'item/icon_eq_weapon_a
 # Cocos capInsets (x,y,width,height) observed directly from the mail CSBs.
 BORDERS={'_box_big_blue':(24,24,24,24),'_bar_24':(22,4,38,4),'_bar_23':(30,4,30,4),'_bar_2':(32,4,32,4),'renew_popup_bg_2_alpha':(0,30,0,30),'_btn_blue_r_3':(100,63,99,64),'_btn_blue_r_p_3':(100,63,99,64),'_btn_gold_r_2':(100,63,99,64),'_btn_gold_r_p_2':(100,63,99,64),'_box_popup':(44,48,48,44),'_box_r_list':(21,21,21,21),'_btn_green_r':(30,14,30,12),'_btn_green_r_p':(30,14,30,12),'_btn_white_r_p':(30,14,30,12),'_btn_blue_r_2':(30,14,30,12),'_btn_blue_r_p_2':(30,14,30,12),'_box_black_white':(30,30,30,30),'_cm_popnoti_bg':(50,0,50,0)}
 AUDIO={'MailOpen':'ui-main_hud-btn_mail_0.wav','SingleReward':'ui-gain_rare_0.wav','BundleReward':'ui-price_clear_0.wav','RewardTitle':'effect-uieff_msgbox_title_0.wav'}
+BORDERS['_notification_num']=(13,9,15,9)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def guid(p):return uuid.uuid5(uuid.NAMESPACE_URL,'AstralOath/'+p.relative_to(ROOT).as_posix()).hex
 

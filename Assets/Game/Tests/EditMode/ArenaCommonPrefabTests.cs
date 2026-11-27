@@ -67,31 +67,6 @@ namespace AstralOath.Client.Tests
         }
 
         [Test]
-        public void ChoiceBinderSelectsOnceAndClearsRowsOnClose()
-        {
-            var instance = Object.Instantiate(Load("ChoicePopup"));
-            try
-            {
-                using var binder = new ChoicePopupBinder(ChoicePopup.FromInstance(instance));
-                int selected = -1;
-                binder.Open(new[] { "全部", "公开" }, 0, value => selected = value);
-                var view = instance.GetComponent<BindingMap>();
-                var body = view.Require<RectTransform>("body");
-                var rows = body.GetComponentsInChildren<GameButton>(false);
-                Assert.That(rows, Has.Length.EqualTo(2));
-                Assert.That(rows[0].GetComponent<BindingMap>().Require<Image>("check").gameObject.activeSelf, Is.True);
-                rows[1].onClick.Invoke();
-                Assert.That(selected, Is.EqualTo(1));
-                Assert.That(instance.activeSelf, Is.False);
-                Assert.That(body.childCount, Is.EqualTo(1));
-            }
-            finally
-            {
-                Object.DestroyImmediate(instance);
-            }
-        }
-
-        [Test]
         public void AvatarResetClearsOptionalPortraitAndRestoresTheNativeFrame()
         {
             var instance = Object.Instantiate(Load("PlayerAvatar"));

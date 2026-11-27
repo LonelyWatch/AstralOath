@@ -1,0 +1,110 @@
+{
+  "referenceLayout": {
+    "source": "wnd/msgbox.csb",
+    "sha256": "0fa850fadc3d0d8ddaf4438f4bcd740f6c4c8c2d25d07bfa0c5a56390f64a3ad"
+  },
+  "sourceButtonSize": [
+    388,
+    128
+  ],
+  "sourceNodeScale": [
+    0.53,
+    0.53
+  ],
+  "canvasDesignScale": 1.5,
+  "designButtonSize": [
+    308.46,
+    101.76
+  ],
+  "pixelsPerUnitMultiplier": 1.2578616352201257,
+  "assets": [
+    {
+      "asset": "Assets/Game/Common/Res/Textures/MessageBoxButtons/_btn_blue_r_3.png",
+      "source": "img/_btn_blue_r_3.png",
+      "sourceSha256": "ec74a45cc93b0a9b0813fceb0633d9b49d17ff2f1fc54171fd772164f48ca9f6",
+      "outputSha256": "ec74a45cc93b0a9b0813fceb0633d9b49d17ff2f1fc54171fd772164f48ca9f6",
+      "size": [
+        200,
+        128
+      ],
+      "sourceCapXywh": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "unityBorderLbrt": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/MessageBoxButtons/_btn_blue_r_p_3.png",
+      "source": "img/_btn_blue_r_p_3.png",
+      "sourceSha256": "3cfccfb1ed34de80ce970698ec4979f5fa25c9df6934c75b446b7f555e0e0add",
+      "outputSha256": "3cfccfb1ed34de80ce970698ec4979f5fa25c9df6934c75b446b7f555e0e0add",
+      "size": [
+        200,
+        128
+      ],
+      "sourceCapXywh": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "unityBorderLbrt": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/MessageBoxButtons/_btn_gold_r_2.png",
+      "source": "img/_btn_gold_r_2.png",
+      "sourceSha256": "847723d45c50505b6eae321dea329e1aebc9b4dcdf8ac32867056fb414375a48",
+      "outputSha256": "847723d45c50505b6eae321dea329e1aebc9b4dcdf8ac32867056fb414375a48",
+      "size": [
+        200,
+        128
+      ],
+      "sourceCapXywh": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "unityBorderLbrt": [
+        100,
+        63,
+        99,
+        64
+      ]
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/MessageBoxButtons/_btn_gold_r_p_2.png",
+      "source": "img/_btn_gold_r_p_2.png",
+      "sourceSha256": "1162ea8b10105440656301cf213b3828a96114aeeb6b696099a06bebb4ae67d2",
+      "outputSha256": "1162ea8b10105440656301cf213b3828a96114aeeb6b696099a06bebb4ae67d2",
+      "size": [
+        200,
+        128
+      ],
+      "sourceCapXywh": [
+        100,
+        64,
+        1,
+        1
+      ],
+      "unityBorderLbrt": [
+        100,
+        63,
+        99,
+        64
+      ]
+    }
+  ]
+}

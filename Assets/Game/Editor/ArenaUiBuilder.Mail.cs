@@ -22,6 +22,7 @@ namespace AstralOath.Editor
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
+            BuildSourceMessageBoxControls();
             Directory.CreateDirectory(Path.GetDirectoryName(MailWindowPath));
             var effectShader=Load<Shader>(MailRes+"Materials/SourceAdditive.shader");var effectMaterial=new Material(effectShader);if(File.Exists(MailRes+"Materials/SourceAdditive.mat")){EditorUtility.CopySerialized(effectMaterial,Load<Material>(MailRes+"Materials/SourceAdditive.mat"));Object.DestroyImmediate(effectMaterial);}else AssetDatabase.CreateAsset(effectMaterial,MailRes+"Materials/SourceAdditive.mat");
             Save(BuildMailEntry().gameObject, MailEntryPath);
@@ -35,11 +36,7 @@ namespace AstralOath.Editor
             var root = Root("MailEntry"); root.sizeDelta = new Vector2(59,66)*1.5f;
             var button = Button(root, MailArt("cm_hud_top_btn_mail"), Color.white);
             PressSprites(button, MailArt("cm_hud_top_btn_mail"), MailArt("cm_hud_top_btn_mail_p"));
-            var counter = Area(root,"Counter",-.13f,-.10f,.60f,.49f);
-            Paint(counter,MailArt("_notification_num"),Color.white);
-            var count = Text(counter,"Count",null,28,0,0,1,1,Color.white,TextAlignmentOptions.Center);
-            count.fontStyle = FontStyles.Bold; count.enableAutoSizing=true; count.fontSizeMin=14;count.fontSizeMax=28;
-            count.text=""; counter.gameObject.SetActive(false);
+            var (counter,count)=BuildMailEntryBadge(root);
             button.FeedbackSound=GameUiFeedback.Sound.Silent;var audio=root.gameObject.AddComponent<AudioSource>();audio.playOnAwake=false;audio.clip=Load<AudioClip>(MailRes+"Sounds/MailOpen.wav");Bind(root,("button",button),("count",count),("counter",counter.gameObject),("audio",audio));return root;
         }
         [Serializable] private sealed class MailParticleFile { public MailParticleEmitter[] emitters; }
@@ -109,8 +106,8 @@ namespace AstralOath.Editor
             Label("capacity",root,.43f,.89f,.40f,.075f,26,TextAlignmentOptions.MidlineRight);
             Label("historyHint",root,.09f,.89f,.70f,.09f,22);
             var allControl=Control("claimAll",root,.835f,.89f,.145f,.075f,"_btn_green_r","claimAll");Image("allArrow",(RectTransform)allControl.transform,"cm_icon_etcdown",.73f,.24f,.18f,.52f);foreach(var pair in keys)if(pair.Key=="claimAllLabel")Place(((GameText)pair.Target).rectTransform,.02f,0,.71f,1);
-            var messageChrome=Area(root,"Message source toast",.17f,.87f,.66f,.10f);Paint(messageChrome,MailArt("_cm_popnoti_bg"),Color.white);Link("messageChrome",messageChrome.gameObject);messageChrome.gameObject.SetActive(false);
-            Label("message",root,.20f,.90f,.60f,.05f,25,TextAlignmentOptions.Center).color=new Color32(91,184,255,255);
+            var notice=CreateDirectoryToast(root);Link("messageChrome",notice);
+            Link("message",notice.GetComponent<BindingMap>().Require<GameText>("message"));
             var detail=(RectTransform)Layer("detail").transform;
             var close=Button(Area(detail,"Dismiss letter",0,0,1,1),null,Color.clear);Link("detailClose",close);
             var panel=Area(detail,"Letter",0,0,0,0);panel.anchorMin=panel.anchorMax=panel.pivot=Vector2.one*.5f;panel.sizeDelta=new Vector2(1440,765);panel.anchoredPosition=new Vector2(0,-15);Link("detailPanel",panel);
@@ -125,10 +122,12 @@ namespace AstralOath.Editor
             var bodyScroll=Scroll(panel,"Letter body",.035f,.36f,.93f,.39f);var body=Label("detailBody",bodyScroll.content,0,0,1,1,27,TextAlignmentOptions.TopLeft);body.color=new Color32(163,163,163,255);body.overflowMode=TextOverflowModes.Overflow;
             Control("detailClaim",panel,.35f,.81f,.30f,.105f,"_btn_green_r","receive");
             var confirm=(RectTransform)Layer("confirmation").transform;
-            var confirmPanel=Area(confirm,"Confirm",0,.285f,1,.43f);var confirmationSurface=Paint(confirmPanel,MailArt("renew_popup_bg_2_alpha"),Color.white,false,true);confirmationSurface.pixelsPerUnitMultiplier=1f/1.5f;
-            Label("confirmTitle",confirmPanel,.15f,.18f,.70f,.14f,29,TextAlignmentOptions.Center).text=MailLabels.Text("confirmTitle");
-            Label("confirmBody",confirmPanel,.15f,.35f,.70f,.29f,27,TextAlignmentOptions.Center).text=MailLabels.Text("confirmBody");
-            Control("confirmCancel",confirmPanel,.36f,.73f,.135f,.20f,"_btn_gold_r_2","cancel");Control("confirmOk",confirmPanel,.505f,.73f,.135f,.20f,"_btn_blue_r_3","confirm");
+            var confirmation=SourceConfirmation(confirm,"Confirm",0,.285f,1,.43f);
+            foreach(var key in new[]{"Title","Body"}){var text=confirmation.Require<GameText>(key=="Title"?"title":"body");text.text=MailLabels.Text("confirm"+key);Link("confirm"+key,text);}
+            Link("confirmCancel",confirmation.Require<GameButton>("cancel"));Link("confirmOk",confirmation.Require<GameButton>("confirm"));
+            var cancelLabel=confirmation.Require<GameText>("cancelLabel");cancelLabel.text=MailLabels.Text("cancel");Link("confirmCancelLabel",cancelLabel);
+            var confirmLabel=confirmation.Require<GameText>("confirmLabel");confirmLabel.text=MailLabels.Text("confirm");Link("confirmOkLabel",confirmLabel);
+            RecordInventoryButton(confirmation.gameObject);
             var reward=(RectTransform)Layer("reward").transform;
             var rewardButton=Button(Area(reward,"Dismiss rewards",0,0,1,1),null,Color.clear);Link("rewardClose",rewardButton);
             var rewardPanel=Area(reward,"Reward",0,.17f,1,.65f);var rewardSurface=Paint(rewardPanel,MailArt("renew_popup_bg_2_alpha"),Color.white,false,true);rewardSurface.pixelsPerUnitMultiplier=1f/1.5f;
@@ -154,18 +153,14 @@ namespace AstralOath.Editor
             var singleTile=Area(single,"Single item",.38f,.254f,.123f,.492f);Paint(singleTile,MailArt("_itembg_stuff_1"),Color.white);Image("singleIcon",singleTile,"to_stamina",0,0,1,1);Label("singleQuantity",singleTile,0,.75f,1,.30f,30,TextAlignmentOptions.BottomRight);
             Label("singleKind",single,.53f,.30f,.43f,.20f,26).color=Mist;Label("singleText",single,.53f,.47f,.43f,.28f,31);
             var tooltip=(RectTransform)Layer("tooltip").transform;
-            Link("tooltipClose",Button(Area(tooltip,"Dismiss description",0,0,1,1),null,Color.clear));
-            var tip=Area(tooltip,"Attachment description",.52f,.16f,.26f,.38f);var tipBg=Paint(tip,MailArt("_box_black_white"),new Color32(90,120,155,255),true,true);tipBg.pixelsPerUnitMultiplier=1f/1.5f;var tipInterior=Area(tip,"Tooltip source gradient viewport",.025f,.025f,.95f,.95f);tipInterior.gameObject.AddComponent<RectMask2D>();Paint(Area(tipInterior,"Tooltip source gradient",0,-.12f,1,1.24f),MailArt("renew_popup_bg_2_alpha"),new Color32(170,195,255,220));
-            Image("tooltipIcon",tip,"to_stamina",.055f,.065f,.27f,.34f);
-            Label("tooltipKind",tip,.36f,.06f,.60f,.12f,24).color=Mist;
-            Label("tooltipName",tip,.36f,.20f,.60f,.22f,28);
-            Label("tooltipBody",tip,.06f,.48f,.88f,.45f,25,TextAlignmentOptions.TopLeft).color=Mist;
+            foreach(var binding in BuildMailTooltip(tooltip))Link(binding.Key,binding.Target);
             var artRoot=Area(root,"Artwork",0,0,0,0);
             foreach(string file in Directory.GetFiles(MailRes+"Textures","*.png"))
             {string id=Path.GetFileNameWithoutExtension(file);if(id=="RewardTitleFrames"||id=="SingleRewardFrames")continue;Link("art_"+id,Picture(artRoot,id,Load<Sprite>(file),0,0,1,1));}
             artRoot.gameObject.SetActive(false);
             var audio=root.gameObject.AddComponent<AudioSource>();audio.playOnAwake=false;Link("audio",audio);
             foreach(string name in new[]{"MailOpen","SingleReward","BundleReward","RewardTitle"}) { var cue=Area(root,"Audio "+name,0,0,0,0).gameObject.AddComponent<AudioSource>();cue.playOnAwake=false;cue.clip=Load<AudioClip>(MailRes+"Sounds/"+name+".wav");Link("sound_"+name,cue); }
+            foreach(string name in new[]{"UiConfirm","UiBlocked"}) { var cue=Area(root,"Audio "+name,0,0,0,0).gameObject.AddComponent<AudioSource>();cue.playOnAwake=false;cue.clip=Load<AudioClip>(Common+"Sounds/"+name+".wav");Link("sound_"+name,cue); }
             foreach(string key in new[]{"detail","confirmation","reward","tooltip","singleReward"})
             {foreach(var pair in keys)if(pair.Key==key)((GameObject)pair.Target).SetActive(false);}
             Bind(root,keys.ToArray());return root;

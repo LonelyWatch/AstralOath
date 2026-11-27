@@ -23,6 +23,7 @@ namespace AstralOath.Client.Mail
         private readonly Func<MailClaimReceipt,CancellationToken,Task> reconcile;
         private readonly WindowCoordinator windows;
         private readonly MailRewardEffects effects;
+        private readonly GameToastBinder notice;
         private readonly UiAudioPlayback.OneShots sounds = new UiAudioPlayback.OneShots();
         private readonly List<GameObject> rows = new List<GameObject>();
         private BindingScope rowScope;
@@ -44,14 +45,17 @@ namespace AstralOath.Client.Mail
         {
             this.view=view;this.scope=scope;this.session=session;this.close=close;this.reconcile=reconcile;
             effects=new MailRewardEffects(view.Map);
+            notice=new GameToastBinder(GameToast.ForInstance(Get<GameObject>("messageChrome")));
+            scope.Add(notice.Hide);
             windows=new WindowCoordinator(scope.Token);windows.ShowPageAsync(_=>Task.CompletedTask).GetAwaiter().GetResult();
             scope.Add(windows.Dispose);
             Hook(scope,"back",()=>{if(!windows.TryCloseOverlay())close();});
             Hook(scope,"inbox",()=>{if(!history)return;history=false;CancelDetailRead();windows.TryCloseOverlay();_ = LoadAsync();});
             Hook(scope,"history",()=>{if(history)return;history=true;CancelDetailRead();windows.TryCloseOverlay();_ = LoadAsync();});
-            Get<GameButton>("back").FeedbackSound=GameUiFeedback.Sound.PageBack;Get<GameButton>("confirmOk").FeedbackSound=GameUiFeedback.Sound.Confirm;Get<GameButton>("confirmCancel").FeedbackSound=GameUiFeedback.Sound.Cancel;
+            Get<GameButton>("back").FeedbackSound=GameUiFeedback.Sound.PageBack;
             Hook(scope,"claimAll",OpenConfirmation);
             Hook(scope,"sort",()=>Message("sortHint"));
+            Get<GameButton>("sort").FeedbackSound=GameUiFeedback.Sound.Silent;
             session.Changed+=OnSummary;session.Invalidated+=OnInvalidated;
             scope.Add(()=>{session.Changed-=OnSummary;session.Invalidated-=OnInvalidated;CancelDetailRead();rowScope?.Dispose();foreach(var row in rows)if(row)Object.Destroy(row);rows.Clear();Get<GameObject>("singleReward").SetActive(false);effects.Stop();sounds.FadeOut();Canvas.willRenderCanvases-=Animate;});
             Canvas.willRenderCanvases+=Animate;
@@ -61,10 +65,11 @@ namespace AstralOath.Client.Mail
         public async Task InitializeAsync(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();view.Show();Play("MailOpen");
+            bool retryFailed=false;
             try { await session.RetryPendingAsync(scope.Token); }
             catch (OperationCanceledException) when (Closed) { return; }
-            catch (Exception error) when (IsRequestError(error)) { if (!Closed) Message("retry"); }
-            await LoadAsync();
+            catch (Exception error) when (IsRequestError(error)) { retryFailed=true; }
+            if(await LoadAsync()&&retryFailed&&!Closed)Message("retry");
         }
         private void Hook(BindingScope owner,string key,UnityAction action)
         {
@@ -83,20 +88,21 @@ namespace AstralOath.Client.Mail
         {
             if(!Closed && !submitting && !loading)_=LoadAsync();
         }
-        private async Task LoadAsync()
+        private async Task<bool> LoadAsync()
         {
-            if(Closed)return;
+            if(Closed)return false;
             int generation=++loadGeneration;bool requestedHistory=history;loading=true;
             Message("loading");Get<ScrollRect>("scroll").verticalNormalizedPosition=1;
             try
             {
                 var page=await session.ListAsync(requestedHistory,null,scope.Token);
-                if(Closed || generation!=loadGeneration)return;
-                if(page==null) {loading=false;_ = LoadAsync();return;}
+                if(Closed || generation!=loadGeneration)return false;
+                if(page==null) {loading=false;_ = LoadAsync();return false;}
                 letters=page.items ?? Array.Empty<MailLetter>();RenderRows();Message(null);
+                return true;
             }
-            catch(OperationCanceledException) when(Closed) { }
-            catch(Exception error) when(IsRequestError(error)) { if(!Closed && generation==loadGeneration)Message("error"); }
+            catch(OperationCanceledException) when(Closed) { return false; }
+            catch(Exception error) when(IsRequestError(error)) { if(!Closed && generation==loadGeneration)Message("error");return false; }
             finally {if(generation==loadGeneration)loading=false;}
         }
         private void RenderRows()
@@ -118,7 +124,7 @@ namespace AstralOath.Client.Mail
                 SetArt(map.Require<Image>("icon"),attachment?.icon);
                 map.Require<GameText>("quantity").text=attachment!=null&&attachment.quantity>1?Number(attachment.quantity):"";
                 var inspect=map.Require<GameButton>("attachment");inspect.gameObject.SetActive(attachment!=null);
-                UnityAction inspectAction=()=>OpenTooltip(attachment,null);inspect.onClick.AddListener(inspectAction);
+                UnityAction inspectAction=()=>OpenTooltip(attachment,null,(RectTransform)inspect.transform);inspect.onClick.AddListener(inspectAction);
                 rowScope.Add(()=>{if(inspect)inspect.onClick.RemoveListener(inspectAction);});
                 var action=map.Require<GameButton>("action");var caption=map.Require<GameText>("actionLabel");
                 bool isGm=letter.letterType=="gm";
@@ -160,7 +166,7 @@ namespace AstralOath.Client.Mail
                     // A nested coordinator retains the letter while its attachment tooltip is open.
                     var children=new WindowCoordinator(layer.Token);children.ShowPageAsync(_=>Task.CompletedTask).GetAwaiter().GetResult();layer.Add(children.Dispose);
                     Hook(layer,"detailClose",()=>windows.CloseOverlay("detail"));
-                    Hook(layer,"detailAttachment",()=>OpenTooltip(attachment,children));
+                    Hook(layer,"detailAttachment",()=>OpenTooltip(attachment,children,(RectTransform)Get<GameButton>("detailAttachment").transform));
                     var button=Get<GameButton>("detailClaim");bool active=current.outcome=="active";
                     button.interactable=true;((Image)button.targetGraphic).color=active?Color.white:new Color(1,1,1,.3f);
                     Hook(layer,"detailClaim",()=>{if(submitting)return;if(current.outcome!="active"){Message("already");return;}_=ClaimAsync(current);});
@@ -170,20 +176,37 @@ namespace AstralOath.Client.Mail
             catch(Exception error) when(IsRequestError(error)) {if(!Closed&&opening==detailGeneration)Message("error");}
             finally {if(detailRead==request){detailRead=null;request.Dispose();}}
         }
-        private void OpenTooltip(MailReward attachment,WindowCoordinator parent)
+        private void OpenTooltip(MailReward attachment,WindowCoordinator parent,RectTransform origin)
         {
             if(Closed||attachment==null)return;
             var coordinator=parent??windows;
             coordinator.ShowOverlay("tooltip",layer=>
             {
                 ShowLayer(layer,"tooltip");SetArt(Get<Image>("tooltipIcon"),attachment.icon);
-                Get<GameText>("tooltipKind").text=L(attachment.kind=="bundle"?"bundle":attachment.kind=="energy"?"energy":"attachment");
+                Get<RectTransform>("tooltipPanel").sizeDelta=new Vector2(480,MailItemDescriptions.DesignHeight(attachment));
+                Get<GameText>("tooltipKind").text=MailItemDescriptions.GetKind(attachment);
                 Get<GameText>("tooltipName").text=attachment.name;
-                Get<GameText>("tooltipBody").text=attachment.children!=null&&attachment.children.Length>0
-                    ?string.Join("\n",attachment.children.Select(r=>r.name+" ×"+Number(r.quantity)))
-                    :(attachment.name??"")+(attachment.quantity>1?" ×"+Number(attachment.quantity):"");
+                Get<GameText>("tooltipBody").text=MailItemDescriptions.GetDescription(attachment);
+                bool energy=attachment.kind=="energy"&&session.Summary?.energy!=null;
+                Get<GameObject>("tooltipOwnedFrame").SetActive(energy);
+                Get<GameText>("tooltipOwned").text=energy?MailItemDescriptions.Owned(session.Summary.energy.balance):"";
+                PositionTooltip(origin);
                 Hook(layer,"tooltipClose",()=>coordinator.CloseOverlay("tooltip"));
             });
+        }
+        private void PositionTooltip(RectTransform origin)
+        {
+            var card=Get<RectTransform>("tooltipPanel");var area=(RectTransform)card.parent;
+            Canvas.ForceUpdateCanvases();
+            var bounds=RectTransformUtility.CalculateRelativeRectTransformBounds(area,origin);
+            var available=area.rect;const float margin=18;
+            float scale=Mathf.Min(1,(available.width-2*margin)/card.sizeDelta.x,(available.height-2*margin)/card.sizeDelta.y);
+            card.localScale=Vector3.one*Mathf.Max(.01f,scale);
+            var size=card.sizeDelta*card.localScale.x;
+            card.anchorMin=card.anchorMax=area.pivot;card.pivot=Vector2.one;
+            card.anchoredPosition=new Vector2(
+                Mathf.Clamp(bounds.min.x-24,available.xMin+size.x+margin,available.xMax-margin),
+                Mathf.Clamp(bounds.max.y+24,available.yMin+size.y+margin,available.yMax-margin));
         }
         private void OpenConfirmation()
         {
@@ -221,7 +244,7 @@ namespace AstralOath.Client.Mail
             catch(OperationCanceledException) when(Closed) { }
             catch(MailRequestException error)
             {
-                if(!Closed){Message(error.Code=="no_eligible_mail"?"noEligible":error.Code);await LoadAsync();Message(error.Code=="no_eligible_mail"?"noEligible":error.Code);}
+                if(!Closed&&await LoadAsync()&&!Closed)Message(error.Code=="no_eligible_mail"?"noEligible":error.Code);
             }
             catch(Exception error) when(IsRequestError(error)) {if(!Closed)Message("retry");}
             finally {submitting=false;if(!Closed){OnSummary(session.Summary);foreach(var row in rows)if(row){var b=row.GetComponent<BindingMap>().Require<GameButton>("action");b.interactable=!history||letters.FirstOrDefault(m=>row.name=="Mail "+m.deliveryId)?.letterType=="gm";}}}
@@ -298,8 +321,10 @@ namespace AstralOath.Client.Mail
         }
         private void Message(string key)
         {
-            var chrome=Get<GameObject>("messageChrome");chrome.SetActive(key!=null);var label=Get<GameText>("message");label.text=key==null?"":L(key);
-            if(key!=null){chrome.transform.SetAsLastSibling();label.transform.SetAsLastSibling();}
+            if(key==null){notice.Hide();return;}
+            Get<GameObject>("messageChrome").transform.SetAsLastSibling();
+            notice.Show(L(key),scope);
+            if(key!="loading")Play(key=="sortHint"?"UiConfirm":"UiBlocked");
         }
         private void SetArt(Image image,string id)
         {

@@ -22,6 +22,7 @@
 - 普通装备：[背包、单槽配戴和管理页的原版画面与时间点](development/equipment-ui-reference.md)、[原作六部位、强化与套装规则及项目实施方案](plans/2026-11-21-equipment-system.md)、[11 月 25 日普通强化、角标与验收方案](plans/2026-11-25-equipment-enhancement.md)。
 - 当前本机试玩：[Windows0.1.27 / R41邮件、GM与运营工具](delivery/2026-11-27-mail-system.md)，复用R37母包并实际1080p/4K验证，包含原版/修改前后、视听、文件位置与未完成内容；[R36普通强化历史](delivery/2026-11-26-equipment-enhancement.md)单独保留。
 - R41打不开：[旧R36占端口、启动助手安全切换与实际恢复验证](delivery/2026-11-27-r41-startup-fix.md)。只更新本机助手，原游戏本体和签名内容不变。
+- 邮件UI后续：[提示自动消失、角标、固定物品卡与共享确认框复核](delivery/2026-11-28-mail-ui-followup.md)。原版/修前/修后及原生和签名版本状态分别记录。
 - 后续装备修订：[角标/按钮、累计次数、CP横板、固定卡与英雄总增加](delivery/2026-11-26-equipment-followup.md)。本轮源码/Editor通过与签名包/原生/分发状态分别记录。
 - 角色战斗力：[历史公式、官方变更、原包系数与复算边界](development/combat-power.md)。CP 与装备分数、实际战斗强弱分别讨论。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。

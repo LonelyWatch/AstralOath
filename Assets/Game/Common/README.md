@@ -1,5 +1,7 @@
 # Common UI
 
+邮件等原版大横幅确认现可嵌套 `Res/Prefab/SourceConfirmation.prefab`，统一 `surface/title/body/cancel/confirm/cancelLabel/confirmLabel` 契约。圆角蓝/金按钮分别嵌套 `Styles/RoundedBlue/ConfirmButton.prefab`、`Styles/RoundedGold/CancelButton.prefab`，保留原节点388×128、.53缩放后的切片端帽与 UiAccept/UiCancel 原声。它们与装备直边样式各自独立，业务不再直接拼底图。编辑入口 `ArenaUiBuilder.SourceMessageBox.cs`，最小导入 `Tools/Arena/ImportMessageBoxButtons.py`；调用者改嵌套文案后须记录 prefab overrides。详情与当前验收边界见[邮件UI复核](../../../docs/delivery/2026-11-28-mail-ui-followup.md)。未修改Common运行时代码，不因新增预制资产自动要求强更。
+
 普通装备强化角标用原 `_upgrade_num_orange` / `_upgrade_num_red` 九宫格纹理，`NotificationBadgeBinder.Set` 接收当前最大强化等级（普通装备 15；神器随突破增加）。+0 隐藏编号，未满橙底、满级红底，通知红点仍使用原通知纹理。复用时重置纹理、颜色和标签；同一等级的上限改变也会重画。生成入口 `ArenaUiBuilder.BuildEquipmentSlotAssets`，来源清单 `Res/Textures/equipment-enhancement-badge-source.json`。[强化方案与验收行为](../../../docs/plans/2026-11-25-equipment-enhancement.md)
 
 `UiAudioPlayback` 为每次二维播放创建独立音源，保留该次播放的音量、音高与混音通道。音源所属的 Canvas、控件或演出关闭时，正在播放的声音按非缩放时间淡出 0.20 秒。重叠点击和新页面的音量各自独立，音效自然结束时立即回收。已接入通用点击、召唤演出与获得语音、战斗合击提示、灵魂燃烧、竞技场门和胜败结算。角色普通日语语音的 `VoiceService` 和 FMOD 原生事件另有各自的播放生命周期。[本轮证据与限制](../../../docs/delivery/2026-11-23-equipment-battle-review.md)
@@ -7,6 +9,8 @@
 Foundation 通过 `ui/audio/<小写文件名，不含扩展名>` 收集这些音效。每次播放由 Bootstrap 对已安装且与传入对象相同的 AudioClip 单独持有 YooAsset 句柄，播放结束释放。窗口立即释放自身的预制和配置句柄，音效尾声继续引用所需音频包。启动内置音和运行时生成的 AudioClip 使用直接引用。该改动涉及 Common 与 Bootstrap AOT。
 
 原版横幅确认窗使用 `SourceMessageBox` 或 `SourceWideConfirmation`，分别按 `msgbox.csb` 与 `equip_change_popup.csb` 的源图、切片及透明度绘制；源渐变上不再叠实色内层。两张用途副本保留不同 cap，亮白细边单独换算线性覆盖率，来源和哈希见 `Res/Textures/arena-common-source.json`。`SoftModalSurface` 继续供开发 GM 自有弹窗使用，不作为原版业务弹窗的替代。[原素材复核](../../../docs/development/ui-material-reference.md)
+
+`SourceMessageBox`的覆盖率校正图使用Point采样：白色低alpha细线与不透明深色相邻，普通直通alpha双线性插值会在二者交界生成比原线更亮的1px接缝。11/28实际图形复拍中峰值中位约124降至60–86（随底层内容不同），PNG/GUID不改、只修此特定源图的采样，其他UI继续原过滤方式。原帧与修前/修后见本轮邮件复核。
 
 启动 Canvas 保存页面与装备反馈的原音引用，按钮关闭后声音可继续播放，根 Canvas 关闭时才开始淡出。背包和英雄页的返回声与竞技场取消声可分别配置。[原声音轨与验收](../../../docs/delivery/2026-11-22-inventory-audio.md)
 

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "source": "img/_box_equip_0.png",
+  "sourceSha256": "ff9522fc341bd43fb08960cead5c15b32bc93d7857ab2187449e9a806de7239f",
+  "outputSha256": "ff9522fc341bd43fb08960cead5c15b32bc93d7857ab2187449e9a806de7239f",
+  "output": "Assets/Game/Modules/Mail/Res/Textures/MailItemTooltipFrame.png",
+  "layout": "wnd/item_tooltip_simple.csb",
+  "layoutSha256": "f1068baf2a55a2b17a9df56e37e70991c54271d0679f8715925263812b9467ed",
+  "sourceNode": "Layer/frame",
+  "sourceCapXywh": [
+    65,
+    60,
+    310,
+    266
+  ],
+  "sourceSize": [
+    440,
+    386
+  ],
+  "unityBorder": [
+    65,
+    60,
+    65,
+    60
+  ],
+  "notes": "Byte-identical original PNG; fixed-size item cards, no synthetic gradient or enlarged white centre frame. Original capture 2026-11-22 at 25/96/99 seconds; original app version and playback speed unconfirmed."
+}

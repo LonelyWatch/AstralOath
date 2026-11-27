@@ -71,6 +71,21 @@ namespace AstralOath.Client.Tests
             public void Dispose(){scope.Dispose();Object.Destroy(root);}
         }
         [UnityTest,Timeout(60000)]
+        public IEnumerator SortNoticeExpiresAndReplacementGetsItsOwnLifetime()
+        {
+            var api=new Replies();using var session=new MailSession(api);using var page=new Page(session);
+            yield return new WaitForSecondsRealtime(.25f);
+            page.Click("sort");Assert.That(page.Get<GameObject>("messageChrome").activeSelf,Is.True);
+            yield return Frame(page.root,"notice-visible",1920,1080);
+            yield return new WaitForSecondsRealtime(1.2f);
+            page.Click("sort");
+            yield return new WaitForSecondsRealtime(1.1f);
+            Assert.That(page.Get<GameObject>("messageChrome").activeSelf,Is.True,"新消息不能被上一条的计时器关闭");
+            yield return new WaitForSecondsRealtime(1.1f);
+            Assert.That(page.Get<GameObject>("messageChrome").activeSelf,Is.False,"提示应在两秒后自动关闭");
+            yield return Frame(page.root,"notice-dismissed",1920,1080);
+        }
+        [UnityTest,Timeout(60000)]
         public IEnumerator LateDetailReplyCannotReopenAfterSwitchingTabs()
         {
             var api=new Replies{readGate=new TaskCompletionSource<MailLetter>()};using var session=new MailSession(api);using var page=new Page(session);
@@ -84,6 +99,7 @@ namespace AstralOath.Client.Tests
             yield return new WaitForSecondsRealtime(.25f);yield return Frame(page.root,"inbox5",1920,1080);
             yield return Frame(page.root,"inbox5-4k",3840,2160);yield return Frame(page.root,"inbox5-narrow",1280,960);
             page.Click("claimAll");Assert.That(page.Get<GameObject>("confirmation").activeSelf,Is.True);yield return new WaitForSecondsRealtime(.20f);yield return Frame(page.root,"bulk-confirm",1920,1080);
+            yield return Frame(page.root,"bulk-confirm-4k",3840,2160);yield return Frame(page.root,"bulk-confirm-narrow",1280,960);
             page.Click("confirmCancel");Assert.That(api.writes,Is.Zero);Assert.That(session.Summary.effectiveCount,Is.EqualTo(5));
             page.Click("claimAll");page.Click("confirmOk");yield return null;Assert.That(session.Summary.effectiveCount,Is.EqualTo(2));Assert.That(api.writes,Is.EqualTo(1));
             yield return new WaitForSecondsRealtime(.20f);yield return Frame(page.root,"bulk-result2",1920,1080);page.Click("rewardClose");

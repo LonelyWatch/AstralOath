@@ -4,11 +4,32 @@ using AstralOath.Client.Common;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AstralOath.Client.Tests
 {
     public sealed class MailPrefabTests
     {
+        [Test]
+        public void MailConfirmationReloadsSharedPrefabWithItsLabelsAndSourceAudio()
+        {
+            var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/Mail/Res/Prefab/MailWindow.prefab");
+            var map=prefab.GetComponent<BindingMap>();
+            var panel=map.Require<GameButton>("confirmOk").transform.parent.GetComponent<BindingMap>();
+            Assert.That(AssetDatabase.GetAssetPath(PrefabUtility.GetCorrespondingObjectFromOriginalSource(panel)),
+                Is.EqualTo("Assets/Game/Common/Res/Prefab/SourceConfirmation.prefab"));
+            Assert.That(map.Require<GameText>("confirmTitle").text,Is.EqualTo(Mail.MailLabels.Text("confirmTitle")));
+            Assert.That(map.Require<GameText>("confirmBody").text,Is.EqualTo(Mail.MailLabels.Text("confirmBody")));
+            Assert.That(map.Require<GameText>("confirmCancelLabel").text,Is.EqualTo("取消"));
+            Assert.That(map.Require<GameText>("confirmOkLabel").text,Is.EqualTo("确认"));
+            var confirm=map.Require<GameButton>("confirmOk");
+            Assert.That(confirm.GetComponent<AudioSource>().clip.name,Is.EqualTo("UiAccept"));
+            Assert.That(confirm.FeedbackSound,Is.EqualTo(GameUiFeedback.Sound.Normal));
+            Assert.That(((Image)confirm.targetGraphic).pixelsPerUnitMultiplier,Is.GreaterThan(1),"源缩放后的端帽不能占满按钮宽度");
+            var toast=map.Require<GameObject>("messageChrome");
+            Assert.That(AssetDatabase.GetAssetPath(PrefabUtility.GetCorrespondingObjectFromOriginalSource(toast)),
+                Is.EqualTo("Assets/Game/Common/Res/Prefab/GameToast.prefab"));
+        }
         [Test]
         public void RewardAtlasAndCanonicalSourceSlicesSurviveActualImport()
         {

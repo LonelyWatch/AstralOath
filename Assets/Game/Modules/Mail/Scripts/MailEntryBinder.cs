@@ -36,8 +36,16 @@ namespace AstralOath.Client.Mail
             {
                 if (!map || scope.Token.IsCancellationRequested) return;
                 int count = summary?.effectiveCount ?? 0;
-                map.Require<GameObject>("counter").SetActive(count > 0);
-                map.Require<GameText>("count").text = count > 0 ? count.ToString(CultureInfo.InvariantCulture) : "";
+                var counter = map.Require<GameObject>("counter");
+                var label = map.Require<GameText>("count");
+                label.text = count > 0 ? count.ToString(CultureInfo.InvariantCulture) : "";
+                // The source keeps circular end caps: one digit is round, extra digits extend only the centre.
+                // Share the header's design scale instead of deriving a squashed plate from relative anchors.
+                var rect = (RectTransform)counter.transform;
+                float scale = rect.sizeDelta.y / 30f;
+                float width = count < 10 ? 31 : count < 100 ? 38 : 48;
+                rect.sizeDelta = new Vector2(width * scale, 30 * scale);
+                counter.SetActive(count > 0);
             }
             session.Changed += Update;
             scope.Add(() => session.Changed -= Update);

@@ -1,5 +1,7 @@
 # Home
 
+11/28邮件角标修订后，主页、更多菜单及装备入口的顶栏继续嵌套同一个MailEntry预制，随生成器重建保存；布局与业务无新增分支。角标原字体/切片与本轮实际验证见[邮件UI复核](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)。
+
 邮件领取后的外部快照校准使用 `HeroInventoryBinder.RefreshExternalAsync`，原页面及 Binder 保持存活；英雄、装备、神器重新读取权威库存，不调用 `OpenAsync` 或重建页面。已有页签、搜索、筛选、排序、实例选择及合法滚动位置保留，原实例不再存在时由原列表逻辑选择可用项。已失效的装备确认报价取消并提示冲突，候选选择仍保留，下一次提交使用新版本。取消沿用调用方与当前页面的联合作用域，旧页面读回不能更新新开页面。
 
 本项受控实测：`MailExternalStateTests` 三项 3 红→3 绿、无跳过，分别覆盖英雄、装备及神器在新增一件库存后的状态；证据 `.artifacts/mail-system-review/tests/external-state-valid-position-red.xml` 与 `external-state-green.xml`。首轮英雄输入超出网格滚动上限，已改用合法 40 单位重验；不将 UGUI 正常夹界记录为产品缺陷。此处为 Editor 数据/状态验收，不替代服务端、原生包或音效验收。

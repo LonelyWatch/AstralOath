@@ -1,0 +1,22 @@
+{
+  "sourceFont": "font/Dinmed Regular.TTF",
+  "sourceFontSha256": "42a0c62aec4d3ce639f88c841986f96cf006a023a5e1c7d3335c0df807e8d3bf",
+  "outputFont": "Assets/Game/Modules/Mail/Res/Fonts/MailCount.ttf",
+  "outputFontSha256": "42a0c62aec4d3ce639f88c841986f96cf006a023a5e1c7d3335c0df807e8d3bf",
+  "sourceLayout": "wnd/top_bar.csb",
+  "sourceLayoutSha256": "a2651949d1acba21455357b07b0a8beb29855b4b145302680dea74b9429eff98",
+  "sourceImage": "img/_notification_num.png",
+  "sourceImageSha256": "a6bd8aa4d6022f8aceede6a9938de0a5d9888a5697c998bf7a8eae875035f9fc",
+  "capInsets": [
+    13,
+    9,
+    3,
+    12
+  ],
+  "unityBorder": [
+    13,
+    9,
+    15,
+    9
+  ]
+}
