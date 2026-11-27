@@ -1,0 +1,130 @@
+# Runtime boot deliberately has no historical Host/MySQL PID or QA endpoint requirements.
+# The one-shot Switch uses Cutover.Common's separate, unchanged strict baseline guards.
+function Get-R38RuntimeContext {
+    $repository=(Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
+    . (Join-Path $repository 'Tools/ProjectEnvironment.ps1')
+    Initialize-AstralProjectEnvironment -RepositoryRoot $repository|Out-Null
+    $manifestPath=Join-Path $PSScriptRoot 'cutover-manifest.json'
+    $manifest=Get-Content -LiteralPath $manifestPath -Raw|ConvertFrom-Json
+    $directory=(Resolve-Path (Join-Path $PSScriptRoot 'host')).Path
+    $mysqlExecutable=(Resolve-Path (Join-Path $repository '.tools/mysql/mysql-8.4.13-winx64/bin/mysqld.exe')).Path
+    $mysqlData=(Resolve-Path (Join-Path $repository '.artifacts/mysql/data')).Path
+    if($manifest.schemaVersion -ne 1 -or $manifest.release -ne 'R38' -or
+        $manifest.endpoint -ne '127.0.0.4' -or $manifest.port -ne 7728 -or
+        $manifest.minimumAppVersion -ne '0.1.27' -or $manifest.database -ne 'astraloath_test' -or
+        $manifest.newHost.directory -ne $directory -or
+        $manifest.newHost.sha256 -ne 'ECC7FF4BADBEF6F6B85D28E637F5E044755420E489727C1CCA56DF97C97F614A' -or
+        $manifest.mysql.address -ne '127.0.0.1' -or $manifest.mysql.port -ne 3307 -or
+        $manifest.mysql.executable -ne $mysqlExecutable -or $manifest.mysql.dataDirectory -ne $mysqlData){
+        throw 'R38_RUNTIME_MANIFEST_TARGET_MISMATCH'
+    }
+    $settings=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'development.json') -Raw|ConvertFrom-Json
+    if($settings.Server.BindAddress -ne '127.0.0.4' -or $settings.Server.Port -ne 7728 -or $settings.Server.UseHttps -or
+        $settings.Entry.MinimumAppVersion -ne '0.1.27' -or !$settings.Entry.AllowLegacyArenaGuests -or
+        !$settings.Inventory.DevelopmentEquipmentGrant -or !$settings.BattlePreview.Enabled){throw 'R38_RUNTIME_SETTINGS_CHANGED'}
+    [pscustomobject]@{
+        Repository=$repository;Manifest=$manifest;ManifestPath=$manifestPath
+        Output=Join-Path $repository '.artifacts/mail-system-review/server/r38-cutover'
+        Dotnet=(Resolve-Path (Join-Path $repository '.tools/dotnet/dotnet.exe')).Path
+        MySql=(Resolve-Path (Join-Path $repository '.tools/mysql/mysql-8.4.13-winx64/bin/mysql.exe')).Path
+        AdminFile=(Resolve-Path (Join-Path $repository '.artifacts/mysql/admin.cnf')).Path
+        RuntimeFile=(Resolve-Path (Join-Path $repository '.artifacts/mysql/test-connection.txt')).Path
+        NewDirectory=$directory;NewDll=Join-Path $directory 'AstralOath.Server.dll'
+        MySqlExecutable=$mysqlExecutable;MySqlDataDirectory=$mysqlData
+    }
+}
+
+function Assert-R38RuntimeMySql($Context,[int]$Owner) {
+    if(!$Owner -or (Find-R38Listener '127.0.0.1' 3307) -ne $Owner){throw 'R38_RUNTIME_MYSQL_LISTENER_CHANGED'}
+    $process=Get-Process -Id $Owner -ErrorAction Stop
+    $ticks=[string]$process.StartTime.ToUniversalTime().Ticks
+    # Use the current observed PID and ticks, never the migration-day PID stored in the manifest.
+    $null=Assert-R38Process $Owner $ticks $Context.MySqlExecutable
+    $directory=@(Invoke-R38Sql $Context 'SELECT @@datadir;')
+    if($directory.Count -ne 1 -or [IO.Path]::GetFullPath($directory[0]).TrimEnd('\','/') -ine
+        [IO.Path]::GetFullPath($Context.MySqlDataDirectory).TrimEnd('\','/')){throw 'R38_RUNTIME_MYSQL_DATA_DIRECTORY_MISMATCH'}
+    if((Find-R38Listener '127.0.0.1' 3307) -ne $Owner -or
+        [string](Get-Process -Id $Owner).StartTime.ToUniversalTime().Ticks -ne $ticks){throw 'R38_RUNTIME_MYSQL_CHANGED_DURING_VERIFICATION'}
+    [pscustomobject]@{pid=$Owner;startTicks=$ticks;executable=$Context.MySqlExecutable;dataDirectory=$Context.MySqlDataDirectory}
+}
+
+# Isolate only the native start boundary; tests stub this without creating any process.
+function Start-R38RuntimeMySqlProcess($Context,[string]$Arguments,[string]$Base,[string]$BootId) {
+    if(-not ('AstralDetachedHostLauncher' -as [type])){Add-Type -Path (Join-Path $PSScriptRoot 'DetachedHostLauncher.cs')}
+    [AstralDetachedHostLauncher]::Start($Context.MySqlExecutable,$Arguments,$Base,
+        (Join-Path $Context.Output "results/$BootId-mysql.log"),(Join-Path $Context.Output "results/$BootId-mysql.stderr"))
+}
+
+function Ensure-R38RuntimeMySql($Context,[switch]$VerifyOnly,[string]$BootId) {
+    $owner=Find-R38Listener '127.0.0.1' 3307
+    if($owner){return Assert-R38RuntimeMySql $Context $owner}
+    if($VerifyOnly){throw 'R38_RUNTIME_VERIFY_ONLY_MYSQL_NOT_RUNNING'}
+    # Only reopen the existing database. There is intentionally no --initialize, alternate schema,
+    # data restore, recursive move/delete, or MySQL stop/kill path in this startup helper.
+    foreach($entry in @('auto.cnf','mysql.ibd','astraloath_test')){
+        if(!(Test-Path -LiteralPath (Join-Path $Context.MySqlDataDirectory $entry))){throw 'R38_RUNTIME_EXISTING_DATABASE_FILES_MISSING_NO_INITIALIZATION'}
+    }
+    if((Get-Item -LiteralPath $Context.MySqlDataDirectory).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'R38_RUNTIME_MYSQL_DATA_REPARSE_REFUSED'}
+    . (Join-Path $Context.Repository 'Tools/LocalPlay/MySqlProcessIdentity.ps1')
+    New-Item -ItemType Directory -Force (Join-Path $Context.Output 'results')|Out-Null
+    $base=(Resolve-Path (Join-Path $Context.Repository '.tools/mysql/mysql-8.4.13-winx64')).Path
+    $errorLog=Join-Path $Context.Output "results/$BootId-mysql-engine.err"
+    $arguments='--no-defaults --basedir="'+$base+'" --datadir="'+$Context.MySqlDataDirectory+'" --bind-address=127.0.0.1 --port=3307 --mysqlx=OFF --log-error="'+$errorLog+'"'
+    $childId=Start-R38RuntimeMySqlProcess $Context $arguments $base $BootId
+    $child=Get-Process -Id $childId -ErrorAction Stop
+    $startedMonitor=Get-AstralMySqlProcessSnapshot -Owner $childId
+    $initialIdentity=Assert-AstralMySqlProcessIdentity -StartedMonitor $startedMonitor -Monitor $startedMonitor `
+        -Listener $startedMonitor -ListenerOwner $childId -ExpectedExecutable $Context.MySqlExecutable -ExpectedArguments $arguments
+    $started=[ordered]@{pid=$childId;startTicks=$startedMonitor.startTicks;executable=$Context.MySqlExecutable;
+        monitor=$initialIdentity.monitor;server=$null;ownership='awaiting-listener';
+        dataDirectory=$Context.MySqlDataDirectory;address='127.0.0.1';port=3307;existingDataOnly=$true;mysqlStopped=$false}
+    Write-R38Result (Join-Path $Context.Output "results/$BootId-mysql-child.json") $started
+    $until=[datetime]::UtcNow.AddSeconds(25)
+    while($true){
+        $child.Refresh()
+        if($child.HasExited){throw 'R38_RUNTIME_STARTED_MYSQL_EXITED_INSPECT_LOGS'}
+        $listener=Find-R38Listener '127.0.0.1' 3307
+        if($listener){
+            # MySQL 8.4 Windows normally uses a monitor parent plus a listening server child.
+            # Only this exact launched monitor or its verified direct child may own the port.
+            # Do not accept another same-executable process, weaken SQL/datadir checks, or kill it.
+            $monitor=Get-AstralMySqlProcessSnapshot -Owner $childId
+            $server=if($listener -eq $childId){$monitor}else{Get-AstralMySqlProcessSnapshot -Owner $listener}
+            $identity=Assert-AstralMySqlProcessIdentity -StartedMonitor $startedMonitor -Monitor $monitor `
+                -Listener $server -ListenerOwner $listener -ExpectedExecutable $Context.MySqlExecutable -ExpectedArguments $arguments
+            $mysql=$null
+            try{$mysql=Assert-R38RuntimeMySql $Context $listener}
+            catch{if([datetime]::UtcNow -ge $until){throw}}
+            if($mysql){
+                # SQL verification above checks listener/start ticks before and after @@datadir.
+                # Recheck the parent relationship as well before recording the accepted pair.
+                $monitorAfter=Get-AstralMySqlProcessSnapshot -Owner $childId
+                $serverAfter=if($listener -eq $childId){$monitorAfter}else{Get-AstralMySqlProcessSnapshot -Owner $listener}
+                $identityAfter=Assert-AstralMySqlProcessIdentity -StartedMonitor $startedMonitor -Monitor $monitorAfter `
+                    -Listener $serverAfter -ListenerOwner $listener -ExpectedExecutable $Context.MySqlExecutable -ExpectedArguments $arguments
+                if($identity.server.startTicks -ne $identityAfter.server.startTicks -or
+                    $mysql.startTicks -ne $identityAfter.server.startTicks -or
+                    (Find-R38Listener '127.0.0.1' 3307) -ne $listener){throw 'R38_RUNTIME_MYSQL_CHANGED_DURING_VERIFICATION'}
+                $started.monitor=$identityAfter.monitor;$started.server=$identityAfter.server;$started.ownership=$identityAfter.ownership
+                Write-R38Result (Join-Path $Context.Output "results/$BootId-mysql-ready.json") $started
+                $mysql|Add-Member -NotePropertyName monitor -NotePropertyValue $identityAfter.monitor
+                $mysql|Add-Member -NotePropertyName server -NotePropertyValue $identityAfter.server
+                $mysql|Add-Member -NotePropertyName ownership -NotePropertyValue $identityAfter.ownership
+                return $mysql
+            }
+        }
+        if([datetime]::UtcNow -ge $until){throw 'R38_RUNTIME_MYSQL_START_TIMEOUT_NOT_STOPPED'}
+        Start-Sleep -Milliseconds 200
+    }
+}
+
+function Read-R38RuntimeActivation($Context) {
+    $path=Join-Path $PSScriptRoot 'activation.json'
+    if(!(Test-Path -LiteralPath $path)){throw 'R38_NOT_ACTIVATED_USE_EXPLICIT_CUTOVER_FIRST'}
+    $activation=Get-Content -LiteralPath $path -Raw|ConvertFrom-Json
+    if($activation.status -ne 'active' -or $activation.release -ne 'R38' -or
+        $activation.hostSha256 -ne $Context.Manifest.newHost.sha256 -or $activation.minimumAppVersion -ne '0.1.27'){
+        throw 'R38_ACTIVATION_NOT_SUCCESSFUL_NO_START'
+    }
+    return $activation
+}

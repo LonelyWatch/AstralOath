@@ -1,0 +1,52 @@
+# Installed into .artifacts/windows-r41/local/start-play.ps1; PSScriptRoot is that directory.
+$ErrorActionPreference='Stop'
+$package=(Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+$repo=(Resolve-Path (Join-Path $package '../..')).Path
+$state=Join-Path $package 'state'
+New-Item -ItemType Directory -Force $state|Out-Null
+$id=[Guid]::NewGuid().ToString('N')
+$stage='检查本机包'
+$result=[ordered]@{runId=$id;startedUtc=[DateTime]::UtcNow.ToString('o');release=41;status='starting'}
+[IO.File]::WriteAllText((Join-Path $state 'startup-last-error.txt'),'',[Text.UTF8Encoding]::new($false))
+try {
+    . (Join-Path $repo 'Tools/ProjectEnvironment.ps1')
+    Initialize-AstralProjectEnvironment -RepositoryRoot $repo|Out-Null
+    $env:NO_PROXY="127.0.0.1,127.0.0.4,localhost,$env:NO_PROXY"
+    $manifest=Join-Path $package 'release/manifest.json'
+    $signature=Join-Path $package 'release/manifest.sig'
+    $client=Join-Path $package 'client/AstralOath.exe'
+    if(!(Test-Path -LiteralPath $manifest) -or !(Test-Path -LiteralPath $signature) -or !(Test-Path -LiteralPath $client)){
+        throw 'R41_PACKAGE_FILES_MISSING'
+    }
+    if((Get-Content -LiteralPath $manifest -Raw|ConvertFrom-Json).version -ne 41 -or (Get-Item -LiteralPath $signature).Length -eq 0){
+        throw 'R41_SIGNED_CONTENT_NOT_READY'
+    }
+    $stage='准备游戏服务'
+    & (Join-Path $repo 'Tools/LocalPlay/Ensure-R41GameService.ps1')
+    $stage='准备资源服务并启动游戏'
+    & (Join-Path $repo '.tools/character-assets/Scripts/python.exe') -I -B -X utf8 (Join-Path $PSScriptRoot 'release_feed.py') play 2> (Join-Path $state "startup-$id-resource.stderr.log")
+    if($LASTEXITCODE -ne 0){throw 'R41_RESOURCE_OR_PLAYER_START_FAILED'}
+    $result.status='player_started'
+    $result.playerPid=[int][IO.File]::ReadAllText((Join-Path $package 'normal-launch-pid.txt'))
+    $result.completedUtc=[DateTime]::UtcNow.ToString('o')
+    $result|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $state "startup-$id.json") -Encoding UTF8
+    $result|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $state 'startup-last.json') -Encoding UTF8
+    exit 0
+} catch {
+    # Only stable project codes and stage names are surfaced. Never copy connection strings,
+    # bearer tokens, exception bodies or a private configuration into a player-facing dialog.
+    $code=[regex]::Match($_.Exception.Message,'(?:R(?:38|41)|ASTRAL_MYSQL)_[A-Z0-9_]+').Value
+    if(!$code){$code='R41_LOCAL_STARTUP_FAILED'}
+    $friendly=if($code -match 'MYSQL|DATABASE|MIGRATION'){
+        '本机数据库未能就绪；没有初始化或覆盖现有数据。'
+    }elseif($code -match 'UNKNOWN|UNOWNED|MISMATCH|REUSED|IDENTITY'){
+        '本机游戏端口被不匹配的服务占用，已停止本次启动；没有结束未知进程。'
+    }else{'本机试玩未能启动。'}
+    $result.status='failed';$result.stage=$stage;$result.errorCode=$code
+    $result.exceptionType=$_.Exception.GetType().FullName;$result.completedUtc=[DateTime]::UtcNow.ToString('o')
+    $result|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $state "startup-$id.json") -Encoding UTF8
+    $result|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $state 'startup-last.json') -Encoding UTF8
+    [IO.File]::WriteAllText((Join-Path $state 'startup-last-error.txt'),"$friendly`n阶段：$stage`n原因代码：$code",[Text.UTF8Encoding]::new($false))
+    Write-Output "$stage / $code"
+    exit 1
+}
