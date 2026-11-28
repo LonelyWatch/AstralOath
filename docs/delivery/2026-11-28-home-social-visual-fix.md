@@ -1,5 +1,7 @@
 # 主页、提示、聊天与单项奖励复核（R45）
 
+追加打包阶段：产品源`f3a826419045a2867c8bba6091177f0abf5a9aba`已完成HotWindows45并签名验签，包回执`.artifacts/windows-r45/package-prepared.json`。实际升级先保存3,053,649字节SQL备份，原失败回执`windows-r44/server/results/f45ae35b6b77471ca36c7d5c976301af.json`保留。经另一个隔离库真实导入0退出，定位为`Tools/LocalPlay/R44Service.Common.ps1:Invoke-R44CapturedChild`泄露`VoidTaskResult`造成误判；只读SELECT1与512KiB真实子进程均复现。修后3/3，原安全24/24；不修改SQL转义或用户数据，不重打已签名客户端。新增回归位于`Tools/LocalPlay/Test-CapturedProcess.ps1`，RED/GREEN在`.artifacts/localplay-captured-process/e318440bffc442c7828459dbd989dece`与`2d6e7d5ed8c4416ea46ad7ce761a7a4d`。当前旧Host已停、MySQL身份保持、主库未迁移；继续恢复演练和升级的结果另行追加。
+
 本轮修正用户对44对照图录提出的五处具体反馈，另收束原已列明的公告箭头比例问题。当前已完成源码、21/21 EditMode、32/32 PlayMode、1080/4K各15张受控Editor图和源时钟奖励连续帧；**签名包、激活、Native与实际下载尚待执行**，不以这些图片替代Player。正式结果将追加于本记录；源/包/文件的最终身份见`.artifacts/home-social-visual-fix/final-receipt.json`。
 
 ## 原版、修改前与修改后

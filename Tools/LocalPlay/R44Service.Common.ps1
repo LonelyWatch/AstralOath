@@ -181,7 +181,9 @@ function Invoke-R44CapturedChild([string]$Executable,[string[]]$Arguments,[strin
             try{
                 $copy=$inputStream.CopyToAsync($process.StandardInput.BaseStream)
                 if(!$copy.Wait($TimeoutSeconds*1000)){$process.Kill();$null=$process.WaitForExit(10000);throw 'R44_OWNED_INPUT_TIMEOUT_NO_MAIN_RESTORE_OR_MYSQL_STOP'}
-                $copy.GetAwaiter().GetResult()
+                # PowerShell exposes CopyToAsync's runtime Task<VoidTaskResult>;
+                # discard its completion value so callers receive only the exit code.
+                $null=$copy.GetAwaiter().GetResult()
             }finally{$inputStream.Dispose();$process.StandardInput.Close()}
         }
         $remaining=[Math]::Max(0,($TimeoutSeconds*1000)-[int]$clock.ElapsedMilliseconds)
