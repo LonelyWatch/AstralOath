@@ -41,7 +41,7 @@ namespace AstralOath.Client.ChannelChat
             scope.Add(()=>{opened=false;++generation;CancelOpening();windows.Dispose();session.Changed-=Changed;session.PreferencesChanged-=PreferencesChanged;session.Faulted-=Faulted;session.Uncertain-=Uncertain;Canvas.willRenderCanvases-=Layout;foreach(var row in rows.Values)row.Dispose();rows.Clear();foreach(var cell in stickerCells)if(cell)Object.Destroy(cell);stickerCells.Clear();toast.Hide();view.Hide();});
             session.Changed+=Changed;session.PreferencesChanged+=PreferencesChanged;session.Faulted+=Faulted;session.Uncertain+=Uncertain;Canvas.willRenderCanvases+=Layout;
             foreach(string key in new[]{"close","favoriteClose","channelClose","settingsClose","stickerClose"})Get<GameButton>(key).KeepBrightnessOnPress=true;
-            Hook(scope,"close",()=>{if(!windows.TryCloseOverlay())close?.Invoke();});Hook(scope,"publicTab",()=>windows.TryCloseOverlay());Hook(scope,"guildTab",()=>unavailable?.Invoke("chat.guild"));Hook(scope,"notice",()=>unavailable?.Invoke("chat.notices"));
+            Hook(scope,"close",()=>{if(!TryCloseOverlay())close?.Invoke();});Hook(scope,"publicTab",()=>TryCloseOverlay());Hook(scope,"guildTab",()=>unavailable?.Invoke("chat.guild"));Hook(scope,"notice",()=>unavailable?.Invoke("chat.notices"));
             Hook(scope,"favorite",()=>Editor("favorite"));Hook(scope,"channelSwitch",()=>Editor("channel"));Hook(scope,"opacity",()=>_=Background());Hook(scope,"settings",()=>Settings());Hook(scope,"emoji",()=>Picker());Hook(scope,"send",()=>_=Send(null));
             foreach(string key in new[]{"favoriteLayer","channelLayer","settingsLayer","stickerLayer"})Get<GameObject>(key).SetActive(false);
             foreach(var image in Get<BindingMap>("stickerArt").GetComponentsInChildren<Image>(true))if(image.sprite)stickers.Add(image.sprite.name,image.sprite);
@@ -106,6 +106,17 @@ namespace AstralOath.Client.ChannelChat
             finally{rendering=false;}
             ReadVisible();
         }
+        private bool TryCloseOverlay()
+        {
+            bool closed=windows.TryCloseOverlay();
+            if(closed)ReadVisible();
+            return closed;
+        }
+        private void CloseOverlay(string key)
+        {
+            windows.CloseOverlay(key);
+            ReadVisible();
+        }
         private void ReadVisible()
         {
             if(Closed||!opened||loading||!view.Root.activeInHierarchy||session.Messages.Count==0||Get<ScrollRect>("messages").verticalNormalizedPosition>.08f)return;
@@ -139,7 +150,7 @@ namespace AstralOath.Client.ChannelChat
             sending=true;Render();try
             {
                 var result=session.HasPendingSend?await session.RetryPendingSendAsync(scope.Token):await session.SendAsync(new ChatSendRequest{kind=stickerId==null?"text":"sticker",text=stickerId==null?value:null,stickerId=stickerId},scope.Token);
-                if(Closed)return;if(result!=null&&result.kind=="text"&&Get<TMP_InputField>("input").text.Trim()==result.text)Get<TMP_InputField>("input").SetTextWithoutNotify("");windows.CloseOverlay("stickers");
+                if(Closed)return;if(result!=null&&result.kind=="text"&&Get<TMP_InputField>("input").text.Trim()==result.text)Get<TMP_InputField>("input").SetTextWithoutNotify("");CloseOverlay("stickers");
             }
             catch(OperationCanceledException)when(Closed){}
             catch(Exception error)when(RequestError(error)){if(!Closed)Error(error);}
@@ -151,15 +162,15 @@ namespace AstralOath.Client.ChannelChat
             {
                 var layer=Get<GameObject>(kind+"Layer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});
                 Get<TMP_InputField>(kind+"Input").SetTextWithoutNotify("");RenderPreferences();
-                Hook(owner,kind+"Close",()=>windows.CloseOverlay(kind));Hook(owner,kind+"CloseCaption",()=>windows.CloseOverlay(kind));Hook(owner,kind+"Save",()=>_=SaveChannel(kind,owner));
+                Hook(owner,kind+"Close",()=>CloseOverlay(kind));Hook(owner,kind+"CloseCaption",()=>CloseOverlay(kind));Hook(owner,kind+"Save",()=>_=SaveChannel(kind,owner));
             });
         }
         private async Task SaveChannel(string kind,BindingScope owner)
         {
             if(saving||loading||Closed)return;if(!int.TryParse(Get<TMP_InputField>(kind+"Input").text,NumberStyles.None,CultureInfo.InvariantCulture,out int channel)||channel<1||channel>9999){Notice("invalidChannel");return;}
             if(kind=="favorite")
-            {if(await Preference(new ChatPreferenceRequest{kind="favorite",favoriteChannel=channel},owner.Token)&&!Closed&&!owner.Token.IsCancellationRequested)windows.CloseOverlay(kind);return;}
-            loading=true;Render();try{await session.JoinAsync(channel,owner.Token);if(!Closed&&!owner.Token.IsCancellationRequested)windows.CloseOverlay(kind);}
+            {if(await Preference(new ChatPreferenceRequest{kind="favorite",favoriteChannel=channel},owner.Token)&&!Closed&&!owner.Token.IsCancellationRequested)CloseOverlay(kind);return;}
+            loading=true;Render();try{await session.JoinAsync(channel,owner.Token);if(!Closed&&!owner.Token.IsCancellationRequested)CloseOverlay(kind);}
             catch(OperationCanceledException)when(owner.Token.IsCancellationRequested){}
             catch(Exception error)when(RequestError(error)){if(!Closed&&!owner.Token.IsCancellationRequested)Error(error);}
             finally{if(!Closed){loading=false;Render();}}
@@ -168,7 +179,7 @@ namespace AstralOath.Client.ChannelChat
         {
             if(Closed||loading)return;windows.ShowOverlay("settings",owner=>
             {
-                var layer=Get<GameObject>("settingsLayer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});Hook(owner,"settingsClose",()=>windows.CloseOverlay("settings"));
+                var layer=Get<GameObject>("settingsLayer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});Hook(owner,"settingsClose",()=>CloseOverlay("settings"));
                 Hook(owner,"notificationTab",()=>SettingsTab(false));Hook(owner,"keywordTab",()=>SettingsTab(true));Hook(owner,"guildNotificationTab",()=>unavailable?.Invoke("chat.guildNotifications"));
                 Hook(owner,"allNotifications",()=>_=ToggleNotifications(-1,owner));for(int i=0;i<4;i++){int index=i;Hook(owner,"notification"+i,()=>_=ToggleNotifications(index,owner));}
                 for(int i=0;i<5;i++)
@@ -223,7 +234,7 @@ namespace AstralOath.Client.ChannelChat
         }
         private void Picker()
         {
-            if(Closed||loading||sending)return;windows.ShowOverlay("stickers",owner=>{var layer=Get<GameObject>("stickerLayer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});Hook(owner,"stickerClose",()=>windows.CloseOverlay("stickers"));Layout();});
+            if(Closed||loading||sending)return;windows.ShowOverlay("stickers",owner=>{var layer=Get<GameObject>("stickerLayer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});Hook(owner,"stickerClose",()=>CloseOverlay("stickers"));Layout();});
         }
         private void Layout()
         {

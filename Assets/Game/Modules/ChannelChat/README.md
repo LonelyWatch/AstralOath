@@ -67,3 +67,5 @@ Binder接受登录Owner持有的Session、`Action close`、`Action<string> unava
 根统一Editor已实际53/53通过，其中包括3项Chat预制合同（`client-tests/integrated-editor.xml`）；这不替代Native视听。另新增仅由Root QA入口调用的 `FoundationDemo/Scripts/SocialChatSettingsSmoke.cs`：Development显式参数及127.0.0.6双重准入，同账号独立API核收藏123（不切当前1）、UI频道2→1、完整通知四值、关键词离焦/去空槽、透明开关和最终持久化；追加17–25共9个实际Player状态截图，capture路径/不覆盖规则由Root传入回调控制。未触碰普通账号、未删除历史，当前尚未在Native执行。
 
 最新已实际查看统一Play回执 `client-tests/integrated-play.xml`：总14/14通过，其中ChannelChatBinder五项5/5，包含慢回执禁输入/保留草稿、两次IO后重开同原意图重试解锁。该回执只证明当前UI绑定行为；另行Session游标审阅/新回归、最终Native25状态、源图逐图比对和音频试听仍由根继续验收，不能据此称完整还原。
+
+关闭设置/收藏/频道/表情层后立即重新判断ReadVisible；避免层内到达的新消息已在底部显示而角标停留。该项来自本轮静态集成审查，按用户要求未跑回归。
