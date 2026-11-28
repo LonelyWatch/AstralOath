@@ -1,5 +1,7 @@
 # BattleScene
 
+竞技场固定关卡沿用在线手动战斗与试战的非对称编队显示。以 `tower-` 开头的试战房间使用账号会话访问 `/api/arena/tower/battles/{id}`；普通练习与双人房继续使用各自入口。客户端只控制己方技能、目标并消费服务端事件。
+
 技能横幅两行分别显示角色名及实际技能名，按 TMP 可见字形核对第二行。轮到无法行动的角色时，表现层切到该角色头像，显示「无法行动」，停留约 1 秒后再推进后续事件。该等待只影响客户端表现时钟。胜败中心提示及闲置平局标签从结算绑定与生成器移除。[公开眩晕录像、项目取舍和回归](../../../../docs/delivery/2026-11-23-equipment-battle-review.md)
 
 召唤页可以用 `BattleSkillPreviewDefinition` 在独立镜头中播放指定技能。会话用同一演出图、人物骨骼和目标受击逻辑，将 CUTIN 停顿计入播放时长。窗口按实际显示像素取图；两份预览各自管理时钟和资源。预览只运行表现。[国服召唤分镜与 4K 对照](../../../../docs/delivery/2026-11-22-client-image-quality.md)
@@ -257,3 +259,5 @@ Luban 快照 `Configs/battle-catalog.json` 含四十名英雄、成长模板、�
 回到原房时恢复选禁轮询，记录本次登录刚刚退出的选禁 ID，新局 ID 可正常进入。若当前房间返回 204，大厅接管画面，用户可以在列表返回前退出大厅。
 
 `BattleReturnReopensTheOriginalRoomWithoutLeavingOrReplayingDraft` 通过主页入口和真实房间 Binder 验证零次主动离房、旧局跳过和新局可进入。`ReturnedDirectoryCanCloseWhileTheRoomListIsStillLoading` 验证返回已完成时大厅可退。
+
+公共频道的只读英雄资料复用了 BattleInspectionContent 的技能说明、灵魂燃烧、强化条目及关联效果查询。Editor 使用战斗配表与同一查询生成 HomeHeroArt，不在运行时依赖 BattleScene。

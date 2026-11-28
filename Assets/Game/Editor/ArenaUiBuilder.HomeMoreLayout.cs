@@ -33,7 +33,7 @@ namespace AstralOath.Editor
         private static void QuietUnavailableHomeButtons(List<(string Key,Object Target)> keys)
         {
             foreach(var row in keys)
-                if(row.Key.StartsWith("feature.")&&row.Key!="feature.arena"&&row.Key!="feature.summon"&&row.Key!="feature.heroes"&&row.Target is GameButton button)
+                if(row.Key.StartsWith("feature.")&&row.Key!="feature.arena"&&row.Key!="feature.summon"&&row.Key!="feature.shop"&&row.Key!="feature.heroes"&&row.Target is GameButton button)
                     button.FeedbackSound=GameUiFeedback.Sound.Silent;
         }
 

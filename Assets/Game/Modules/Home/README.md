@@ -125,3 +125,9 @@ Windows 独立客户端默认可缩放窗口，主页右上角按钮或 F11 切�
 
 既有Home程序集的SummonPresentation承载原星星CFX与粒子；新增内部SummonParticles复用BattleHudParticles的源参数解释逻辑，暂不改Common/AOT或原BattleScene。普通五星英雄/神器为金星，五星光暗英雄为紫星且十连优先级更高。源文件及边界见Summon README；本轮用户免回归，未录制/观看修改后的连续过程。
 11/28召唤获得小人改用原character_small末态绝对位置与模型shadow地面锚点；尺寸仅初始化一次，idle时不再按动态mesh.bounds重推脚底。仅SummonPresentation调用受影响，不改共用HeroRosterPortrait默认取景。按用户要求免回归。
+
+## 通用英雄和神器资料
+
+Home/Res/Prefab/HeroInformation.prefab 和 ArtifactInformation.prefab 是只读模板信息窗。通过目录地址 home/hero-information 和 home/artifact-information 加载。查看其他玩家抽到的物品时无需拥有实例，窗口也不修改查看者的库存。HeroInformationBinder 使用 HomeHeroArt（成长、属性、职业、星座、立绘和技能），技能图标可打开已有技能说明预制。ArtifactInformationBinder 使用 ArtifactArtCatalog 的模板基础属性、技能及全幅原画，提供技能与背景故事页签。当前英雄窗复用原银色双层框及 cm_preview_bg；神器窗复用原九宫格渐变框、装饰、职业徽章、等级数字和五段突破槽。英雄位置型刻印及每级数值来自 Configs/hero-catalog-imprints.json，覆盖全部 70 名实装角色。刻印查阅与技能强化说明均复用通用信息弹板。神器大图提供旋转、拖动、缩放和双击复位；输入手势与背包内神器画廊共用 ArtifactPaintingGestures。来源及当前核验状态见 docs/development/channel-summon-announcements.md。
+
+神器技能说明按配置模板标明可成长的数值，并以金色显示。固定触发条件、回合数和背景故事保留正文颜色。跨品质的成长数值由共享 ArtifactTemplate 格式化。

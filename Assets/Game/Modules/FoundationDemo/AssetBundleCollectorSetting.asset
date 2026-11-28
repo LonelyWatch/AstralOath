@@ -251,6 +251,22 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Modules/Home/Res/Prefab/HeroInformation.prefab
+        CollectorGUID: 86bc14884c5d8e244aa210d2b1e2b2a5
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Home/Res/Prefab/ArtifactInformation.prefab
+        CollectorGUID: 779280de96672134a95dffb6623c601e
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
       - CollectPath: Assets/Game/Modules/ChannelChat/Res/Prefab/ChannelChat.prefab
         CollectorGUID: 27762c722f0cc8546a19a9b0d64b5d4d
         CollectorType: 0
@@ -261,6 +277,22 @@ MonoBehaviour:
         UserData: 
       - CollectPath: Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab
         CollectorGUID: 36e09b2923e79b74f9c9aeb6d60f9e4d
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Arena/Res/Prefab/ArenaTower.prefab
+        CollectorGUID: e7a4b48d6480c3c47a0507fe8a080d43
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/Game/Modules/Shop/Res/Prefab/ShopWindow.prefab
+        CollectorGUID: 5fcc087e0d53e1842bff1d2bada012fd
         CollectorType: 0
         AddressRuleName: HomeArenaAddressRule
         PackRuleName: PackDirectory

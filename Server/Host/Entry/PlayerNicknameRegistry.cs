@@ -58,9 +58,9 @@ internal static class PlayerNicknameRegistry
         q.Parameters.AddWithValue("@r",EntryEndpoints.RealmId);q.Parameters.AddWithValue("@name",name);q.Parameters.AddWithValue("@p",player);
         return Convert.ToInt32(await q.ExecuteScalarAsync(ct))==0;
     }
-    internal static async Task<bool> InRealm(MySqlConnection db,string player,CancellationToken ct)
+    internal static async Task<bool> InRealm(MySqlConnection db,string player,CancellationToken ct, MySqlTransaction? tx = null)
     {
-        using var q=new MySqlCommand("SELECT EXISTS(SELECT 1 FROM arena_player p WHERE p.id=@p AND "+RealmMembershipPredicate+")",db);
+        using var q=new MySqlCommand("SELECT EXISTS(SELECT 1 FROM arena_player p WHERE p.id=@p AND "+RealmMembershipPredicate+")",db,tx);
         q.Parameters.AddWithValue("@p",player);q.Parameters.AddWithValue("@r",EntryEndpoints.RealmId);
         return Convert.ToInt32(await q.ExecuteScalarAsync(ct))!=0;
     }

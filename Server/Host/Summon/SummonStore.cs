@@ -2,6 +2,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text.Json;
 using AstralOath.Server.Entry;
+using AstralOath.Server.Social;
 using AstralOath.Server.Foundation;
 using AstralOath.Server.Inventory;
 using MySqlConnector;
@@ -9,7 +10,7 @@ using MySqlConnector;
 namespace AstralOath.Server.Summon;
 
 internal sealed partial class SummonStore(string? connectionString, SummonCatalog catalog, bool development,
-    TimeProvider clock)
+    TimeProvider clock, ChannelChatEvents? chatEvents = null)
 {
     private const string Covenant = "covenant";
     private const string Free = "free";
@@ -48,7 +49,7 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
     internal async Task<SummonReceipt> Draw(string player, SummonRequest input, CancellationToken ct)
     {
         string requestId = ParsedId(input.RequestId);
-        if (input.Count is not (1 or 10) || string.IsNullOrWhiteSpace(input.BannerId) || input.BannerId.Length > 48 ||
+        if (input.Channel is < 1 or > 9999 || input.Count is not (1 or 10) || string.IsNullOrWhiteSpace(input.BannerId) || input.BannerId.Length > 48 ||
             input.Revision?.Length != 64 || input.Payment is not (Free or Bookmarks or EpicBookmarks))
             throw new EntryProblem(400, "invalid_summon_request");
 
@@ -60,7 +61,7 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         if (existing != null)
         {
             if (existing.BannerId != input.BannerId || existing.Revision != input.Revision ||
-                existing.Count != input.Count || existing.Payment != input.Payment)
+                existing.Count != input.Count || existing.Payment != input.Payment || existing.Channel != input.Channel)
                 throw new EntryProblem(409, "summon_request_conflict");
             await transaction.CommitAsync(ct);
             return existing;
@@ -123,7 +124,7 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
             await pity.ExecuteNonQueryAsync(ct);
         }
         var receipt = new SummonReceipt(requestId, banner.Id, revision, input.Count, input.Payment!, cost, wallet.Bookmarks,
-            wallet.EpicBookmarks, IsFree(wallet, period), misses, drawn.ToArray());
+            wallet.EpicBookmarks, IsFree(wallet, period), misses, drawn.ToArray(), input.Channel);
         using (var save = Command(connection, transaction, player, """
             INSERT INTO summon_receipt (player_id, realm_id, request_id, receipt)
             VALUES (@player, @realm, @request, @receipt);
@@ -141,7 +142,22 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         }
         await OperationAudit.Record(connection, transaction, "summon.draw.committed", "arena_player", player,
             "summon_request", requestId, null, ct);
+        var broadcasts = drawn.Where(result => result.Stars == 5).ToArray();
+        if (broadcasts.Length != 0)
+        {
+            await ChannelChatStore.LockOrder(connection, transaction, input.Channel, ct);
+            foreach (var reward in broadcasts)
+            {
+                using var announcement = Command(connection, transaction, player, """
+                    INSERT INTO channel_chat_message(realm_id,channel_no,player_id,kind,template_id,created_at)
+                    VALUES (@realm,@channel,@player,@kind,@template,UTC_TIMESTAMP(6))
+                    """, ("@channel", input.Channel), ("@kind", reward.Kind == "hero" ? "hero5" : "artifact5"),
+                    ("@template", reward.TemplateId));
+                await announcement.ExecuteNonQueryAsync(ct);
+            }
+        }
         await transaction.CommitAsync(ct);
+        if (broadcasts.Length != 0) chatEvents?.Publish(EntryEndpoints.RealmId, input.Channel);
         return receipt;
     }
 
@@ -287,7 +303,7 @@ internal sealed partial class SummonStore(string? connectionString, SummonCatalo
         int GoldTransmitStones, int GalaxyBookmarks, int MysticMedals, int Skystones);
 }
 
-internal sealed record SummonRequest(string? RequestId, string? BannerId, string? Revision, int Count, string? Payment);
+internal sealed record SummonRequest(string? RequestId, string? BannerId, string? Revision, int Count, string? Payment, int Channel = 1);
 internal sealed record SummonBannerView(string Id, string Revision, string Title, string? FeaturedHero, string? FeaturedArtifact,
     int Misses, int GuaranteeAfter, int BookmarksPerDraw, bool DailyFree, bool AllowsEpicBookmarks, bool UsesWishlist,
     DateTimeOffset? StartUtc, DateTimeOffset? EndUtc, SummonEntry[] Entries);
@@ -296,6 +312,6 @@ internal sealed record SummonState(DateTimeOffset ServerTimeUtc, bool FreeAvaila
     string[] WishHeroes, string[] WishArtifacts, string[] WishHeroCandidates,
     string[] WishArtifactCandidates, string[] OwnedWishIds, SummonBannerView[] Banners);
 internal sealed record SummonReceipt(string RequestId, string BannerId, string Revision, int Count, string Payment,
-    int Cost, int Bookmarks, int EpicBookmarks, bool FreeAvailable, int Misses, SummonResult[] Results);
+    int Cost, int Bookmarks, int EpicBookmarks, bool FreeAvailable, int Misses, SummonResult[] Results, int Channel = 1);
 internal sealed record SummonResult(int Position, string Kind, string TemplateId, int Stars, string InstanceId,
     bool IsNew, bool InStorage);

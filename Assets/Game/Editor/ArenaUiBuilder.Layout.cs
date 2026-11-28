@@ -120,7 +120,15 @@ namespace AstralOath.Editor
 
             var right = Area(root, "Mode navigation", .814f, .092f, .186f, .908f);
             Paint(right, null, Blue);
-            var selected = Area(right, "Selected mock battle", 0, 0, 1, .144f);
+            var towerTab=Area(right,"Arena stages",0,0,1,.144f);
+            var tower=Button(towerTab,null,Color.clear);
+            Picture(towerTab,"Opponent swords",Art("icon_menu_battle"),.075f,.23f,.14f,.54f,true);
+            Text(towerTab,"Arena","tower.title",34,.245f,.05f,.71f,.90f);
+            var recordsTab=Area(right,"Battle records",0,.288f,1,.144f);
+            var records=Button(recordsTab,null,Color.clear);
+            Picture(recordsTab,"History icon",TowerArt("icon_menu_pvplog"),.075f,.23f,.14f,.54f,true);
+            Text(recordsTab,"History","tower.record",34,.245f,.05f,.71f,.90f);
+            var selected = Area(right, "Selected mock battle", 0, .144f, 1, .144f);
             Paint(selected, null, new Color32(4, 14, 34, 255));
             var selectedArt = Area(selected, "Native selection", 0, 0, 1, 1);
             selectedArt.offsetMin = new Vector2(-33f, 0);
@@ -246,7 +254,7 @@ namespace AstralOath.Editor
                 ("filterLabel", filterLabel), ("searchLabel", searchLabel), ("searchSelected", searchSelected),
                 ("searchIcon", searchIcon), ("searchPressed", searchPressed), ("submitSearch", submit), ("status", status),
                 ("searchPanel", searchPanel.gameObject), ("query", query), ("list", list), ("row", row.gameObject),
-                ("choice", choice.gameObject), ("password", password), ("toast", toast));
+                ("choice", choice.gameObject), ("password", password), ("toast", toast), ("tower",tower), ("records",records));
             return root.gameObject;
         }
 

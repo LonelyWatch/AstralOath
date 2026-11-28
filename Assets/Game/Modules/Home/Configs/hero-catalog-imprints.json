@@ -1,0 +1,564 @@
+{
+  "heroes": [
+    {
+      "id": "c1001",
+      "direction": "1234",
+      "stat": "生命值",
+      "release": "D  +150    C  +225    B  +300    A  +375    S  +450    SS  +525    SSS  +600",
+      "selfStat": "生命值",
+      "focus": "D  +230    C  +345    B  +460    A  +575    S  +690    SS  +805    SSS  +920"
+    },
+    {
+      "id": "c1002",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1003",
+      "direction": "34",
+      "stat": "防御力 %",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +11%    SSS  +12%",
+      "selfStat": "防御力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1004",
+      "direction": "12",
+      "stat": "攻击力 %",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +11%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%"
+    },
+    {
+      "id": "c1005",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1006",
+      "direction": "23",
+      "stat": "攻击力 %",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1007",
+      "direction": "1234",
+      "stat": "速度",
+      "release": "B  +4    A  +6    S  +8    SS  +10    SSS  +12",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1008",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "防御力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1009",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1010",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1011",
+      "direction": "34",
+      "stat": "暴击率",
+      "release": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "暴击率",
+      "focus": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%"
+    },
+    {
+      "id": "c1012",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "效果抗性",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1062",
+      "direction": "1234",
+      "stat": "效果抗性",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +12%    SSS  +13%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1013",
+      "direction": "24",
+      "stat": "生命值 %",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +11%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1014",
+      "direction": "1234",
+      "stat": "速度",
+      "release": "C  +3    B  +4    A  +6    S  +7    SS  +9    SSS  +10",
+      "selfStat": "暴击率",
+      "focus": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%"
+    },
+    {
+      "id": "c1015",
+      "direction": "12",
+      "stat": "效果命中",
+      "release": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1016",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1017",
+      "direction": "13",
+      "stat": "防御力 %",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +11%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1018",
+      "direction": "1234",
+      "stat": "攻击力",
+      "release": "D  +30    C  +45    B  +60    A  +75    S  +90    SS  +105    SSS  +120",
+      "selfStat": "攻击力",
+      "focus": "D  +42    C  +63    B  +84    A  +105    S  +126    SS  +147    SSS  +168"
+    },
+    {
+      "id": "c1019",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "防御力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1020",
+      "direction": "34",
+      "stat": "速度",
+      "release": "C  +4    B  +6    A  +8    S  +10    SS  +12    SSS  +14",
+      "selfStat": "暴击率",
+      "focus": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%"
+    },
+    {
+      "id": "c1021",
+      "direction": "1234",
+      "stat": "夹攻率",
+      "release": "C  +1%    B  +2%    A  +3%    S  +4%    SS  +5%    SSS  +6%",
+      "selfStat": "暴击率",
+      "focus": "C  +5%    B  +7%    A  +9%    S  +11%    SS  +13%    SSS  +15%"
+    },
+    {
+      "id": "c1022",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1023",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1024",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1027",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1028",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "夹攻率",
+      "focus": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%"
+    },
+    {
+      "id": "c1029",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "效果命中",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1030",
+      "direction": "24",
+      "stat": "生命值 %",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1031",
+      "direction": "1234",
+      "stat": "夹攻率",
+      "release": "C  +1%    B  +2%    A  +3%    S  +4%    SS  +5%    SSS  +6%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1032",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "防御力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1033",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1034",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1035",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1036",
+      "direction": "1234",
+      "stat": "效果抗性",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +12%    SSS  +13%",
+      "selfStat": "防御力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1037",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "效果命中",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1038",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1039",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1040",
+      "direction": "1234",
+      "stat": "效果命中",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +12%    SSS  +13%",
+      "selfStat": "效果命中",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1042",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1043",
+      "direction": "1234",
+      "stat": "防御力 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "效果命中",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1044",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1046",
+      "direction": "23",
+      "stat": "攻击力 %",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1047",
+      "direction": "24",
+      "stat": "生命值 %",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1048",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1049",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1050",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1053",
+      "direction": "1234",
+      "stat": "效果命中",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1054",
+      "direction": "24",
+      "stat": "生命值 %",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +11%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1055",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1060",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1065",
+      "direction": "14",
+      "stat": "速度",
+      "release": "C  +4    B  +6    A  +8    S  +10    SS  +12    SSS  +14",
+      "selfStat": "效果命中",
+      "focus": "C  +8%    B  +12%    A  +15%    S  +18%    SS  +21%    SSS  +24%"
+    },
+    {
+      "id": "c1066",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1067",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1069",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    },
+    {
+      "id": "c1070",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1071",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1072",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1073",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1074",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1076",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "生命值 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1079",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1080",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1081",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "效果命中",
+      "focus": "B  +9%    A  +14%    S  +19%    SS  +23%    SSS  +27%"
+    },
+    {
+      "id": "c1082",
+      "direction": "1234",
+      "stat": "攻击力 %",
+      "release": "B  +4%    A  +6%    S  +8%    SS  +10%    SSS  +12%",
+      "selfStat": "攻击力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1083",
+      "direction": "1234",
+      "stat": "效果命中",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "防御力 %",
+      "focus": "B  +7%    A  +11%    S  +15%    SS  +18%    SSS  +21%"
+    },
+    {
+      "id": "c1085",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1086",
+      "direction": "1234",
+      "stat": "生命值 %",
+      "release": "C  +3%    B  +5%    A  +6%    S  +7%    SS  +8%    SSS  +9%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1087",
+      "direction": "1234",
+      "stat": "暴击率",
+      "release": "C  +4%    B  +6%    A  +8%    S  +10%    SS  +12%    SSS  +13%",
+      "selfStat": "攻击力 %",
+      "focus": "C  +6%    B  +9%    A  +12%    S  +14%    SS  +16%    SSS  +18%"
+    },
+    {
+      "id": "c1088",
+      "direction": "23",
+      "stat": "攻击力 %",
+      "release": "B  +5%    A  +8%    S  +11%    SS  +13%    SSS  +15%",
+      "selfStat": "暴击率",
+      "focus": "B  +6%    A  +9%    S  +12%    SS  +15%    SSS  +18%"
+    }
+  ]
+}

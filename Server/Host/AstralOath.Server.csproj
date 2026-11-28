@@ -11,7 +11,9 @@
     <ProjectReference Include="../../Shared/com.astraloath.shared/AstralOath.Shared.csproj" />
     <ProjectReference Include="../../Shared/com.astraloath.shared/Runtime/Battle/AstralOath.Battle.csproj" />
     <EmbeddedResource Include="Foundation/Migrations/*.sql" />
+    <EmbeddedResource Include="../../Config/ArenaTower/catalog.json" LogicalName="AstralOath.ArenaTower" />
     <EmbeddedResource Include="../../Config/Mail/catalog.json" LogicalName="AstralOath.MailCatalog" />
+    <EmbeddedResource Include="../../Config/Shop/arena.json" LogicalName="AstralOath.ArenaShop" />
     <EmbeddedResource Include="Inventory/training-equipment.json" LogicalName="AstralOath.TrainingEquipment" />
     <EmbeddedResource Include="Arena/arena-chat-stickers.txt" LogicalName="AstralOath.ArenaChatStickers" />
     <EmbeddedResource Include="Summon/summon-banners.json" LogicalName="AstralOath.SummonBanners" Condition="Exists('Summon/summon-banners.json')" />

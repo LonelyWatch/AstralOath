@@ -65,7 +65,7 @@ namespace AstralOath.Client.ChannelChat
                     if(result.hasMore&&CompareId(next,after)<=0)throw new IOException("Invalid chat cursor.");
                     incoming.AddRange(result.messages);
                     // Keep only ID/identity metadata for unread accounting when the visual cache trims older pages.
-                    received.AddRange(result.messages.Select(message=>new ChatMessage{id=message.id,player=new ChatSender{id=message.player.id}}));
+                    received.AddRange(result.messages.Select(message=>new ChatMessage{id=message.id,kind=message.kind,player=new ChatSender{id=message.player.id}}));
                     if(incoming.Count>200)incoming=incoming.OrderBy(m=>m.id,IdComparer.Instance).Skip(incoming.Count-200).ToList();
                     after=next;if(!result.hasMore)break;
                 }
@@ -196,7 +196,12 @@ namespace AstralOath.Client.ChannelChat
         private static void ValidatePage(ChatPage page,int channel)
         {if(page==null||page.channel!=channel||page.messages==null)throw new IOException("Invalid chat page.");foreach(var message in page.messages)ValidateMessage(message,channel);}
         private static void ValidateMessage(ChatMessage message,int channel)
-        {if(message==null||message.channel!=channel||message.player==null||string.IsNullOrEmpty(message.player.id))throw new IOException("Invalid chat message.");DecimalId(message.id,false);}
+        {
+            if(message==null || message.channel!=channel || message.player==null || string.IsNullOrEmpty(message.player.id) ||
+                (message.IsReward && string.IsNullOrWhiteSpace(message.templateId)))
+                throw new IOException("Invalid chat message.");
+            DecimalId(message.id,false);
+        }
         private static string ConfirmedCursor(ChatPage page,string after)
         {
             string highest=after;
@@ -213,7 +218,9 @@ namespace AstralOath.Client.ChannelChat
             foreach(var message in incoming)
             {
                 string id=DecimalId(message.id,false);
-                if(value.initialized&&CompareId(id,value.received)>0&&!value.ownReceipts.Contains(id)&&(string.IsNullOrEmpty(own)||message.player.id!=own))changed|=value.unread.Add(id);
+                bool notify = message.kind == "hero5" ? Preferences?.notifications?.hero5 != false :
+                    message.kind != "artifact5" || Preferences?.notifications?.artifact5 != false;
+                if(notify&&value.initialized&&CompareId(id,value.received)>0&&!value.ownReceipts.Contains(id)&&(string.IsNullOrEmpty(own)||message.player.id!=own))changed|=value.unread.Add(id);
             }
             if(CompareId(confirmed,value.received)>0)value.received=confirmed;
             value.initialized=true;value.ownReceipts.RemoveWhere(id=>CompareId(id,value.received)<=0);
@@ -225,7 +232,7 @@ namespace AstralOath.Client.ChannelChat
             foreach(var value in incoming)
             {
                 ValidateMessage(value,channel);string id=DecimalId(value.id,false);
-                messages[id]=new ChatMessage{id=id,channel=channel,kind=value.kind,text=value.text,stickerId=value.stickerId,createdAt=value.createdAt,
+                messages[id]=new ChatMessage{id=id,channel=channel,kind=value.kind,text=value.text,stickerId=value.stickerId,createdAt=value.createdAt,templateId=value.templateId,
                     player=new ChatSender{id=value.player.id,displayName=value.player.displayName,avatarId=value.player.avatarId}};
             }
             var sorted=messages.Values.OrderBy(m=>m.id,IdComparer.Instance).ToArray();

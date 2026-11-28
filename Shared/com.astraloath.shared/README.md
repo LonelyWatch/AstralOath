@@ -1,5 +1,7 @@
 # AstralOath.Shared
 
+`BattlePreviewFactory.CreateOwnedDuel` 接受两侧独立的一至四名成长英雄，并将各自冻结的等级、装备和神器带入同一战斗规则。固定防守竞技场早期可一人守关，玩家可部署更多角色。
+
 `CombatPowerCalculator.Calculate`接收已且仅一次包含装备/套装/神器攻血的最终永久面板、真实神器星级/实例等级及显式技能/专武/转职系数。规则ID为`combat-power.project-v1.historical-p1.source-r4262-artifact.owned-progress-zero`，采用历史P1与已核33条神器原表，decimal最后floor；47项纯回归通过。当前项目尚无技能强化/专武/转职进度，Home显式传0，不猜模板进度。未知神器不能用确认未穿的(0,0)代替。这是明示项目CP，不称2026原版绝对CP还原；详细来源与边界见[专题](../../docs/development/combat-power.md)。
 
 `BattleFlowEvent.CooldownReduction` 是技能效果实际扣除的冷却回合数，`Amount` 继续表示扣除后的剩余值。常规回合递减及设置技能冷却时，前者为零。塔玛林尔在偶像状态下可见的技能由 `BattleSkillResolver.IsSkillVisibleInForm` 判定，战斗命令校验和客户端技能栏共用此规则。[行为和样例](../../docs/delivery/2026-11-22-battle-followup.md)

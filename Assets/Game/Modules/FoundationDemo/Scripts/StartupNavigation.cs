@@ -80,7 +80,7 @@ namespace AstralOath.Client.FoundationDemo
             lifetime.Add(() => Application.focusChanged -= OnFocusChanged);
             windows = new WindowCoordinator(token);
             lifetime.Add(windows.Dispose);
-            home = new HomeWindowBinder(homeView, locale, OpenDirectory, OpenMore,
+            home = new HomeWindowBinder(homeView, locale, OpenTower, OpenMore,
                 ct => OpenInventory(false, ct), display);
             directory = new ArenaDirectoryBinder(directoryView, createView, locale, api, windows, OpenRoom, ShowHome, playerName);
             room = new ArenaRoomBinder(roomView, locale, api, windows, ReturnToDirectory, OpenDraft);
@@ -166,6 +166,7 @@ namespace AstralOath.Client.FoundationDemo
                 context.ViewRoot, locale, api, inventory, artifacts, equipment, summon, endpoint, name, display);
             navigation.InstallMail(Bearer);
             navigation.InstallSocial(Bearer, account);
+            navigation.InstallTowerShop();
             if (MailVerificationRequested) navigation.ConfigureMailVerification(Bearer);
             if (EquipmentPlayerSmoke.EnhancementRequested)
                 navigation.equipmentSmokeBearer = Bearer;
@@ -234,7 +235,8 @@ namespace AstralOath.Client.FoundationDemo
                 home.HideArenaWhile(scope);
                 var binder = new HomeMoreMenuBinder(view, locale, OpenHeroes, OpenSummon,
                     () => windows.CloseOverlay(MoreOverlay));
-                binder.ConfigureNavigation(OpenDirectory, OpenUnavailableAsync, ct => OpenInventory(false, ct));
+                binder.ConfigureNavigation(OpenTower, OpenUnavailableAsync, ct => OpenInventory(false, ct));
+                binder.OpenShop = ct => OpenArenaShop(ct,ShowHome);
                 binder.Open(scope);
             });
         }
@@ -292,7 +294,7 @@ namespace AstralOath.Client.FoundationDemo
             cancellation.ThrowIfCancellationRequested();
             await ShowPageWithMail(scope =>
             {
-                var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifactArt, presentation, featuredLoop, locale, ShowHome);
+                var binder = new SummonWindowBinder(view, isolatedGuest ?? summon, art, artifactArt, presentation, featuredLoop, locale, ShowHome, () => chatSession?.Channel ?? 1);
                 reconcileMailPage = binder.RefreshExternalAsync;
                 refreshGmPage = async () => { await binder.RefreshExternalAsync(scope.Token); await mailSession.RefreshAsync(scope.Token); };
                 scope.Add(() => { refreshGmPage = null; reconcileMailPage = null; });
@@ -387,6 +389,12 @@ namespace AstralOath.Client.FoundationDemo
 
         private async Task ReturnFromBattleAsync()
         {
+            if (returnToTower && !token.IsCancellationRequested)
+            {
+                returnToTower=false;
+                await OpenTower(token);
+                return;
+            }
             if (token.IsCancellationRequested || string.IsNullOrEmpty(roomId)) return;
             if (!string.IsNullOrEmpty(activeDraftId))
             {

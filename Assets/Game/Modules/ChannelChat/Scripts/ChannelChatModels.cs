@@ -26,7 +26,10 @@ namespace AstralOath.Client.ChannelChat
     [Serializable,Preserve] public sealed class ChatSender { public string id,displayName,avatarId; }
     [Serializable,Preserve] public sealed class ChatMessage
     {
-        public string id,kind,text,stickerId,createdAt; public int channel; public ChatSender player;
+        public string id,kind,text,stickerId,createdAt,templateId;
+        public int channel;
+        public ChatSender player;
+        [JsonIgnore] public bool IsReward => kind == "hero5" || kind == "artifact5";
     }
     [Serializable,Preserve] public sealed class ChatPage
     {

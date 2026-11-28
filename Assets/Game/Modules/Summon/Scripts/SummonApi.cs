@@ -74,6 +74,7 @@ namespace AstralOath.Client.Summon
     {
         public string requestId, bannerId, revision, payment;
         public int count;
+        public int channel = 1;
     }
 
     public sealed class SummonApi : IDisposable

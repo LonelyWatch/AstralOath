@@ -257,6 +257,91 @@ public sealed class SummonTests
         }
     }
 
+    [MySqlFact]
+    public async Task GuaranteedDrawBroadcastsOnceToSelectedChannelAndRejectsForgedNotices()
+    {
+        string connection=Environment.GetEnvironmentVariable("ASTRALOATH_MYSQL_TEST")!;
+        using var deadline=new CancellationTokenSource(TimeSpan.FromSeconds(40));
+        var ct=deadline.Token;
+        await DatabaseMigrator.ApplyAsync(connection,ct);
+        await using var factory=new WebApplicationFactory<Program>();
+        await using var app=Configure(factory,connection);
+        using var client=app.CreateClient();
+        string player=await OpenGuest(client,ct);
+        using var observer=app.CreateClient();
+        string observerId=await OpenGuest(observer,ct);
+        Assert.NotEqual(player,observerId);
+        await using var database=new MySqlConnection(connection);
+        await database.OpenAsync(ct);
+        try
+        {
+            var catalog=SummonCatalog.Load(AstralOath.Server.Battle.ArtifactCatalogReader.Load());
+            var clock=new BroadcastClock();
+            var store=new SummonStore(connection,catalog,true,clock);
+            var banner=Assert.Single((await store.Read(player,ct)).Banners,b=>b.Id=="iseria");
+            using(var seed=new MySqlCommand("""
+                INSERT INTO summon_pity(player_id,realm_id,banner_id,misses)
+                VALUES(@p,'undying-memory',LEFT(SHA2('iseria|c1024|',256),48),120)
+                """,database))
+            {
+                seed.Parameters.AddWithValue("@p",player);
+                await seed.ExecuteNonQueryAsync(ct);
+            }
+            const int channel=7981;
+            var request=new SummonRequest(Guid.NewGuid().ToString("N"),banner.Id,banner.Revision,10,"bookmarks",channel);
+            var draws=await Task.WhenAll(store.Draw(player,request,ct),store.Draw(player,request,ct));
+            var expected=draws[0].Results.Where(x=>x.Stars==5).Select(x=>x.TemplateId).ToArray();
+            Assert.Equal("c1024",expected[0]);
+            var history=await observer.GetFromJsonAsync<JsonElement>($"/api/chat/channels/{channel}/messages",ct);
+            var notices=history.GetProperty("messages").EnumerateArray().Where(m=>m.GetProperty("player").GetProperty("id").GetString()==player).ToArray();
+            Assert.Equal(expected,notices.Select(m=>m.GetProperty("templateId").GetString()));
+            Assert.Equal("hero5",notices[0].GetProperty("kind").GetString());
+            // Two deterministic test banners exercise the remaining draw branches, independent of RNG.
+            string Resource(string key)
+            {
+                using var stream=typeof(SummonCatalog).Assembly.GetManifestResourceStream(key)!;
+                using var reader=new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
+            var rules=JsonSerializer.Deserialize<SummonConfiguration>(Resource("AstralOath.SummonBanners"),SummonCatalog.JsonOptions)!;
+            var fixtureBanner=rules.Banners.Single(b=>b.Id=="covenant");
+            var artBanner=fixtureBanner with {Id="fixture-art",Groups=[new("artifact",5,"all",10000)]};
+            var lowBanner=fixtureBanner with {Id="fixture-low",Groups=[new("hero",3,"elemental",10000)]};
+            var fixedCatalog=new SummonCatalog(JsonSerializer.Serialize(rules with { Banners=[artBanner,lowBanner] }),Resource("AstralOath.BattleCatalog"),AstralOath.Server.Battle.ArtifactCatalogReader.Load());
+            var events=new AstralOath.Server.Social.ChannelChatEvents();
+            var fixedStore=new SummonStore(connection,fixedCatalog,true,clock,events);
+            var fixedState=await fixedStore.Read(player,ct);
+            var artRequest=new SummonRequest(Guid.NewGuid().ToString("N"),artBanner.Id,fixedState.Banners.Single(b=>b.Id==artBanner.Id).Revision,1,"bookmarks",channel);
+            using var subscription=events.Subscribe("undying-memory",channel);
+            var artifactDraw=await fixedStore.Draw(player,artRequest,ct);
+            await subscription.Wait(ct);
+            var lowRequest=new SummonRequest(Guid.NewGuid().ToString("N"),lowBanner.Id,fixedState.Banners.Single(b=>b.Id==lowBanner.Id).Revision,1,"bookmarks",channel);
+            var lowDraw=await fixedStore.Draw(player,lowRequest,ct);
+            Assert.Equal(3,lowDraw.Results[0].Stars);
+            var more=await observer.GetFromJsonAsync<JsonElement>($"/api/chat/channels/{channel}/messages?after={notices[^1].GetProperty("id").GetString()}",ct);
+            var only=Assert.Single(more.GetProperty("messages").EnumerateArray(),m=>m.GetProperty("player").GetProperty("id").GetString()==player);
+            Assert.Equal("artifact5",only.GetProperty("kind").GetString());
+            Assert.Equal(artifactDraw.Results[0].TemplateId,only.GetProperty("templateId").GetString());
+            using var forged=await client.PostAsJsonAsync($"/api/chat/channels/{channel}/messages",new { requestId=Guid.NewGuid().ToString("N"),kind="artifact5",text="efr02" },ct);
+            Assert.Equal(HttpStatusCode.BadRequest,forged.StatusCode);
+            var other=await observer.GetFromJsonAsync<JsonElement>("/api/chat/channels/7982/messages",ct);
+            Assert.DoesNotContain(other.GetProperty("messages").EnumerateArray(),m=>m.GetProperty("player").GetProperty("id").GetString()==player);
+        }
+        finally
+        {
+            using var cleanup=new MySqlCommand("DELETE FROM arena_player WHERE id IN (@p,@observer)",database);
+            cleanup.Parameters.AddWithValue("@p",player);
+            cleanup.Parameters.AddWithValue("@observer",observerId);
+            await cleanup.ExecuteNonQueryAsync(CancellationToken.None);
+        }
+    }
+
+    private sealed class BroadcastClock : TimeProvider
+    {
+        public override DateTimeOffset GetUtcNow()=>new DateTimeOffset(2026,11,28,0,0,0,TimeSpan.Zero);
+    }
+
+
     private static JsonElement Covenant(JsonElement state) =>
         state.GetProperty("banners").EnumerateArray().Single(banner => banner.GetProperty("id").GetString() == "covenant");
 

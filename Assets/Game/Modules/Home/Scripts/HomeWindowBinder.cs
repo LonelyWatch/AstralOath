@@ -19,6 +19,7 @@ namespace AstralOath.Client.Home
         private readonly Sprite defaultFrame;
         private Func<CancellationToken,Task> openProfile,openSummon;
         private Func<string,CancellationToken,Task> unavailable;
+        public Func<CancellationToken,Task> OpenShop { private get; set; }
 
         public HomeWindowBinder(HomeWindow view, ILocaleService locale, Func<CancellationToken, Task> openArena,
             Func<CancellationToken, Task> openMore, Func<CancellationToken, Task> openBag, DesktopDisplayMode display)
@@ -67,6 +68,7 @@ namespace AstralOath.Client.Home
             RenderPipelineManager.beginCameraRendering += FitPortrait;
             screen.Add(() => RenderPipelineManager.beginCameraRendering -= FitPortrait);
             view.Arena.Bind(screen, openArena);
+            view.Feature("shop").Bind(screen, OpenShop ?? (ct => Unavailable("shop",ct)));
             view.Summon.Bind(screen,openSummon??(token=>Unavailable("summon",token)));
             view.ProfileOpen.Bind(screen,openProfile??(token=>Unavailable("profile",token)));
             foreach(var id in HomeFeatureLabels.Main)

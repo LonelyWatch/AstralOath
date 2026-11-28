@@ -41,6 +41,8 @@ namespace AstralOath.Client.Arena
         private string visibility = "all", sort = "players", query = "";
         private bool ascending, busy, hasList;
         private string renderedLocale;
+        public Func<CancellationToken,Task> OpenTower { private get; set; }
+        public Func<CancellationToken,Task> OpenRecords { private get; set; }
 
         public ArenaDirectoryBinder(ArenaDirectory view, ArenaCreateRoom createView, ILocaleService locale, ArenaApi api,
             WindowCoordinator windows, Func<ArenaRoomState, CancellationToken, Task> enter, Func<Task> goHome, string displayName)
@@ -81,6 +83,9 @@ namespace AstralOath.Client.Arena
         {
             screen = owner;
             view.Show();
+            var tabs=view.Root.GetComponent<BindingMap>();
+            if(OpenTower!=null) tabs.Require<GameButton>("tower").Bind(owner, OpenTower);
+            if(OpenRecords!=null) tabs.Require<GameButton>("records").Bind(owner, OpenRecords);
             owner.Add(Close);
             view.SearchPanel.SetActive(false);
             view.Choice.SetActive(false);

@@ -45,6 +45,7 @@ namespace AstralOath.Client.Summon
         private HeroRosterPortrait[] wishPortraits;
         private SummonPresentation.Player player;
         private SummonState state;
+        private readonly Func<int> currentChannel;
         private SummonRequest quote;
         private SummonReceipt lastReceipt;
         private SummonStorage storage;
@@ -54,7 +55,7 @@ namespace AstralOath.Client.Summon
         private bool busy, epic, wantsArtifacts, onlyUnowned, showingDetail;
 
         public SummonWindowBinder(SummonWindow view, SummonApi api, HomeHeroArt heroArt,
-            ArtifactArtCatalog artifactArt, SummonPresentation presentation, SummonSkillLoop featuredLoop, ILocaleService locale, Func<Task> goHome)
+            ArtifactArtCatalog artifactArt, SummonPresentation presentation, SummonSkillLoop featuredLoop, ILocaleService locale, Func<Task> goHome, Func<int> currentChannel = null)
         {
             this.view = view;
             this.api = api;
@@ -63,6 +64,7 @@ namespace AstralOath.Client.Summon
             this.featuredLoop = featuredLoop;
             this.locale = locale;
             this.goHome = goHome;
+            this.currentChannel = currentChannel;
             heroes = heroArt.heroes.ToDictionary(hero => hero.id, StringComparer.Ordinal);
         }
 
@@ -386,6 +388,7 @@ namespace AstralOath.Client.Summon
                 return;
             }
             quote = null;
+            request.channel = currentChannel?.Invoke() ?? 1;
             api.Pending = request;
             ReturnFromConfirmation();
             await DrawPending(request, token);

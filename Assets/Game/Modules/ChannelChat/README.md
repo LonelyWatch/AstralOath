@@ -44,7 +44,7 @@ View/Binder通过 `Channel, Messages, Preferences, HasPendingSend, HasPendingPre
 
 Binder接受登录Owner持有的Session、`Action close`、`Action<string> unavailable`/`playerSelected`、可选 `Func<string> ownPlayerId` 与 `Func<string,Sprite> avatarArt`。新账号默认频道1；登录Owner先读取收藏并Join(favoriteChannel??1)，重新打开Chat沿当前Session.Channel，不重复跳收藏；读/发/表情/当前频道历史来自Session；关闭只解绑页面、覆盖层和头像回调，已dispatch写入等登录回执，不销毁Session或Observe。窗口覆盖层由Binder独立WindowCoordinator管理，每次开窗独立BindingScope。自己以服务器player.id匹配ownPlayerId显示绿名与[me]，其他玩家白名；所有名字/正文/关键词关闭richText，头像只回传playerId交外层统一资料页。
 
-收藏1..9999只保存偏好，不静默跳频道；切频道入口复用已实际看清的收藏输入框架，真正成功Join后才换标题和列表，未构造未见原片的n_channel_layer弹板。关键词编辑使用已确认的五个原黑底输入行，去空槽、最多5个、每个20 Unicode标量；没有冒造录像未显示的独立编辑弹板。通知提交完整四个布尔字段，骑士团两个入口和暂无权威公告的折叠公告入口调用外层通用未完成功能提示。目前没有获得5★英雄/神器或骑士团宣传的权威广播事件源，此处只真实保存/读取偏好，未宣称这些广播已连通。generalChat关闭不删除当前频道可读历史；登录级新消息通知由Owner调度，页面不另开后台监听。透明背景保留完整原图的灰黑底与阴影，只降低原节点opacity，不能按像素颜色抹除中性背景；转换与录像推定边界见下文。
+收藏1..9999只保存偏好，不静默跳频道；切频道入口复用已实际看清的收藏输入框架，真正成功Join后才换标题和列表，未构造未见原片的n_channel_layer弹板。关键词编辑使用已确认的五个原黑底输入行，去空槽、最多5个、每个20 Unicode标量；没有冒造录像未显示的独立编辑弹板。通知提交完整四个布尔字段，骑士团两个入口和暂无权威公告的折叠公告入口调用外层通用未完成功能提示。五星英雄和神器现由召唤服务发布到玩家抽取时的公开频道。骑士团宣传仍仅保存偏好。generalChat关闭不删除当前频道可读历史；登录级新消息通知由Owner调度，页面不另开后台监听。透明背景保留完整原图的灰黑底与阴影，只降低原节点opacity，不能按像素颜色抹除中性背景；转换与录像推定边界见下文。
 
 `Tools/Chat/ImportChatAssets.py`仅导入37个最小UI变体和服务端白名单67张原表情，`Res/chat-source.json`记录源/输出SHA、用途opacity、转换和cap；默认RGBA32、无Mip、源尺寸，D:/sevenepic只读。发送/收藏使用同PNG的不同切片变体，其他业务模块无反向依赖。原图三列表情固定原比例；窄窗将整个Picker移回可见范围，不拉伸单格。
 
@@ -69,3 +69,15 @@ Binder接受登录Owner持有的Session、`Action close`、`Action<string> unava
 最新已实际查看统一Play回执 `client-tests/integrated-play.xml`：总14/14通过，其中ChannelChatBinder五项5/5，包含慢回执禁输入/保留草稿、两次IO后重开同原意图重试解锁。该回执只证明当前UI绑定行为；另行Session游标审阅/新回归、最终Native25状态、源图逐图比对和音频试听仍由根继续验收，不能据此称完整还原。
 
 关闭设置/收藏/频道/表情层后立即重新判断ReadVisible；避免层内到达的新消息已在底部显示而角标停留。该项来自本轮静态集成审查，按用户要求未跑回归。
+
+## 公开频道的五星召唤播报
+
+原片 Screenrecorder-2026-11-28-20-01-10-182.mp4 约 10 秒，19 频道内相邻出现英雄和神器播报。头像与时间保留在上行，下一行浅色气泡内放置可点击的星级图标。昵称为蓝色，英雄名为橙色，神器名为绿色。对应原布局 chat_node_reward.csb 的背景是 cm_ballonsm.png，复用项目已有的原图和九宫格。参考帧为仓库内 .artifacts/arena-tower-review/chat/10.jpg。
+
+ChannelChatBinder 渲染模板标识、名与图标，普通聊天仍显示纯文本。色标仅在受控播报模板中解析，插入的昵称和物品名中尖括号会转为全角。点击图标由 StartupNavigation.Social 打开角色或神器资料，头像仍可查看发送者资料。主界面抽屉和世界竞技场的公共频道共用这条路径。
+
+首次加入频道用历史建立游标基线，之后其他玩家的播报按各自的五星英雄或神器通知偏好累计未读。关闭相应通知仍能在频道里找到该条播报。自己的播报可见，但不增加自己的未读。复验入口为 EditMode 的 ChannelChatUnreadTests、ChannelChatPrefabTests 与 PlayMode 的 ChannelSummonInformationTests。各类依据和证据路径见 docs/development/channel-summon-announcements.md。
+
+短历史的最末气泡紧邻输入区。消息内容的最小高度跟随视口，布局向下对齐；内容超过一屏后保留顶部锚点和已有游标位置。播报英雄图标从底到顶依次使用原底片、原头像、原框和星级。
+
+11 月 29 日按手机端可见区重测两条召唤播报。原片以 1200 高度输出，末条浅色气泡覆盖 y=947–1037，前一条覆盖 y=755–844。两条消息的底板沿用 cm_ballonsm.png，统一调整字号、字重、星形叠放和行距。Tools/Chat/CheckSummonLayout.py 接受本轮 PlayMode 生成的 PNG 与 bounds.json，按右边缘跟踪聊天、按中心跟踪详情框，分别报告原片与当前渲染的像素差。

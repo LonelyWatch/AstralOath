@@ -18,6 +18,6 @@ namespace AstralOath.Client.Home
         };
         public static string Key(string id)=>Prefix+id;
         public static string Text(string key){if(key!=null&&key.StartsWith(Prefix,StringComparison.Ordinal))key=key.Substring(Prefix.Length);return key!=null&&Zh.TryGetValue(key,out var text)?text:"功能尚未完成";}
-        public static bool MainAvailable(string id)=>id=="arena"||id=="summon";
+        public static bool MainAvailable(string id)=>id=="arena"||id=="summon"||id=="shop";
     }
 }

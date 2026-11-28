@@ -27,3 +27,9 @@
 本机伊赛丽亚测试池在北京时间 2026-12-03 03:00 结束，由 summon-banners.json 的 endUtc 控制。保留原有起点与保底记录。状态返回 serverTimeUtc 和当前有效池的 endUtc，服务端在截止时立即拒绝该池的新抽取，已有回执可继续读取。
 
 迁移 013 为已有区服钱包增加道具余额表。GET /api/summon 额外返回 goldTransmitStones、galaxyBookmarks、mysticMedals、skystones 四个整数。没有发放记录的玩家为零；誓约书签、史诗书签、免费次数维持原有来源。隔离 MySQL 用例验证非零余额在十连和服务重启后仍可读取。
+
+## 五星频道播报
+
+POST /api/summon/draw 的 channel 为 1–9999 的公用频道号，省略使用 1。回执记录目的频道。个人抽取锁和幂等回执覆盖扣款、抽取、库存或溢出、审计及所有五星播报。服务端根据每项结果的 Stars 与 Kind 写入 hero5 或 artifact5，保留十连获得顺序。持有频道顺序锁后分配消息 ID，再一起提交。提交后唤醒该区该频道的在线监听者。同一请求并发重试只播报一次，复用原请求号切换频道返回冲突。客户端没有自行发布奖励播报的接口。
+
+Server/Tests/SummonTests.cs 的 GuaranteedDrawBroadcastsOnceToSelectedChannelAndRejectsForgedNotices 覆盖固定保底英雄、固定五星神器、三星不发、并发重试、隔离频道、推送唤醒及 HTTP 禁止伪造。实际隔离 MySQL 回执为 .artifacts/arena-tower-review/chat/broadcast-final.trx。数据库修改见 Server/Host/Foundation/Migrations/022_summon_chat.sql 和 025_chat_announcement_kind_width.sql。

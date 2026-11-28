@@ -14,7 +14,8 @@ internal static class SummonEndpoints
         services.AddSingleton(provider => new SummonStore(
             provider.GetRequiredService<IConfiguration>().GetConnectionString("MySql"),
             provider.GetRequiredService<SummonCatalog>(),
-            provider.GetRequiredService<IHostEnvironment>().IsDevelopment(), TimeProvider.System));
+            provider.GetRequiredService<IHostEnvironment>().IsDevelopment(), TimeProvider.System,
+            provider.GetRequiredService<AstralOath.Server.Social.ChannelChatEvents>()));
     }
 
     internal static void MapSummon(this WebApplication app)

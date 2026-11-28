@@ -23,7 +23,10 @@ namespace AstralOath.Client.Tests
             foreach(string key in new[]{"close","favorite","channelSwitch","opacity","settings","publicTab","guildTab","send","emoji","favoriteSave","channelSave","allNotifications","notification0","notification1","notification2","notification3","notificationTab","guildNotificationTab","keywordTab"})Assert.That(map.Require<GameButton>(key),Is.Not.Null,key);
             foreach(string key in new[]{"input","favoriteInput","channelInput","keyword0","keyword1","keyword2","keyword3","keyword4"})Assert.That(map.Require<TMP_InputField>(key).richText,Is.False,key);
             Assert.That(map.Require<RectTransform>("drawer").sizeDelta,Is.EqualTo(new Vector2(924,1080)));
-            Assert.That(root.GetComponentsInChildren<GameText>(true).All(t=>!t.richText),Is.True,"正文/昵称/关键词不可解析富文本");
+            var rewardText = map.Require<GameObject>("row").GetComponent<BindingMap>().Require<GameText>("rewardText");
+            Assert.That(rewardText.richText, Is.True, "服务端奖励播报使用模板着色");
+            Assert.That(root.GetComponentsInChildren<GameText>(true).Where(t => t != rewardText).All(t => !t.richText),
+                Is.True, "自由文本、昵称和关键词不可解析富文本");
             var frame=map.Require<Image>("drawerSurface");Assert.That(frame.sprite.name,Is.EqualTo("DrawerFrame"));Assert.That(frame.type,Is.EqualTo(Image.Type.Sliced));Assert.That(frame.pixelsPerUnitMultiplier,Is.EqualTo(1/1.5f).Within(.0001));
             Assert.That(root.GetComponentsInChildren<MonoBehaviour>(true).Any(c=>c&&c.GetType().Name=="ChannelChat"),Is.False);
         }

@@ -52,8 +52,12 @@ namespace AstralOath.Editor
             (FeatureNoticePath, AstralOath.Client.FoundationDemo.FeatureNotice.Address),
             (SingleItemRewardPath, SingleItemReward.Address),
             ("Assets/Game/Modules/PlayerProfile/Res/Prefab/PlayerProfile.prefab", AstralOath.Client.PlayerProfile.PlayerProfile.Address),
+            (HeroInformationPath, HeroInformation.Address),
+            (ArtifactInformationPath, ArtifactInformation.Address),
             ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChannelChat.prefab", AstralOath.Client.ChannelChat.ChannelChat.Address),
             ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab", AstralOath.Client.ChannelChat.ChatEntry.Address),
+            (ArenaTowerPath, ArenaTower.Address),
+            (ShopWindowPath, AstralOath.Client.Shop.ShopWindow.Address),
         };
         private static readonly Color Gold = new Color32(166, 139, 92, 255);
         private static readonly Color Mist = new Color32(180, 206, 216, 255);
@@ -85,6 +89,8 @@ namespace AstralOath.Editor
             BuildDraftArt();
             BuildSummonAssets();
             BuildInventoryAssets();
+            GenerateChannelChat();
+            BuildTowerShopAssets();
             ConfigureCollectors();
             BuildStartupScene();
             Validate();

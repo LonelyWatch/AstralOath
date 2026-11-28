@@ -22,12 +22,8 @@ namespace AstralOath.Client.Home
         private bool inspectingWorn, paintingOpen, storyTab;
         private ScrollRect descriptionScroll;
         private float lastHeroListWidth;
-        private int lastGestureFrame;
-        private float previousPinch;
-        private float paintingZoom = 1;
+        private ArtifactPaintingGestures gestures;
         private bool rotated;
-        private Vector2 dragOrigin;
-        private float lastTap;
 
         private T HeroControl<T>(string key) where T : UnityEngine.Object => heroPage.Require<T>(key);
         private string Local(string key) => locale.Resolve(Prefix + key);
@@ -116,7 +112,6 @@ namespace AstralOath.Client.Home
             if (selected == null) return;
             rotated = false;
             paintingOpen = true;
-            lastTap = -1;
             ResetPainting();
             Refresh(false);
         }
@@ -268,10 +263,8 @@ namespace AstralOath.Client.Home
         private void ResetPainting()
         {
             var image=HeroControl<Image>("paintingImage").rectTransform;
-            paintingZoom=1;
-            previousPinch=0;
-            image.anchoredPosition=Vector2.zero;
-            image.localScale=Vector3.one;
+            gestures ??= new ArtifactPaintingGestures(image);
+            gestures.Reset();
             image.localEulerAngles=new Vector3(0,0,rotated ? 90 : 0);
         }
 
@@ -283,34 +276,7 @@ namespace AstralOath.Client.Home
                 if (heroList.gameObject.activeInHierarchy && !Mathf.Approximately(lastHeroListWidth,heroList.viewport.rect.width)) DrawHeroRows();
                 return;
             }
-            if (lastGestureFrame==Time.frameCount) return;
-            lastGestureFrame=Time.frameCount;
-            var img=HeroControl<Image>("paintingImage").rectTransform;
-            if(Input.touchCount>1)
-            {
-                float distance=Vector2.Distance(Input.GetTouch(0).position,Input.GetTouch(1).position);
-                if(previousPinch>0) paintingZoom=Mathf.Clamp(paintingZoom*distance/previousPinch,1,4);
-                previousPinch=distance;
-            }
-            else
-            {
-                previousPinch=0;
-                var mouse=(Vector2)Input.mousePosition;
-                if(Input.GetMouseButtonDown(0))
-                {
-                    dragOrigin=mouse;
-                    if(Time.unscaledTime-lastTap<.30f) ResetPainting();
-                    lastTap=Time.unscaledTime;
-                }
-                if(Input.GetMouseButton(0))
-                {
-                    float scale=img.GetComponentInParent<Canvas>().rootCanvas.scaleFactor;
-                    img.anchoredPosition+=(mouse-dragOrigin)/Mathf.Max(.01f,scale);
-                    dragOrigin=mouse;
-                }
-                paintingZoom=Mathf.Clamp(paintingZoom+Input.mouseScrollDelta.y*.12f,1,4);
-            }
-            img.localScale=Vector3.one*paintingZoom;
+            gestures?.Tick();
         }
     }
 }

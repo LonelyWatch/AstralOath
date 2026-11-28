@@ -6,7 +6,7 @@ using AstralOath.Shared.Battle;
 
 namespace AstralOath.Client.BattleScene
 {
-    internal sealed class BattleInspectionContent
+    public sealed class BattleInspectionContent
     {
         private readonly IReadOnlyDictionary<string, string> messages;
         private readonly ILookup<string, BattleCatalogData.EffectRow> effects;
@@ -21,7 +21,7 @@ namespace AstralOath.Client.BattleScene
         }
 
         // The exported default description is the source text for the fully awakened roster.
-        internal string SkillDescription(BattleCatalogData.SkillRow skill) =>
+        public string SkillDescription(BattleCatalogData.SkillRow skill) =>
             SourceText("battle.skill." + skill.id + ".description", "battle.skill." + skill.id + ".note");
 
         internal string StatusName(BattleStatusKind kind) => Label(StatusKey(kind) + ".name");
@@ -29,7 +29,7 @@ namespace AstralOath.Client.BattleScene
         internal string StatusDescription(BattleStatusKind kind) =>
             SourceText(StatusKey(kind) + ".description", StatusKey(kind) + ".note");
 
-        internal string SkillBurnDescription(BattleCatalogData.SkillRow skill) => skill.soulBurnCost <= 0
+        public string SkillBurnDescription(BattleCatalogData.SkillRow skill) => skill.soulBurnCost <= 0
             ? string.Empty
             : SourceText("battle.skill." + skill.id + ".burn.description", "battle.skill." + skill.id + ".burn.note");
 
@@ -40,7 +40,7 @@ namespace AstralOath.Client.BattleScene
             return string.IsNullOrEmpty(note) ? original : original + "\n\n" + note;
         }
 
-        internal string SkillEnhancements(BattleCatalogData.SkillRow skill)
+        public string SkillEnhancements(BattleCatalogData.SkillRow skill)
         {
             var lines = new List<string>();
             foreach (var step in enhancements[skill.id])
@@ -53,7 +53,7 @@ namespace AstralOath.Client.BattleScene
             return string.Join("\n", lines);
         }
 
-        internal (string Title, string Description, BattleStatusKind? Status) SkillAuxiliaryEffect(BattleCatalogData.SkillRow skill)
+        public (string Title, string Description, BattleStatusKind? Status) SkillAuxiliaryEffect(BattleCatalogData.SkillRow skill)
         {
             foreach (var effect in effects[skill.id])
             {

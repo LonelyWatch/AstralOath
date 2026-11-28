@@ -5,6 +5,8 @@ namespace AstralOath.Client.ChannelChat
     {
         private static readonly Dictionary<string,string> Values=new Dictionary<string,string>
         {
+            ["reward.hero"]="玩家<color=#3176A5>{0}</color>召唤了<color=#AD510A>{1}</color>英雄。",
+            ["reward.artifact"]="玩家<color=#3176A5>{0}</color>召唤了<color=#3B7818>{1}</color>神器。",
             ["channel"]="频道#{0}",["public"]="频道",["guild"]="骑士团",["input"]="点击此处并输入",["send"]="输入",
             ["entered"]="已进入#{0}频道。",["favoriteTitle"]="设置收藏频道",["channelTitle"]="切换频道",
             ["favoriteDescription"]="设置收藏频道后，登录游戏时将优先接入已设置的频道。",["channelDescription"]="输入要进入的频道。",

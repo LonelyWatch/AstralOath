@@ -28,7 +28,7 @@ internal sealed record ChatPreferenceAction(string? RequestId, long? ExpectedVer
 internal sealed record ChatSend(string? RequestId, string? Kind, string? Text = null, string? StickerId = null);
 internal sealed record ChatSender(string Id, string DisplayName, string AvatarId);
 internal sealed record ChatMessage(string Id, int Channel, ChatSender Player, string Kind,
-    string? Text, string? StickerId, DateTime CreatedAt);
+    string? Text, string? StickerId, DateTime CreatedAt, string? TemplateId = null);
 internal sealed record ChatPage(int Channel, IReadOnlyList<ChatMessage> Messages, string NextAfter, bool HasMore);
 internal sealed class SocialProblem(int status, string code) : Exception(code)
 {

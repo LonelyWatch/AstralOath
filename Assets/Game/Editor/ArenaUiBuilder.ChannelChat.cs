@@ -21,6 +21,7 @@ namespace AstralOath.Editor
         public static void GenerateChannelChat()
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);font=Load<TMP_FontAsset>(Common+"Fonts/EpicSeven.asset");
+            BuildInformationPrefabs();
             Directory.CreateDirectory(Path.GetDirectoryName(ChannelChatPath));Save(BuildChannelChat().gameObject,ChannelChatPath);Save(BuildChatEntry().gameObject,ChatEntryPath);
             UIViewRegistry.ValidatePrefab<ChannelChat>(Load<GameObject>(ChannelChatPath));UIViewRegistry.ValidatePrefab<ChatEntry>(Load<GameObject>(ChatEntryPath));AssetDatabase.SaveAssets();
         }
@@ -54,7 +55,12 @@ namespace AstralOath.Editor
             var selected=ChatSurface(ChatBox(drawer,"Public selected",61,59,156,58),"PublicTab");Link("publicSelected",selected);
             Tab("publicTab",61,"Talk",L("public"));Tab("guildTab",218,"Guild",L("guild"));
             Rule(drawer,54,102,552,"Divider");Rule(drawer,54,631,552,"Divider");
-            var scroll=ChatScroll(ChatBox(drawer,"Messages",54,108,546,523));Link("messages",scroll);var layout=scroll.content.GetComponent<VerticalLayoutGroup>();layout.spacing=0;layout.childForceExpandWidth=true;
+            var scroll=ChatScroll(ChatBox(drawer,"Messages",54,108,546,523));Link("messages",scroll);
+            var layout=scroll.content.GetComponent<VerticalLayoutGroup>();
+            layout.spacing=0;layout.childForceExpandWidth=true;layout.childAlignment=TextAnchor.LowerLeft;
+            var minimum=scroll.content.gameObject.AddComponent<LayoutElement>();
+            minimum.minHeight=scroll.viewport.rect.height;
+            Link("historyHeight",minimum);
             var row=ChatBox(scroll.content,"Message source row",0,0,546,72);row.gameObject.AddComponent<LayoutElement>().preferredHeight=108;
             var rowKeys=new List<(string Key,Object Target)>();
             var avatar=Button(ChatBox(row,"Avatar",4.5f,2.5f,63,63),null,Color.clear);rowKeys.Add(("avatar",avatar));
@@ -64,7 +70,21 @@ namespace AstralOath.Editor
             var sender=ChatCaption(row,"Sender",72,5,340,28,"",29.25f,Color.white);rowKeys.Add(("sender",sender));
             var time=ChatCaption(row,"Time",160,5,160,28,"",29.25f,new Color32(118,94,64,255));rowKeys.Add(("time",time));
             var body=ChatCaption(row,"Plain message",74,32,462,40,"",28,new Color32(180,180,180,255));body.enableWordWrapping=true;body.overflowMode=TextOverflowModes.Overflow;body.alignment=TextAlignmentOptions.TopLeft;rowKeys.Add(("body",body));
-            var sticker=Picture(row,"Sticker",null,0,0,0,0,true);ChatPlace(sticker.rectTransform,71.5f,32,137,110);rowKeys.Add(("sticker",sticker));Bind(row,rowKeys.ToArray());Link("row",row.gameObject);row.gameObject.SetActive(false);
+            var sticker=Picture(row,"Sticker",null,0,0,0,0,true);ChatPlace(sticker.rectTransform,71.5f,32,137,110);rowKeys.Add(("sticker",sticker));
+            var reward=ChatBox(row,"Summon announcement",66.5f,34,475.5f,62.5f);
+            Paint(reward,Load<Sprite>("Assets/Game/Modules/Summon/Res/Textures/cm_ballonsm.png"),Color.white,false,true).pixelsPerUnitMultiplier=1f/1.5f;
+            var rewardButton=Button(ChatBox(reward,"Item information",3,2,55,56),null,Color.clear);
+            var rewardBase=Picture((RectTransform)rewardButton.transform,"Hero portrait background",ChatArt("PortraitBackground"),.04f,.01f,.92f,.90f,true);
+            rowKeys.Add(("rewardHeroBase",rewardBase));
+            var rewardIcon=Picture((RectTransform)rewardButton.transform,"Reward",null,.03f,.01f,.94f,.91f,true);
+            var ring=Picture((RectTransform)rewardButton.transform,"Hero ring",ChatArt("PortraitFrame"),0,-.025f,1,.99f,true);
+            for(int i=0;i<5;i++)Picture((RectTransform)rewardButton.transform,"Star "+i,DraftSprite("TeamBadges/cm_icon_star"),.12f+i*.15f,.75f,.205f,.225f,true);
+            var rewardText=ChatCaption(reward,"Announcement",63,1,401,59,"",28,new Color32(110,90,64,255),wrap:true);
+            rewardText.fontStyle=FontStyles.Bold;
+            rewardText.richText=true;
+            rowKeys.Add(("reward",reward.gameObject));rowKeys.Add(("rewardButton",rewardButton));rowKeys.Add(("rewardIcon",rewardIcon));rowKeys.Add(("rewardText",rewardText));rowKeys.Add(("rewardHeroRing",ring));
+            reward.gameObject.SetActive(false);
+            Bind(row,rowKeys.ToArray());Link("row",row.gameObject);row.gameObject.SetActive(false);
             var entered=ChatBox(drawer,"Entered channel strip",54,598,549,35);var enterBg=ChatSurface(entered,"SmallWhite");enterBg.color=new Color32(68,53,34,255);Link("enteredStrip",entered.gameObject);Caption("entered",entered,4,0,541,35,"",27.3f,new Color32(183,153,107,255),TextAlignmentOptions.Center);
             var noticeButton=Control("notice",drawer,546,110,53,44,"SmallWhite");((Image)noticeButton.targetGraphic).color=new Color32(116,85,45,255);
             var arrow=ChatSurface(ChatBox(drawer,"Notice collapse arrow",0,0,17,26),"NoticeArrow");arrow.rectTransform.pivot=Vector2.one*.5f;arrow.rectTransform.anchoredPosition=new Vector2(572.5f*1.5f,-130.5f*1.5f);arrow.rectTransform.localEulerAngles=new Vector3(0,0,-90);

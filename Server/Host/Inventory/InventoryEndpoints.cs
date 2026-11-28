@@ -23,6 +23,13 @@ internal static class InventoryEndpoints
     internal static void MapInventory(this WebApplication app)
     {
         var inventory = app.MapGroup("/api/inventory");
+        var shop = app.MapGroup("/api/shop/arena");
+        shop.WithRequestTimeout(TimeSpan.FromSeconds(10));
+        shop.MapGet("", (HttpContext http, ArenaStore sessions, InventoryStore store, CancellationToken ct) =>
+            Handle(app, http, sessions, id => store.ArenaShop(id, null, ct), ct));
+        shop.MapPost("/exchanges", (ShopBuy input, HttpContext http, ArenaStore sessions, InventoryStore store, CancellationToken ct) =>
+            Handle(app, http, sessions, id => store.ArenaShop(id, input, ct), ct))
+            .WithMetadata(new RequestSizeLimitAttribute(2048));
         inventory.WithRequestTimeout(TimeSpan.FromSeconds(10));
         inventory.MapGet("/heroes", (HttpContext http, ArenaStore sessions, InventoryStore store,
             CancellationToken cancellation) => Handle(app, http, sessions,

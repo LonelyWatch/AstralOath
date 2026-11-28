@@ -4,6 +4,8 @@
 
 ## 目录、依赖与版本
 
+商店中可以兑换的商品和只读目录都用 Shop 模块的通用 `ShopItem.prefab`。各商店通过配表定义货币、商品顺序、售价、发放物及限购周期。服务器在同一事务校验限购、扣费并发货，重试沿用本次请求 ID。目录只提供浏览入口。新分类沿用同一项卡布局与确认交互，图标和文案由当前商品提供。[商店模块](../../Assets/Game/Modules/Shop/README.md)
+
 - 客户端 `Assets/Game`；服务端 `Server/Host` / `Server/Tests` / `Server/Ops`；纯C#共享 `Shared/com.astraloath.shared/Runtime`。数据库、网络、Unity不得进入共享战斗逻辑。
 - Bootstrap 负责启动与组装，Core 负责契约/基础能力，Common 负责可复用组件；业务在 Modules/<Module>，Common 不反向依赖 Modules。
 - 模块默认 `Scripts/Configs/Editor/Tests/Res/{Atlas,Prefab,Textures,Sounds,Animations,Materials}`，需要时添加 Effects 等目录。用 Tools/New-Module.ps1 创建，禁止覆盖已有模块；模块 README 必须描述职责、依赖、公开接口、配置/资源地址、生命周期和验收。

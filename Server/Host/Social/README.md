@@ -35,7 +35,7 @@ Profile字段：`playerId,uid,realmId,displayName,avatarId,greeting,greetingIsDe
 - `POST /api/chat/channels/{channel}/messages {requestId,kind:'text'|'sticker',text?,stickerId?}`。文字1–240标量或现有67个 `ArenaChatStickers` ID，互斥；返回 `{id,channel,player:{id,displayName,avatarId},kind,text,stickerId,createdAt}`，UTC时间与sender来自服务端，不能伪造system消息。
 - `GET /api/chat/channels/{channel}/events` 为NDJSON `sync/chat/heartbeat` 失效通知，不含正文；先订阅再读，提交后发布，每15秒复核Bearer及realm，取消/断开/关闭Host释放订阅。客户端按游标重读；当前是单体部署，不冒称跨进程消息总线。
 
-公共消息不要求竞技场房间成员，也不续房间租约。所有SQL按realm+channel隔离；每玩家+realm至少500ms间隔、每分钟30条，换频道不能绕过；同请求重放优先于限流。偏好只控制客户端对已授权公共流的本地通知，不过滤历史、不上传命中正文。五星英雄/神器及骑士团宣传尚无公开广播生产者，可保存偏好不等于实现这些广播。
+公共消息不要求竞技场房间成员，也不续房间租约。所有SQL按realm+channel隔离；每玩家+realm至少500ms间隔、每分钟30条，换频道不能绕过；同请求重放优先于限流。偏好只控制客户端对已授权公共流的本地通知，不过滤历史、不上传命中正文。召唤服务负责生成五星英雄和神器播报。骑士团宣传仍仅保存偏好。
 
 频道写入在分配消息自增ID前通过020的 `(realm_id,channel_no)` 行执行 `INSERT ... ON DUPLICATE KEY UPDATE` 获取事务X锁，一直持有到提交；同频道的提交顺序与游标顺序一致，避免不同玩家“较大ID先提交→游标推进→较小ID后提交”永久漏信。不同频道不共享该锁，幂等重放在获取锁和限流之前返回。真实HTTP双发送者回执gap锁演练先复现漏信RED，再验证修复及第三账号其他频道独立提交，无生产测试hook。
 
@@ -48,3 +48,7 @@ Profile/偏好独立version。非空N格式requestId与expectedVersion、本人�
 2026-11-28真实隔离MySQL：新增6集成项首先404 RED，realm查名、乱序提交、待选服改名及通知缺字段各有实际RED；最终Social32/32、完整Server677/677，0失败/0跳过。覆盖旧重名、并发认领/新身份抢名、50标量、本人/他人、幂等重启/冲突、realm/channel隔离、225条分页、目录表情、限流、完整四通知字段、NDJSON/长轮询取消、订阅归零、失效token读写与真实15秒复核断流、旧Entry/Inventory/Arena回归。通知缺任一bool返回400，不隐式关掉其他开关、不写版本/audit。证据 `.artifacts/home-profile-chat-review/server-tests/social-server-reviewed-final.trx`；NU1900仅离线漏洞源警告，不代表改依赖。
 
 复验先初始化 `Tools/ProjectEnvironment.ps1`，私下设置独立 `ASTRALOATH_MYSQL_TEST`，执行 `.tools/dotnet/dotnet.exe test Server/Tests --no-restore -p:TargetPlatformSdkPath=D:/UnityProjects/AstralOath/.tools -p:TargetPlatformDisplayName=Windows --filter FullyQualifiedName~Social`。未配置变量的MySqlFact为Skip，不算通过。本轮未迁移主库、未替换主服务、未打包分发/部署生产；协调者需备份/迁移/发布候选并另验实际客户端与视听，不能用服务端测试代替原版画面对照。
+
+## 公共频道消息中的召唤模板
+
+历史 API 返回的 hero5 / artifact5 消息携带 templateId，沿用既有 player、createdAt 和游标。普通文本或表情不附带模板。022 建立模板字段及四种消息形状约束；025 将原 VARCHAR(8) 扩为 VARCHAR(16)，能够存储九字符的 artifact5。从旧版升级无需重建玩家或聊天历史，按既有迁移器顺序执行全部迁移。发送历史顺序锁与召唤事务共用，召唤播报也使用现有消息增量通知。人工发送的限流只统计文字和表情，玩家不会因为刚抽到五星而被禁止聊天。频道公开可读，当前会话所选频道号随召唤请求传入，并按同一服务端区服隔离。

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using AstralOath.Client.Common;
 using AstralOath.Client.Home;
+using AstralOath.Client.BattleScene;
 using AstralOath.Shared.Battle;
 using TMPro;
 using UnityEditor;
@@ -113,6 +114,10 @@ namespace AstralOath.Editor
             return scroll;
         }
 
+        [Serializable] private sealed class ImprintTable { public HomeHeroArt.Imprint[] heroes; }
+        [Serializable] private sealed class StatusArtworkTable { public StatusArtwork[] statuses; }
+        [Serializable] private sealed class StatusArtwork { public string kind, group, asset; }
+
         private static void BuildHomeHeroArt()
         {
             const string battleCatalog = "Assets/Game/Modules/BattleScene/Configs/battle-catalog.json";
@@ -120,6 +125,10 @@ namespace AstralOath.Editor
             var baseModels=ReadRosterBaseModels();
             var growth = source.growthPresets.ToDictionary(preset => preset.id, StringComparer.Ordinal);
             var names = source.messages.ToDictionary(row => row.key, row => row.zhCn);
+            var inspection = new BattleInspectionContent(source);
+            var imprints = JsonUtility.FromJson<ImprintTable>(File.ReadAllText(Home + "Configs/hero-catalog-imprints.json")).heroes.ToDictionary(row => row.id);
+            const string statusPath = "Assets/Game/Modules/BattleScene/Res/Textures/Hud/Statuses/";
+            var statusArt = JsonUtility.FromJson<StatusArtworkTable>(File.ReadAllText(statusPath + "source.json")).statuses.ToDictionary(row => row.kind);
             var catalog = AssetDatabase.LoadAssetAtPath<HomeHeroArt>(HomeHeroArtPath);
             if (!catalog)
             {
@@ -141,6 +150,10 @@ namespace AstralOath.Editor
                     zodiac = hero.zodiac,
                     zodiacIcon = HeroZodiacArt(hero.zodiac),
                     growth = growth[hero.growthPresetId],
+                    imprint = imprints[hero.id],
+                    imprintFormation = InventoryArt("Catalog/hero_dedi_p_" + imprints[hero.id].direction),
+                    skills = source.skills.Where(skill => skill.heroId == hero.id).OrderBy(skill => skill.slot)
+                        .Select(BuildSkill).ToArray(),
                     modelSkeleton = Load<TextAsset>(portrait + "Animations/model/" + model + ".spine.json"),
                     modelAtlas = Load<TextAsset>(portrait + "Atlas/model/" + model + ".atlas.txt"),
                     modelPage = Load<Texture2D>(portrait + "Textures/model/" + model + ".png"),
@@ -158,6 +171,28 @@ namespace AstralOath.Editor
             }).ToArray();
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
+
+            HomeHeroArt.Skill BuildSkill(BattleCatalogData.SkillRow skill)
+            {
+                var auxiliary = inspection.SkillAuxiliaryEffect(skill);
+                StatusArtwork metadata = null;
+                if (auxiliary.Status.HasValue) statusArt.TryGetValue(auxiliary.Status.Value.ToString(), out metadata);
+                string upgrades = inspection.SkillEnhancements(skill);
+                return new HomeHeroArt.Skill
+                {
+                    name = names[skill.nameKey], description = inspection.SkillDescription(skill),
+                    icon = Load<Sprite>(skill.iconAsset),
+                    soul = skill.soulGain > 0 ? string.Format(names["battle.inspect.soul_gain"], skill.soulGain) : null,
+                    cooldown = skill.cooldownTurns > 0 ? string.Format(names["battle.inspect.cooldown"], skill.cooldownTurns) : null,
+                    burnTitle = skill.soulBurnCost > 0 ? names["battle.inspect.burn_header"] : null,
+                    burnCost = skill.soulBurnCost > 0 ? string.Format(names["battle.inspect.soul_burn"], skill.soulBurnCost) : null,
+                    burnDescription = inspection.SkillBurnDescription(skill),
+                    upgrades = string.IsNullOrEmpty(upgrades) ? null : "<color=#ff7800>" + names["battle.inspect.enhancement_header"] + "</color>\n" + upgrades,
+                    effectName = auxiliary.Title, effectDescription = auxiliary.Description,
+                    effectIcon = metadata == null ? null : Load<Sprite>(statusPath + metadata.asset),
+                    debuff = metadata?.group == "Debuff"
+                };
+            }
         }
     }
 }

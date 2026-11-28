@@ -66,6 +66,24 @@ namespace AstralOath.Client.Tests
             Assert.That(Count(session), Is.EqualTo(1));
         }
         [UnityTest] public IEnumerator ReadingWrongChannelOrUnknownMessageCannotClearUnread() => Done(WrongRead());
+        [UnityTest] public IEnumerator FiveStarPreferencesOnlyMuteMatchingUnreadAndRetainTheTemplateInHistory() => Done(RewardNotifications());
+        private async Task RewardNotifications()
+        {
+            var api = new Api();
+            using var session = new ChannelChatSession(api, default, () => "self");
+            await session.RefreshPreferencesAsync(default);
+            session.Preferences.notifications.artifact5 = false;
+            await session.JoinAsync(1, default);
+            var hero = Message("1"); hero.kind = "hero5"; hero.templateId = "c1024";
+            var artifact = Message("2"); artifact.kind = "artifact5"; artifact.templateId = "efr02";
+            var mine = Message("3", 1, "self"); mine.kind = "hero5"; mine.templateId = "c1024";
+            api.messages.AddRange(new[] { hero, artifact, mine });
+            await session.RefreshAsync(default);
+            Assert.That(session.Messages.Select(m => m.templateId), Is.EqualTo(new[] { "c1024", "efr02", "c1024" }));
+            Assert.That(session.UnreadCount, Is.EqualTo(1));
+            session.MarkRead(1, "1");
+            Assert.That(session.UnreadCount, Is.Zero);
+        }
         private async Task WrongRead()
         {
             var api = new Api(); using var session = new ChannelChatSession(api); await session.JoinAsync(1, default);

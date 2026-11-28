@@ -14,6 +14,7 @@ namespace AstralOath.Client.Home
         private readonly Action close;
         private Func<CancellationToken,Task> openArena,openBag;
         private Func<string,CancellationToken,Task> unavailable;
+        public Func<CancellationToken,Task> OpenShop { private get; set; }
 
         public HomeMoreMenuBinder(HomeMoreMenu view, ILocaleService locale,
             Func<CancellationToken, Task> openHeroes, Func<CancellationToken, Task> openSummon, Action close)
@@ -41,6 +42,7 @@ namespace AstralOath.Client.Home
             view.Close.FeedbackSound = view.Outside.FeedbackSound = GameUiFeedback.Sound.Silent;
             view.Heroes.Bind(scope, openHeroes);
             view.Summon.Bind(scope, openSummon);
+            view.Feature("shop").Bind(scope,OpenShop ?? (ct => Unavailable("shop",ct)));
             view.Feature("arena").Bind(scope,openArena??(token=>Unavailable("arena",token)));
             view.Bag.FeedbackSound=GameUiFeedback.Sound.InventoryOpen;view.Bag.Bind(scope,openBag??(token=>Unavailable("bag",token)));
             foreach(var id in HomeFeatureLabels.Main)

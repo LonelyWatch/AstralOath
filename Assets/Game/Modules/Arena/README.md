@@ -1,5 +1,13 @@
 # Arena
 
+竞技场关卡的入口复用模拟战目录外壳。中央按原版 34 秒画面显示三行，100 关使用滚动行复用；公开的关卡只能按已有解锁进度挑战。备战目录支持按名字搜索持有英雄。首通放大镜只展示已经冻结的双方阵容。参见[原版、修前与对照标尺](../../../../docs/development/arena-tower-visual-revision.md)。
+
+固定防守关卡使用 `ArenaTower.prefab` / `ArenaTower` / `ArenaTowerBinder`。参考本次用户录像 02:11 交战对手列表及 03:26 左右对阵编队、04:29 攻击指南；首通阵容页按用户要求显示个人队伍，项目将中栏换为固定可滚动百关，打开时滚动到当前关（通完后到最后一关）。选关、组队、首通阵容查看和侧栏使用独立作用域；对战记录先保留第三项，商店、模拟战及进入战场由 Foundation 组合。详见 [服务端接口、阵容和奖励](../../../../Server/Host/ArenaTower/README.md)。
+
+编队背景取自 `Res/Textures/Tower/base_pvp.png`，双方阵型地板取自 `Res/Textures/Draft/hero_config_*.png`，中央使用已有的 `_battle_pvp_icon_vs.png`。两侧模型、持有英雄目录的卡绘和星星分别复用 `Configs/ArenaDraftArt.asset` 和 `Res/Textures/Draft/TeamBadges/cm_icon_star_j.png`。首通放大镜按服务器记录显示当时双方阵容，使用居中固定尺寸的通用样式底板。按钮沿用通用反馈。
+
+PlayMode 用例 `ArenaTowerPageTests.ScrollsToCurrentStageAndRoutesClearTeamAndOwnedFormationIndependently` 从相同的 100 关运行表载入，构造已过第 54 关的账号状态，核对第 55 关位于视口、上下关权限、首通阵容、可编辑出战队伍与三个侧栏入口。设置 `ASTRAL_TOWER_CAPTURE_DIR` 为 D 盘目录可在带图形设备的 Editor 中输出关卡列表、首通阵容、对阵编队三张受控图。三张图采用测试账号及回调，真实账号进度、奖励和重启恢复在 Server 测试中独立验收。
+
 11/28追加房间右侧「频道 / 竞技场」双页签。左签通过Foundation注入的`ConfigurePublicChannel`组合回调打开现有公共频道Binder/Session的内嵌模式，右签继续房间成员/房间聊天；切换不重新创建房间事件连接。公共页有独立`WindowCoordinator`和开窗`BindingScope`，回竞技场/离房取消并释放公共页，登录Owner继续唯一公共频道观察。Arena运行时没有新增对ChannelChat的程序集引用。
 
 频道签计数与公共顶栏共用登录未读，并复用Common `NotificationBadge`和原数字字库。初次历史不计未读、看旧消息不清新消息、实际显示到底才按频道/ID确认；具体项目行为见[ChannelChat](../ChannelChat/README.md)。实际查看了原11/28录屏32.000s频道框架及本轮用户房间修前截图，数字角标沿用既有top_bar素材；图片和调查在`.artifacts/identity-social-followup/chat/`。本轮按用户明确指示跳过回归、待协调者打包供用户自行验收；新增先行测试未执行，未将源码或预制生成视为原生/视觉/音效通过。

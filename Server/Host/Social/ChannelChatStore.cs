@@ -59,15 +59,11 @@ internal sealed class ChannelChatStore(string? connectionString,ChannelChatEvent
         input=input with{RequestId=request,Text=text,StickerId=sticker};byte[] fingerprint=Fingerprint(new{channel,input});
         await using var db=await Open(connectionString,ct);await using var tx=await db.BeginTransactionAsync(IsolationLevel.ReadCommitted,ct);await LockOwner(db,tx,player,ct);
         if(await Receipt<ChatMessage>(db,tx,"channel_chat_operation",player,request,fingerprint,ct) is {} saved){await tx.CommitAsync(ct);return saved;}
-        // Hold a database X lock from before id allocation until commit. Owner
-        // locks alone cannot stop another player's later id committing first.
-        // ON DUPLICATE UPDATE avoids INSERT IGNORE's shared-lock upgrade race.
-        using(var order=Sql(db,tx,"INSERT INTO channel_chat_order(realm_id,channel_no) VALUES(@r,@channel) ON DUPLICATE KEY UPDATE channel_no=@channel",("@r",Realm),("@channel",channel)))
-            await order.ExecuteNonQueryAsync(ct);
+        await LockOrder(db,tx,channel,ct);
         await EnsurePreferences(db,tx,player,ct);DateTime now=DateTime.UtcNow;
         using(var q=Sql(db,tx,"""
             SELECT (last_sent_at IS NOT NULL AND last_sent_at>@recent)
-                OR (SELECT COUNT(*) FROM channel_chat_message WHERE player_id=@p AND realm_id=@r AND created_at>@minute)>=30
+                OR (SELECT COUNT(*) FROM channel_chat_message WHERE player_id=@p AND realm_id=@r AND kind IN ('text','sticker') AND created_at>@minute)>=30
             FROM channel_chat_preferences WHERE player_id=@p AND realm_id=@r
             """,("@p",player),("@r",Realm),("@recent",now.AddMilliseconds(-500)),("@minute",now.AddMinutes(-1))))
             if(Convert.ToInt32(await q.ExecuteScalarAsync(ct))!=0)throw new SocialProblem(429,"rate_limited");
@@ -84,6 +80,15 @@ internal sealed class ChannelChatStore(string? connectionString,ChannelChatEvent
         await OperationAudit.Record(db,tx,"chat.message.send","arena_player",player,"chat_message",result.Id,null,ct);
         await tx.CommitAsync(ct);events.Publish(Realm,channel);return result;
     }
+    internal static async Task LockOrder(MySqlConnection db, MySqlTransaction tx, int channel, CancellationToken ct)
+    {
+        // Hold a database X lock from before id allocation until commit. Owner
+        // locks alone cannot stop another player's later id committing first.
+        // ON DUPLICATE UPDATE avoids INSERT IGNORE's shared-lock upgrade race.
+        using(var order=Sql(db,tx,"INSERT INTO channel_chat_order(realm_id,channel_no) VALUES(@r,@channel) ON DUPLICATE KEY UPDATE channel_no=@channel",("@r",Realm),("@channel",channel)))
+            await order.ExecuteNonQueryAsync(ct);
+    }
+
     internal async Task<ChatPage> Messages(int channel,long after,int waitMs,CancellationToken ct)
     {
         Channel(channel);if(after<0||waitMs is <0 or >8000)throw new SocialProblem(400,"invalid_message_cursor");
@@ -98,13 +103,13 @@ internal sealed class ChannelChatStore(string? connectionString,ChannelChatEvent
     {
         await using var db=await Open(connectionString,ct);int limit=after==0?50:100;
         using var q=Sql(db,null,"""
-            SELECT m.id,p.id,p.display_name,p.avatar_id,m.kind,m.body,m.sticker_id,m.created_at
+            SELECT m.id,p.id,p.display_name,p.avatar_id,m.kind,m.body,m.sticker_id,m.created_at,m.template_id
             FROM channel_chat_message m JOIN arena_player p ON p.id=m.player_id
             WHERE m.realm_id=@r AND m.channel_no=@channel
             """+(after==0?" ORDER BY m.id DESC LIMIT 51":" AND m.id>@after ORDER BY m.id ASC LIMIT 101"),
             ("@r",Realm),("@channel",channel),("@after",after));
         var list=new List<ChatMessage>();await using(var r=await q.ExecuteReaderAsync(ct))
-            while(await r.ReadAsync(ct))list.Add(new(r.GetInt64(0).ToString(CultureInfo.InvariantCulture),channel,new(r.GetString(1),r.GetString(2),r.GetString(3)),r.GetString(4),r.IsDBNull(5)?null:r.GetString(5),r.IsDBNull(6)?null:r.GetString(6),DateTime.SpecifyKind(r.GetDateTime(7),DateTimeKind.Utc)));
+            while(await r.ReadAsync(ct))list.Add(new(r.GetInt64(0).ToString(CultureInfo.InvariantCulture),channel,new(r.GetString(1),r.GetString(2),r.GetString(3)),r.GetString(4),r.IsDBNull(5)?null:r.GetString(5),r.IsDBNull(6)?null:r.GetString(6),DateTime.SpecifyKind(r.GetDateTime(7),DateTimeKind.Utc),r.IsDBNull(8)?null:r.GetString(8)));
         bool more=list.Count>limit;if(more)list.RemoveAt(limit);if(after==0)list.Reverse();
         return new(channel,list,list.Count==0?after.ToString(CultureInfo.InvariantCulture):list[^1].Id,after>0&&more);
     }

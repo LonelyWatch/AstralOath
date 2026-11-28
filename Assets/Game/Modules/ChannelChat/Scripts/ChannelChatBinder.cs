@@ -25,6 +25,9 @@ namespace AstralOath.Client.ChannelChat
         private readonly ChannelChat view;private readonly BindingScope scope;private readonly ChannelChatSession session;
         private readonly Action close;private readonly Action<string> unavailable,playerSelected;private readonly Func<string> ownPlayerId;private readonly Func<string,Sprite> avatarArt;
         private readonly WindowCoordinator windows;private readonly GameToastBinder toast;private readonly Dictionary<string,Row> rows=new Dictionary<string,Row>(StringComparer.Ordinal);
+        public Func<string,string,Sprite> RewardIcon { private get; set; }
+        public Func<string,string,string> RewardName { private get; set; }
+        public Action<string,string> RewardSelected { private get; set; }
         private readonly bool embedded;
         private readonly Dictionary<string,Sprite> stickers=new Dictionary<string,Sprite>(StringComparer.Ordinal);
         private readonly List<GameObject> stickerCells=new List<GameObject>();
@@ -89,7 +92,7 @@ namespace AstralOath.Client.ChannelChat
             Get<GameObject>("enteredStrip").SetActive(session.Messages.Count==0);
             Get<GameButton>("send").interactable=!loading&&!sending;Get<TMP_InputField>("input").interactable=!loading&&!sending&&!session.HasPendingSend;
             Get<GameButton>("emoji").interactable=!loading&&!sending&&!session.HasPendingSend;
-            bool channelChanged=shownChannel!=session.Channel;shownChannel=session.Channel;var scroll=Get<ScrollRect>("messages");bool follow=channelChanged||scroll.verticalNormalizedPosition<.08f||rows.Count==0;
+            bool channelChanged=shownChannel!=session.Channel;shownChannel=session.Channel;var scroll=Get<ScrollRect>("messages");bool follow=channelChanged||AtBottom(scroll)||rows.Count==0;
             var ids=new HashSet<string>(session.Messages.Select(m=>m.id),StringComparer.Ordinal);
             foreach(string id in rows.Keys.Where(id=>!ids.Contains(id)).ToArray()){rows[id].Dispose();rows.Remove(id);}
             foreach(var message in session.Messages)
@@ -97,6 +100,11 @@ namespace AstralOath.Client.ChannelChat
                 if(!rows.TryGetValue(message.id,out var row))
                 {
                     var root=Object.Instantiate(Get<GameObject>("row"),scroll.content,false);root.name="Message "+message.id;root.SetActive(true);row=new Row{root=root,map=root.GetComponent<BindingMap>(),bindings=new BindingScope(scope.Token)};rows.Add(message.id,row);
+                    if (message.IsReward)
+                        Hook(row.bindings, row.map.Require<GameButton>("rewardButton"), () =>
+                        {
+                            if (!Closed) RewardSelected?.Invoke(message.kind, message.templateId);
+                        });
                     string playerId=message.player?.id;Hook(row.bindings,row.map.Require<GameButton>("avatar"),()=>{if(!Closed&&!string.IsNullOrEmpty(playerId))playerSelected?.Invoke(playerId);});
                 }
                 row.root.transform.SetAsLastSibling();RenderRow(row,message);
@@ -119,10 +127,12 @@ namespace AstralOath.Client.ChannelChat
         }
         private void ReadVisible()
         {
-            if(Closed||!opened||loading||!view.Root.activeInHierarchy||session.Messages.Count==0||Get<ScrollRect>("messages").verticalNormalizedPosition>.08f)return;
+            if(Closed||!opened||loading||!view.Root.activeInHierarchy||session.Messages.Count==0||!AtBottom(Get<ScrollRect>("messages")))return;
             if(new[]{"favorite","channel","settings","stickers"}.Any(windows.IsOverlayOpen))return;
             session.MarkRead(session.Channel,session.Messages[session.Messages.Count-1].id);
         }
+        private static bool AtBottom(ScrollRect list) =>
+            list.content.rect.height <= list.viewport.rect.height + .5f || list.verticalNormalizedPosition <= .08f;
         private void RenderRow(Row row,ChatMessage message)
         {
             string own=ownPlayerId?.Invoke();bool self=!string.IsNullOrEmpty(own)&&message.player?.id==own;var name=row.map.Require<GameText>("sender");
@@ -131,8 +141,24 @@ namespace AstralOath.Client.ChannelChat
             var time=row.map.Require<GameText>("time");time.text=RelativeTime(message.createdAt);((RectTransform)time.transform.parent).anchoredPosition=new Vector2(108+nameWidth+8,-7.5f);
             var avatar=row.map.Require<Image>("face");avatar.sprite=avatarArt?.Invoke(message.player?.avatarId);avatar.enabled=avatar.sprite;row.map.Require<GameButton>("avatar").interactable=!string.IsNullOrEmpty(message.player?.id);
             bool isSticker=message.kind=="sticker";var body=row.map.Require<GameText>("body");var sticker=row.map.Require<Image>("sticker");body.gameObject.SetActive(!isSticker);sticker.gameObject.SetActive(isSticker);
+            row.map.Require<GameObject>("reward").SetActive(message.IsReward);
             float height;
-            if(isSticker){stickers.TryGetValue(message.stickerId??"",out var sprite);sticker.sprite=sprite;sticker.enabled=sprite;height=225;}
+            if (message.IsReward)
+            {
+                body.gameObject.SetActive(false);
+                var icon=row.map.Require<Image>("rewardIcon");
+                icon.sprite=RewardIcon?.Invoke(message.kind,message.templateId);
+                icon.enabled=icon.sprite;
+                row.map.Require<Image>("rewardHeroBase").enabled=message.kind=="hero5";
+                row.map.Require<Image>("rewardHeroRing").enabled=message.kind=="hero5";
+                var title=RewardName?.Invoke(message.kind,message.templateId)??message.templateId;
+                // TMP treats text as markup. Neutralize delimiters in all outside names.
+                string Safe(string value)=>(value??"").Replace("<","＜").Replace(">","＞");
+                row.map.Require<GameText>("rewardText").text=string.Format(L(message.kind=="hero5"?"reward.hero":"reward.artifact"),Safe(message.player.displayName),Safe(title));
+                // The space between entries belongs to the list, not below its final bubble.
+                height=message.id==session.Messages[session.Messages.Count-1].id ? 149f : 173f;
+            }
+            else if(isSticker){stickers.TryGetValue(message.stickerId??"",out var sprite);sticker.sprite=sprite;sticker.enabled=sprite;height=225;}
             else
             {body.text=message.text??"";body.richText=false;float textHeight=Mathf.Max(45,body.GetPreferredValues(body.text,693,0).y);((RectTransform)body.transform.parent).SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,textHeight);height=Mathf.Max(108,48+textHeight+13);}
             row.root.GetComponent<LayoutElement>().preferredHeight=height;
@@ -241,9 +267,12 @@ namespace AstralOath.Client.ChannelChat
             if(Closed||!view.Root)return;var bounds=((RectTransform)view.Root.transform).rect;float width=bounds.width,height=bounds.height;
             if(width<=0||height<=0||(Mathf.Abs(lastWidth-width)<.5f&&Mathf.Abs(lastHeight-height)<.5f))return;lastWidth=width;lastHeight=height;
             var panel=Get<RectTransform>("stickerPanel");float offset=Mathf.Min(844.5f,Mathf.Max(0,width-panel.rect.width-12));panel.anchoredPosition=new Vector2(-offset,-36);
-            if(!embedded)return;
+            var messageList=Get<ScrollRect>("messages");
+            var historyHeight=Get<LayoutElement>("historyHeight");
+            if(!embedded){historyHeight.minHeight=messageList.viewport.rect.height;return;}
             float scale=width/924f;var drawer=Get<RectTransform>("drawer");drawer.anchorMin=drawer.anchorMax=drawer.pivot=Vector2.zero;drawer.anchoredPosition=Vector2.zero;drawer.sizeDelta=new Vector2(924,height/scale);drawer.localScale=Vector3.one*scale;
             var history=(RectTransform)Get<ScrollRect>("messages").transform.parent;history.anchorMin=Vector2.zero;history.anchorMax=Vector2.one;history.offsetMin=new Vector2(81,132);history.offsetMax=new Vector2(-24,-95);
+            historyHeight.minHeight=messageList.viewport.rect.height;
             PlaceBottom((RectTransform)Get<GameButton>("emoji").transform,78,18);
             PlaceBottom((RectTransform)Get<TMP_InputField>("input").transform,159,18);
             PlaceBottom((RectTransform)Get<GameButton>("send").transform,669,18);

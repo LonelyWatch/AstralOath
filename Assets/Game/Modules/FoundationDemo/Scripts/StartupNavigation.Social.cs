@@ -19,6 +19,7 @@ namespace AstralOath.Client.FoundationDemo
         private PlayerProfileSession profileSession;
         private ChannelChatSession chatSession;
         private SocialPanel profilePanel, chatPanel, noticePanel;
+        private SocialPanel informationPanel;
         private string loginPlayerId;
         private Func<CancellationToken, Task<string>> socialBearer;
 
@@ -26,6 +27,8 @@ namespace AstralOath.Client.FoundationDemo
         {
             views.Register<ProfileView>();
             views.Register<ChatView>();
+            views.Register<HeroInformation>();
+            views.Register<ArtifactInformation>();
             views.Register<FeatureNotice>();
             loginPlayerId = account?.PlayerId;
             socialBearer = bearer;
@@ -38,6 +41,7 @@ namespace AstralOath.Client.FoundationDemo
             lifetime.Add(() =>
             {
                 profileSession.Changed -= ApplyProfileHeader;
+                informationPanel?.Dispose();
                 noticePanel?.Dispose();
                 profilePanel?.Dispose();
                 chatPanel?.Dispose();
@@ -107,12 +111,13 @@ namespace AstralOath.Client.FoundationDemo
             await panel.OpenAsync(async scope =>
             {
                 var view = await views.CreateAsync<ChatView>(assets, panel.Parent, scope);
-                await pages.Heroes.Get();
+                await Task.WhenAll(pages.Heroes.Get(),pages.Artifacts.Get());
                 scope.Token.ThrowIfCancellationRequested();
                 var binder = new ChannelChatBinder(view, scope, chatSession, panel.Dispose,
                     key => ObserveSocial(OpenUnavailableAsync(key, scope.Token)),
                     id => ObserveSocial(OpenPlayerProfileAsync(id, scope.Token)),
                     () => loginPlayerId, Avatar);
+                ConfigureRewardLinks(binder,scope);
                 await binder.OpenAsync(scope.Token);
             });
         }
@@ -120,16 +125,55 @@ namespace AstralOath.Client.FoundationDemo
         private async Task OpenRoomChannelAsync(BindingScope scope, RectTransform host)
         {
             var view = await views.CreateAsync<ChatView>(assets, host, scope);
-            await pages.Heroes.Get();
+            await Task.WhenAll(pages.Heroes.Get(),pages.Artifacts.Get());
             scope.Token.ThrowIfCancellationRequested();
             var binder = new ChannelChatBinder(view, scope, chatSession, null,
                 key => ObserveSocial(OpenUnavailableAsync(key, scope.Token)),
                 id => ObserveSocial(OpenPlayerProfileAsync(id, scope.Token)),
                 () => loginPlayerId, Avatar, embedded: true);
+            ConfigureRewardLinks(binder,scope);
             await binder.OpenAsync(scope.Token);
         }
 
-        private async Task OpenUnavailableAsync(string key, CancellationToken owner)
+        private void ConfigureRewardLinks(ChannelChatBinder binder,BindingScope scope)
+        {
+            HomeHeroArt.Hero Hero(string id)=>pages.Heroes.Loaded?.heroes.FirstOrDefault(h=>h.id==id);
+            binder.RewardIcon=(kind,id)=>kind=="hero5"?Hero(id)?.portrait:pages.Artifacts.Loaded?.Find(id)?.combatIcon;
+            binder.RewardName=(kind,id)=>kind=="hero5"?Hero(id)?.name:pages.Artifacts.Loaded?.Find(id)?.template.Name;
+            binder.RewardSelected=(kind,id)=>ObserveSocial(OpenRewardInformationAsync(kind,id,scope.Token));
+        }
+
+        private async Task OpenRewardInformationAsync(string kind,string id,CancellationToken owner)
+        {
+            if(informationPanel?.IsOpen==true) return;
+            var panel=new SocialPanel(parent,185,owner);
+            informationPanel=panel;
+            await panel.OpenAsync(async scope=>
+            {
+                if(kind=="hero5")
+                {
+                    var art=await pages.Heroes.Get();
+                    var hero=art.heroes.FirstOrDefault(item=>item.id==id);
+                    if(hero==null) throw new InvalidOperationException("Unknown summon hero template.");
+                    var view=await views.CreateAsync<HeroInformation>(assets,panel.Parent,scope);
+                    scope.Token.ThrowIfCancellationRequested();
+                    new HeroInformationBinder(view,hero,locale,scope,panel.Dispose);
+                }
+                else
+                {
+                    var art=await pages.Artifacts.Get();
+                    var item=art.Find(id)??throw new InvalidOperationException("Unknown summon artifact template.");
+                    var view=await views.CreateAsync<ArtifactInformation>(assets,panel.Parent,scope);
+                    scope.Token.ThrowIfCancellationRequested();
+                    new ArtifactInformationBinder(view,item,locale,scope,panel.Dispose);
+                }
+            });
+        }
+
+        private Task OpenUnavailableAsync(string key, CancellationToken owner) =>
+            ShowFeatureNoticeAsync(SocialLabels.Title(key),SocialLabels.Text("unavailable"),owner);
+
+        private async Task ShowFeatureNoticeAsync(string title, string message, CancellationToken owner)
         {
             if (noticePanel?.IsOpen == true) return;
             var panel = new SocialPanel(parent, 220, owner);
@@ -138,8 +182,7 @@ namespace AstralOath.Client.FoundationDemo
             {
                 var view = await views.CreateAsync<FeatureNotice>(assets, panel.Parent, scope);
                 scope.Token.ThrowIfCancellationRequested();
-                new FeatureNoticeBinder(view).Open(scope, SocialLabels.Title(key),
-                    SocialLabels.Text("unavailable"), SocialLabels.Text("dismiss"), panel.Dispose);
+                new FeatureNoticeBinder(view).Open(scope, title, message, SocialLabels.Text("dismiss"), panel.Dispose);
             });
         }
 

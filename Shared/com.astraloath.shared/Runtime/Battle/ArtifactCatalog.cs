@@ -151,10 +151,12 @@ namespace AstralOath.Shared.Battle
             return secondaryBase + (secondaryMax - secondaryBase) * (level / 3) / 10;
         }
 
-        public string DescriptionAt(int level)
+        public string DescriptionAt(int level) => FormatDescription(level, Description);
+
+        public string FormatDescription(int level, string format)
         {
             string primary = Effect == "opening_soul" ? EffectAt(level).ToString(System.Globalization.CultureInfo.InvariantCulture) : Percent(EffectAt(level));
-            return string.Format(System.Globalization.CultureInfo.InvariantCulture, Description, primary, Percent(SecondaryEffectAt(level)));
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, format, primary, Percent(SecondaryEffectAt(level)));
         }
 
         private static string Percent(int value) => (value / 100m).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);

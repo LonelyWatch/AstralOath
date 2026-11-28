@@ -1,5 +1,9 @@
 # FoundationDemo
 
+竞技场首页现在打开固定关卡列表。爬塔战斗结束回到关卡进度，模拟战仍可通过第二个页签进入。主页、展开菜单与竞技场共用商店窗口，返回路由记录原入口。Foundation 的导航负责取得真实认证与资源，并在页面关闭时释放绑定。[本轮接口和验收](../../../../docs/delivery/2026-11-28-arena-tower-shop.md)
+
+发起挑战前持久保存随机请求号，按服务地址、当前账号、关卡及出战实例顺序的摘要分开。连接中断、切页、关闭客户端或场景加载中断后，再选相同队伍会恢复同一场对局。战场完成登场，或者服务端明确返回越关、实例失效等业务拒绝时结束本次请求。实际返回由 `BattleOnlineLaunch.Returning` 订阅触发，使用登录生命周期重开关卡列表并读取最新进度。
+
 11/28追加公共频道未读与房间入口：`StartupNavigation.Social.cs`在既有登录Session注入稳定玩家ID getter，将同一Session/Binder嵌入世界竞技场左「频道」签，右「竞技场」仍归房间Binder。顶栏/More各`ChatEntry`和房间签都按各页`BindingScope`订阅同一登录未读；离页解绑，登录Owner的唯一NDJSON观察继续，登出释放。无新增服务、后台轮询或AOT边界。行为、源图和未执行项见[ChannelChat](../ChannelChat/README.md)与[Arena](../Arena/README.md)；用户本轮明确跳过回归并自行验收，先行测试未运行，不以旧R46证据覆盖本候选。
 
 当前本机签名内容为R46/app0.1.27（产品d312f43b，R37母包），入口`.artifacts/windows-r46/Play-R46.exe`。1080/4K各Social25+召唤12及Mail14状态实际通过，单项奖励源星粒子真实启用；游客首会话串行修复后两冷启动预取警告为0。普通Limited入口实际显示登录页、服务/Feed身份及0业务重复下载通过，不称无人干预已登录。R44/45以下是候选历史，当前交付、原版/前后图、代码位置和视听缺口以[最终回执](../../../../docs/delivery/2026-11-28-home-social-visual-fix.md)为准；没有用45桌面遮挡录像冒充Native连续奖励。
@@ -161,3 +165,7 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 ### R47追加：提示淡变与UID
 
 FeatureNotice进入0.18秒、退出0.16秒，用CanvasGroup与unscaled时钟平滑渐变；关闭动画结束再通知窗口释放。每次Open独立BindingScope，重开/父销毁取消旧动画且不让旧回调关新窗。大背景启用已有KeepBrightnessOnPress，不改变Common/AOT。时长是本项目参数，原片61.5秒仅支持稳态外观，不假称逐帧测得。用户明确免回归后未运行新的界面/连续视听验收；本轮仅生成预制与构建打包。
+
+## 竞技场实机验收入口
+
+`StartupNavigation.ArenaPresentationVerification.cs` 在显式开发参数和回环测试服下，从正常的竞技场按钮、商店商品卡、频道奖励图标依次采集画面。实机结论还需检查截图内容、尺寸及当前签名版本。路由、原片与样例在[竞技场重做记录](../../../../docs/delivery/2026-11-29-arena-visual-rework.md)。

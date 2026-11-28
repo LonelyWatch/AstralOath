@@ -12,7 +12,8 @@ namespace AstralOath.Client.Tests
         {
             var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Game/Modules/Home/Res/Prefab/HomeWindow.prefab");var map=prefab.GetComponent<BindingMap>();
             foreach(string id in new[]{"episode","side_story","battle","arena","summon","shop"})Assert.That(map.Require<GameButton>("feature."+id),Is.Not.Null);
-            foreach(string id in new[]{"episode","side_story","battle","shop"})
+            Assert.That(map.Require<GameText>("featureLabel.shop").color.a,Is.GreaterThan(.6f));
+            foreach(string id in new[]{"episode","side_story","battle"})
             {var button=map.Require<GameButton>("feature."+id);Assert.That(button.interactable,Is.True,"未完成功能仍能点击得到说明");Assert.That(map.Require<GameText>("featureLabel."+id).color.a,Is.LessThan(.6f));}
             Assert.That(map.Require<GameButton>("profileOpen"),Is.Not.Null);Assert.That(map.Require<GameText>("profileRank").text,Does.Not.Contain("4"));
             Assert.That(map.Require<GameText>("profileExperiencePercent").text,Is.Empty,"无经验权威不能造29.3%或其他样例");

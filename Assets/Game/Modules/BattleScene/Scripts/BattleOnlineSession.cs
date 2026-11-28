@@ -69,7 +69,10 @@ namespace AstralOath.Client.BattleScene
             IsOwnedTrial = trialBattleContentHash != null;
             battleContentHash = trialBattleContentHash ?? contentHash;
             string room = Uri.EscapeDataString(roomId);
-            url = new Uri(endpoint, IsOwnedTrial ? "/api/battle-preview/rooms/" + room : "/api/arena/rooms/" + room + "/battle");
+            string route = IsOwnedTrial ? "/api/battle-preview/rooms/" + room : "/api/arena/rooms/" + room + "/battle";
+            if (IsOwnedTrial && roomId.StartsWith("tower-", StringComparison.Ordinal))
+                route = "/api/arena/tower/battles/" + room;
+            url = new Uri(endpoint, route);
             this.battleId = battleId;
             this.contentHash = contentHash;
             this.bearer = bearer;

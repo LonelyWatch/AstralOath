@@ -1,5 +1,7 @@
 # 配置源表与生成
 
+普通竞技场的 [关卡与段位](ArenaTower/catalog.json) 是 Host 嵌入的配置源。100 份历史防守观察、角色替用规则和新手难度曲线见 [竞技场关卡说明](ArenaTower/README.md)。重新采集观察表和编辑运行时参数是两项独立操作。
+
 游戏内邮件目录以 [Mail/catalog.json](Mail/catalog.json) 为唯一编辑源，包含类型、发件人、受支持资源、确定性礼包和用途模板。Host直接嵌入并在加载时验证，客户端读取 `/api/mail/catalog` 的安全目录，不复制第二套发奖规则；字段、冻结与项目行动力边界见 [Mail说明](Mail/README.md)。这份JSON不经过Luban，修改后必须重新发布Host并运行Mail目录/事务回归。已投递邮件继续按冻结规格发奖。
 
 普通装备强化的编辑入口为 `Tables/equipment_enhancement_profiles.csv`、`equipment_enhancement_rolls.csv`、`equipment_enhancement_materials.csv` 和来源JSON。它们通过 `.tools/character-assets/Scripts/python.exe Tools/Config/Generate-EquipmentEnhancement.py` 生成服务端 `EquipmentEnhancementSource.g.cs`，不手改生成C#；不是新增Luban表。`--import-export` 仅从选择性解析的D盘原表重建源CSV，精度/经济策略和官方概率边界见[强化专题](../docs/development/equipment-enhancement.md)。

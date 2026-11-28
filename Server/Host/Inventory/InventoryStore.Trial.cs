@@ -10,6 +10,20 @@ internal sealed partial class InventoryStore
     internal async Task<IReadOnlyList<BattleOwnedHero>> ReadTrialFormation(string playerId,
         IReadOnlyList<string> requested, CancellationToken cancellation)
     {
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new EntryProblem(503, "database_unavailable");
+        await using var connection = new MySqlConnection(connectionString);
+        await connection.OpenAsync(cancellation);
+        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellation);
+        await LockInventoryOwner(connection, transaction, playerId, cancellation);
+        var result = await ReadLockedFormation(connection, transaction, playerId, requested, cancellation);
+        await transaction.CommitAsync(cancellation);
+        return result;
+    }
+
+    internal async Task<IReadOnlyList<BattleOwnedHero>> ReadLockedFormation(MySqlConnection connection,
+        MySqlTransaction transaction, string playerId, IReadOnlyList<string> requested, CancellationToken cancellation)
+    {
         if (requested is not { Count: >= 1 and <= 4 })
             throw new EntryProblem(400, "trial_formation_invalid");
 
@@ -24,13 +38,9 @@ internal sealed partial class InventoryStore
                 throw new EntryProblem(400, "trial_formation_invalid");
         }
 
-        if (string.IsNullOrWhiteSpace(connectionString) || artifactCatalog == null)
+        if (artifactCatalog == null)
             throw new EntryProblem(503, "database_unavailable");
 
-        await using var connection = new MySqlConnection(connectionString);
-        await connection.OpenAsync(cancellation);
-        await using var transaction = await connection.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellation);
-        await LockInventoryOwner(connection, transaction, playerId, cancellation);
         await EnsureStarters(connection, transaction, playerId, cancellation);
         var gear = await ReadEquippedItems(connection, transaction, playerId, ids, cancellation);
         var byHero = gear.ToLookup(item => item.EquippedHeroId!, item =>
@@ -70,7 +80,6 @@ internal sealed partial class InventoryStore
 
         if (selected.Count != ids.Length)
             throw new EntryProblem(404, "trial_hero_not_found");
-        await transaction.CommitAsync(cancellation);
         return ids.Select(id => selected[id]).ToArray();
     }
 }

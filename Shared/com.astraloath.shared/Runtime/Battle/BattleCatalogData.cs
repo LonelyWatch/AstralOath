@@ -154,9 +154,19 @@ namespace AstralOath.Shared.Battle
             return CreateMatch(battleId, seed, data, allyHeroes.Select(hero => hero.HeroId).ToArray(), null, false, allyHeroes);
         }
 
+        public static BattleMatch CreateOwnedDuel(string battleId, ulong seed, BattleCatalogData data,
+            IReadOnlyList<BattleOwnedHero> allies, IReadOnlyList<BattleOwnedHero> defenders)
+        {
+            if (allies == null || defenders == null || allies.Count < 1 || allies.Count > 4 ||
+                defenders.Count < 1 || defenders.Count > 4 || allies.Any(hero => hero == null) || defenders.Any(hero => hero == null))
+                throw new ArgumentException("Both formations require one to four heroes.");
+            return CreateMatch(battleId, seed, data, allies.Select(hero => hero.HeroId).ToArray(),
+                defenders.Select(hero => hero.HeroId).ToArray(), true, allies, defenders);
+        }
+
         private static BattleMatch CreateMatch(string battleId, ulong seed, BattleCatalogData data,
             IReadOnlyList<string> allyHeroIds, IReadOnlyList<string> enemyHeroIds, bool duel,
-            IReadOnlyList<BattleOwnedHero> owned)
+            IReadOnlyList<BattleOwnedHero> owned, IReadOnlyList<BattleOwnedHero> defenders = null)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (data.schemaVersion != 2) throw new ArgumentException("Unsupported battle catalog schema.", nameof(data));
@@ -175,9 +185,15 @@ namespace AstralOath.Shared.Battle
             {
                 int slot = index + 1;
                 roster.Add(CreateHero(allies[index], BattleSide.Ally, "ally-", slot, owned?[index]));
-                roster.Add(enemies == null ? Slime(slot) : CreateHero(enemies[index], BattleSide.Enemy, "enemy-", slot,
-                    owned == null ? null : new BattleOwnedHero(enemies[index], owned[index].Level,
-                        Math.Max(growth[heroes[enemies[index]].growthPresetId].nativeStars, owned[index].Stars), 0)));
+            }
+            for (int index = 0; index < (enemies?.Count ?? allies.Count); index++)
+            {
+                int slot = index + 1;
+                var defender = defenders?[index];
+                if (defender == null && owned != null)
+                    defender = new BattleOwnedHero(enemies[index], owned[index].Level,
+                        Math.Max(growth[heroes[enemies[index]].growthPresetId].nativeStars, owned[index].Stars), 0);
+                roster.Add(enemies == null ? Slime(slot) : CreateHero(enemies[index], BattleSide.Enemy, "enemy-", slot, defender));
             }
 
             // The local exercise starts with souls to make all three heroes' Soul Burns testable.

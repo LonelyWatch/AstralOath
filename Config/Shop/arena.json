@@ -1,0 +1,19 @@
+[
+  {"id":"molagora","name":"魔罗戈拉","material":"ma_moragora1","quantity":1,"price":150,"period":"week","limit":1},
+  {"id":"energy","name":"40点行动力","material":"energy","quantity":40,"price":30,"period":"day","limit":3},
+  {"id":"gear1","name":"下级装备强化石","material":"ma_est2e","quantity":1,"price":30,"period":"none","limit":0},
+  {"id":"gear2","name":"上级装备强化石","material":"ma_est4e","quantity":1,"price":90,"period":"none","limit":0},
+  {"id":"jewel1","name":"下级饰品强化石","material":"ma_est2j","quantity":1,"price":40,"period":"none","limit":0},
+  {"id":"jewel2","name":"上级饰品强化石","material":"ma_est4j","quantity":1,"price":120,"period":"none","limit":0},
+  {"id":"season0","name":"盟约赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["盟约破坏者长矛","盟约破坏者头盔","盟约破坏者铠甲","盟约破坏者项链","盟约破坏者信物","盟约破坏者靴子"]},
+  {"id":"season1","name":"竞争赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["竞争毁灭者手杖","竞争毁灭者头冠","竞争毁灭者长袍","竞争毁灭者证据","竞争毁灭者印记","竞争毁灭者靴子"]},
+  {"id":"season2","name":"2025-1赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["毁灭者手杖","毁灭者头冠","毁灭者长袍","毁灭者证据","毁灭者印记","毁灭者靴子"]},
+  {"id":"season3","name":"2025-2赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["毁灭者手杖","毁灭者头冠","毁灭者长袍","毁灭者证据","毁灭者印记","毁灭者靴子"]},
+  {"id":"season4","name":"2025-4赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["荣耀斗士战斧","荣耀斗士头盔","荣耀斗士胸甲","荣耀斗士颈甲","荣耀斗士拳套","荣耀斗士战靴"]},
+  {"id":"season5","name":"2026-1赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["荣耀斗士战斧","荣耀斗士头盔","荣耀斗士胸甲","荣耀斗士颈甲","荣耀斗士拳套","荣耀斗士战靴"]},
+  {"id":"season6","name":"2026-2赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["荣耀斗士战斧","荣耀斗士头盔","荣耀斗士胸甲","荣耀斗士颈甲","荣耀斗士拳套","荣耀斗士战靴"]},
+  {"id":"season7","name":"2026-3赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["荣耀斗士战斧","荣耀斗士头盔","荣耀斗士胸甲","荣耀斗士颈甲","荣耀斗士拳套","荣耀斗士战靴"]},
+  {"id":"season8","name":"追击赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["追击毁灭者手杖","追击毁灭者头冠","追击毁灭者长袍","追击毁灭者证据","追击毁灭者印记","追击毁灭者靴子"]},
+  {"id":"season9","name":"斗志赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["斗志毁灭者手杖","斗志毁灭者头冠","斗志毁灭者长袍","斗志毁灭者证据","斗志毁灭者印记","斗志毁灭者靴子"]},
+  {"id":"season10","name":"2025-3赛季装备","material":"","quantity":0,"price":0,"period":"directory","limit":0,"entries":["毁灭者手杖","毁灭者头冠","毁灭者长袍","毁灭者证据","毁灭者印记","毁灭者靴子"]}
+]
