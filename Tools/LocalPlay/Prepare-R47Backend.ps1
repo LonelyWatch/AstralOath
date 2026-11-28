@@ -11,6 +11,13 @@ $metadata=Join-Path $release 'backend-preparation'
 $manifestPath=Join-Path $release 'backend-release-manifest.json'
 $dotnet=Join-Path $repo '.tools/dotnet/dotnet.exe'
 function Hash([string]$Path){(Get-FileHash -LiteralPath $Path).Hash.ToLowerInvariant()}
+function MigrationChecksum([string]$Path){
+    # Match DatabaseMigrator: StreamReader detects/removes BOM, then CRLF -> LF,
+    # then hash UTF-8 text. Published file hashes remain raw-byte identities.
+    $reader=[IO.StreamReader]::new($Path)
+    try{$sql=$reader.ReadToEnd().Replace("`r`n","`n")}finally{$reader.Dispose()}
+    [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($sql))).ToLowerInvariant()
+}
 function Sources {
     $found=@{}
     $projects=@{host='Server/Host/AstralOath.Server.csproj';shared='Shared/com.astraloath.shared/AstralOath.Shared.csproj';battle='Shared/com.astraloath.shared/Runtime/Battle/AstralOath.Battle.csproj'}
@@ -63,7 +70,7 @@ if((SourceDigest @(Sources)) -cne $digest){throw 'R47_SOURCE_CHANGED_DURING_PUBL
 $oldManifest=Get-Content -LiteralPath (Join-Path $repo '.artifacts/windows-r44/server/release-manifest.json') -Raw|ConvertFrom-Json
 $oldState=Get-Content -LiteralPath (Join-Path $repo '.artifacts/windows-r44/server/qa-host.json') -Raw|ConvertFrom-Json
 $files=@(Get-ChildItem -LiteralPath $backend -Recurse -File|Sort-Object FullName|ForEach-Object {[ordered]@{path=[IO.Path]::GetRelativePath($backend,$_.FullName).Replace('\','/');bytes=$_.Length;sha256=Hash $_.FullName}})
-$migrations=@(Get-ChildItem -LiteralPath (Join-Path $repo 'Server/Host/Foundation/Migrations') -Filter '*.sql' -File|Sort-Object Name|ForEach-Object {[ordered]@{version=$_.Name;checksum=Hash $_.FullName}})
+$migrations=@(Get-ChildItem -LiteralPath (Join-Path $repo 'Server/Host/Foundation/Migrations') -Filter '*.sql' -File|Sort-Object Name|ForEach-Object {[ordered]@{version=$_.Name;checksum=MigrationChecksum $_.FullName}})
 $manifest=[ordered]@{schemaVersion=1;release='R47';readyForActivation=$false;sourceCommit=$null;sourceState='uncommitted working-tree snapshot; Root final source pin required';sourceDigest=$digest;sourceFiles=$sources;
     endpoint='127.0.0.4';port=7728;database='astraloath_test';minimumAppVersion='0.1.27';realmId='undying-memory';dotnetSha256=Hash $dotnet;
     oldHost=[ordered]@{directory=$oldManifest.newHost.directory;sha256=$oldManifest.newHost.sha256;files=$oldManifest.newHost.files;pid=$oldState.pid;startTicks=$oldState.startTicks;statePath='.artifacts/windows-r44/server/qa-host.json';backupDirectory=$oldManifest.newHost.directory};

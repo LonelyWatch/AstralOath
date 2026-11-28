@@ -4,6 +4,8 @@
 
 `Prepare-R47Backend.ps1` 将当前.NET Release后端独立发布到 `.artifacts/windows-r47/backend`；清单 `.artifacts/windows-r47/backend-release-manifest.json` 记录MSBuild实际Compile/EmbeddedResource/Content、工程及锁文件的哈希、全部输出、21个迁移和复用助手。默认只准备归档，`sourceCommit=null/readyForActivation=false`，不读取连接串、不连接SQL、不启停服务。Root提交最终源码后用 `-PinSourceCommit <40位提交>` 复核源/助手/产物哈希并钉源；此参数由Root提供，不由脚本操作Git。已有输出拒绝覆盖，失败保留日志，不擅自清理后重发。
 
+迁移校验和严格复用生产 `DatabaseMigrator` 语义：`StreamReader`识别并去掉BOM、CRLF规范为LF后对UTF-8文本求SHA-256；不能用SQL原始字节哈希。R47首次预检因此失败于 `R47_MIGRATION_CHECKSUM_MISMATCH`，尚未停Host或写主库；失败回执和修前清单保留于R47的 `server/results` 与 `backend-preparation`，仅重算清单并撤销旧钉源，二进制不重发。
+
 `Ensure-R47GameService.ps1` 默认只恢复已激活R47，`-VerifyOnly`不启动进程。一次性R44→R47必须先 `-SwitchToR47` 只读预检，再用15分钟内同输入回执 `-SwitchToR47 -Execute -PreflightReceipt <结果JSON>`。它复用R44/R38路径、完整命令/PID/启动时间/DLL/监听所有权守卫、现有MySQL数据目录确认、备份和隐藏启动；旧R44助手及其发布树不修改。切换仅停止已核准的R44 Host，不停止MySQL；先冻结写入并创建完整新备份，再运行**新R47 DLL的完整 `migrate`**，使021同时建表、为旧玩家分配UID、补资料幂等回执并记录迁移。SQL文件单独执行不能代替该入口。迁移前后确认原MySQL身份及完整校验和，完成后检查全部旧玩家与回执的UID已初始化，运行身份原有schema级SELECT/INSERT/UPDATE须覆盖新表，助手不自动提权或修改GRANT。
 
 用户本轮明确免回归、要求尽快打包由其验收，因此新R47脚本只作静态语法/代码审查及后端publish编译；**未执行新增回归、恢复演练、主库预检/备份/迁移或服务切换**。执行路径保留必要备份，明确不再跑隔离恢复演练；失败保留备份和主库，不自动恢复、不清空库、不重新抽UID、不停止未知进程。Root负责最终钉源、人工复核、切服及发布；本段与准备归档不能冒称实际部署或实机通过。
