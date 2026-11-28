@@ -1,4 +1,12 @@
-# 主页、提示、聊天与单项奖励复核（R45）
+# 主页、提示、聊天与单项奖励复核（R45候选／最终R46）
+
+## 实包追加复核与最终版本顺延
+
+R45实际25个Social状态/12帧实时召唤、14个邮件状态均已在1080和4K通过，另有1080无声桌面过程录制；首次真实YooAsset下载14项182,734,413字节，后续4K及邮件检查计数仍14项。原生奖励峰帧与Editor第11帧(0.366667s)背景ROI平均绝对RGB差0.217/255，不能把未配准的0.550s后续斜纹截图当作原生材质退化。
+
+但实际日志揭示开发游客首次加载的缺陷：`StartupNavigation`并行预读经`ArenaApi.GetSessionTokenAsync`同时创建相同游客会话，服务端昵称事务出现MySQL1213，Social预取收到503；这不是预期未登录拒绝。普通已登录入口复用`GameAccountSession.Token`，后续打开聊天重试使功能脚本通过，不能据此忽略冷启动缺陷。先补真实并发连接回归并修复，再构建不可变内容46作为最终交付；已签名45及其失败/通过证据均保留，不覆盖重签。后续包与Native状态以最终回执为准。
+
+R46追加最小修复：`ArenaApi`按实例串行建立首次游客会话，等待者独立取消，owner/Dispose取消在途与队列，失败后可重试，成功后全部复用既有会话。新`Assets/Game/Tests/PlayMode/ArenaConnectionTests.cs`及原meta保GUID：实际修前6项2通过4失败（8路实际8次sessions），修后联合27/27，其中新并发/取消/销毁6/6。首轮误放EditMode导致编译失败已单列，不充作行为RED；有效RED/GREEN日志分别为`.artifacts/home-social-visual-fix/arena-connection-red46.xml`和`arena-connection-green46.xml`。代码/资源与R45视觉相同，仅会话建立及测试/文档改变；最终兼容构建、签名和原生冷启动正在执行。
 
 追加打包阶段：产品源`f3a826419045a2867c8bba6091177f0abf5a9aba`已完成HotWindows45并签名验签，包回执`.artifacts/windows-r45/package-prepared.json`。实际升级先保存3,053,649字节SQL备份，原失败回执`windows-r44/server/results/f45ae35b6b77471ca36c7d5c976301af.json`保留。经另一个隔离库真实导入0退出，定位为`Tools/LocalPlay/R44Service.Common.ps1:Invoke-R44CapturedChild`泄露`VoidTaskResult`造成误判；只读SELECT1与512KiB真实子进程均复现。修后3/3，原安全24/24；不修改SQL转义或用户数据，不重打已签名客户端。新增回归位于`Tools/LocalPlay/Test-CapturedProcess.ps1`，RED/GREEN在`.artifacts/localplay-captured-process/e318440bffc442c7828459dbd989dece`与`2d6e7d5ed8c4416ea46ad7ce761a7a4d`。当前旧Host已停、MySQL身份保持、主库未迁移；继续恢复演练和升级的结果另行追加。
 

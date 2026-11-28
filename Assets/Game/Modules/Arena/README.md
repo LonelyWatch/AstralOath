@@ -1,5 +1,11 @@
 # Arena
 
+11月28日修复开发游客首次连接并发：Home库存、邮件、资料与聊天预取并行调用同一个 `ArenaApi.GetSessionTokenAsync` 时，旧版在首次回执前会发送多次同名 `POST /api/arena/sessions`。R45原生日志中两条 `Social preparation: ArenaRequestException` 均从Bearer建立链抛出；隔离QA服务对应记录MySQL1213死锁与两次503，并非资料/聊天未登录的预期拒绝。正常登录入口已有 `GameAccountSession`，直接复用区服会话，不经过游客创建。
+
+`ArenaApi` 现在按实例用 `SemaphoreSlim` 串行建立首次会话，成功后所有等待者复用；失败或创建者取消会释放闸门，后续调用可重试。每个等待者分别观察自己的取消、入口owner与API关闭，取消一个排队窗口不影响创建者；Dispose先取消在途及排队连接，再关闭HTTP客户端。闸门与关闭信号均不使用原生WaitHandle，在仍可能进入finally释放时不主动Dispose这两个纯托管对象，随API实例回收，调用自身的linkedCTS/注册在作用域结束时释放。
+
+新增真实传输边界回归 `Tests/PlayMode/ArenaConnectionTests.cs`，通过注入 `HttpMessageHandler` 门控并发请求，覆盖8个Bearer仅一次建立、首次503后重试、取消等待者、取消创建者后重试、owner取消及Dispose在途竞态。协调者实际修前RED6项2过4失败：请求数分别8/2/4，Dispose抛 `ArenaRequestException unavailable`；修后PlayMode联合GREEN27/27、0跳过，其中新增6/6，并包含ArenaDirectory、HomeStartup、ChatBinder及ProfileBinder既有回归。实际回执位于 `.artifacts/home-social-visual-fix/arena-connection-red46.xml/.log` 与 `arena-connection-green46.xml/.log`。R46原生冷启动日志和签名交付仍待协调者执行，不将Editor检查称为原生或已分发通过。本项是连接行为修复，无新增视觉或音效。
+
 共享中文目录`Configs/arena-zh-hans.json`本轮新增`home.gear.combatPower`与`home.gear.manageChangeSummary`，供Home换装战力确认使用；Arena选禁与战斗流程没有因此变更。原版布局、项目CP规则及验收边界见[装备复核](../../../../docs/delivery/2026-11-26-equipment-followup.md)。
 
 共用 `arena-zh-hans.json` 新增普通装备强化、结果返粉及开发GM各部位强化材料的稳定中文key，供Home/Foundation使用；竞技场规则未改。[强化实现与边界](../../../../docs/development/equipment-enhancement.md)

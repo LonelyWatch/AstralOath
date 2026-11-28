@@ -63,8 +63,11 @@ namespace AstralOath.Client.Arena
         private readonly Uri endpoint;
         private readonly HttpClient http;
         private readonly CancellationToken lifetime;
+        private readonly SemaphoreSlim connectionGate = new SemaphoreSlim(1, 1);
+        private readonly CancellationTokenSource closing = new CancellationTokenSource();
         private Session session;
         private int pendingOperations;
+        private int disposed;
         public ArenaApi(Uri endpoint, CancellationToken lifetime, GameAccountSession account = null)
             : this(endpoint, lifetime, account, null) { }
 
@@ -104,16 +107,30 @@ namespace AstralOath.Client.Arena
         {
             await ConnectAsync(displayName, "c1001", token);
             token.ThrowIfCancellationRequested();
+            lifetime.ThrowIfCancellationRequested();
+            closing.Token.ThrowIfCancellationRequested();
             return session?.token ?? throw new ArenaRequestException("unauthorized");
         }
 
         public async Task ConnectAsync(string displayName, string avatarId, CancellationToken token)
         {
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token, lifetime);
+            using var closeRegistration = closing.Token.Register(cancellation.Cancel);
+            var connectionToken = cancellation.Token;
+            connectionToken.ThrowIfCancellationRequested();
             if (session != null) return;
-            var connected = await Send<Session>("sessions", new Identity { displayName = displayName, avatarId = avatarId }, token);
-            if (connected?.player == null || string.IsNullOrWhiteSpace(connected.token))
-                throw new ArenaRequestException("invalid_response");
-            if (session == null) session = connected;
+            await connectionGate.WaitAsync(connectionToken);
+            try
+            {
+                connectionToken.ThrowIfCancellationRequested();
+                if (session != null) return;
+                var connected = await Send<Session>("sessions", new Identity { displayName = displayName, avatarId = avatarId }, connectionToken);
+                connectionToken.ThrowIfCancellationRequested();
+                if (connected?.player == null || string.IsNullOrWhiteSpace(connected.token))
+                    throw new ArenaRequestException("invalid_response");
+                if (session == null) session = connected;
+            }
+            finally { connectionGate.Release(); }
         }
 
         public async Task<ArenaRoomInfo[]> ListAsync(string visibility, string sort, bool ascending, string query, CancellationToken token)
@@ -228,7 +245,15 @@ namespace AstralOath.Client.Arena
             Send<ArenaDraftState>(Room(id) + "/draft/preview", preview, token, 4);
         private static string Room(string id) => "rooms/" + Uri.EscapeDataString(id);
 
-        public void Dispose() => http.Dispose();
+        public void Dispose()
+        {
+            if (Interlocked.Exchange(ref disposed, 1) != 0) return;
+            closing.Cancel();
+            http.Dispose();
+            // Connect callers may still unwind/release or register cancellation.
+            // Neither synchronizer uses WaitHandle; leave these managed objects to
+            // the API lifetime's GC instead of disposing underneath those callers.
+        }
 
         private async Task<T> Send<T>(string path, object data, CancellationToken token, int timeout = 10) where T : class
         {
