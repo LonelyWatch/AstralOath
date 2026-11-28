@@ -2,27 +2,124 @@
   "layout": "wnd/msgbox_renewal.csb",
   "layoutSha256": "b4823826f6d72667fd51102b16174a89d0ca611dab60346ecfa9f6aa55ae5e2d",
   "reference": "Screenrecorder-2026-11-28-02-29-26-914.mp4 @61.5s",
-  "panel": "Existing Common SourceMessageBox retains corrected low-alpha line coverage and Point sampling.",
+  "panel": "Dedicated msgbox_renewal renew_popup_bg_2, cap54/54/148/302, source opacity229; shared SourceMessageBox is not used or modified.",
+  "runtimeGeometry": "Original CSB panel380 high before runtime; steady61.5 frame measures390 native high ->585 design. Title/upper/body/lower/close/arrow positions calibrated by1080-height normalization, not claimed authored CSB coordinates.",
+  "dimming": "Full-screen black .76 is a measured sRGB-opacity intention; runtime uses1-GammaToLinearSpace(.24), followed by original _dim/opacity127. Reference static white mail core transmission0.208; old direct Linear alpha.76 gave0.525. Runtime stack inference, not a newly claimed CSB field.",
   "assets": [
     {
       "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/_bar_23.png",
       "source": "img/_bar_23.png",
       "sourceSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
-      "outputSha256": "a8cd8415a8d1331086ed7178e6721607488c3a6d1600dcdbda6c1f446861a063",
+      "outputSha256": "2ba652c2e343c780b85404c42972a7cb9e5e0519e951d073c4dd3731d1e48ffd",
       "size": [
         74,
         12
-      ]
+      ],
+      "sourceCapXywh": [
+        30,
+        4,
+        14,
+        4
+      ],
+      "unityBorderLbrt": [
+        30,
+        4,
+        30,
+        4
+      ],
+      "sourceNodeOpacity": 127,
+      "conversion": "Source opacity folded into purpose PNG alpha; white coverage then converted from sRGB to linear; original RGB and non-white shadow effective alpha preserved."
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/_bar_2.png",
+      "source": "img/_bar_2.png",
+      "sourceSha256": "81e716524df5b87bb2ab8422d14e6b6c348726d8e7f65ea1f844f27144678729",
+      "outputSha256": "69c2f24be9f6a2c8c0cfc0f391079d93c1fa1a54d743e9fd8853fadb4e168471",
+      "size": [
+        98,
+        10
+      ],
+      "sourceCapXywh": [
+        32,
+        4,
+        34,
+        2
+      ],
+      "unityBorderLbrt": [
+        32,
+        4,
+        32,
+        4
+      ],
+      "sourceNodeOpacity": 51,
+      "conversion": "Source opacity folded into purpose PNG alpha; white coverage then converted from sRGB to linear; original RGB and non-white shadow effective alpha preserved."
     },
     {
       "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/cm_icon_etcarrow.png",
       "source": "img/cm_icon_etcarrow.png",
       "sourceSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
-      "outputSha256": "2eb0ae6e7e1b182e6e0811e496ba9778cbeaaf5d4d70369bfd5c0627cc5d18dd",
+      "outputSha256": "4ce7c0e42cfee8bad21e6ab23e30bcbf8794e89ab6c5fdda09b55822ce626ffe",
       "size": [
         18,
         12
-      ]
+      ],
+      "sourceCapXywh": null,
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "sourceNodeOpacity": 127,
+      "conversion": "Source opacity folded into purpose PNG alpha; white coverage then converted from sRGB to linear; original RGB and non-white shadow effective alpha preserved."
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/renew_popup_bg_2.png",
+      "source": "img/renew_popup_bg_2.png",
+      "sourceSha256": "80b58044904520d4e88b1189ee8aac5dd7c5c40ccffa55a409fbd9413e9354f7",
+      "outputSha256": "54898cb9fc8c60cd7be1bd677fbdcafa74a79fa9b6031b18b58173fb35f41a9a",
+      "size": [
+        256,
+        410
+      ],
+      "sourceCapXywh": [
+        54,
+        54,
+        148,
+        302
+      ],
+      "unityBorderLbrt": [
+        54,
+        54,
+        54,
+        54
+      ],
+      "sourceNodeOpacity": 229,
+      "conversion": "Source opacity folded into purpose PNG alpha; white coverage then converted from sRGB to linear; original RGB and non-white shadow effective alpha preserved."
+    },
+    {
+      "asset": "Assets/Game/Common/Res/Textures/FeatureNotice/_dim.png",
+      "source": "img/_dim.png",
+      "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "outputSha256": "e5a1037782096b468326728bb4cc477e5ca00ca97e5e912dcd780cf1205b3c04",
+      "size": [
+        160,
+        90
+      ],
+      "sourceCapXywh": [
+        52,
+        29,
+        56,
+        32
+      ],
+      "unityBorderLbrt": [
+        52,
+        29,
+        52,
+        29
+      ],
+      "sourceNodeOpacity": 127,
+      "conversion": "Source opacity127 folded into original dim PNG alpha; original RGB preserved."
     }
   ]
 }

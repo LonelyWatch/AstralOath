@@ -174,7 +174,13 @@ namespace AstralOath.Client.FoundationDemo
             MailVerificationClick(MailVerificationRow(uiMail.deliveryId), "action");
             await MailVerificationUntil(() => mailSession.Summary.effectiveCount == 2 &&
                 map.Require<GameObject>("singleReward").activeInHierarchy, "single-item reward strip", cancellation);
+            int VisibleRewardParticles() => map.Require<GameObject>("singleReward").GetComponent<BindingMap>()
+                .Require<RectTransform>("particles").GetComponentsInChildren<UnityEngine.UI.Image>(true)
+                .Count(image => image.enabled && image.gameObject.activeInHierarchy);
+            await MailVerificationUntil(() => VisibleRewardParticles() > 0, "original delayed reward particle burst", cancellation);
             await CaptureMailVerification("10-single-reward", cancellation);
+            int singleRewardParticleCount=VisibleRewardParticles();
+            if(singleRewardParticleCount<=0)throw new InvalidDataException("The native reward capture missed its original particle burst.");
             MailVerificationClick(map, "claimAll");
             await MailVerificationUntil(() => map.Require<GameObject>("confirmation").activeInHierarchy, "bulk confirmation", cancellation);
             await CaptureMailVerification("11-claim-all-confirm", cancellation);
@@ -234,7 +240,8 @@ namespace AstralOath.Client.FoundationDemo
                 epicCharmDelta = Balance(after,"epicCharm") - Balance(before,"epicCharm"),
                 greaterCharmDelta = Balance(after,"greaterCharm") - Balance(before,"greaterCharm"),
                 goldDelta = Balance(after,"gold") - Balance(before,"gold"), energyDelta = Balance(after,"energy") - Balance(before,"energy"),
-                samePageRestored = true, reopened = true, captureCount = captureCount, historyVerified = true };
+                samePageRestored = true, reopened = true, captureCount = captureCount, historyVerified = true,
+                singleRewardParticleCount = singleRewardParticleCount };
             File.WriteAllText(Path.Combine(output, "mail-player.json"), JsonConvert.SerializeObject(receipt, Formatting.Indented));
             Debug.Log("ASTRAL_MAIL_PLAYER_OK uiSent=1 apiPrepared=3 claimed=4 count=0 giftClaims=1 goldDelta=10000 energyDelta=100 history=True reopened=True screen=" + Screen.width + "x" + Screen.height);
         }
@@ -306,7 +313,7 @@ namespace AstralOath.Client.FoundationDemo
         private sealed class MailPlayerVerificationReceipt
         {
             public string appVersion, endpoint, playerId, realmId;
-            public int width, height, uiSent, fixtureApiSent, claimed, giftClaimReceipts, captureCount;
+            public int width, height, uiSent, fixtureApiSent, claimed, giftClaimReceipts, captureCount, singleRewardParticleCount;
             public long bookmarksDelta, epicCharmDelta, greaterCharmDelta, goldDelta, energyDelta;
             public bool samePageRestored, reopened, historyVerified;
             public MailSummary initial, final;

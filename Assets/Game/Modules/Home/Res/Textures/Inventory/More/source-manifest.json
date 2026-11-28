@@ -222,5 +222,166 @@
       "width": 520,
       "height": 720
     }
-  ]
+  ],
+  "collapsedLobbyNavigation": {
+    "sourceLayout": "wnd/quick_menu_renew.csb",
+    "sourceLayoutSha256": "9b9957712ecbae18f9430fa59b683b516d6e12ee19cc4b06276996817d3acf6b",
+    "sourceNode": "Layer/n_quick_menu/notch_grow2/grow2",
+    "sourceTexture": "img/renew_glow_quick.png",
+    "sourceSha256": "db0b769726e05b47aa067c770ed64ede9e75a05dccf492c5f81db1d29af7afe9",
+    "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_glow_quick.png",
+    "assetSha256": "db0b769726e05b47aa067c770ed64ede9e75a05dccf492c5f81db1d29af7afe9",
+    "size": [
+      1000,
+      720
+    ],
+    "sourcePosition": [
+      38.516,
+      360
+    ],
+    "sourceAnchor": [
+      0.5,
+      0.5
+    ],
+    "sourceRgb": [
+      255,
+      255,
+      255
+    ],
+    "sourceOpacity": 255,
+    "canvasPositionAgainstRight": [
+      57.774,
+      0
+    ],
+    "canvasPivot": [
+      0.5,
+      1
+    ],
+    "canvasSize": [
+      1500,
+      1080
+    ],
+    "visibleWidthAt1080": 692.226,
+    "expandedDrawerShiftSource": -377,
+    "previousFailure": "Unreferenced129x72 renew_glow_quick_2 thumbnail stretched at right-top pivot1/1 put1000 source pixels on-screen instead of461.484. No arbitrary alpha reduction or new texture import.",
+    "evidence": ".artifacts/home-social-visual-fix/before-contract.json",
+    "validation": "Source-byte identity and old prefab static RED verified; new rendered and Native validation pending.",
+    "coverageVariant": {
+      "source": "D:/sevenepic/原始资源/img/renew_glow_quick.png",
+      "sourceSha256": "db0b769726e05b47aa067c770ed64ede9e75a05dccf492c5f81db1d29af7afe9",
+      "asset": "Assets/Game/Modules/Home/Res/Textures/Inventory/More/renew_glow_quick_collapsed_linear.png",
+      "outputSha256": "44b07183b74d4d910b141efe3975dd9e37c269085f365078f91ee5c194365c33",
+      "size": [
+        1000,
+        720
+      ],
+      "changedAlphaPixels": 317618,
+      "rgbChangedPixels": 0,
+      "mask": "x<462; 0<a<255; R<=G<=B; weight=(1-smoothstep(76,112,B))*(1-smoothstep(30,48,B-R)). Otherwise weight0.",
+      "maskBasis": "Visible source crop is461.484px; measured blue-gray backing maxRGB76/spread30. Feather to112/48 protects bright-gray ornament cores and colored art without hard palette contours. Offscreen x462+ unchanged.",
+      "conversion": "g=(R+G+B)/(3*255); aLinear=(1-sRGBtoLinear(1-a+a*g))/(1-sRGBtoLinear(g)); outputAlpha=round(255*lerp(a,aLinear,weight)). Source RGB always unchanged.",
+      "limits": "White-reference neutral-gray contrast calibration, not exact all-colored-background blend equivalence. Source brighter ornaments are retained; antialiased transition pixels use continuous weights. Requires real visual follow-up; no Native or audio pass claim.",
+      "samples": [
+        {
+          "xy": [
+            350,
+            360
+          ],
+          "sourceRgba": [
+            36,
+            40,
+            45,
+            164
+          ],
+          "outputRgba": [
+            36,
+            40,
+            45,
+            214
+          ],
+          "sourceSrgbOverWhite": [
+            114.153,
+            116.725,
+            119.941
+          ],
+          "beforeLinearOverWhite": [
+            163.393,
+            163.854,
+            164.499
+          ],
+          "afterLinearOverWhite": [
+            116.292,
+            117.216,
+            118.497
+          ]
+        },
+        {
+          "xy": [
+            430,
+            544
+          ],
+          "sourceRgba": [
+            42,
+            51,
+            63,
+            226
+          ],
+          "outputRgba": [
+            42,
+            51,
+            63,
+            245
+          ],
+          "sourceSrgbOverWhite": [
+            66.224,
+            74.2,
+            84.835
+          ],
+          "beforeLinearOverWhite": [
+            102.5,
+            105.63,
+            110.612
+          ],
+          "afterLinearOverWhite": [
+            70.123,
+            75.348,
+            83.22
+          ]
+        },
+        {
+          "xy": [
+            438,
+            544
+          ],
+          "sourceRgba": [
+            132,
+            138,
+            145,
+            241
+          ],
+          "outputRgba": [
+            132,
+            138,
+            145,
+            241
+          ],
+          "sourceSrgbOverWhite": [
+            138.753,
+            144.424,
+            151.039
+          ],
+          "beforeLinearOverWhite": [
+            142.594,
+            147.763,
+            153.862
+          ],
+          "afterLinearOverWhite": [
+            142.594,
+            147.763,
+            153.862
+          ]
+        }
+      ]
+    }
+  }
 }

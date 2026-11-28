@@ -53,7 +53,19 @@ MailApi与开发GM Mail API现统一沿用现有SummonApi已经Native验证的`J
 - 标题原源uieff_msgbox_title的SCSP/CFX曲线由现有Spine38离线采样成24帧30fps图集，1024×192单帧、4×6排列4096×1152。明确ImportOverride、RGBA32、sRGB=false、平台max4096；Unity测试实际重导后检查GPU尺寸/格式。运行时RawImage与既有UiTouchPulse材质，不增加Spine运行时依赖。单项原蓝条按item_get_panel.cfx / item_get_panel_eff.cfx实际指向的_1版Spine3.8 intro/loop及intro动画采样，保留SkeletonClipping；64帧30fps、768×192单帧、4×16排列3072×3072，显式RGBA32/max4096。所有采样时间与源链哈希由同一导入器生成到mail-source，不依赖手留的临时脚本。
 - 原ui_reward_popup_pati_blue_copy的3个emitter与原zodiac_star1/pati_03贴图接入UGUI；参数由导入器生成，不手改Generated数据。随机种子及显示单位缩放为项目复现参数，不能称逐粒子与录像一致。源音沿已有UiAudioPlayback AudioClip入口，关窗0.20秒淡出，没有扩Common/AOT音效枚举。
 
-`AstralOath.Editor.ArenaUiBuilder.GenerateMail`先生成MailEntry，再MailWindow；协调者全Generate额外重建各页嵌套顶栏。新增meta由Unity生成并保留，不重建旧GUID。
+`AstralOath.Editor.ArenaUiBuilder.GenerateMail`先生成Common的SingleItemReward、MailEntry，再MailWindow；协调者全Generate额外重建各页嵌套顶栏。新增meta由Unity生成并保留，不重建旧GUID。
+
+### 通用单项奖励蓝条与源星粒子（11/28）
+
+单项奖励现在嵌套 `Assets/Game/Common/Res/Prefab/SingleItemReward.prefab`，原外部诊断键 `singleReward/singleEffect/singleIcon/singleQuantity/singleKind/singleText` 保留；`singleEffect` 改为UGUI `Image`，不能继续直接写RawImage.uvRect。预制只引用Common用途资源和现有基础控件，普通 `SingleItemReward : UIBaseView` / `SingleItemRewardBinder` 留在已登记Mail热更程序集，Common没有反向业务引用或新增AOT组件。基座仍用原64帧30fps、768×192格、3072×3072图集及UiTouchPulse材质，显示1024×256；源图集字节原样移到Common/Res/SingleItemReward，原GUID `2541e29b5dbb58759159550eb674bb7f` 保留。Binder创建稳定000..063索引的临时Sprite矩形，不创建新Texture；关闭owner销毁这些Sprite。SourceAdditive.shader/.mat同步移到Common保留GUID与内容，礼包原粒子只改材质路径，不替换成单项粒子。
+
+用 `Tools/Mail/ImportSingleItemRewardAssets.py` 最小重导，或全量Mail导入器自动调用它。编辑入口是只读原 `effect/item_get_panel_eff.cfx` / `effect/item_get_panel_pati1_2.particle`，专用导入器同时生成Common审计JSON和Mail `SingleItemRewardSource.Generated.cs`，禁止手改Generated。运行用既有Newtonsoft解析生成常量，不依赖JsonUtility反射复杂热更字段。来源、哈希、SCT解码、PMA像素依据、原字段与源到设计.68倍率均在 `Common/Res/SingleItemReward/source-manifest.json`。
+
+本次实际查看原055截图及54–57秒连续36张12fps取帧：约54.417蓝闪、54.833–55.083星点密集、55.167–55.583散开并消退。源CFX在267ms后将粒子放到y35/z8；两个emitter的 `burningType=1` 是一次burst max50+30，不能把duration=-1误当成持续50/30每秒刷星。寿命为.7±.5，速度/角度/出生位置/大小/径向40±39和2500±2000、切向0±200、gravity等字段按原值使用。原五点 `colorBlends` 列顺序是time/alpha/red/green/blue，按每个粒子的归一寿命分段插值；不是礼包的近似颜色或RGBA猜测。128×128原zodiac_star1.sct解码后12356个半透明像素全部R=G=B=A，证明为中性白PMA；因此复用已有SourceAdditive，不再次乘纹理alpha或猜改shader。所有星点是UGUI Image，原方差由局部固定种子1122抽样，120Hz固定步进保证不同Canvas帧率不改变轨迹积分；不能把随机星的每个位置称为与录像逐点相同。
+
+接入：`SingleItemReward.ForInstance(root)`，`new SingleItemRewardBinder(view, owner)`；required bindings为effect/Image、icon/Image、quantity/kind/text/GameText、particles/RectTransform（原80个Image池）。`Play(Sprite icon,string quantity,string kind,string text)`重置本次表现；`Update(float elapsed)`接Play后的累计unscaled秒，非delta；`Stop()`清场并隐藏；owner关闭Dispose解绑并释放临时Sprite。只读 `Duration` 为64/30，`ActiveParticleCount/IsPlaying`仅供表现与诊断。动画不发奖、不写网络、不自行播放另一份音效，根组合层仍按真实权威领取回执和原音入口调用。
+
+专用四项Unity真实RED在 `.artifacts/home-social-visual-fix/reward/prefab-red.xml` / `prefab-red.log`：缺通用预制、源数据或普通类型，4/4失败且无编译错误，之后才实现。回归覆盖Common依赖/80Image、源delay/burst/曲线/加速度、图集GUID/64帧/外6键及delay前0→burst80→最大寿命后0、重播/Stop/owner清理。源取帧、PMA像素、修改前无粒子截图依据在同reward目录。当前新生成预制、联合GREEN、连续表现截图、Native及R37真实AOT兼容仍待协调者执行，不能由源码或PMA检查推为视觉通过；音频未改，实际听感未试听。
 
 ## 实际验证与证据边界
 
@@ -67,7 +79,7 @@ MailApi与开发GM Mail API现统一沿用现有SummonApi已经Native验证的`J
 
 排序展开、纯文本/选一、即时满箱/满背包、开信时到期缺同版参考；排序当前保持接收时间新→旧，只提示该事实。特殊礼包封面身份已定位，奖励语义不由文件名推定。淡入曲线约0.20/0.16秒及行框运行时色调是复现参数，未证明原Tween精确曲线。
 
-单项蓝条的CFX资产调用链与骨骼动画已接入，原版业务调用的准确倍率、267ms附带粒子和与录像逐帧绝对同步仍未恢复；不把原源烘帧等同完整原效果。原粒子细节、所有状态原生1080p/4K、两账号实时通知与旧token、实际声音听感仍由协调者最终联合验收；本代理未实际试听，不把PCM/波形检查冒充听感。R37兼容检查、热更登记、签名R38和分发由协调者负责。源码/资源/README/变更日志须同批提交。
+单项蓝条的CFX调用链与骨骼原帧保留，267ms附带星粒子按上节补回；源到设计.68来自既有烘帧.51×显示1024/768，原版业务的最终倍率及与录像绝对逐帧同步仍须新视听证据确认，不把源字段实现等同完整原效果。原粒子细节、所有状态原生1080p/4K、两账号实时通知与旧token、实际声音听感仍由协调者最终联合验收；本代理未实际试听，不把PCM/波形检查冒充听感。兼容检查、热更登记、签名与分发由协调者负责。源码/资源/README/变更日志须同批提交。
 
 11/27交接前最后修正：to_covenant改用既有Summon余额同源的item/token_ticket_rare.png，修正误用绿色友情书签；只改展示图索引，不改奖励数量或规则。受控after旧图里的绿色书签是该纠正前快照，最终分发版以协调者重拍Native图为准。
 

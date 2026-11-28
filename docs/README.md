@@ -27,6 +27,7 @@
 - 角色战斗力：[历史公式、官方变更、原包系数与复算边界](development/combat-power.md)。CP 与装备分数、实际战斗强弱分别讨论。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
 - 主页卡与公共频道：[原录像、最小素材和还原边界](development/home-profile-chat-reference.md)、[11/28资料/频道/召唤交付记录](delivery/2026-11-28-home-profile-chat.md)。44已签名打包，切服迁移待明确批准，现用43保留；Native与视觉缺口未完成。原版/修前/Editor候选、文件位置与未执行项分列，未录到的小卡子页按用户要求不做。
+- R45视觉修订：[提示/主页右灰/收藏/透明聊天与共享奖励粒子](delivery/2026-11-28-home-social-visual-fix.md)。原版、44修前、最终1080/4K和Native状态分列；客户端内容45与未改动后端R44分别固定来源，打包/分发状态以实际回执为准。
 - 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。
 - 配表：[Config README](../Config/README.md)、[配置与内容更新](architecture/content.md)。
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。

@@ -23,6 +23,7 @@ namespace AstralOath.Client.Mail
         private readonly Func<MailClaimReceipt,CancellationToken,Task> reconcile;
         private readonly WindowCoordinator windows;
         private readonly MailRewardEffects effects;
+        private readonly SingleItemRewardBinder singleReward;
         private readonly GameToastBinder notice;
         private readonly UiAudioPlayback.OneShots sounds = new UiAudioPlayback.OneShots();
         private readonly List<GameObject> rows = new List<GameObject>();
@@ -45,6 +46,7 @@ namespace AstralOath.Client.Mail
         {
             this.view=view;this.scope=scope;this.session=session;this.close=close;this.reconcile=reconcile;
             effects=new MailRewardEffects(view.Map);
+            singleReward=new SingleItemRewardBinder(SingleItemReward.ForInstance(Get<GameObject>("singleReward")),scope);
             notice=new GameToastBinder(GameToast.ForInstance(Get<GameObject>("messageChrome")));
             scope.Add(notice.Hide);
             windows=new WindowCoordinator(scope.Token);windows.ShowPageAsync(_=>Task.CompletedTask).GetAwaiter().GetResult();
@@ -254,13 +256,14 @@ namespace AstralOath.Client.Mail
             shownReceipt=receipt;var rewards=receipt.rewards??Array.Empty<MailReward>();
             if(!bulk&&receipt.presentation=="item"&&rewards.Length==1)
             {
-                var reward=rewards[0];SetArt(Get<Image>("singleIcon"),reward.icon);
-                Get<GameText>("singleText").text=reward.name;Get<GameText>("singleQuantity").text=Number(reward.quantity);
-                Get<GameText>("singleKind").text=L(reward.kind=="energy"?"entryCurrency":reward.kind=="currency"||reward.key=="gold"?"currency":reward.kind=="material"?"enhancementStone":"attachment");
+                var reward=rewards[0];
                 windows.ShowOverlay("singleReward",toast=>
                 {
-                    var single=Get<GameObject>("singleReward");single.SetActive(true);single.transform.SetAsLastSibling();single.GetComponent<CanvasGroup>().alpha=1;
-                    toast.Add(()=>{if(single)single.SetActive(false);});singleStarted=Time.unscaledTime;singleUntil=singleStarted+64f/30f;
+                    var single=Get<GameObject>("singleReward");single.transform.SetAsLastSibling();
+                    var icon=Get<Image>("singleIcon");SetArt(icon,reward.icon);
+                    string kind=L(reward.kind=="energy"?"entryCurrency":reward.kind=="currency"||reward.key=="gold"?"currency":reward.kind=="material"?"enhancementStone":"attachment");
+                    singleReward.Play(icon.enabled?icon.sprite:null,Number(reward.quantity),kind,reward.name);
+                    toast.Add(()=>{singleReward.Stop();singleUntil=-1;});singleStarted=Time.unscaledTime;singleUntil=singleStarted+singleReward.Duration;
                 });
                 Play("SingleReward");return;
             }
@@ -314,8 +317,7 @@ namespace AstralOath.Client.Mail
             }
             if(singleUntil>=0)
             {
-                int frame=Mathf.Clamp((int)((Time.unscaledTime-singleStarted)*30),0,63);Get<RawImage>("singleEffect").uvRect=new Rect((frame%4)/4f,1-(frame/4+1)/16f,.25f,1f/16f);
-                Get<GameObject>("singleReward").GetComponent<CanvasGroup>().alpha=Mathf.Clamp01((singleUntil-Time.unscaledTime)/.20f);
+                singleReward.Update(Time.unscaledTime-singleStarted);
                 if(Time.unscaledTime>=singleUntil){windows.CloseOverlay("singleReward");singleUntil=-1;}
             }
         }

@@ -1,6 +1,7 @@
 # AstralOath 开发约定
 
 - 本工程是 Unity 2022.3.62f3 + .NET 10 + MySQL 8.4 的客户端/服务端仓库。
+- 正式发布前不以兼容历史测试数据为设计约束；有更合理的数据模型时可直接替换并废弃旧测试数据，不为保留旧字段、旧结构或转换分支牺牲设计。变更须同步表结构、初始化、接口、测试和文档，并明确数据重建影响；正式发布后的迁移策略另行制定。
 - 每次会话先读 `docs/README.md`、`docs/project-status.md`、`docs/development/project-standards.md`，再读相关模块 README 和专题文档。地基与 HybridCLR 历史计划用于了解沿革，不能替代现行状态或验收。涉及热更必读 `docs/development/hot-update.md`。
 - 国际服版本追踪仅由用户明确要求触发；禁止后台轮询、定时跟踪或自动升级依赖。
 - `D:\sevenepic` 是只读外部来源；不得修改、批量导入或提交整个解包目录。

@@ -50,6 +50,7 @@ namespace AstralOath.Editor
             (MailEntryPath, MailEntry.Address),
             (SourceTextVariantsPath, "common/source-text-variants"),
             (FeatureNoticePath, AstralOath.Client.FoundationDemo.FeatureNotice.Address),
+            (SingleItemRewardPath, SingleItemReward.Address),
             ("Assets/Game/Modules/PlayerProfile/Res/Prefab/PlayerProfile.prefab", AstralOath.Client.PlayerProfile.PlayerProfile.Address),
             ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChannelChat.prefab", AstralOath.Client.ChannelChat.ChannelChat.Address),
             ("Assets/Game/Modules/ChannelChat/Res/Prefab/ChatEntry.prefab", AstralOath.Client.ChannelChat.ChatEntry.Address),

@@ -32,9 +32,19 @@ View/Binder通过 `Channel, Messages, Preferences, HasPendingSend, HasPendingPre
 
 Binder接受登录Owner持有的Session、`Action close`、`Action<string> unavailable`/`playerSelected`、可选 `Func<string> ownPlayerId` 与 `Func<string,Sprite> avatarArt`。新账号默认频道1；登录Owner先读取收藏并Join(favoriteChannel??1)，重新打开Chat沿当前Session.Channel，不重复跳收藏；读/发/表情/当前频道历史来自Session；关闭只解绑页面、覆盖层和头像回调，已dispatch写入等登录回执，不销毁Session或Observe。窗口覆盖层由Binder独立WindowCoordinator管理，每次开窗独立BindingScope。自己以服务器player.id匹配ownPlayerId显示绿名与[me]，其他玩家白名；所有名字/正文/关键词关闭richText，头像只回传playerId交外层统一资料页。
 
-收藏1..9999只保存偏好，不静默跳频道；切频道入口复用已实际看清的收藏输入框架，真正成功Join后才换标题和列表，未构造未见原片的n_channel_layer弹板。关键词编辑使用已确认的五个原黑底输入行，去空槽、最多5个、每个20 Unicode标量；没有冒造录像未显示的独立编辑弹板。通知提交完整四个布尔字段，骑士团两个入口和暂无权威公告的折叠公告入口调用外层通用未完成功能提示。目前没有获得5★英雄/神器或骑士团宣传的权威广播事件源，此处只真实保存/读取偏好，未宣称这些广播已连通。generalChat关闭不删除当前频道可读历史；登录级新消息通知由Owner调度，页面不另开后台监听。透明背景以原DrawerFrame只移除中性黑底、保留原金边的导入变体显示，转换哈希已记录；原生仍须逐帧比较此变体与原实际效果。
+收藏1..9999只保存偏好，不静默跳频道；切频道入口复用已实际看清的收藏输入框架，真正成功Join后才换标题和列表，未构造未见原片的n_channel_layer弹板。关键词编辑使用已确认的五个原黑底输入行，去空槽、最多5个、每个20 Unicode标量；没有冒造录像未显示的独立编辑弹板。通知提交完整四个布尔字段，骑士团两个入口和暂无权威公告的折叠公告入口调用外层通用未完成功能提示。目前没有获得5★英雄/神器或骑士团宣传的权威广播事件源，此处只真实保存/读取偏好，未宣称这些广播已连通。generalChat关闭不删除当前频道可读历史；登录级新消息通知由Owner调度，页面不另开后台监听。透明背景保留完整原图的灰黑底与阴影，只降低原节点opacity，不能按像素颜色抹除中性背景；转换与录像推定边界见下文。
 
-`Tools/Chat/ImportChatAssets.py`仅导入33个最小UI变体和服务端白名单67张原表情，`Res/chat-source.json`记录源/输出SHA和cap；默认RGBA32、无Mip、源尺寸，D:/sevenepic只读。发送/收藏使用同PNG的不同切片变体，其他业务模块无反向依赖。原图三列表情固定原比例；窄窗将整个Picker移回可见范围，不拉伸单格。
+`Tools/Chat/ImportChatAssets.py`仅导入37个最小UI变体和服务端白名单67张原表情，`Res/chat-source.json`记录源/输出SHA、用途opacity、转换和cap；默认RGBA32、无Mip、源尺寸，D:/sevenepic只读。发送/收藏使用同PNG的不同切片变体，其他业务模块无反向依赖。原图三列表情固定原比例；窄窗将整个Picker移回可见范围，不拉伸单格。
+
+### 收藏与透明背景复核（内容45候选，未覆盖44）
+
+实际查看原录屏37.5秒收藏、39.0/39.5秒透明切换及48.5秒无Chat底图，与 `editor-social-final/17-chat-favorite-input.png` / `24-chat-transparent.png` 对照。标题双分隔重叠左半、范围提示出框、透明底被删，均为失败候选。原素材中PNG中性灰不是透明孔；旧导入器以 `r>g+3 && g>b+3` 留金色、清零其他alpha，导致源中心(18,18,18,230)变成alpha0，这不是原版透明效果。39.0与39.5的静态文字ROI相对48.5底图透过率约.056与.309，比5.49，支持原节点opacity约127/255的半透明用途副本；这是录像推定值，不冒称chat.csb默认常数。原normal仍opacity255。
+
+恢复 `_dim.png`（160×90）作为Chat全屏dim/opacity127、收藏黑tint全屏dim/opacity255，恢复 `_grow.png` 的Chat顶部153、收藏局部178阴影。Unity Linear下直接黑alpha.65显著偏浅；暗中性像素使用白底参照coverage `(1-linear(1-a+a*g))/(1-linear(g))`，其中a包含原图alpha和节点opacity，g保留原灰RGB；纯黑退化为 `1-linear(1-a)`。原灰18的Drawer中心输出alpha为251(normal)和180(透明)，不是把Image.color.a设成128，也不清掉背景像素；金色和彩色边缘保留源RGB及节点opacity。派生PNG、原节点tint、来源SHA均已记账。
+
+收藏原frame558×386、中心Canvas偏移(+3,+24)已正确，保留高度；原n_channel组(37,30)换算后输入/按钮top246、范围top307.38，恢复到原可见边框之内。标题按n_top偏移及原scale还原；右分隔使用原180°和中心旋转，避免绕左上pivot反向覆盖左条。Chat大底原y805.348，对720高设计应top−85.348；旧值−128.348又乘1.5，额外上移64.5px，使本应在屏外的底部金角露出。现修正原位置。公告折叠箭头保留 `chat_section.csb` 的17×26原PNG，再按原90°方向旋转一次，投影宽高26:17；不先把它压成24×17再旋转造成窄V。
+
+根已实际跑旧预制RED：`.artifacts/home-social-visual-fix/notice-chat-red.xml` 联合6/6失败，其中本模块3项分别确认sourceTop192.522应128.022、右分隔bounds错、FavoriteDim未赋值。像素离线RED为2失败1缺图，修后实际3/3 GREEN在 `chat/pixels-green.log`；4项新 `ChannelChatVisualTests` 等根统一生成/运行GREEN并复拍17/24不同背景。未启动Unity、迁移/清理数据库或切Feed；该候选交内容45，不能将44旧图或像素检查当新Native/人工听感通过。
 
 根已实际运行 `ChannelChatPrefabTests` 得3/3失败（预制缺失），证据 `.artifacts/home-profile-chat-review/client-tests/chat-prefab-red.xml`。生产候选及5项 `ChannelChatBinderTests` 已写，待协调者统一编译、生成预制、运行Edit/Play并做1080/4K/窄窗及真实两账号Native对照；源码完成、数据层GREEN不代表这些界面/视听已通过。
 

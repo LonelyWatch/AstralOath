@@ -1,5 +1,7 @@
 # FoundationDemo
 
+R45候选的邮件原生诊断先等待共享单项奖励的源粒子启用，再拍第10状态并记录`singleRewardParticleCount>0`，避免只拍到267ms之前的蓝条闪光。仍保留14状态、4封真实领取、资源Delta和原页恢复断言；它只在显式开发验收入口运行，不在正常业务中发测试邮件。角色卡/频道等R44候选随后与本轮视觉修正统一进入R45，实际包及验收状态见[本轮方案](../../../../docs/plans/2026-11-28-home-social-visual-fix.md)。
+
 11/28追加反馈后，43确认文字视觉被否定；44候选修正共享文字，并继续集成用户新要求的主页资料/公共频道。下述43为功能/打包阶段事实，不能代表44完成或全部视觉通过；当前候选Native/分发尚待。
 
 11/28邮件UI修订只重存开发GM所在页的共享MailEntry顶栏，保留自发当前账号及原收发协议；无启动/AOT改动。最终产品源824d49ee的签名内容43已本机发布，Editor43/43、Play7/7及真实IL2CPP 1080/4K帧缓冲各14状态通过，旧41/42入口Limited实际启动43通过，原主服务/MySQL不换。人工试听等未完见[本轮复核](../../../../docs/delivery/2026-11-28-mail-ui-followup.md)，不以前内容41或42行为结果替代最终图。
@@ -143,3 +145,11 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 正式原生诊断使用Development显式`-astral-social-smoke`且严格限制`127.0.0.6`，入口`SocialPlayerSmoke`及`SocialChatSettingsSmoke`。它创建独立QA身份，真实UI修改昵称/问候语/隐私并用独立API核对，测试主页及更多所有灰入口、两账号文字/原表情和事件流入站、头像只读资料、收藏/频道/通知/关键词/透明设置及重开。25状态截图是Player帧缓冲，另保存召唤12帧连续idle及实际七个RT尺寸、名字几何斜度、短时idle帧间隔；不把HTTP第二账号称作第二个Windows进程，不把诊断断言当视觉或人工试听通过。输出必须为D盘新目录，失败保留证据且不覆盖旧回执。
 
 当前真实联合Editor53/53、Play14/14通过；修复前布局三项、关键词慢回执/不确定回执、TMP斜体及首次诊断编译失败均保留。主服务安全切服、签名构建和Native实包仍待协调者执行，结果入口见[本轮参考和边界](../../../../docs/development/home-profile-chat-reference.md)。
+
+### FeatureNotice 原素材复核（R45候选，11/28）
+
+用户否定44受控提示候选后，按同一录像61.5秒稳定帧重新查看并测量；原版版本、发布日期和可见倍速未知。`ArenaUiBuilder.FeatureNotice.cs`不再复用`msgbox.csb`的共享决策面板，改用`msgbox_renewal.csb`自己的`renew_popup_bg_2.png`（cap54/54/148/302，节点opacity229）。上横线`_bar_23`（cap30/4/14/4、opacity127）和下横线`_bar_2`（cap32/4/34/2、opacity51）分别九宫格，保留原菱形端部；旧实现把74像素图直接拉至960，且上下用了同一图，不能只因已找到原图就判还原通过。
+
+`Tools/Arena/ImportFeatureNotice.py`只导入五张该用途图，先把节点opacity并入PNG，再将白色装饰覆盖率转换到Linear；渐变、暗影RGB和`_dim`的源色保留，运行时Image白色不重复乘节点opacity。已有`_bar_23`和关闭箭头meta GUID保持。原图/修前及源节点、像素测量保存在`.artifacts/home-social-visual-fix/notice/`。同片静态邮件白图标原版透射约0.208，旧候选约0.525，旧`Black(.76)`把sRGB透明度意图直接当Linear alpha；本候选转换该透射并恢复原`_dim`/127。额外遮罩的运行时语义仅是录像校准，不声称源CSB包含该常量。
+
+原CSB的380初始高度与录像稳态运行尺寸不同；按实际稳定帧取390原设计单位（585项目设计单位），标题、上下线、正文和关闭区域按高度归一摆放，关闭文字采用原帧测得的蓝灰而非旧中性136灰。这些是候选参数，必须由同一背景/相机的实际捕获比较确认。离线像素/切片合同已实际3失败→3通过；专用`FeatureNoticeSourceVisualTests`旧预制3项RED由协调者实际运行，当前生成、受影响功能和画面GREEN仍待统一Unity。此次修改进入更高内容R45，不覆盖已签名44；未声称Native或声音试听通过，现用服务/数据库升级仍待审批。

@@ -105,8 +105,14 @@ namespace AstralOath.Editor
 
         private static void DrawHomeNavigationBackground(RectTransform root)
         {
-            var background = HomeRightRect(root, "Native lobby navigation background", 0, 0, 1000, 720, Vector2.one);
-            Paint(background, HomeMoreArt("renew_glow_quick_2"), Color.white);
+            // quick_menu_renew.csb grow2: full-size1000x720, center38.516 right of
+            // n_quick_menu's collapsed right anchor. Only461.484 source pixels are visible.
+            // renew_glow_quick_2 is a129x72 thumbnail and is not referenced by this layout.
+            // The expanded drawer below moves this same source layer left377 units.
+            var background = HomeRightRect(root, "Native lobby navigation background", 38.516f, 0, 1000, 720, new Vector2(.5f,1));
+            // Purpose alpha variant preserves the source neutral-dark contrast in
+            // Linear; the full source PNG and expanded drawer stay unchanged.
+            Paint(background, HomeMoreArt("renew_glow_quick_collapsed_linear"), Color.white);
         }
 
         private static void DrawHomeShortcutRail(RectTransform root,List<(string Key,Object Target)> keys)

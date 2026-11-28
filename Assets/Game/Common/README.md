@@ -1,5 +1,9 @@
 # Common UI
 
+2026-11-28 R45候选新增`Res/Prefab/SingleItemReward.prefab`（地址`common/single-item-reward`），供业务嵌套使用同一单项奖励蓝条。64帧原底、PMA星图、源CFX/粒子审计位于`Res/SingleItemReward`，加色材质在`Res/Materials/SourceAdditive`；既有图集/材质移动保留GUID。预制只挂通用控件/BindingMap，普通`SingleItemReward`/`SingleItemRewardBinder`留在已登记Mail热更程序集，Common不引用业务类型。调用者在权威成功后传入图标和纯文本，以累计unscaled时间推进；267ms源burst为50+30粒子，关闭/重播清理，不结算或发奖。验证、原片与包状态见[本轮计划](../../../docs/plans/2026-11-28-home-social-visual-fix.md)，以最终交付证据为准。
+
+字体既有边界：`EpicSeven.asset`的回退依赖仍包含旧FoundationDemo目录的`FoundationFont.asset`，两文件均有本任务前用户改动。本轮未修改/移动它们；共享奖励沿用Common字体，回归核对没有新增Mail或其他业务素材依赖，并单列继承的字体依赖。不能据此声称历史资源目录债务已清理。
+
 公共未完成提示资源为`Res/Prefab/FeatureNotice.prefab`（`common/feature-notice`）：复用原`msgbox_renewal`底板、装饰与关闭箭头，点击关闭并有Common受限提示/关闭反馈，区别于2秒自动消失GameToast。普通View/Binder和独立窗口组装放既有热更FoundationDemo，Common不依赖Profile/Chat，也未新增稳定AOT类型。最小来源与覆盖率转换记于`Res/Textures/FeatureNotice/source-manifest.json`；实际Play验证一次关闭、重开和父作用域解绑。[本轮依据与验收](../../../docs/development/home-profile-chat-reference.md)
 
 11/28用户再次否定内容43的文字视觉，44候选直接修共享SourceConfirmation：首问/说明采用源RGB180全不透明并同29号；圆角按钮保持原字体/Normal/400，白色SDF描边从.28降至.06。Canvas已转换顶点色，预先.linear的候选实拍117灰失败，直接RGB180后实拍180，与原片核心灰度一致。实际测试MailPrefab8项、Play7项及受控图片已通过，Native44/新包仍待本轮集成，不称已分发。源参数、材质字段或Editor通过不能替代实际Player的灰度/笔画检查；43shader缺失修复虽然正确，字色/字重仍需另行比对。

@@ -103,6 +103,20 @@ Windows 独立客户端默认可缩放窗口，主页右上角按钮或 F11 切�
 
 英雄目录覆盖 60 名普通英雄。主页资源生成器从角色目录的 battleSkeletonAddress 选择基础模型；塔玛林尔同目录的偶像骨骼随变身演出载入，英雄详情默认展示普通形态。新增十人的中文台词及日语 CV 与卡面一并登记。 [第 51–60 名角色资源与验收](../../../../docs/delivery/2026-11-20-roster51-60-assets.md)
 
+## 主页右侧渐变复核（11/28）
+
+实际对照用户新录屏00:00.500与 `editor-social-final/01-home.png`，当前主页右侧灰幕过宽、覆盖到中央人物。根因是生成器把未被本次原布局引用的 `renew_glow_quick_2.png`（129×72缩略图）放大到1000×720设计范围，并以右上角pivot(1,1)整张放进屏内。原 `lobby_ui_renew.csb` 右侧接入 `quick_menu_renew.csb`；该布局 `Layer/n_quick_menu/notch_grow2/grow2` 使用完整 `renew_glow_quick.png`（1000×720）、source中心x38.516/y360、anchor(.5,.5)、白色/opacity255。收起时应以屏右为中心参考，只露出461.484源像素；1080设计下可见692.226宽，在1920帧中从x1227.774开始，而旧错误层从x420开始洗灰人物。抽屉是同组左移377后的已有位置，保持其展开布局。
+
+第一步更正 `ArenaUiBuilder.HomeMoreLayout.cs` 的主主页背景helper，复用完整原PNG，修前后由实际Editor截图确认中央洗灰消失；原PNG与GUID保持，抽屉原布局保持。原00:00.500与新图都能看到距右边约39px（1200高原图）/35px（1080高项目图）的竖线菱星，和源x438及收起坐标相符，右侧暗底确实用于收起主页，不能整层删除。录屏角色皮肤和项目背景不同，不把不同底色的截图RGB直接当同场景对照。
+
+第二步针对实际复拍仍偏灰的右侧暗底，引入唯一用途副本 `Res/Textures/Inventory/More/renew_glow_quick_collapsed_linear.png`，仅收起主页引用；展开抽屉仍引用未经修改的 `renew_glow_quick.png`。编辑入口 `Tools/Home/ImportHomeNavigationCoverage.py` 只换算alpha，1000×720尺寸、全部RGB、原PNG/GUID及几何不变，sprite以sRGB RGB、RGBA32无压缩导入。可见范围是461.484源像素；mask精确定义为x<462、0<a<255、R≤G≤B，权重 `(1-smoothstep(76,112,B))*(1-smoothstep(30,48,B-R))`。76/30是已核实蓝灰暗底的亮度/色差上界，连续衰减到112/48以保护亮灰装饰核心和彩色内容，避免硬palette阈值制造轮廓；x462以外完全保留。暗底按灰值 `g=(R+G+B)/(3*255)`，使用与Chat同式 `aLinear=(1-sRGBtoLinear(1-a+a*g))/(1-sRGBtoLinear(g))`，再按权重和原alpha插值。该标定匹配白底参考的中性对比度，不宣称所有彩色背景的混合数学完全等价。
+
+源(350,360)的alpha164→214，白底原sRGB合成114.153/116.725/119.941，旧Linear163.393/163.854/164.499，新Linear116.292/117.216/118.497；(430,544)的alpha226→245，原66.224/74.200/84.835、旧102.500/105.630/110.612、新70.123/75.348/83.220。装饰核心(438,544)的132/138/145/241完整保留，全部720000个RGB保持，317618个像素只增加暗底alpha，没有清除像素。实际查看白底三列、mask和alpha差图未见新的硬轮廓；源相邻RGBA变化≤2/255的边上，校正量相邻变化最大3/255。最大的55/255位于源横装饰本身的RGB35/37/42→101/102/106跳变，不把既有装饰边认作新轮廓。
+
+第一次修改前真实Prefab静态合同8项4过4失败（sprite、原像素尺寸、中心位置、pivot），证明在 `before-contract.json`；首次几何修后Editor图 `after-1080/01-home.png` 保留为第二步修前。第二步先实际执行专用源像素回归RED2/2（164≠214、226≠245），再实现并执行 `Tools/Home/test_home_navigation_coverage.py`，覆盖两个白底数值、原图/抽屉不变、全部RGB/透明/屏外像素不变及连续边界。回执 `coverage-red.log` / `coverage-green.log`，用途导入器 `--evidence-dir .artifacts/home-social-visual-fix/coverage-purpose-01` 生成可打开的 `white-reference-comparison.png`、`coverage-mask.png`、`alpha-difference-x4.png` 和 `coverage-audit.json`。来源清单 `source-manifest.json` 的 `collapsedLobbyNavigation.coverageVariant` 记录hash、公式、mask和两点值。
+
+第二步修改后的Unity重生成/实际复拍及Native尚待协调者执行；静态像素通过不等于Unity或Native视觉通过。重新生成后用 `verify-home-source.py --receipt .artifacts/home-social-visual-fix/after-coverage-contract.json` 检查实际预制引用、坐标及原图完整性，再查看同背景项目修前后和原版右侧。未改任何音效，本项声音不适用。
+
 ## 第 61–70 名普通角色
 
 第 61–70 名的普通立绘、战斗模型、头像、选人图及简中语音演员/获得文案均加入详情资料。持有列表的 PlayMode 用例覆盖本批十人与前两批角色，按名字搜索、点击实际详情并检查立绘 RenderTexture。这些模板的持有实例仍由服务端快照决定。 [本批来源与验收](../../../../docs/delivery/2026-11-20-roster61-70-assets.md)

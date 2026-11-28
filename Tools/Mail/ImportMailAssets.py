@@ -86,11 +86,13 @@ class NoTexture:TextureLoader{public void Load(AtlasPage p,string path){}public 
  arguments=[str(ROOT/'.tools/dotnet/dotnet.exe'),'run','--project',str(scratch/'Single.csproj'),'--']
  for stem in single_names:arguments.extend([str(scratch/(stem+'.json')),str(source/(stem+'.atlas'))])
  arguments.append(str(scratch/'single-frames.json'));subprocess.run(arguments,check=True,stdout=subprocess.DEVNULL)
- path=OUT/'Textures/SingleRewardFrames.png';raster_effect_frames(json.loads((scratch/'single-frames.json').read_text()),pages,768,192).save(path)
- single_meta=re.sub(r'^guid: .*$','guid: '+guid(path),pulse,flags=re.M);Path(str(path)+'.meta').write_text(single_meta,newline='\n')
+ path=ROOT/'Assets/Game/Common/Res/SingleItemReward/SingleRewardFrames.png';path.parent.mkdir(parents=True,exist_ok=True);raster_effect_frames(json.loads((scratch/'single-frames.json').read_text()),pages,768,192).save(path)
+ single_meta=re.sub(r'^guid: .*$','guid: 2541e29b5dbb58759159550eb674bb7f',pulse,flags=re.M);Path(str(path)+'.meta').write_text(single_meta,newline='\n')
  rows.append(dict(id='SingleRewardFrames',sources=[dict(path='effect/'+stem+ext,sha256=sha(source/(stem+ext)))for stem in single_names for ext in ['.scsp','.sct','.atlas']]+[dict(path='effect/'+stem+'.cfx',sha256=sha(source/(stem+'.cfx')))for stem in ['item_get_panel','item_get_panel_eff']],path=path.relative_to(ROOT).as_posix(),sha256=sha(path),frames=64,fps=30,cell=[768,192],layout=[4,16],sourceScale=.51,sampleTimes=[i/30 for i in range(64)]))
  return rows
 def main():
+ from ImportSingleItemRewardAssets import migrate_legacy_assets
+ migrate_legacy_assets()
  template=(ROOT/'Assets/Game/Common/Res/Textures/InventoryButtons/_btn_green.png.meta').read_text()
  rows=[]
  for name,relative in ART.items():
@@ -114,6 +116,8 @@ def main():
   Path(str(dst)+'.meta').write_text(meta,newline='\n')
   rows.append(dict(id=name,source='sound/ui1.bank event '+source,bankSha256=sha(RAW/'sound/ui1.bank'),sha256=sha(src),path=dst.relative_to(ROOT).as_posix()))
  rows.extend(import_effects(template))
+ from ImportSingleItemRewardAssets import main as prepare_single_reward
+ prepare_single_reward()
  (OUT/'mail-source.json').write_text(json.dumps(dict(schemaVersion=1,assets=rows,notes='Native mail CSB caps and source hashes. Cover identity: img_event_3000days_1.webp and _frame_s.png, presentation only. Title source Spine sampled without runtime dependency; source particles use local deterministic randomness and calibrated units. Audio actual auditory review pending.'),ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  print(f'Imported {len(ART)} PNG + {len(AUDIO)} WAV, source hashes preserved.')
 if __name__=='__main__':main()

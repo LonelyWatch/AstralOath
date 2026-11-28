@@ -235,6 +235,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Common/Res/Prefab/SingleItemReward.prefab
+        CollectorGUID: 47c4d496a5068174baae45f7d2a0e784
+        CollectorType: 0
+        AddressRuleName: HomeArenaAddressRule
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
       - CollectPath: Assets/Game/Modules/PlayerProfile/Res/Prefab/PlayerProfile.prefab
         CollectorGUID: b236c9cf69c40a84b98219753b94d1c3
         CollectorType: 0

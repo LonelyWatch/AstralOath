@@ -65,9 +65,10 @@ namespace AstralOath.Client.Tests
         {
             const string art="Assets/Game/Modules/Mail/Res/Textures/";
             AssetDatabase.ImportAsset(art+"RewardTitleFrames.png",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
-            AssetDatabase.ImportAsset(art+"SingleRewardFrames.png",ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
+            const string singlePath="Assets/Game/Common/Res/SingleItemReward/SingleRewardFrames.png";
+            AssetDatabase.ImportAsset(singlePath,ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
             var atlas=AssetDatabase.LoadAssetAtPath<Texture2D>(art+"RewardTitleFrames.png");
-            var single=AssetDatabase.LoadAssetAtPath<Texture2D>(art+"SingleRewardFrames.png");Assert.That(single.width,Is.EqualTo(3072));Assert.That(single.height,Is.EqualTo(3072));Assert.That(single.format,Is.EqualTo(TextureFormat.RGBA32));
+            var single=AssetDatabase.LoadAssetAtPath<Texture2D>(singlePath);Assert.That(single.width,Is.EqualTo(3072));Assert.That(single.height,Is.EqualTo(3072));Assert.That(single.format,Is.EqualTo(TextureFormat.RGBA32));
             Assert.That(atlas.width,Is.EqualTo(4096));Assert.That(atlas.height,Is.EqualTo(1152));Assert.That(atlas.format,Is.EqualTo(TextureFormat.RGBA32));
             var importer=(TextureImporter)AssetImporter.GetAtPath(art+"RewardTitleFrames.png");Assert.That(importer.sRGBTexture,Is.False);Assert.That(importer.GetPlatformTextureSettings("Standalone").maxTextureSize,Is.EqualTo(4096));
             Assert.That(AssetDatabase.LoadAssetAtPath<Sprite>(art+"_btn_green_r.png").border,Is.EqualTo(new Vector4(30,14,30,12)));

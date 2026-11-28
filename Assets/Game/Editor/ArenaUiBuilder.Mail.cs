@@ -24,7 +24,8 @@ namespace AstralOath.Editor
             font = Load<TMP_FontAsset>(Common + "Fonts/EpicSeven.asset");
             BuildSourceMessageBoxControls();
             Directory.CreateDirectory(Path.GetDirectoryName(MailWindowPath));
-            var effectShader=Load<Shader>(MailRes+"Materials/SourceAdditive.shader");var effectMaterial=new Material(effectShader);if(File.Exists(MailRes+"Materials/SourceAdditive.mat")){EditorUtility.CopySerialized(effectMaterial,Load<Material>(MailRes+"Materials/SourceAdditive.mat"));Object.DestroyImmediate(effectMaterial);}else AssetDatabase.CreateAsset(effectMaterial,MailRes+"Materials/SourceAdditive.mat");
+            var effectShader=Load<Shader>(Common+"Materials/SourceAdditive.shader");var effectMaterial=new Material(effectShader);if(File.Exists(Common+"Materials/SourceAdditive.mat")){EditorUtility.CopySerialized(effectMaterial,Load<Material>(Common+"Materials/SourceAdditive.mat"));Object.DestroyImmediate(effectMaterial);}else AssetDatabase.CreateAsset(effectMaterial,Common+"Materials/SourceAdditive.mat");
+            BuildSingleItemRewardAssets();
             Save(BuildMailEntry().gameObject, MailEntryPath);
             Save(BuildMailWindow().gameObject, MailWindowPath);
             UIViewRegistry.ValidatePrefab<MailWindow>(Load<GameObject>(MailWindowPath));
@@ -147,11 +148,10 @@ namespace AstralOath.Editor
             var fxParticles=Area(reward,"Original reward particles",0,0,1,1);Link("effectParticles",fxParticles);
             int particleIndex=0;
             foreach(var emitter in MailEffectParticleDataForEditor())
-            {for(int i=0;i<emitter.Count;i++){var spark=Area(fxParticles,"Particle "+particleIndex++,0,0,0,0);spark.anchorMin=spark.anchorMax=spark.pivot=new Vector2(.5f,.767f);var image=Paint(spark,MailArt(emitter.Texture),Color.white);image.material=Load<Material>(MailRes+"Materials/SourceAdditive.mat");image.raycastTarget=false;image.enabled=false;}}
-            var single=Area(root,"Single reward",0,0,0,0);single.anchorMin=single.anchorMax=new Vector2(.5f,1);single.pivot=Vector2.one*.5f;single.sizeDelta=new Vector2(1024,256);single.anchoredPosition=new Vector2(0,-164);Link("singleReward",single.gameObject);single.gameObject.AddComponent<CanvasGroup>().blocksRaycasts=false;
-            var singleEffect=single.gameObject.AddComponent<RawImage>();singleEffect.texture=Load<Texture2D>(MailRes+"Textures/SingleRewardFrames.png");singleEffect.material=Load<Material>(Common+"Materials/UiTouchPulse.mat");singleEffect.raycastTarget=false;Link("singleEffect",singleEffect);
-            var singleTile=Area(single,"Single item",.38f,.254f,.123f,.492f);Paint(singleTile,MailArt("_itembg_stuff_1"),Color.white);Image("singleIcon",singleTile,"to_stamina",0,0,1,1);Label("singleQuantity",singleTile,0,.75f,1,.30f,30,TextAlignmentOptions.BottomRight);
-            Label("singleKind",single,.53f,.30f,.43f,.20f,26).color=Mist;Label("singleText",single,.53f,.47f,.43f,.28f,31);
+            {for(int i=0;i<emitter.Count;i++){var spark=Area(fxParticles,"Particle "+particleIndex++,0,0,0,0);spark.anchorMin=spark.anchorMax=spark.pivot=new Vector2(.5f,.767f);var image=Paint(spark,MailArt(emitter.Texture),Color.white);image.material=Load<Material>(Common+"Materials/SourceAdditive.mat");image.raycastTarget=false;image.enabled=false;}}
+            var single=(GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(SingleItemRewardPath),root);var singleMap=single.GetComponent<BindingMap>();
+            Link("singleReward",single);Link("singleEffect",singleMap.Require<Image>("effect"));Link("singleIcon",singleMap.Require<Image>("icon"));
+            Link("singleQuantity",singleMap.Require<GameText>("quantity"));Link("singleKind",singleMap.Require<GameText>("kind"));Link("singleText",singleMap.Require<GameText>("text"));
             var tooltip=(RectTransform)Layer("tooltip").transform;
             foreach(var binding in BuildMailTooltip(tooltip))Link(binding.Key,binding.Target);
             var artRoot=Area(root,"Artwork",0,0,0,0);

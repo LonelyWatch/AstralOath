@@ -7,7 +7,7 @@
       "alias": "DrawerFrame",
       "source": "img/_box_big_gold_90.png",
       "sourceSha256": "032aa62a3a6e07e9557881613dae678c0c1c3bcff6203c784fe78f45cd9cc698",
-      "outputSha256": "032aa62a3a6e07e9557881613dae678c0c1c3bcff6203c784fe78f45cd9cc698",
+      "outputSha256": "5d0a1f61972139791043d9fd7d48ce4ccf1e82512145f1babfd836947e116b5a",
       "size": [
         160,
         156
@@ -23,7 +23,9 @@
         54,
         54,
         54
-      ]
+      ],
+      "nodeOpacity": 255,
+      "conversion": "Neutral dark pixel alpha uses (1-linear(1-a+a*g))/(1-linear(g)); original RGB and colored gold pixels retained. No neutral backdrop pixels erased."
     },
     {
       "alias": "BlackGoldFrame",
@@ -631,8 +633,131 @@
       "alias": "DrawerFrameTransparent",
       "source": "img/_box_big_gold_90.png",
       "sourceSha256": "032aa62a3a6e07e9557881613dae678c0c1c3bcff6203c784fe78f45cd9cc698",
-      "outputSha256": "b7702b8dd9d43e90d3de1a9c1acdc2694361f23142aabcecfaf979de05612ef9",
-      "conversion": "Only neutral black backdrop alpha removed; original colored gold border RGB/alpha retained."
+      "outputSha256": "b0aeb2abea971f5e851c88b85bbc8e9b68764d1be5c13552c08a78378dcae753",
+      "size": [
+        160,
+        156
+      ],
+      "sourceCapXywh": [
+        54,
+        54,
+        52,
+        48
+      ],
+      "unityBorderLbrt": [
+        54,
+        54,
+        54,
+        54
+      ],
+      "nodeOpacity": 127,
+      "nodeTintRgb": [
+        255,
+        255,
+        255
+      ],
+      "conversion": "Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.",
+      "opacityProvenance": "Runtime39.0/39.5 measured against48.5 underlying static lobby: opacity127 inference, not a CSB default."
+    },
+    {
+      "alias": "ChatDim",
+      "source": "img/_dim.png",
+      "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "outputSha256": "d745f2c51a884e5647af3365b781b5ea4c26a58941b4d1a16fb1c45568d9607f",
+      "size": [
+        160,
+        90
+      ],
+      "sourceCapXywh": null,
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "nodeOpacity": 127,
+      "nodeTintRgb": [
+        255,
+        255,
+        255
+      ],
+      "conversion": "Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.",
+      "opacityProvenance": "chat.csb/chat_favorite.csb node"
+    },
+    {
+      "alias": "FavoriteDim",
+      "source": "img/_dim.png",
+      "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "outputSha256": "8398ca8a7506d05761867d0d26e3ec3a090537e2da0c58c84f2e9d5db9166657",
+      "size": [
+        160,
+        90
+      ],
+      "sourceCapXywh": null,
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "nodeOpacity": 255,
+      "nodeTintRgb": [
+        0,
+        0,
+        0
+      ],
+      "conversion": "Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.",
+      "opacityProvenance": "chat.csb/chat_favorite.csb node"
+    },
+    {
+      "alias": "ChatHeaderShadow",
+      "source": "img/_grow.png",
+      "sourceSha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c",
+      "outputSha256": "82cd9910f5065a85aa0e21a9da0aa68a43d4bc04dc4d97a41748fc52dab14950",
+      "size": [
+        164,
+        167
+      ],
+      "sourceCapXywh": null,
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "nodeOpacity": 153,
+      "nodeTintRgb": [
+        255,
+        255,
+        255
+      ],
+      "conversion": "Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.",
+      "opacityProvenance": "chat.csb/chat_favorite.csb node"
+    },
+    {
+      "alias": "FavoriteShadow",
+      "source": "img/_grow.png",
+      "sourceSha256": "19406d4a55cadd82ca302b7f786ef3be6b9d451c9e0961c3cea6b37ce041ed9c",
+      "outputSha256": "ee34dcf5afd84766223cb070113519d1faf23f74256a3f5ed84dbfa18997d506",
+      "size": [
+        164,
+        167
+      ],
+      "sourceCapXywh": null,
+      "unityBorderLbrt": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "nodeOpacity": 178,
+      "nodeTintRgb": [
+        255,
+        255,
+        255
+      ],
+      "conversion": "Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.",
+      "opacityProvenance": "chat.csb/chat_favorite.csb node"
     }
   ],
   "stickers": [

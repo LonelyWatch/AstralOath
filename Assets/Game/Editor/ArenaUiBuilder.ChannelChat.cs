@@ -33,10 +33,11 @@ namespace AstralOath.Editor
         private static RectTransform BuildChannelChat()
         {
             var root=Root("ChannelChat");var keys=new List<(string Key,Object Target)>();void Link(string key,Object value)=>keys.Add((key,value));string L(string key)=>ChannelChatLabels.Text(key);
-            var close=Button(Area(root,"Outside close",0,0,1,1),null,new Color(0,0,0,.28f));Link("close",close);
+            var close=Button(Area(root,"Outside close",0,0,1,1),ChatArt("ChatDim"),Color.white);Link("close",close);
             var drawer=Area(root,"Original chat drawer",0,0,0,0);drawer.anchorMin=drawer.anchorMax=drawer.pivot=new Vector2(1,0);drawer.sizeDelta=new Vector2(924,1080);drawer.anchoredPosition=Vector2.zero;Link("drawer",drawer);
-            var surface=ChatSurface(ChatBox(drawer,"Original backdrop",0,-128.348f,900,875),"DrawerFrame",true);Link("drawerSurface",surface);
-            var transparent=ChatSurface(ChatBox(drawer,"Original border without black backdrop",0,-128.348f,900,875),"DrawerFrameTransparent");transparent.enabled=false;Link("transparentBorder",transparent);
+            ChatSurface(ChatBox(drawer,"Original header shadow",119.64f,-152.61f,652.72f,277.22f),"ChatHeaderShadow");
+            var surface=ChatSurface(ChatBox(drawer,"Original backdrop",0,-85.348f,900,875),"DrawerFrame",true);Link("drawerSurface",surface);
+            var transparent=ChatSurface(ChatBox(drawer,"Original translucent backdrop",0,-85.348f,900,875),"DrawerFrameTransparent");transparent.enabled=false;Link("transparentBorder",transparent);
             Caption("channelName",drawer,63,8,225,39,"",39,Color.white);
             IconButton("favorite","Favorite",354,8,62,49,40);IconButton("channelSwitch","Switch",416,8,62,49,45);IconButton("opacity","Opacity",478,8,62,49,52);IconButton("settings","Settings",540,8,62,49,50);
             var opacityButton=(GameButton)keys.Find(k=>k.Key=="opacity").Target;var opacitySelected=ChatSurface(ChatBox((RectTransform)opacityButton.transform,"Opacity selected",0,0,62,49),"SmallWhite");opacitySelected.enabled=false;Link("opacitySelected",opacitySelected);opacitySelected.transform.SetAsFirstSibling();
@@ -55,7 +56,8 @@ namespace AstralOath.Editor
             var body=ChatCaption(row,"Plain message",74,32,462,40,"",28,new Color32(180,180,180,255));body.enableWordWrapping=true;body.overflowMode=TextOverflowModes.Overflow;body.alignment=TextAlignmentOptions.TopLeft;rowKeys.Add(("body",body));
             var sticker=Picture(row,"Sticker",null,0,0,0,0,true);ChatPlace(sticker.rectTransform,71.5f,32,137,110);rowKeys.Add(("sticker",sticker));Bind(row,rowKeys.ToArray());Link("row",row.gameObject);row.gameObject.SetActive(false);
             var entered=ChatBox(drawer,"Entered channel strip",54,598,549,35);var enterBg=ChatSurface(entered,"SmallWhite");enterBg.color=new Color32(68,53,34,255);Link("enteredStrip",entered.gameObject);Caption("entered",entered,4,0,541,35,"",27.3f,new Color32(183,153,107,255),TextAlignmentOptions.Center);
-            var noticeButton=Control("notice",drawer,546,110,53,44,"SmallWhite");((Image)noticeButton.targetGraphic).color=new Color32(116,85,45,255);var arrow=ChatSurface(ChatBox(drawer,"Notice collapse arrow",561,123,24,17),"NoticeArrow");arrow.rectTransform.localEulerAngles=new Vector3(0,0,-90);
+            var noticeButton=Control("notice",drawer,546,110,53,44,"SmallWhite");((Image)noticeButton.targetGraphic).color=new Color32(116,85,45,255);
+            var arrow=ChatSurface(ChatBox(drawer,"Notice collapse arrow",0,0,17,26),"NoticeArrow");arrow.rectTransform.pivot=Vector2.one*.5f;arrow.rectTransform.anchoredPosition=new Vector2(572.5f*1.5f,-130.5f*1.5f);arrow.rectTransform.localEulerAngles=new Vector3(0,0,-90);
             var emoji=Control("emoji",drawer,52,647,54,61,"SmallBlack");var emojiIcon=ChatSurface(ChatBox((RectTransform)emoji.transform,"Emoji",5,8,44,44),"Emoji");emojiIcon.color=new Color(1,1,1,.5f);
             var input=ChatInput(ChatBox(drawer,"Input",106,647.6f,339.9f,59.4f),"InputWhite",L("input"),400,32);Link("input",input);
             var send=Control("send",drawer,446,647,158,61,"GreenSend");ChatCaption((RectTransform)send.transform,"Send label",0,0,158,61,L("send"),31.5f,Color.white,TextAlignmentOptions.Center);
@@ -97,16 +99,17 @@ namespace AstralOath.Editor
             {var r=ChatSurface(ChatBox(host,"Original gold rule",x,y,width,10),artName);r.color=new Color32(146,109,62,255);}
             void InputOverlay(string kind,string title,string description)
             {
-                var layer=Area(root,kind+" overlay",0,0,1,1);Link(kind+"Layer",layer.gameObject);Link(kind+"Close",Button(Area(layer,"Close outside "+kind,0,0,1,1),null,new Color(0,0,0,.65f)));
+                var layer=Area(root,kind+" overlay",0,0,1,1);Link(kind+"Layer",layer.gameObject);Link(kind+"Close",Button(Area(layer,"Close outside "+kind,0,0,1,1),ChatArt("FavoriteDim"),Color.white));
+                var shadow=ChatBox(layer,kind+" original shadow",0,0,878.712f,705.742f);shadow.anchorMin=shadow.anchorMax=shadow.pivot=Vector2.one*.5f;shadow.anchoredPosition=new Vector2(-.015f,-2.8095f);ChatSurface(shadow,"FavoriteShadow");
                 var box=ChatBox(layer,kind+" original frame",0,0,558,386);box.anchorMin=box.anchorMax=box.pivot=Vector2.one*.5f;box.anchoredPosition=new Vector2(3,24);ChatSurface(box,"BlackGoldFrame",true);
-                ChatCaption(box,"Title",64,53,430,43,title,38.25f,Color.white,TextAlignmentOptions.Center);
-                var left=ChatSurface(ChatBox(box,"Title rule left",57,94,222,14),"TitleDivider");left.color=new Color32(146,109,62,178);
-                var right=ChatSurface(ChatBox(box,"Title rule right",279,94,222,14),"TitleDivider");right.rectTransform.localScale=new Vector3(-1,1,1);right.color=left.color;
-                ChatCaption(box,"Description",68,136,425,78,description,28,new Color32(180,180,180,255),TextAlignmentOptions.TopLeft,true);
-                Caption(kind+"Value",box,57,232,446,34,"",29.64f,new Color32(183,153,107,255),TextAlignmentOptions.Center);
-                var field=ChatInput(ChatBox(box,"Channel input",57,271,281,55),"SmallWhite",L("input"),4,31.5f);field.contentType=TMP_InputField.ContentType.IntegerNumber;Link(kind+"Input",field);
-                var save=Control(kind+"Save",box,338,270,165,57,"GreenJoin");ChatCaption((RectTransform)save.transform,"Input label",0,0,165,57,L("send"),31.5f,Color.white,TextAlignmentOptions.Center);
-                ChatCaption(box,"Allowed channel range",57,337,446,33,L("range"),28.86f,new Color32(125,125,125,255),TextAlignmentOptions.Center);
+                ChatCaption(box,"Title",168.857f,53.74f,218.28f,26.52f,title,38.25f,Color.white,TextAlignmentOptions.Center);
+                var left=ChatSurface(ChatBox(box,"Title rule left",54.998f,93,222,14),"TitleDivider");left.color=new Color32(146,109,62,178);
+                var right=ChatSurface(ChatBox(box,"Title rule right",275.998f,92.002f,222,14),"TitleDivider");right.rectTransform.pivot=Vector2.one*.5f;right.rectTransform.anchoredPosition=new Vector2((275.998f+111)*1.5f,-(92.002f+7)*1.5f);right.rectTransform.localRotation=Quaternion.Euler(0,0,180);right.color=left.color;
+                ChatCaption(box,"Description",63.5f,104.15f,427,105.7f,description,28,new Color32(136,136,136,255),TextAlignmentOptions.MidlineLeft,true);
+                Caption(kind+"Value",box,105.2f,215.12f,349.6f,19.76f,"",29.64f,new Color32(171,135,89,255),TextAlignmentOptions.Center);
+                var field=ChatInput(ChatBox(box,"Channel input",57,246,281,55),"SmallWhite",L("input"),4,31.5f);field.contentType=TMP_InputField.ContentType.IntegerNumber;Link(kind+"Input",field);
+                var save=Control(kind+"Save",box,338,246,165,57,"GreenJoin");ChatCaption((RectTransform)save.transform,"Input label",0,0,165,57,L("send"),31.5f,Color.white,TextAlignmentOptions.Center);
+                ChatCaption(box,"Allowed channel range",137.69f,307.38f,268.62f,19.24f,L("range"),28.86f,new Color32(125,125,125,255),TextAlignmentOptions.Center);
                 var c=Button(ChatBox(layer,"Close caption",0,0,200,38),null,Color.clear);c.transform.SetAsLastSibling();var cr=(RectTransform)c.transform;cr.anchorMin=cr.anchorMax=cr.pivot=new Vector2(.5f,0);cr.anchoredPosition=new Vector2(0,17);ChatCaption(cr,"Label",0,0,200,38,L("close"),28,new Color32(180,180,180,255),TextAlignmentOptions.Center);Link(kind+"CloseCaption",c);layer.gameObject.SetActive(false);
             }
             void Check(string key,RectTransform host,float y,string label,bool all)

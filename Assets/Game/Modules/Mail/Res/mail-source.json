@@ -1147,7 +1147,7 @@
           "sha256": "178af4588fd6b3d81e7f69aab2fc62dfd2d63b5c24c6ff2a852cbd9e6b992bdc"
         }
       ],
-      "path": "Assets/Game/Modules/Mail/Res/Textures/SingleRewardFrames.png",
+      "path": "Assets/Game/Common/Res/SingleItemReward/SingleRewardFrames.png",
       "sha256": "d34d2f9ddbc829830c970e312f2a078c157098f6da1a065a4284fdb657b740f5",
       "frames": 64,
       "fps": 30,
@@ -1228,5 +1228,6 @@
       ]
     }
   ],
-  "notes": "Native mail CSB caps and source hashes. Cover identity: img_event_3000days_1.webp and _frame_s.png, presentation only. Title source Spine sampled without runtime dependency; source particles use local deterministic randomness and calibrated units. Audio actual auditory review pending."
+  "notes": "Native mail CSB caps and source hashes. Cover identity: img_event_3000days_1.webp and _frame_s.png, presentation only. Title source Spine sampled without runtime dependency; source particles use local deterministic randomness and calibrated units. Audio actual auditory review pending.",
+  "singleItemRewardCommon": "Common owns the original atlas and shared visual prefab; exact source burst data/provenance are Common/Res/SingleItemReward/source-manifest.json. The ordinary Binder remains in the existing Mail hot assembly."
 }

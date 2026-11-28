@@ -42,6 +42,21 @@ ENTRIES={
  'NoticeArrow':('img/cm_icon_etcarrow2_b.png',None),
 }
 def sha(v):return hashlib.sha256(v).hexdigest()
+def linear(value):return value/12.92 if value<=.04045 else ((value+.055)/1.055)**2.4
+def dark_coverage_variant(src,opacity=255,black=False):
+ """Preserve Cocos darkening against a white reference in Unity Linear.
+ Neutral dark source pixels keep RGB; only effective opacity is translated.
+ Gold/colored frame pixels retain source color and the authored node opacity.
+ """
+ image=Image.open(src).convert('RGBA');pixels=[]
+ for r,g,b,a in image.getdata():
+  alpha=a/255*opacity/255
+  if black:r=g=b=0
+  if max(r,g,b)<=32 and max(r,g,b)-min(r,g,b)<=3:
+   gray=(r+g+b)/(3*255)
+   alpha=(1-linear(1-alpha+alpha*gray))/(1-linear(gray))
+  pixels.append((r,g,b,round(max(0,min(1,alpha))*255)))
+ image.putdata(pixels);buffer=io.BytesIO();image.save(buffer,format='PNG');return buffer.getvalue()
 def identity(path):return uuid.uuid5(uuid.NAMESPACE_URL,'AstralOath/'+path.relative_to(ROOT).as_posix()).hex
 def meta(path,template,border=(0,0,0,0)):
  p=Path(str(path)+'.meta');guid=re.search(r'^guid: (.+)$',p.read_text(encoding='utf-8'),re.M).group(1) if p.exists() else identity(path)
@@ -55,11 +70,22 @@ def main():
  template=(ROOT/'Assets/Game/Modules/Mail/Res/Textures/_box_popup.png.meta').read_text(encoding='utf-8')
  entries=[]
  for alias,(rel,cap) in ENTRIES.items():
-  src=RAW/rel;data=src.read_bytes();dest=OUT/'Textures'/(alias+'.png');dest.write_bytes(data);w,h=Image.open(src).size
+  src=RAW/rel;original=src.read_bytes();data=dark_coverage_variant(src) if alias=='DrawerFrame' else original;dest=OUT/'Textures'/(alias+'.png');dest.write_bytes(data);w,h=Image.open(src).size
   border=(cap[0],h-cap[1]-cap[3],w-cap[0]-cap[2],cap[1]) if cap else (0,0,0,0);meta(dest,template,border)
-  entries.append(dict(alias=alias,source=rel,sourceSha256=sha(data),outputSha256=sha(data),size=[w,h],sourceCapXywh=cap,unityBorderLbrt=border))
- # Transparency toggle preserves only the source gold border; no invented flat rectangle.
- src=RAW/ENTRIES['DrawerFrame'][0];im=Image.open(src).convert('RGBA');im.putdata([(r,g,b,a if r>g+3 and g>b+3 else 0) for r,g,b,a in im.getdata()]);p=OUT/'Textures/DrawerFrameTransparent.png';im.save(p);w,h=im.size;c=ENTRIES['DrawerFrame'][1];meta(p,template,(c[0],h-c[1]-c[3],w-c[0]-c[2],c[1]));entries.append(dict(alias='DrawerFrameTransparent',source=ENTRIES['DrawerFrame'][0],sourceSha256=sha(src.read_bytes()),outputSha256=sha(p.read_bytes()),conversion='Only neutral black backdrop alpha removed; original colored gold border RGB/alpha retained.'))
+  entry=dict(alias=alias,source=rel,sourceSha256=sha(original),outputSha256=sha(data),size=[w,h],sourceCapXywh=cap,unityBorderLbrt=border)
+  if alias=='DrawerFrame':entry.update(nodeOpacity=255,conversion='Neutral dark pixel alpha uses (1-linear(1-a+a*g))/(1-linear(g)); original RGB and colored gold pixels retained. No neutral backdrop pixels erased.')
+  entries.append(entry)
+ # Reference39.0/39.5 keeps a translucent full backdrop, not a color-keyed gold rim.
+ variants=[('DrawerFrameTransparent','img/_box_big_gold_90.png',127,False,ENTRIES['DrawerFrame'][1]),
+           ('ChatDim','img/_dim.png',127,False,None),('FavoriteDim','img/_dim.png',255,True,None),
+           ('ChatHeaderShadow','img/_grow.png',153,False,None),('FavoriteShadow','img/_grow.png',178,False,None)]
+ for alias,rel,opacity,black,cap in variants:
+  src=RAW/rel;p=OUT/'Textures'/(alias+'.png');p.write_bytes(dark_coverage_variant(src,opacity,black));w,h=Image.open(src).size
+  border=(cap[0],h-cap[1]-cap[3],w-cap[0]-cap[2],cap[1]) if cap else (0,0,0,0);meta(p,template,border)
+  entries.append(dict(alias=alias,source=rel,sourceSha256=sha(src.read_bytes()),outputSha256=sha(p.read_bytes()),size=[w,h],sourceCapXywh=cap,unityBorderLbrt=border,
+    nodeOpacity=opacity,nodeTintRgb=[0,0,0] if black else [255,255,255],
+    conversion='Apply node opacity, then neutral dark alpha=(1-linear(1-a+a*g))/(1-linear(g)); original geometry/RGB retained except authored black tint. Never erase neutral pixels.',
+    opacityProvenance='chat.csb/chat_favorite.csb node' if alias!='DrawerFrameTransparent' else 'Runtime39.0/39.5 measured against48.5 underlying static lobby: opacity127 inference, not a CSB default.'))
  ids=(ROOT/'Server/Host/Arena/arena-chat-stickers.txt').read_text(encoding='utf-8').split();stickers=[]
  for key in ids:
   src=RAW/'emoticon_chat'/(key+'.png');data=src.read_bytes();p=OUT/'Stickers'/(key+'.png');p.write_bytes(data);meta(p,template);stickers.append(dict(id=key,source='emoticon_chat/'+key+'.png',sha256=sha(data),size=Image.open(src).size))
