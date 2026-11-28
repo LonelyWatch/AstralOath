@@ -84,7 +84,7 @@ namespace AstralOath.Client.Summon
                 view.Group("featuredScenery"), view.Group("featuredActorLayer"),
                 view.Group("featuredOfferLayer"));
             featuredPortrait = new HeroRosterPortrait(view.Raw("upPortrait"), renderSize: 1024, positionOffset: 2000, framing: 1.04f, headFocus: .23f);
-            revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), renderSize: 1024, positionOffset: 3000, framing: .90f, headFocus: .26f);
+            revealPortrait = new HeroRosterPortrait(view.Raw("revealHero"), renderSize: 1024, positionOffset: 3000, framing: 1.20f, headFocus: .26f);
             wishPortraits = Enumerable.Range(0, 7).Select(index => new HeroRosterPortrait(view.Raw("wishHero" + index),
                 renderSize: 480, animated: true, positionOffset: 4000 + index * 1000, framing: .83f, headFocus: .30f)).ToArray();
             Canvas.willRenderCanvases += featuredPortrait.Tick;

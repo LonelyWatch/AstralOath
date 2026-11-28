@@ -16,7 +16,7 @@ namespace AstralOath.Editor
             var art = Picture(reveal, "Reward art track", null, .553f, .065f, .435f, .82f, true);
             bindings.Add(("revealArt", art));
             // Portrait and battle miniature use separate native skeletons. The close-up extends below the viewport.
-            var portrait = Area(art.rectTransform, "Animated hero close-up", -.22f, -.27f, 1.57f, 1.89f);
+            var portrait = Area(art.rectTransform, "Animated hero close-up", -.14f, -.27f, 1.57f, 1.89f);
             var fitter = portrait.gameObject.AddComponent<AspectRatioFitter>();
             fitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
             fitter.aspectRatio = 1;

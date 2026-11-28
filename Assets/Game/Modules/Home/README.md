@@ -124,3 +124,4 @@ Windows 独立客户端默认可缩放窗口，主页右上角按钮或 F11 切�
 ### R47召唤演出追加
 
 既有Home程序集的SummonPresentation承载原星星CFX与粒子；新增内部SummonParticles复用BattleHudParticles的源参数解释逻辑，暂不改Common/AOT或原BattleScene。普通五星英雄/神器为金星，五星光暗英雄为紫星且十连优先级更高。源文件及边界见Summon README；本轮用户免回归，未录制/观看修改后的连续过程。
+11/28召唤获得小人改用原character_small末态绝对位置与模型shadow地面锚点；尺寸仅初始化一次，idle时不再按动态mesh.bounds重推脚底。仅SummonPresentation调用受影响，不改共用HeroRosterPortrait默认取景。按用户要求免回归。

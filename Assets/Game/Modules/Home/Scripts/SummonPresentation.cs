@@ -94,6 +94,8 @@ namespace AstralOath.Client.Summon
             private MeshFilter miniatureMesh;
             private Part miniatureTrack;
             private Vector2 miniatureRest;
+            private Vector3 miniatureRestInScene;
+            private Vector2 miniatureGround;
             private float miniatureSize;
             private RectTransform rewardArt;
             private Part rewardTrack;
@@ -427,7 +429,13 @@ namespace AstralOath.Client.Summon
                     return;
                 }
 
-                miniatureSize = camera.orthographicSize * .70f / mesh.bounds.size.y;
+                // Keep the authored ground point and a fixed idle-pose size. Moving weapons
+                // must not lift the character by changing the mesh's bounds every frame.
+                if (!rewardMiniature.TryGetBoneSkeletonPosition("shadow", out miniatureGround))
+                    miniatureGround = new Vector2(mesh.bounds.center.x, mesh.bounds.min.y);
+                miniatureRestInScene = scene.transform.InverseTransformPoint(
+                    miniatureTrack.stage.transform.TransformPoint(miniatureRest));
+                miniatureSize = camera.orthographicSize * .78f / mesh.bounds.size.y;
                 rewardMiniature.Root.transform.localScale = miniatureSize * Vector3.one;
                 UpdateHeroMiniature(0f);
             }
@@ -438,13 +446,11 @@ namespace AstralOath.Client.Summon
                     !miniatureTrack.skeleton.TryGetBoneSkeletonPosition("character_small", out Vector2 position)) return;
                 rewardMiniature.Tick(tick);
 
-                var bounds = miniatureMesh.sharedMesh.bounds;
                 Vector3 offset = miniatureTrack.looping
                     ? Vector3.zero
-                    : miniatureTrack.stage.transform.TransformVector(position - miniatureRest);
-                Vector3 rest = new Vector3(-.23f * camera.aspect, -.77f, 0) * camera.orthographicSize;
-                rewardMiniature.Root.transform.localPosition = rest + offset -
-                    miniatureSize * new Vector3(bounds.center.x, bounds.min.y, 0);
+                    : scene.transform.InverseTransformVector(miniatureTrack.stage.transform.TransformVector(position - miniatureRest));
+                rewardMiniature.Root.transform.localPosition = miniatureRestInScene + offset -
+                    miniatureSize * new Vector3(miniatureGround.x, miniatureGround.y, 0);
             }
 
             private static bool TryGetRestPosition(Part part, string bone, out Vector2 position)
