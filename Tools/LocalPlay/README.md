@@ -1,8 +1,10 @@
 # Windows 本机试玩入口
 
+当前入口为`.artifacts/windows-r46/Play-R46.exe`，普通Limited用户实际启动本体、D3D11、主R44/Feed46/原MySQL身份通过，Root实看无遮挡登录页；此观察不自动登录账号。最终四轮Native业务均46、暖缓存0下载。R44已获后续开发升级授权并完成45表隔离恢复校验、018–020迁移；失败恢复误判修复后实际成功，原备份/失败回执保留。仅自有.6 QA已停止，主服务/MySQL/Feed保留；没有执行全机断电重启演练。[本轮启动、包及限制](../../docs/delivery/2026-11-28-home-social-visual-fix.md)
+
 11/28 R45实际升级演练发现进程包装器把 `CopyToAsync` 的 `VoidTaskResult` 输出到管道，真实导入退出0仍被当作失败。已显式丢弃异步完成值，只返回整数退出码；新增 `Test-CapturedProcess.ps1` 运行自有短子进程，512KiB输入的成功/失败和无输入共3项。修前1/3、修后3/3，原24项服务安全契约仍通过。原SQL备份不修改，主库未恢复；实际恢复/迁移/启动结果见R45交付记录。此改动仅本机PowerShell助手，不改变已签名客户端或后端DLL。
 
-R44新增独立`Ensure-R44GameService.ps1`和Identity/Common/Test。默认只恢复已激活44；主库迁移与R38替换须先独立`-SwitchToR44`只读预检，再用15分钟内同输入回执显式`-Execute`。执行核准旧Host并只停该Host，保持MySQL，真实备份并只向唯一隔离schema恢复演练，逐表行数/EXTENDED CHECKSUM匹配才应用018/019/020和启动新Host；失败不向主库恢复、不初始化数据目录、不杀未知进程。以Social路由401、Entry0.1.27和实际SHA判断新服，无虚构Version字段。历史R38工具只复用不改动；函数装载作用域阻断有真实RED，修后离线24/24。尚未真实切服/断电恢复，命令与状态见`.artifacts/windows-r44/server/README.md`，不能把离线绿当实际通过。[任务依据](../../docs/development/home-profile-chat-reference.md)
+R44新增独立`Ensure-R44GameService.ps1`和Identity/Common/Test。默认只恢复已激活44；主库迁移与R38替换须先独立`-SwitchToR44`只读预检，再用15分钟内同输入回执显式`-Execute`。执行核准旧Host并只停该Host，保持MySQL，真实备份并只向唯一隔离schema恢复演练，逐表行数/EXTENDED CHECKSUM匹配才应用018/019/020和启动新Host；失败不向主库恢复、不初始化数据目录、不杀未知进程。以Social路由401、Entry0.1.27和实际SHA判断新服，无虚构Version字段。历史R38工具只复用不改动；作用域阻断有真实RED、安全24/24。后续实际切服/隔离恢复已按上文46完成，全机断电后重开未演练；保留原阶段命令和失败记录，不把离线绿当实际通过。[任务依据](../../docs/development/home-profile-chat-reference.md)
 
 0.1.23 / R22 完整解压后，首次运行双击包根目录的 `启动试玩.cmd`。服务启动后，每次双击同目录的 `AstralOath-Play.exe` 都会另开一个客户端。该版本的游戏、签名内容与数据库端口分别为 7728、5295、5327。[新母包、旧版升级与验证记录](../../docs/delivery/2026-11-21-windows-r22.md)
 

@@ -20,14 +20,14 @@
 - 账号和英雄背包：[录像、数据模型与验收](plans/2026-11-17-hero-inventory.md)、[服务端接口与迁移](../Server/README.md)。
 - 游戏内邮件：[玩家收件、开发 GM 自发、服务端名单与整区投递的设计](plans/2026-11-22-game-mail.md)。
 - 普通装备：[背包、单槽配戴和管理页的原版画面与时间点](development/equipment-ui-reference.md)、[原作六部位、强化与套装规则及项目实施方案](plans/2026-11-21-equipment-system.md)、[11 月 25 日普通强化、角标与验收方案](plans/2026-11-25-equipment-enhancement.md)。
-- 当前本机试玩：[Windows0.1.27 / R41邮件、GM与运营工具](delivery/2026-11-27-mail-system.md)，复用R37母包并实际1080p/4K验证，包含原版/修改前后、视听、文件位置与未完成内容；[R36普通强化历史](delivery/2026-11-26-equipment-enhancement.md)单独保留。
+- 当前本机试玩：[Windows0.1.27 / 内容R46，主页资料、频道与邮件视觉修订](delivery/2026-11-28-home-social-visual-fix.md)，入口`.artifacts/windows-r46/Play-R46.exe`。复用R37母包、签名热更，1080p/4K原生与普通启动实测通过；[R41邮件历史](delivery/2026-11-27-mail-system.md)、[R36普通强化历史](delivery/2026-11-26-equipment-enhancement.md)分别保留。
 - R41打不开：[旧R36占端口、启动助手安全切换与实际恢复验证](delivery/2026-11-27-r41-startup-fix.md)。只更新本机助手，原游戏本体和签名内容不变。
 - 邮件UI复核：[提示自动消失、角标、固定物品卡与共享确认框](delivery/2026-11-28-mail-ui-followup.md)。43功能/包证据保留，用户复核文字视觉不通过，44候选已修灰度/字重而尚待Native/分发；不要把历史图录当新增系统完成。
 - 后续装备修订：[角标/按钮、累计次数、CP横板、固定卡与英雄总增加](delivery/2026-11-26-equipment-followup.md)。本轮源码/Editor通过与签名包/原生/分发状态分别记录。
 - 角色战斗力：[历史公式、官方变更、原包系数与复算边界](development/combat-power.md)。CP 与装备分数、实际战斗强弱分别讨论。
 - 主页与竞技场：[启动、房间与聊天](development/arena-lobby.md)、[Arena](../Assets/Game/Modules/Arena/README.md)。
 - 主页卡与公共频道：[原录像、最小素材和还原边界](development/home-profile-chat-reference.md)、[11/28资料/频道/召唤交付记录](delivery/2026-11-28-home-profile-chat.md)。44已签名打包，切服迁移待明确批准，现用43保留；Native与视觉缺口未完成。原版/修前/Editor候选、文件位置与未执行项分列，未录到的小卡子页按用户要求不做。
-- R45视觉修订：[提示/主页右灰/收藏/透明聊天与共享奖励粒子](delivery/2026-11-28-home-social-visual-fix.md)。原版、44修前、最终1080/4K和Native状态分列；客户端内容45与未改动后端R44分别固定来源，打包/分发状态以实际回执为准。
+- R46最终视觉修订：[提示/主页右灰/收藏/透明聊天与共享奖励粒子](delivery/2026-11-28-home-social-visual-fix.md)。原版、44修前、45候选与46原生状态分列；最终客户端d312f43b和复用后端R44分别固定来源，保留45发现的游客并发缺陷及46先红后绿，不重标旧截图。
 - 操作留痕：[规则和接口](development/operation-audit.md)、[窗口与交互 ADR](architecture/adr/016-window-feedback-operation-audit.md)。
 - 配表：[Config README](../Config/README.md)、[配置与内容更新](architecture/content.md)。
 - 热更/强更：[构建操作](development/hot-update.md)、[更新能力核对](delivery/2026-11-12-foundation-reaudit.md)、[HybridCLR 决策](architecture/adr/007-hybridclr.md)。
