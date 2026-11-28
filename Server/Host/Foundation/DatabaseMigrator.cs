@@ -58,6 +58,8 @@ public static class DatabaseMigrator
             // if the process stops between the DDL and writing the history row.
             using var apply = new MySqlCommand(sql, connection);
             await apply.ExecuteNonQueryAsync(cancellationToken);
+            if (version == "021_player_public_identity.sql")
+                await PlayerPublicIdentity.InitializeExisting(connection, cancellationToken);
             using var record = new MySqlCommand(
                 "INSERT INTO foundation_migrations (version, checksum) VALUES (@version, @checksum);", connection);
             record.Parameters.AddWithValue("@version", version);

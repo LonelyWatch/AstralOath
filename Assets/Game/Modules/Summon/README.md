@@ -1,5 +1,15 @@
 # 召唤
 
+11/28本轮按用户明确规则修订演出选择：3★蓝、4★金色无追加星光、普通5★英雄及5★神器金色带星光，只有5★光/暗英雄紫色带星光。`SummonWindowBinder.EffectGrade` 从已结算回执的kind/stars及现有英雄目录elementId判断，不按卡池名或抽取顺序猜；十连开场按蓝→金→金带星→紫带星取最高演出，逐个揭晓仍按各自实际结果。原先所有5★均走violet且未导入追加粒子，既误分普通5★也缺星光。
+
+实际查看依据为用户圣约召唤截图（原`.artifacts/home-profile-chat-review/summon-audit/user-original-summon.png`，同图保存在本轮summon目录）与11/18原片的`mystic-contact-1/2.jpg`：可见紫色开场、金色揭晓与教堂星光。原片游戏版本/可见倍速未确认，颜色分配以本轮用户明确规则为准。只读核对原包 `gacha_effect_1_yellow2/1_violet2.cfx`，追加粒子均为x=-50/y=-30/z=55/delay1000ms；`2_yellow_pat/2_violet_pat.cfx`为y=-200/z=60，独立CFX没有外加delay。导入器仅增加这四个粒子依赖及原`flash/zodiac_star1/pati_03.sct`三图，完整保留源颜色轨、发射数、速度、寿命和内部延迟，不新画星星或重录声音。原测试组合`2_b_test`曾另给第二阶段粒子3700ms延迟，但它不是独立正式CFX；当前采用独立CFX时钟，完整原版连续时序与听感仍待本轮实包观看，不能由源参数存在推称通过。
+
+`Home/Scripts/SummonParticles.cs` 暂时在既有热更Home程序集内部复用BattleScene的粒子解释器（BattleScene原实现未改、未新增模块依赖、Common/AOT不变），由召唤Player控制其时钟、延迟、排序和释放。跳过、切场、关窗清理粒子网格/材质，演出不参与结算。后续若多个业务继续需要该解释器，再由架构任务统一归属，当前不借此改母包边界。
+
+左上角问号继续使用同一 `cm_btn_helpd.png`，取消无圆底按钮对原图再缩到68%的二次内缩，恢复整个现有按钮区域内等比显示；圆底底栏图标仍保留内缩。已实际查看原截图和该源图；只读保存的`top_bar.csb`/`top_bar_simple.csb`不含左上问号节点，因此不将其右侧顶栏几何伪称为左上问号的直接坐标依据。
+
+本轮来源、静态差异与未验收项在 `.artifacts/identity-social-followup/summon/`，源图与CFX逐项参数见`source-inspection.txt`，完整top_bar数据保留为JSON。编辑入口为 `Tools/Summon/ImportSummonPresentation.py --visual-only`；该模式保留已归档音频，仅更新视觉资源及manifest。生成后须由协调者执行`ArenaUiBuilder.GenerateSummon()`，其中已调用`SummonPresentationBuilder.Generate()`重建asset和预制。遵用户最新指示，本子任务未运行Unity、任何测试或回归；当前为源码/资源及静态审查完成，新增粒子和问号实际画面、连续演出/声音与签名新包仍由协调者验收交付。
+
 七人清晰度与文字4项`SummonClarityTests`已在联合Play14/14中全部通过：按实际投影渲染原骨骼、可见idle前进/隐藏暂停/关闭释放、名字局部0.18shear、其他静态列表480预算不变。`<i=18>`曾实际失败仍0.35，TMP3.0.7需`<i angle=18>`，不改全局字体italicStyle35。此为Editor真实相机/网格回归，Native的七RT尺寸、短时帧间隔及连续idle截图仍待实包验证。[本轮依据与边界](../../../../docs/development/home-profile-chat-reference.md)
 
 11/28重新核对用户新录像 `Screenrecorder-2026-11-28-02-29-26-914.mp4` 的01:28–01:38圣约七人页：雅碧凯会眨眼，莎若米亚的头发、肩臂与待机姿态会变化。旧实现把七人固定在480²静态RenderTexture，清晰度与动态均不符合这一依据。现仅七人页启用原有idle播放和按屏幕实际投影分配的目标，每帧绑定所属页面的Canvas回调；进入结果等隐藏页时停用外置stage与相机，返回恢复，关窗解绑并释放。窗口尺寸改变时先用新尺寸从源骨骼绘制再发布纹理，避免放大旧RT充当新细节；其他静态列表继续维持原预算。

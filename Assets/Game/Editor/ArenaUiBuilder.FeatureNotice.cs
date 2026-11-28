@@ -20,6 +20,7 @@ namespace AstralOath.Editor
         private static void BuildFeatureNoticeAssets()
         {
             var root=Root("FeatureNotice");
+            root.gameObject.AddComponent<CanvasGroup>();
             // Full-screen dismissal is intentional: the source says click to close,
             // unlike the two-second non-modal GameToast.
             // The old .76 Linear alpha transmitted .525 of a white header pixel.

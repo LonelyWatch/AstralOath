@@ -28,6 +28,13 @@ namespace AstralOath.Client.Arena
         public Image RoomLock => Bindings.Require<Image>("roomLock");
         public GameButton Send => Bindings.Require<GameButton>("send");
         public GameButton Emoji => Bindings.Require<GameButton>("emoji");
+        public GameButton ChannelTab => Bindings.Require<GameButton>("channelTab");
+        public GameButton ArenaTab => Bindings.Require<GameButton>("arenaTab");
+        public BindingMap ChannelUnreadBadge => Bindings.Require<BindingMap>("channelUnreadBadge");
+        internal Image ChannelSelected => Bindings.Require<Image>("channelSelected");
+        internal Image ArenaSelected => Bindings.Require<Image>("arenaSelected");
+        internal RectTransform PublicChannelHost => Bindings.Require<RectTransform>("publicChannelHost");
+        internal GameObject RoomChatContents => Bindings.Require<GameObject>("roomChatContents");
         public GameObject EmojiPicker => Bindings.Require<GameObject>("emojiPicker");
         public GameText RoomName => Bindings.Require<GameText>("name");
         public GameText Rule => Bindings.Require<GameText>("rule");
@@ -52,6 +59,7 @@ namespace AstralOath.Client.Arena
         {
             _ = Leave; _ = Send; _ = RoomName; _ = Rule; _ = Count; _ = HostName; _ = GuestName; _ = Status; _ = StatusBoard;
             _ = Emoji; _ = EmojiPicker; _ = Start; _ = StartLabel; _ = GuestReady; _ = Toast; _ = RoomLock;
+            _ = ChannelTab; _ = ArenaTab; _ = ChannelUnreadBadge; _ = ChannelSelected; _ = ArenaSelected; _ = PublicChannelHost; _ = RoomChatContents;
             _ = DraftSettings; _ = PrebanCount; _ = PrebanLabel; _ = BanProtection; _ = ProtectionLabel;
             _ = FirstPick; _ = FirstPickCheck; _ = FirstPickLabel;
             _ = GuestFirstPick; _ = GuestFirstPickCheck; _ = GuestFirstPickLabel;

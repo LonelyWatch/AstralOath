@@ -210,9 +210,17 @@ namespace AstralOath.Editor
             Paint(Area(root, "Chat separator", .602f, 0, .0022f, 1), null, Gold * .8f);
             Text(chat, "Chat title", "arena.title", 40, .044f, .008f, .91f, .066f).fontStyle = FontStyles.Bold;
             var channel = Area(chat, "Arena channel", .586f, .079f, .272f, .069f);
-            Paint(channel, Art("_tap_select_p"), Color.white, sliced: true);
+            var arenaTab = Button(channel, null, Color.clear);
+            var arenaSelected = Paint(Area(channel, "Arena selected", 0, 0, 1, 1), Art("_tap_select_p"), Color.white, sliced: true);
             Picture(channel, "Arena symbol", Art("icon_menu_arena"), .12f, .18f, .19f, .64f, true);
             Text(channel, "Channel name", "arena.channel", 30, .29f, 0, .62f, 1, Color.white, TextAlignmentOptions.Center);
+            var publicTabArea = Area(chat, "Public channel", .312f, .079f, .272f, .069f);
+            var publicTab = Button(publicTabArea, null, Color.clear);
+            var publicSelected = Paint(Area(publicTabArea, "Public selected", 0, 0, 1, 1), Art("_tap_select_p"), Color.white, sliced: true);
+            publicSelected.enabled = false;
+            Picture(publicTabArea, "Channel symbol", ChatArt("Talk"), .12f, .18f, .19f, .64f, true);
+            Text(publicTabArea, "Channel label", null, 30, .29f, 0, .62f, 1, Color.white, TextAlignmentOptions.Center).text = AstralOath.Client.ChannelChat.ChannelChatLabels.Text("public");
+            var publicBadge = BuildChatUnreadBadge(publicTabArea, new Vector2(14, 3));
             NativeRule(chat, "Channel separator", .03f, .136f, .94f, .022f, Gold, "_bar_2");
             Picture(chat, "Participants icon", Art("icon_menu_member"), .05f, .162f, .061f, .059f, true);
             Text(chat, "Member count caption", "arena.participants", 25, .119f, .157f, .31f, .037f, Gold);
@@ -271,6 +279,11 @@ namespace AstralOath.Editor
             var message = Input(composer, "Message", "arena.message", 200, .132f, .325f, .558f, .538f);
             var send = CommonButton(composer, "ConfirmButton", "arena.send", .707f, .325f, .26f, .538f);
             FollowKeyboard(composer, message);
+            var roomChatContents = Area(chat, "Arena room chat contents", 0, 0, 1, 1);
+            foreach (string childName in new[] { "Participant board", "Participants icon", "Member count caption", "Member count", "Participant separator", "Message history", "Composer" })
+                chat.Find(childName).SetParent(roomChatContents, false);
+            var publicHost = Area(chat, "Public channel contents", 0, .147f, 1, .853f);
+            publicHost.gameObject.SetActive(false);
             var draftSettings = Area(left, "Basic room draft settings", 0, 0, 1, 1);
             var protection = RoomDraftButton(draftSettings, true, out var protectionLabel);
             var prebans = RoomDraftButton(draftSettings, false, out var prebanLabel);
@@ -283,6 +296,8 @@ namespace AstralOath.Editor
             var emojiPicker = BuildEmojiPicker(root);
             var toast = CreateDirectoryToast(root);
             Bind(root, ("leave", leave), ("send", send), ("emoji", emoji), ("emojiPicker", emojiPicker), ("name", name), ("rule", rule), ("count", count),
+                ("channelTab", publicTab), ("arenaTab", arenaTab), ("channelSelected", publicSelected), ("arenaSelected", arenaSelected),
+                ("channelUnreadBadge", publicBadge), ("publicChannelHost", publicHost), ("roomChatContents", roomChatContents.gameObject),
                 ("hostName", hostName), ("guestName", guestName), ("status", status), ("statusBoard", notice.gameObject), ("message", message),
                 ("roomLock", roomLock), ("start", start), ("toast", toast),
                 ("host", host), ("guest", guest), ("vacant", vacant), ("emptyInfo", emptyInfo.gameObject), ("members", members), ("memberRow", memberRow.gameObject),

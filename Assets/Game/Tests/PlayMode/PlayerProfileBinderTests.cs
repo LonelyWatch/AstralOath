@@ -27,7 +27,7 @@ namespace AstralOath.Client.Tests
             public Task<PlayerProfileData> ActAsync(ProfileActionRequest request,CancellationToken token){writes++;return Task.FromResult(Data("self",true));}
             public void Dispose(){}
         }
-        private static PlayerProfileData Data(string id,bool self)=>new PlayerProfileData{playerId=id,realmId="test",displayName="<b>"+id+"</b>",avatarId="c1001",isSelf=self,canEdit=self,version=1,greetingIsDefault=true,visibility=new ProfileVisibility(),seasonRecord=new ProfileRecord{visible=false},bestRecord=new ProfileRecord{visible=false}};
+        private static PlayerProfileData Data(string id,bool self)=>new PlayerProfileData{playerId=id,uid="1234567890",realmId="test",displayName="<b>"+id+"</b>",avatarId="c1001",isSelf=self,canEdit=self,version=1,greetingIsDefault=true,visibility=new ProfileVisibility(),seasonRecord=new ProfileRecord{visible=false},bestRecord=new ProfileRecord{visible=false}};
         private static IEnumerator Done(Task task){while(!task.IsCompleted)yield return null;if(task.IsFaulted)throw task.Exception.InnerException;Assert.That(task.IsCanceled,Is.False);}
         [UnityTest]public IEnumerator LateReadNeverReplacesNewSubjectAndOtherPlayerCannotEdit()=>Done(Late());
         private async Task Late()
@@ -51,7 +51,7 @@ namespace AstralOath.Client.Tests
                 Assert.That(view.Map.Require<GameText>("displayName").text,Is.EqualTo("<b>other</b>"));Assert.That(view.Map.Require<GameText>("displayName").richText,Is.False);
                 Assert.That(view.Map.Require<GameButton>("nickname").gameObject.activeSelf,Is.False);Assert.That(view.Map.Require<GameObject>("selfActions").activeSelf,Is.False);
                 view.Map.Require<GameButton>("greeting").onClick.Invoke();Assert.That(view.Map.Require<GameObject>("greetingLayer").activeSelf,Is.False);Assert.That(api.writes,Is.Zero);
-                view.Map.Require<GameButton>("copyId").onClick.Invoke();Assert.That(copied,Is.EqualTo("other"));Assert.That(view.Map.Require<GameText>("seasonArena").text,Is.EqualTo("不公开"));
+                view.Map.Require<GameButton>("copyId").onClick.Invoke();Assert.That(copied,Is.EqualTo("1234567890"));Assert.That(view.Map.Require<GameText>("seasonArena").text,Is.EqualTo("不公开"));
                 if(!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASTRAL_PROFILE_CAPTURE_DIR")))
                 {
                     await binder.OpenAsync("other",default);await Capture(canvas,"04-other-readonly",1920,1080);

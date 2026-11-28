@@ -93,6 +93,10 @@ namespace AstralOath.Client.Summon
 
         public override void Validate()
         {
+            // Dismiss backdrops and blank-space blockers are pointer surfaces, not action buttons.
+            // Transition.None alone still permits GameButton's child-graphic press tint.
+            foreach(string key in new[]{"infoClose","infoSurfaceInput","wishDismiss","wishSurfaceInput","revealDismiss"})
+                Button(key).KeepBrightnessOnPress=true;
             _ = Panel("noticeToast");
             foreach (string key in ButtonKeys) Button(key);
             foreach (string key in LabelKeys) Text(key);

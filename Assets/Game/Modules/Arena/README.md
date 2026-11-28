@@ -1,5 +1,11 @@
 # Arena
 
+11/28追加房间右侧「频道 / 竞技场」双页签。左签通过Foundation注入的`ConfigurePublicChannel`组合回调打开现有公共频道Binder/Session的内嵌模式，右签继续房间成员/房间聊天；切换不重新创建房间事件连接。公共页有独立`WindowCoordinator`和开窗`BindingScope`，回竞技场/离房取消并释放公共页，登录Owner继续唯一公共频道观察。Arena运行时没有新增对ChannelChat的程序集引用。
+
+频道签计数与公共顶栏共用登录未读，并复用Common `NotificationBadge`和原数字字库。初次历史不计未读、看旧消息不清新消息、实际显示到底才按频道/ID确认；具体项目行为见[ChannelChat](../ChannelChat/README.md)。实际查看了原11/28录屏32.000s频道框架及本轮用户房间修前截图，数字角标沿用既有top_bar素材；图片和调查在`.artifacts/identity-social-followup/chat/`。本轮按用户明确指示跳过回归、待协调者打包供用户自行验收；新增先行测试未执行，未将源码或预制生成视为原生/视觉/音效通过。
+
+房间表情/预禁人数/禁用保护三处全屏关闭按钮在Binder运行时启用既有`KeepBrightnessOnPress=true`，防止点击空白时整块内容被递归压暗；不改Common，普通小按钮仍保留点击反馈。
+
 11月28日修复开发游客首次连接并发：Home库存、邮件、资料与聊天预取并行调用同一个 `ArenaApi.GetSessionTokenAsync` 时，旧版在首次回执前会发送多次同名 `POST /api/arena/sessions`。R45原生日志中两条 `Social preparation: ArenaRequestException` 均从Bearer建立链抛出；隔离QA服务对应记录MySQL1213死锁与两次503，并非资料/聊天未登录的预期拒绝。正常登录入口已有 `GameAccountSession`，直接复用区服会话，不经过游客创建。
 
 `ArenaApi` 现在按实例用 `SemaphoreSlim` 串行建立首次会话，成功后所有等待者复用；失败或创建者取消会释放闸门，后续调用可重试。每个等待者分别观察自己的取消、入口owner与API关闭，取消一个排队窗口不影响创建者；Dispose先取消在途及排队连接，再关闭HTTP客户端。闸门与关闭信号均不使用原生WaitHandle，在仍可能进入finally释放时不主动Dispose这两个纯托管对象，随API实例回收，调用自身的linkedCTS/注册在作用域结束时释放。

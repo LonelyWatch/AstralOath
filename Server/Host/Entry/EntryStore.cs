@@ -109,6 +109,7 @@ internal sealed class EntryStore(string? connectionString)
                 VALUES (@id, @unissued, @name, 'c1001', UTC_TIMESTAMP(6));
                 """, ("@id", id), ("@unissued", RandomNumberGenerator.GetBytes(32)), ("@name", displayName));
             await player.ExecuteNonQueryAsync(cancellation);
+            await PlayerPublicIdentity.Assign(connection, transaction, id, cancellation);
             using var account = Command(connection, transaction, """
                 INSERT INTO entry_account (player_id, user_key, email, password_salt, password_hash,
                     password_iterations, entry_hash, entry_expires_at, created_at)

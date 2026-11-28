@@ -373,7 +373,9 @@ namespace AstralOath.Editor
             var button = Button(rect, normal, circle ? Color.white : Color.clear);
             if (circle) PressSprites(button, normal, SummonArt("_btn_circle_black_76_p"));
             bindings.Add((key, button));
-            Picture(rect, "Native " + key + " icon", SummonArt(icon), .16f, .16f, .68f, .68f, true);
+            float inset = circle ? .16f : 0f;
+            float span = circle ? .68f : 1f;
+            Picture(rect, "Native " + key + " icon", SummonArt(icon), inset, inset, span, span, true);
         }
 
         // Coordinates from gacha_wish.csb are relative to a centered 1280 × 720 layer.

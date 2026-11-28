@@ -1,5 +1,7 @@
 # FoundationDemo
 
+11/28追加公共频道未读与房间入口：`StartupNavigation.Social.cs`在既有登录Session注入稳定玩家ID getter，将同一Session/Binder嵌入世界竞技场左「频道」签，右「竞技场」仍归房间Binder。顶栏/More各`ChatEntry`和房间签都按各页`BindingScope`订阅同一登录未读；离页解绑，登录Owner的唯一NDJSON观察继续，登出释放。无新增服务、后台轮询或AOT边界。行为、源图和未执行项见[ChannelChat](../ChannelChat/README.md)与[Arena](../Arena/README.md)；用户本轮明确跳过回归并自行验收，先行测试未运行，不以旧R46证据覆盖本候选。
+
 当前本机签名内容为R46/app0.1.27（产品d312f43b，R37母包），入口`.artifacts/windows-r46/Play-R46.exe`。1080/4K各Social25+召唤12及Mail14状态实际通过，单项奖励源星粒子真实启用；游客首会话串行修复后两冷启动预取警告为0。普通Limited入口实际显示登录页、服务/Feed身份及0业务重复下载通过，不称无人干预已登录。R44/45以下是候选历史，当前交付、原版/前后图、代码位置和视听缺口以[最终回执](../../../../docs/delivery/2026-11-28-home-social-visual-fix.md)为准；没有用45桌面遮挡录像冒充Native连续奖励。
 
 R45候选的邮件原生诊断先等待共享单项奖励的源粒子启用，再拍第10状态并记录`singleRewardParticleCount>0`，避免只拍到267ms之前的蓝条闪光。仍保留14状态、4封真实领取、资源Delta和原页恢复断言；它只在显式开发验收入口运行，不在正常业务中发测试邮件。角色卡/频道等R44候选随后与本轮视觉修正统一进入R45，实际包及验收状态见[本轮方案](../../../../docs/plans/2026-11-28-home-social-visual-fix.md)。
@@ -155,3 +157,7 @@ Windows Development 客户端在回环测试服上可使用 `-astral-startup-smo
 `Tools/Arena/ImportFeatureNotice.py`只导入五张该用途图，先把节点opacity并入PNG，再将白色装饰覆盖率转换到Linear；渐变、暗影RGB和`_dim`的源色保留，运行时Image白色不重复乘节点opacity。已有`_bar_23`和关闭箭头meta GUID保持。原图/修前及源节点、像素测量保存在`.artifacts/home-social-visual-fix/notice/`。同片静态邮件白图标原版透射约0.208，旧候选约0.525，旧`Black(.76)`把sRGB透明度意图直接当Linear alpha；本候选转换该透射并恢复原`_dim`/127。额外遮罩的运行时语义仅是录像校准，不声称源CSB包含该常量。
 
 原CSB的380初始高度与录像稳态运行尺寸不同；按实际稳定帧取390原设计单位（585项目设计单位），标题、上下线、正文和关闭区域按高度归一摆放，关闭文字采用原帧测得的蓝灰而非旧中性136灰。这些是候选参数，必须由同一背景/相机的实际捕获比较确认。离线像素/切片合同已实际3失败→3通过；专用`FeatureNoticeSourceVisualTests`旧预制3项RED由协调者实际运行，当前生成、受影响功能和画面GREEN仍待统一Unity。此次修改进入更高内容R45，不覆盖已签名44；未声称Native或声音试听通过，现用服务/数据库升级仍待审批。
+
+### R47追加：提示淡变与UID
+
+FeatureNotice进入0.18秒、退出0.16秒，用CanvasGroup与unscaled时钟平滑渐变；关闭动画结束再通知窗口释放。每次Open独立BindingScope，重开/父销毁取消旧动画且不让旧回调关新窗。大背景启用已有KeepBrightnessOnPress，不改变Common/AOT。时长是本项目参数，原片61.5秒仅支持稳态外观，不假称逐帧测得。用户明确免回归后未运行新的界面/连续视听验收；本轮仅生成预制与构建打包。

@@ -21,9 +21,9 @@ from ImportArenaArt import digest, metadata, png_bytes, read_source, texture_imp
 
 DEST = REPO / "Assets/Game/Modules/Summon/Res/Presentation"
 ROOTS = tuple((
-    "1_blue", "1_yellow1", "1_violet1", "2_b_blue", "2_b_yellow", "2_b_violet",
+    "1_blue", "1_yellow1", "1_violet1", "1_yellow2", "1_violet2", "2_b_blue", "2_b_yellow", "2_b_violet",
     "2_class", "2_blue", "2_yellow", "2_violet", "2_blue_yellow", "2_blue_violet", "2_yellow_violet",
-    "3_b", "3_f", "3_character_bone", "3_portrait_bone", "3_artifact_bone",
+    "2_yellow_pat", "2_violet_pat", "3_b", "3_f", "3_character_bone", "3_portrait_bone", "3_artifact_bone",
 ))
 AUDIO = {
     **{name: r"ui\gacha_new\gocha_effect_" + suffix for name, suffix in (
@@ -98,6 +98,7 @@ def decode_skeleton(name, data):
 def collect_visual(source):
     textures = {}
     skeletons = {}
+    particles = {}
     sources = {}
     payloads = {}
 
@@ -134,18 +135,38 @@ def collect_visual(source):
                            "animations": report["animations"]}
         return skeletons[name]
 
+    def load_particle(name):
+        if name in particles:
+            return particles[name]
+        document = plistlib.loads(raw("effect/" + name + ".particle"))
+        pages = []
+        for texture in sorted({emitter["textureFileName"] for emitter in document["emitters"] if not emitter.get("disable")}):
+            if texture not in textures:
+                output = "summon_" + Path(texture).with_suffix(".png").name
+                image, _ = convert.decode_sct(raw(texture))
+                payloads[output] = png_bytes(image)
+                textures[texture] = output
+            pages.append({"name": texture, "asset": textures[texture]})
+        output = name + ".particle.json"
+        payloads[output] = json_bytes(document)
+        particles[name] = {"id": name, "document": output, "pages": pages}
+        return particles[name]
+
     groups = []
     for name in ROOTS:
         path = "effect/gacha_effect_" + name + ".cfx"
         parts = []
         native = plistlib.loads(raw(path))
         for order, entry in enumerate(native["primitive"]):
-            if entry["format"] != "spine":
+            if entry["format"] == "particle":
+                asset = load_particle(stem(entry["source"]))
+            elif entry["format"] == "spine":
+                asset = load_skeleton(stem(entry["source"]))
+            else:
                 raise ValueError(f"Unsupported visual primitive: {path} {entry['format']}")
-            asset = load_skeleton(stem(entry["source"]))
             animation = entry.get("ani") or "animation"
-            animations = {row["name"] for row in asset["animations"]}
-            if not set(animation.split(",")).issubset(animations):
+            animations = {row["name"] for row in asset.get("animations", [])}
+            if entry["format"] == "spine" and not set(animation.split(",")).issubset(animations):
                 raise ValueError(f"Unknown animation in native CFX {path}: {animation}")
 
             def number(key, default=0):
@@ -155,6 +176,8 @@ def collect_visual(source):
                           "y": number("y"), "z": number("z"), "globalZ": number("globalZ"),
                           "delay": number("delay"), "scale": number("scale", 1), "rotate": number("rotate"),
                           "speed": number("speed", 1), "loop": bool(number("loop"))})
+            if entry["format"] == "particle":
+                parts[-1]["format"] = "particle"
         if name == "2_class":
             # The standalone class CFX omits order. The original composite supplies depth 35
             # between the main hall (30) and the figure lighting (39–51).
@@ -162,7 +185,7 @@ def collect_visual(source):
             parts[0]["z"] = float(next(item["z"] for item in authored if item["source"] == parts[0]["source"]))
         parts.sort(key=lambda part: (part["globalZ"], part["z"], part["order"]))
         groups.append({"id": name, "parts": parts})
-    return {"groups": groups, "skeletons": list(skeletons.values())}, payloads, sources
+    return {"groups": groups, "skeletons": list(skeletons.values()), "particles": list(particles.values())}, payloads, sources
 
 
 def audio_rows(source):
@@ -290,12 +313,13 @@ def main():
     parser.add_argument("--dotnet", type=Path, default=REPO / ".tools/dotnet/dotnet.exe")
     parser.add_argument("--probe", type=Path, default=REPO / ".artifacts/summon-presentation/probe/AudioProbe.dll")
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--visual-only", action="store_true", help="Preserve already archived audio while importing native visual dependencies.")
     args = parser.parse_args()
     source = (args.source / "原始资源").resolve(strict=True)
     if DEST.resolve().is_relative_to(source):
         raise ValueError("Original source is read-only.")
     graph, payloads, source_hashes = collect_visual(source)
-    rows = audio_rows(source) + voice_rows(source)
+    rows = json.loads((DEST / "presentation.json").read_text("utf-8"))["audio"] if args.visual_only else audio_rows(source) + voice_rows(source)
     for path in ("sound/events.yml", "sound/master.bank", "sound/master.strings.bank", "sound/ui1.bank",
                  "sound/ui1.yml", "sound/bgm4.bank", "sound/bgm4.yml", "sound/voc.event.bank"):
         source_hashes[path] = digest(read_source(source, path))
@@ -303,12 +327,14 @@ def main():
         for suffix in (".bank", ".yml"):
             path = "sound/" + bank + suffix
             source_hashes[path] = digest(read_source(source, path))
-    payloads.update(record_audio(source, args.dotnet.resolve(strict=True), args.probe.resolve(strict=True), rows, args.check))
+    if not args.visual_only:
+        payloads.update(record_audio(source, args.dotnet.resolve(strict=True), args.probe.resolve(strict=True), rows, args.check))
     graph["audio"] = rows
     payloads["presentation.json"] = json_bytes(graph)
+    existing_outputs = json.loads((DEST / "source-manifest.json").read_text("utf-8"))["outputs"] if args.visual_only else {}
     payloads["source-manifest.json"] = json_bytes({
         "sources": source_hashes,
-        "outputs": {key: digest(data) for key, data in payloads.items()},
+        "outputs": {**existing_outputs, **{key: digest(data) for key, data in payloads.items()}},
         "method": "Native CFX layers and FMOD Studio authored events",
     })
     metadata(DEST, args.check, FOLDER)

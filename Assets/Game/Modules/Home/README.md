@@ -120,3 +120,7 @@ Windows 独立客户端默认可缩放窗口，主页右上角按钮或 F11 切�
 ## 第 61–70 名普通角色
 
 第 61–70 名的普通立绘、战斗模型、头像、选人图及简中语音演员/获得文案均加入详情资料。持有列表的 PlayMode 用例覆盖本批十人与前两批角色，按名字搜索、点击实际详情并检查立绘 RenderTexture。这些模板的持有实例仍由服务端快照决定。 [本批来源与验收](../../../../docs/delivery/2026-11-20-roster61-70-assets.md)
+
+### R47召唤演出追加
+
+既有Home程序集的SummonPresentation承载原星星CFX与粒子；新增内部SummonParticles复用BattleHudParticles的源参数解释逻辑，暂不改Common/AOT或原BattleScene。普通五星英雄/神器为金星，五星光暗英雄为紫星且十连优先级更高。源文件及边界见Summon README；本轮用户免回归，未录制/观看修改后的连续过程。

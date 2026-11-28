@@ -2,6 +2,8 @@
 
 ## 玩家资料与公共频道（2026-11-28）
 
+新增公开玩家UID：游客/注册身份创建事务即分配随机且不重复的10位数（1000000000–9999999999），MySQL独立 `player_public_identity` 唯一约束与有界冲突重试，内部GUID/鉴权不变。Profile新增字符串 `uid`，`GET /api/profile/uids/{uid}` 为有效Bearer提供同区服的精确玩家资料查询，沿用他人隐私；尚未实现好友关系。候选启用前必须用完整 `migrate` 应用021及其C#一次性初始化，先停旧身份写入、备份，给运行账号新表SELECT/INSERT；仅执行SQL文件不能补齐旧玩家/资料回执。无需清空测试数据，重建空库也沿同一初始化链。新增6项UID及完整683/683真实隔离MySQL通过，另实际020→021/重入演练保持UID不变。准确格式、数据影响、前后证据及未部署边界见 [Social公开UID](Host/Social/README.md#公开uid分配与迁移2026-11-28)。
+
 新增 [Social模块与准确API契约](Host/Social/README.md)，资料读取复用本人/他人投影，支持免费改昵称/查重、50字问候语、双战绩可见开关、真实头像/库存代表摘要。没有权威账号Rank/榜单时明确available=false。公共聊天独立于竞技场房间，按服务器realm+频道1–9999隔离，支持文字/67目录表情、游标/长轮询/NDJSON、收藏与通知偏好；默认频道1，骑士团广播不冒充实现。
 
 候选服务启用前需专用身份依次应用新增迁移018/019/020（新增八表SELECT/INSERT/UPDATE），旧同名不清洗、不对原列加UNIQUE；Entry初始身份/首次入区与Social改名通过同一数据库名字键仲裁，登录凭据与稳定ID不变。公共频道从分配ID至提交持有独立channel数据库X锁，避免乱序提交永久漏游标，不串行其他频道。写入/幂等/审计同事务，audit不存自由文本，通知四字段缺失400。隔离MySQL实际Social32/32、完整Server677/677通过0跳过，含真实15秒Token复核断流；RED与GREEN收据在 `.artifacts/home-profile-chat-review/server-tests/`。本轮未迁移主库、替换主服务或分发；客户端视听另行验收。[计划与参考边界](../docs/plans/2026-11-28-home-profile-chat.md)。

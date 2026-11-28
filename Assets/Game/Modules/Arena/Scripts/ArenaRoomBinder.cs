@@ -51,6 +51,12 @@ namespace AstralOath.Client.Arena
         private string memberSignature, roomError, actionError;
         private bool leaving, sending, starting, transitioning, savingSettings;
         private int settingsRevision;
+        private Func<BindingScope, RectTransform, Task> openPublicChannel;
+        private Action<BindingMap, BindingScope> bindUnread;
+        private WindowCoordinator publicChannelWindows;
+
+        public void ConfigurePublicChannel(Func<BindingScope, RectTransform, Task> open, Action<BindingMap, BindingScope> unread)
+        { openPublicChannel = open; bindUnread = unread; }
 
         public ArenaRoomBinder(ArenaRoom view, ILocaleService locale, ArenaApi api, WindowCoordinator windows, Func<Task> goBack, Func<ArenaDraftState, Task> openDraft = null)
         {
@@ -60,6 +66,8 @@ namespace AstralOath.Client.Arena
             this.goBack = goBack;
             this.openDraft = openDraft;
             this.windows = windows;
+            foreach (var picker in new[] { view.EmojiPicker, view.PrebanPicker, view.ProtectionPicker })
+                picker.GetComponent<BindingMap>().Require<GameButton>("dismiss").KeepBrightnessOnPress = true;
             toast = new GameToastBinder(GameToast.ForInstance(view.Toast));
             var choices = view.EmojiPicker.GetComponent<BindingMap>().Require<ScrollRect>("choices");
             foreach (var choice in choices.content.GetComponentsInChildren<GameButton>(true))
@@ -82,6 +90,10 @@ namespace AstralOath.Client.Arena
             Listen(view.BanProtection, OpenProtectionPicker);
             Listen(view.FirstPick, () => ChangeFirstPick(view.FirstPick, "host"));
             Listen(view.GuestFirstPick, () => ChangeFirstPick(view.GuestFirstPick, "guest"));
+            ShowArenaChat();
+            Listen(view.ChannelTab, () => _ = ShowPublicChannelAsync());
+            Listen(view.ArenaTab, ShowArenaChat);
+            bindUnread?.Invoke(view.ChannelUnreadBadge, owner);
             view.Send.interactable = initial.room.allowChat;
             view.Emoji.interactable = initial.room.allowChat;
             if (initial.room.allowChat)
@@ -91,6 +103,29 @@ namespace AstralOath.Client.Arena
             }
             _ = WatchRoomAsync(initial.room.id, screen.Token);
             return Task.CompletedTask;
+        }
+
+        private async Task ShowPublicChannelAsync()
+        {
+            if (screen == null || screen.Token.IsCancellationRequested || publicChannelWindows != null || openPublicChannel == null) return;
+            windows.TryCloseOverlay();
+            var opening = new WindowCoordinator(screen.Token); publicChannelWindows = opening;
+            view.RoomChatContents.SetActive(false); view.PublicChannelHost.gameObject.SetActive(true);
+            view.ChannelSelected.enabled = true; view.ArenaSelected.enabled = false;
+            try { await opening.ShowPageAsync(scope => openPublicChannel(scope, view.PublicChannelHost)); }
+            catch (OperationCanceledException) { }
+            catch (Exception error)
+            {
+                if (ReferenceEquals(publicChannelWindows, opening)) ShowArenaChat();
+                Debug.LogWarning("Public channel window: " + error.GetType().Name);
+            }
+        }
+
+        private void ShowArenaChat()
+        {
+            var previous = publicChannelWindows; publicChannelWindows = null; previous?.Dispose();
+            view.PublicChannelHost.gameObject.SetActive(false); view.RoomChatContents.SetActive(true);
+            view.ChannelSelected.enabled = false; view.ArenaSelected.enabled = true;
         }
 
         private async Task WatchRoomAsync(string id, CancellationToken token)
@@ -635,6 +670,7 @@ namespace AstralOath.Client.Arena
 
         private void Close()
         {
+            ShowArenaChat();
             toast.Hide();
             screen = null;
             sending = savingSettings = false;

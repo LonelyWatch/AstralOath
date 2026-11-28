@@ -644,7 +644,7 @@ namespace AstralOath.Client.Summon
             if (view.Music) player.PlayTheme(view.Music, ceremony: true);
             try
             {
-                await player.PlayOpeningAsync(receipt.results.Max(item => item.stars), token);
+                await player.PlayOpeningAsync(receipt.results.Select(EffectGrade).Max(), token);
                 foreach (var result in receipt.results.OrderBy(item => item.position))
                 {
                     bool isArtifact = result.kind == "artifact";
@@ -656,7 +656,8 @@ namespace AstralOath.Client.Summon
                         if (hero != null)
                             player.ShowHeroMiniature(hero.modelSkeleton, hero.modelAtlas, hero.modelPage);
                     }, view.Image("revealArt").rectTransform, hero?.heroClass,
-                        opacity => view.Group("revealCaptionFade").alpha = opacity);
+                        opacity => view.Group("revealCaptionFade").alpha = opacity,
+                        moonlight: EffectGrade(result) == SummonEffectGrade.VioletStars);
                     player.PlayCardReady();
                     token.ThrowIfCancellationRequested();
                     var step = new TaskCompletionSource<bool>();
@@ -703,6 +704,14 @@ namespace AstralOath.Client.Summon
             }
             else next?.TrySetResult(true);
             return Task.CompletedTask;
+        }
+
+        private SummonEffectGrade EffectGrade(SummonReward reward)
+        {
+            if (reward.stars < 4) return SummonEffectGrade.Blue;
+            if (reward.stars == 4) return SummonEffectGrade.Gold;
+            return reward.kind == "hero" && heroes.TryGetValue(reward.templateId, out var hero)
+                && (hero.elementId is "light" or "dark") ? SummonEffectGrade.VioletStars : SummonEffectGrade.GoldStars;
         }
 
         private void ResetReveal()

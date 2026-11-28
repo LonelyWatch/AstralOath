@@ -30,7 +30,8 @@ namespace AstralOath.Client.FoundationDemo
             loginPlayerId = account?.PlayerId;
             socialBearer = bearer;
             profileSession = new PlayerProfileSession(new PlayerProfileApi(endpoint, bearer));
-            chatSession = new ChannelChatSession(new ChannelChatApi(endpoint, bearer), token);
+            chatSession = new ChannelChatSession(new ChannelChatApi(endpoint, bearer), token, () => loginPlayerId);
+            room.ConfigurePublicChannel(OpenRoomChannelAsync, (badge, scope) => ChatEntry.BindUnread(badge, chatSession, scope));
             lifetime.Add(profileSession.Dispose);
             lifetime.Add(chatSession.Dispose);
             profileSession.Changed += ApplyProfileHeader;
@@ -116,6 +117,18 @@ namespace AstralOath.Client.FoundationDemo
             });
         }
 
+        private async Task OpenRoomChannelAsync(BindingScope scope, RectTransform host)
+        {
+            var view = await views.CreateAsync<ChatView>(assets, host, scope);
+            await pages.Heroes.Get();
+            scope.Token.ThrowIfCancellationRequested();
+            var binder = new ChannelChatBinder(view, scope, chatSession, null,
+                key => ObserveSocial(OpenUnavailableAsync(key, scope.Token)),
+                id => ObserveSocial(OpenPlayerProfileAsync(id, scope.Token)),
+                () => loginPlayerId, Avatar, embedded: true);
+            await binder.OpenAsync(scope.Token);
+        }
+
         private async Task OpenUnavailableAsync(string key, CancellationToken owner)
         {
             if (noticePanel?.IsOpen == true) return;
@@ -145,6 +158,7 @@ namespace AstralOath.Client.FoundationDemo
             {
                 if (map.name != "ChatEntry" || (pageHeaders && mailPortal && map.transform.IsChildOf(mailPortal.transform)) || !bound.Add(map)) continue;
                 var button = map.Require<GameButton>("button");
+                ChatEntry.BindUnread(map.Require<BindingMap>("unreadBadge"), chatSession, scope);
                 bool opening = false;
                 async void Click()
                 {

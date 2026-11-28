@@ -42,6 +42,7 @@ namespace AstralOath.Editor
             var inside = wish.gameObject.AddComponent<GameButton>();
             inside.targetGraphic = face;
             inside.transition = Selectable.Transition.None;
+            bindings.Add(("wishSurfaceInput", inside));
 
             Paint(Area(wish, "Candidate surface", .451f, .011f, .543f, .98f),
                 SummonArt("_box_w5"), new Color32(0, 7, 31, 229), sliced: true);

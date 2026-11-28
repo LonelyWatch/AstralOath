@@ -18,6 +18,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
       atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_1.sct
       pages:
@@ -32,6 +33,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
       atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_2.sct
       pages:
@@ -46,6 +48,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
       atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_3.sct
       pages:
@@ -60,6 +63,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
       atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_2.sct
       pages:
@@ -74,6 +78,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
       atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_3.sct
       pages:
@@ -88,6 +93,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
       atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_bibleo.sct
       pages:
@@ -102,6 +108,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
       atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_biblika.sct
       pages:
@@ -116,6 +123,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
       atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_f.sct
       pages:
@@ -130,6 +138,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
       atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2.sct
       pages:
@@ -144,6 +153,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
       atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f1.sct
       pages:
@@ -158,6 +168,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
       atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f2.sct
       pages:
@@ -174,6 +185,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
       atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_1.sct
       pages:
@@ -188,6 +200,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
       atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_2.sct
       pages:
@@ -202,6 +215,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
       atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_3.sct
       pages:
@@ -216,6 +230,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
       atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_2.sct
       pages:
@@ -230,6 +245,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
       atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_3.sct
       pages:
@@ -244,6 +260,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
       atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_bibleo.sct
       pages:
@@ -258,6 +275,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
       atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_biblika.sct
       pages:
@@ -272,6 +290,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
       atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_f.sct
       pages:
@@ -286,6 +305,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
       atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2.sct
       pages:
@@ -300,6 +320,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
       atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f1.sct
       pages:
@@ -314,6 +335,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
       atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f2.sct
       pages:
@@ -330,6 +352,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
       atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_1.sct
       pages:
@@ -344,6 +367,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
       atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_2.sct
       pages:
@@ -358,6 +382,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
       atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_1_3.sct
       pages:
@@ -372,6 +397,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
       atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_2.sct
       pages:
@@ -386,6 +412,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
       atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_b_3.sct
       pages:
@@ -400,6 +427,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
       atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_bibleo.sct
       pages:
@@ -414,6 +442,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
       atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - n_biblika.sct
       pages:
@@ -428,6 +457,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
       atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_f.sct
       pages:
@@ -442,6 +472,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
       atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2.sct
       pages:
@@ -456,6 +487,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
       atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f1.sct
       pages:
@@ -470,6 +502,379 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
       atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2_f2.sct
+      pages:
+      - {fileID: 2800000, guid: f69caec9f4515c4e8c69c1f26f9dcfeb, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 1_yellow2
+    parts:
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
+      atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_1.sct
+      pages:
+      - {fileID: 2800000, guid: 9a88cc8998fa5390846e8bfcbd181f94, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
+      atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: 03b43fccfeb757c781d53eaa87451e3c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
+      atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_3.sct
+      pages:
+      - {fileID: 2800000, guid: 1a5d6455f0155136a7669f100080fc38, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
+      atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: b228286d798059c385363bae717ecbbe, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
+      atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_3.sct
+      pages:
+      - {fileID: 2800000, guid: 5ead09bdb98f56f5ad2ea0817ce16129, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
+      atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - n_bibleo.sct
+      pages:
+      - {fileID: 2800000, guid: bc985053c4205d919bd66f3117ad6b74, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
+      atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - n_biblika.sct
+      pages:
+      - {fileID: 2800000, guid: fd7771130ff55a7caa1820f4dbfe332b, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: 
+      skeleton: {fileID: 0}
+      atlas: {fileID: 0}
+      particle: {fileID: 4900000, guid: ec8b01ca93c95710a2ea9ad33c49f451, type: 3}
+      pageNames:
+      - particle/flash.sct
+      - particle/pati_03.sct
+      - particle/zodiac_star1.sct
+      pages:
+      - {fileID: 2800000, guid: 091faf3683bc5bc2bb09b5417772eb0b, type: 3}
+      - {fileID: 2800000, guid: 1bb0617b3a9457a0bbe9ba1edf649b3a, type: 3}
+      - {fileID: 2800000, guid: ab3abb55cd5d5590a12d2dbd92b17797, type: 3}
+      x: -50
+      y: -30
+      delay: 1000
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
+      atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_f.sct
+      pages:
+      - {fileID: 2800000, guid: d4a94be99f6a5e8e8ade686d1212681c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
+      atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: f1bf41d9719750f3af6435605a670c7b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
+      atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2_f1.sct
+      pages:
+      - {fileID: 2800000, guid: cf5c77f8271d5cec8190d2aaa7b71b27, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: yellow
+      skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
+      atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2_f2.sct
+      pages:
+      - {fileID: 2800000, guid: f69caec9f4515c4e8c69c1f26f9dcfeb, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 1_violet2
+    parts:
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 8982681f89a55ce8ac62e74124438c88, type: 3}
+      atlas: {fileID: 4900000, guid: 74f6d0420d3a5ed7ae37a1dacd99754a, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_1.sct
+      pages:
+      - {fileID: 2800000, guid: 9a88cc8998fa5390846e8bfcbd181f94, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 5a1f9e2117ee5b3b95fd54db129b30d3, type: 3}
+      atlas: {fileID: 4900000, guid: 62f804ad5a5d59b293bacb821ae6afc5, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: 03b43fccfeb757c781d53eaa87451e3c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 8419726149a85733b72fcc0a1d5afa03, type: 3}
+      atlas: {fileID: 4900000, guid: f546e89d178c5bebbfd8a26d456d1694, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_1_3.sct
+      pages:
+      - {fileID: 2800000, guid: 1a5d6455f0155136a7669f100080fc38, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 7da9a78e95a85684942d2d85cccfb40a, type: 3}
+      atlas: {fileID: 4900000, guid: 3666778487c55f27bd67a7279b6bfc8f, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_2.sct
+      pages:
+      - {fileID: 2800000, guid: b228286d798059c385363bae717ecbbe, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 88baf93de43a5f6dbf04497b34ead83d, type: 3}
+      atlas: {fileID: 4900000, guid: 5b319c9c3ccc537faffc955bddc31b60, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_b_3.sct
+      pages:
+      - {fileID: 2800000, guid: 5ead09bdb98f56f5ad2ea0817ce16129, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: 43fc30e0b27354a99559b6eefa4df848, type: 3}
+      atlas: {fileID: 4900000, guid: 150865f83e715e629504d280275b9d35, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - n_bibleo.sct
+      pages:
+      - {fileID: 2800000, guid: bc985053c4205d919bd66f3117ad6b74, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: b9091e68d4fb5af3b56c303608ccea80, type: 3}
+      atlas: {fileID: 4900000, guid: 3f99f0551aea535d89b7545d7f9929d8, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - n_biblika.sct
+      pages:
+      - {fileID: 2800000, guid: fd7771130ff55a7caa1820f4dbfe332b, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: 
+      skeleton: {fileID: 0}
+      atlas: {fileID: 0}
+      particle: {fileID: 4900000, guid: 5e6277ffe7145b9f88cfe59f890ffdeb, type: 3}
+      pageNames:
+      - particle/flash.sct
+      - particle/pati_03.sct
+      - particle/zodiac_star1.sct
+      pages:
+      - {fileID: 2800000, guid: 091faf3683bc5bc2bb09b5417772eb0b, type: 3}
+      - {fileID: 2800000, guid: 1bb0617b3a9457a0bbe9ba1edf649b3a, type: 3}
+      - {fileID: 2800000, guid: ab3abb55cd5d5590a12d2dbd92b17797, type: 3}
+      x: -50
+      y: -30
+      delay: 1000
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: f239f7250e0d572cb7a448c7f9032832, type: 3}
+      atlas: {fileID: 4900000, guid: 922288d94ffd548e8aaba5adc1a979a8, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_f.sct
+      pages:
+      - {fileID: 2800000, guid: d4a94be99f6a5e8e8ade686d1212681c, type: 3}
+      x: 0
+      y: -130
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 1c1097b5373651378181703aa24a830e, type: 3}
+      atlas: {fileID: 4900000, guid: ec35f09b089c5c129a537293c9210ea9, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2.sct
+      pages:
+      - {fileID: 2800000, guid: f1bf41d9719750f3af6435605a670c7b, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: animation
+      skeleton: {fileID: 4900000, guid: ccfdd2b370655b44bb184c29b438b686, type: 3}
+      atlas: {fileID: 4900000, guid: 0982801d3a5458288928af900282f6ef, type: 3}
+      particle: {fileID: 0}
+      pageNames:
+      - gacha_eff_1_2_f1.sct
+      pages:
+      - {fileID: 2800000, guid: cf5c77f8271d5cec8190d2aaa7b71b27, type: 3}
+      x: 0
+      y: 0
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+    - animation: violet
+      skeleton: {fileID: 4900000, guid: 6ef06a787e8b5d83b4fbcdd483ceb150, type: 3}
+      atlas: {fileID: 4900000, guid: dfe4ee1f46035192beab95c8b14d3ae2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_1_2_f2.sct
       pages:
@@ -486,6 +891,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
       atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_1.sct
       pages:
@@ -500,6 +906,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
       atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_2.sct
       pages:
@@ -514,6 +921,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
       atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_f.sct
       pages:
@@ -530,6 +938,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
       atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_1.sct
       pages:
@@ -544,6 +953,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
       atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_2.sct
       pages:
@@ -558,6 +968,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
       atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_f.sct
       pages:
@@ -574,6 +985,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: b99854180e2a565381e45001a9330a9d, type: 3}
       atlas: {fileID: 4900000, guid: 1448b25860f65bd693db779a2b27b6df, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_1.sct
       pages:
@@ -588,6 +1000,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 3822fa5a5c8b5dd5a4ebb3e6b77848c6, type: 3}
       atlas: {fileID: 4900000, guid: 94c54a32b3fd543da6f5f0607aa62b74, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_b_2.sct
       pages:
@@ -602,6 +1015,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: af82dd30b7c45c3b95f3193687372c6c, type: 3}
       atlas: {fileID: 4900000, guid: cfa0bf60a64651d6b0e175311ede8411, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_f.sct
       pages:
@@ -618,6 +1032,7 @@ MonoBehaviour:
     - animation: artifact
       skeleton: {fileID: 4900000, guid: 894208ef03c65bdc8347693bc20cdb93, type: 3}
       atlas: {fileID: 4900000, guid: 062a8c764ecb5157b8ba7c954eaf01de, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure.sct
       pages:
@@ -634,6 +1049,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -648,6 +1064,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -662,6 +1079,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -676,6 +1094,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -692,6 +1111,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -706,6 +1126,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -720,6 +1141,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -734,6 +1156,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -750,6 +1173,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -764,6 +1188,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -778,6 +1203,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -792,6 +1218,7 @@ MonoBehaviour:
     - animation: violet
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -808,6 +1235,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -822,6 +1250,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -836,6 +1265,7 @@ MonoBehaviour:
     - animation: blue_yellow
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -850,6 +1280,7 @@ MonoBehaviour:
     - animation: blue_yellow
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -866,6 +1297,7 @@ MonoBehaviour:
     - animation: blue
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -880,6 +1312,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -894,6 +1327,7 @@ MonoBehaviour:
     - animation: blue_violet
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -908,6 +1342,7 @@ MonoBehaviour:
     - animation: blue_violet
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -924,6 +1359,7 @@ MonoBehaviour:
     - animation: yellow
       skeleton: {fileID: 4900000, guid: 8615ec4ed3115de9a3ee159bc7715e31, type: 3}
       atlas: {fileID: 4900000, guid: 7f61627de1ad5b1bbd1321e98cbd219b, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure2.sct
       pages:
@@ -938,6 +1374,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: cceac4b09e5d5cc18fbf0d4768b4c1c9, type: 3}
       atlas: {fileID: 4900000, guid: 88a6869230445373bef8bf27aab062f9, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_figure_f.sct
       pages:
@@ -952,6 +1389,7 @@ MonoBehaviour:
     - animation: yellow_violet
       skeleton: {fileID: 4900000, guid: bec41d06004351089d02fa367c2a8ee9, type: 3}
       atlas: {fileID: 4900000, guid: bcbb27d846ce5deeb91cbeeb73ac8e06, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_1.sct
       pages:
@@ -966,6 +1404,7 @@ MonoBehaviour:
     - animation: yellow_violet
       skeleton: {fileID: 4900000, guid: d6fa56fb126450f0a16b5d2a40155108, type: 3}
       atlas: {fileID: 4900000, guid: d115043d20b054509fd7784f9c5e4ee2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_2_2_2.sct
       pages:
@@ -977,11 +1416,50 @@ MonoBehaviour:
       speed: 1
       scale: 1
       loop: 0
+  - id: 2_yellow_pat
+    parts:
+    - animation: 
+      skeleton: {fileID: 0}
+      atlas: {fileID: 0}
+      particle: {fileID: 4900000, guid: 7fe87e14ea755065b456d807f1d613a4, type: 3}
+      pageNames:
+      - particle/pati_03.sct
+      - particle/zodiac_star1.sct
+      pages:
+      - {fileID: 2800000, guid: 1bb0617b3a9457a0bbe9ba1edf649b3a, type: 3}
+      - {fileID: 2800000, guid: ab3abb55cd5d5590a12d2dbd92b17797, type: 3}
+      x: 0
+      y: -200
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
+  - id: 2_violet_pat
+    parts:
+    - animation: 
+      skeleton: {fileID: 0}
+      atlas: {fileID: 0}
+      particle: {fileID: 4900000, guid: 318b43ef9146555d97d821aae0d30504, type: 3}
+      pageNames:
+      - particle/pati_03.sct
+      - particle/zodiac_star1.sct
+      pages:
+      - {fileID: 2800000, guid: 1bb0617b3a9457a0bbe9ba1edf649b3a, type: 3}
+      - {fileID: 2800000, guid: ab3abb55cd5d5590a12d2dbd92b17797, type: 3}
+      x: 0
+      y: -200
+      delay: 0
+      rotate: 0
+      speed: 1
+      scale: 1
+      loop: 0
   - id: 3_b
     parts:
     - animation: animation
       skeleton: {fileID: 4900000, guid: d9aef2f792ad5609808f76b279ad245f, type: 3}
       atlas: {fileID: 4900000, guid: b6dd3eafbe8253d1b8c3d3fd071b33d2, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_loop_1.sct
       pages:
@@ -996,6 +1474,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: e74ffbdcdc475855a670ed5c0461b4e9, type: 3}
       atlas: {fileID: 4900000, guid: a7eeaf27064e5ce39de073fba5cad78f, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_loop_2.sct
       pages:
@@ -1010,6 +1489,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: e64c622f398a5ee692bc945e342f99c7, type: 3}
       atlas: {fileID: 4900000, guid: 219a09de68f65a76940d22cbe0ddf334, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_intro_1.sct
       pages:
@@ -1024,6 +1504,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: 3fb474c7dc3358419e3a27f6ae2d31e5, type: 3}
       atlas: {fileID: 4900000, guid: b330bf69828d539d82ce709f1d13f584, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_intro_2.sct
       pages:
@@ -1040,6 +1521,7 @@ MonoBehaviour:
     - animation: animation
       skeleton: {fileID: 4900000, guid: d654d171c82257f2902f7b26bb2389cf, type: 3}
       atlas: {fileID: 4900000, guid: 91f25482e4db5754a648316f1d33aeb5, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_f.sct
       pages:
@@ -1056,6 +1538,7 @@ MonoBehaviour:
     - animation: intro,loop
       skeleton: {fileID: 4900000, guid: cd16f62bf7fd5c98bf7096e36673ba7d, type: 3}
       atlas: {fileID: 4900000, guid: 1f8f542b9d33545fa98f091f3550d70d, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_character_bone.sct
       pages:
@@ -1072,6 +1555,7 @@ MonoBehaviour:
     - animation: intro,loop
       skeleton: {fileID: 4900000, guid: 16c20c344a8650ff8e62594292668208, type: 3}
       atlas: {fileID: 4900000, guid: c53f30f62d3a53369f43fab68eb24370, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_portrait_bone.sct
       pages:
@@ -1088,6 +1572,7 @@ MonoBehaviour:
     - animation: intro,loop
       skeleton: {fileID: 4900000, guid: ec3aebb06aaa5ef0b1f2451008062c9b, type: 3}
       atlas: {fileID: 4900000, guid: 9f8e6b15a4635061b1fb1cb6cf7f94a7, type: 3}
+      particle: {fileID: 0}
       pageNames:
       - gacha_eff_3_artifact_bone.sct
       pages:

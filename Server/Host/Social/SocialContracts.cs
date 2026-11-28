@@ -11,7 +11,7 @@ internal sealed record ProfileVisibility(bool SeasonVisible, bool BestVisible);
 internal sealed record ProfileUnavailable(bool Available = false, int? Value = null);
 internal sealed record ProfileRecord(bool Available, bool Visible, object? Data = null);
 internal sealed record ProfileHero(string InstanceId, string TemplateId, int Level, int Stars);
-internal sealed record PlayerProfileData(string PlayerId, string RealmId, string DisplayName, string AvatarId,
+internal sealed record PlayerProfileData(string PlayerId, string Uid, string RealmId, string DisplayName, string AvatarId,
     string Greeting, bool GreetingIsDefault, long Version, bool IsSelf, bool CanEdit,
     ProfileHero? RepresentativeHero, bool RepresentativeConfigured, ProfileVisibility Visibility,
     ProfileUnavailable Rank, ProfileRecord SeasonRecord, ProfileRecord BestRecord);

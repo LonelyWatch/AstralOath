@@ -4,19 +4,28 @@
 
 ## 前置迁移与身份兼容
 
-发布候选服务前以专用迁移身份依次应用 `018_player_profile.sql`、`019_channel_chat.sql`、`020_channel_chat_order.sql`，运行账号需要新增八表SELECT/INSERT/UPDATE，不需要DDL。普通服务不自动迁移。旧 `arena_player.display_name` 仍非唯一、历史重名和库存不改；Entry的 `PlayerNicknameRegistry` 用同一MySQL名字键仲裁创建与改名。访客不能新建成别人已认领的昵称，注册初始展示名碰撞时生成安全默认名；注册后尚未选服期间也可能出现新认领，因此首次入区在同事务再次仲裁，冲突只调整初始展示名，登录user_key、ID及凭据不变。
+发布候选服务前以专用迁移身份依次应用 `018_player_profile.sql`、`019_channel_chat.sql`、`020_channel_chat_order.sql`、`021_player_public_identity.sql`，运行账号需要018–020八表SELECT/INSERT/UPDATE，以及021的 `player_public_identity` SELECT/INSERT，不需要DDL。普通服务不自动迁移。旧 `arena_player.display_name` 仍非唯一、历史重名和库存不改；Entry的 `PlayerNicknameRegistry` 用同一MySQL名字键仲裁创建与改名。访客不能新建成别人已认领的昵称，注册初始展示名碰撞时生成安全默认名；注册后尚未选服期间也可能出现新认领，因此首次入区在同事务再次仲裁，冲突只调整初始展示名，登录user_key、ID及凭据不变。
 
 新昵称先NFC及Trim：纯ASCII英文字母4–12；含CJK汉字时总Unicode标量2–8，组成限汉字、ASCII字母/数字，内部空白/特殊字符/纯数字拒绝。SQL查重及claim统一 `utf8mb4_0900_ai_ci`，大小写/重音不敏感。旧初始名照常读取，改名免费，不引入录像未显示的费用/次数。
 
 ## 资料契约
 
 - `GET /api/profile/me`、`GET /api/profile/players/{playerId}` 返回同一DTO，只有本人 `isSelf=true,canEdit=true`，目标ID为N格式GUID。
+- `GET /api/profile/uids/{uid}` 按10位公开UID精确查询同一DTO，仍需有效Bearer及同区服授权；只允许ASCII十进制 `1000000000`–`9999999999`，非法400 `invalid_player_uid`，不存在或目标不属于本区404 `profile_not_found`。查询沿用他人战绩隐私，不产生好友关系或库存初始化。
 - `POST /api/profile/nickname/check {nickname}` 返回 `{available,code,rulesVersion:1}`，不预留名字。
 - `POST /api/profile/me/actions {requestId,expectedVersion,kind,nickname?,greeting?,seasonVisible?,bestVisible?}`，kind仅 `nickname`、`greeting`、`visibility`；只接受对应字段，visibility需要两个bool；直接返回Profile，无外层envelope。
 
-Profile字段：`playerId,realmId,displayName,avatarId,greeting,greetingIsDefault,version,isSelf,canEdit,representativeHero,representativeConfigured,visibility,rank,seasonRecord,bestRecord`。头像沿现有 `c1001` 格式。代表摘要为本人真实库存 `{instanceId,templateId,level,stars}`，优先匹配头像template，再取获得顺序第一只，无库存null；只读投影，不补发别人英雄。目前没有代表选择存储，`representativeConfigured=false`。没有权威Rank/榜单，`rank={available:false,value:null}`、战绩 `{available:false,visible:<权限>,data:null}`，不造Rank4/铜V。本人可读自己的信息，他人隐藏内容在服务端返回null。代表/辅助选择、边框、个性卡不在首版写接口内。
+Profile字段：`playerId,uid,realmId,displayName,avatarId,greeting,greetingIsDefault,version,isSelf,canEdit,representativeHero,representativeConfigured,visibility,rank,seasonRecord,bestRecord`。`uid` 是10位JSON字符串，内部GUID和鉴权token保持独立。头像沿现有 `c1001` 格式。代表摘要为本人真实库存 `{instanceId,templateId,level,stars}`，优先匹配头像template，再取获得顺序第一只，无库存null；只读投影，不补发别人英雄。目前没有代表选择存储，`representativeConfigured=false`。没有权威Rank/榜单，`rank={available:false,value:null}`、战绩 `{available:false,visible:<权限>,data:null}`，不造Rank4/铜V。本人可读自己的信息，他人隐藏内容在服务端返回null。代表/辅助选择、边框、个性卡不在首版写接口内。
 
 问候语0–50个Unicode标量，CRLF统一LF并Trim首尾，允许内部LF，拒绝其他控制/坏代理；空串 `greetingIsDefault=true` 交前端本地化默认句。两可见开关独立持久化。不要截断GUID或复制录像编号伪造数字UID。
+
+## 公开UID分配与迁移（2026-11-28）
+
+`Foundation/PlayerPublicIdentity` 为游客创建和邮箱注册在同一身份事务内分配UID，注册尚未选服时已持久化。密码学随机64位拒绝采样覆盖90亿个10位整数；MySQL `player_public_identity` 的player主键、UID唯一索引及范围CHECK共同约束。随机UID碰撞最多尝试16次，耗尽失败并由外层事务回滚；重试不替换已有玩家映射。登录、令牌轮换、改昵称、重启、重新选服均不重抽UID。内部GUID继续服务于外键/权威身份，UID只用于展示和精确查人，不能作为登录凭据。
+
+迁移021只新增公开身份表，未改写001–020。`DatabaseMigrator` 在既有数据库迁移锁内建表后调用同一分配器为已有玩家一次性补齐，并向资料幂等回执补齐字符串uid，再记录021校验和；中途失败可重入，已分配UID保持不变。普通运行服务没有“首次读取才分配”的旧数据分支。本变更无需清空测试数据；若按正式版前策略重建空库，仍由完整迁移链及新身份事务初始化。部署必须先停旧版身份写入、备份并以迁移身份运行完整 `migrate`，再切候选服务并授予新表权限；仅执行021 SQL文件不会执行C#数据初始化，不可代替完整迁移入口。
+
+本轮证据在 `.artifacts/identity-social-followup/server/`：`uid-red-final.trx` 实际4项RED（缺uid/缺表），`uid-migration-red.trx` 复现旧回执uid为null；禁用碰撞重试的 `uid-collision-mutant-red.trx` 实际失败。恢复实现后的 `uid-green-restored.trx` 为6/6，完整Server `server-full-uid-final.trx` 为683/683、0失败/0跳过。覆盖8个HTTP同时创建、真实数据库唯一/范围拒绝、拒绝采样、碰撞重抽/16次耗尽回滚、重命名/重启/重登录稳定、鉴权/区服/隐私、旧身份初始化与回执重放。专用空库 `astraloath_uid_20261128`；另在 `astraloath_uid_upgrade_20261128` 实际CLI演练020状态→021：2个旧玩家得到不同10位UID，旧回执为STRING/10，第二次migrate后映射和回执完全一致，见 `migration-before.txt`、`migration-after.txt`、`migration-reentry.txt`。初次测试因受限Windows SSL凭据失败，私密loopback连接显式关闭TLS后才开始有效RED/GREEN；未触及主库/现有Host或MySQL进程。NU1900为离线漏洞源警告。本节仅服务端行为证据，视听不适用；UID右上角布局与原生包交付由客户端整轮另验。
 
 ## 公共频道契约
 

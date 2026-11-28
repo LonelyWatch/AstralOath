@@ -11,7 +11,7 @@ namespace AstralOath.Client.PlayerProfile
     [Serializable, Preserve] public sealed class ProfileRecord { public bool available, visible; public object data; }
     [Serializable, Preserve] public sealed class PlayerProfileData
     {
-        public string playerId, realmId, displayName, avatarId, greeting;
+        public string playerId, uid, realmId, displayName, avatarId, greeting;
         public long version;
         public bool greetingIsDefault, isSelf, canEdit, representativeConfigured;
         public ProfileHero representativeHero;

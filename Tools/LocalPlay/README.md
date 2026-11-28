@@ -1,5 +1,21 @@
 # Windows 本机试玩入口
 
+## R47 UID后端准备与切换
+
+`Prepare-R47Backend.ps1` 将当前.NET Release后端独立发布到 `.artifacts/windows-r47/backend`；清单 `.artifacts/windows-r47/backend-release-manifest.json` 记录MSBuild实际Compile/EmbeddedResource/Content、工程及锁文件的哈希、全部输出、21个迁移和复用助手。默认只准备归档，`sourceCommit=null/readyForActivation=false`，不读取连接串、不连接SQL、不启停服务。Root提交最终源码后用 `-PinSourceCommit <40位提交>` 复核源/助手/产物哈希并钉源；此参数由Root提供，不由脚本操作Git。已有输出拒绝覆盖，失败保留日志，不擅自清理后重发。
+
+`Ensure-R47GameService.ps1` 默认只恢复已激活R47，`-VerifyOnly`不启动进程。一次性R44→R47必须先 `-SwitchToR47` 只读预检，再用15分钟内同输入回执 `-SwitchToR47 -Execute -PreflightReceipt <结果JSON>`。它复用R44/R38路径、完整命令/PID/启动时间/DLL/监听所有权守卫、现有MySQL数据目录确认、备份和隐藏启动；旧R44助手及其发布树不修改。切换仅停止已核准的R44 Host，不停止MySQL；先冻结写入并创建完整新备份，再运行**新R47 DLL的完整 `migrate`**，使021同时建表、为旧玩家分配UID、补资料幂等回执并记录迁移。SQL文件单独执行不能代替该入口。迁移前后确认原MySQL身份及完整校验和，完成后检查全部旧玩家与回执的UID已初始化，运行身份原有schema级SELECT/INSERT/UPDATE须覆盖新表，助手不自动提权或修改GRANT。
+
+用户本轮明确免回归、要求尽快打包由其验收，因此新R47脚本只作静态语法/代码审查及后端publish编译；**未执行新增回归、恢复演练、主库预检/备份/迁移或服务切换**。执行路径保留必要备份，明确不再跑隔离恢复演练；失败保留备份和主库，不自动恢复、不清空库、不重新抽UID、不停止未知进程。Root负责最终钉源、人工复核、切服及发布；本段与准备归档不能冒称实际部署或实机通过。
+
+```powershell
+.\.tools\powershell\pwsh.exe -NoProfile -File Tools/LocalPlay/Prepare-R47Backend.ps1
+.\.tools\powershell\pwsh.exe -NoProfile -File Tools/LocalPlay/Prepare-R47Backend.ps1 -PinSourceCommit '<Root最终40位提交>'
+.\.tools\powershell\pwsh.exe -NoProfile -File Tools/LocalPlay/Ensure-R47GameService.ps1 -SwitchToR47
+# Root确认上一步JSON中的resultId后再执行；准备阶段没有执行这两步。
+.\.tools\powershell\pwsh.exe -NoProfile -File Tools/LocalPlay/Ensure-R47GameService.ps1 -SwitchToR47 -Execute -PreflightReceipt '<.artifacts/windows-r47/server/results/<resultId>.json>'
+```
+
 当前入口为`.artifacts/windows-r46/Play-R46.exe`，普通Limited用户实际启动本体、D3D11、主R44/Feed46/原MySQL身份通过，Root实看无遮挡登录页；此观察不自动登录账号。最终四轮Native业务均46、暖缓存0下载。R44已获后续开发升级授权并完成45表隔离恢复校验、018–020迁移；失败恢复误判修复后实际成功，原备份/失败回执保留。仅自有.6 QA已停止，主服务/MySQL/Feed保留；没有执行全机断电重启演练。[本轮启动、包及限制](../../docs/delivery/2026-11-28-home-social-visual-fix.md)
 
 11/28 R45实际升级演练发现进程包装器把 `CopyToAsync` 的 `VoidTaskResult` 输出到管道，真实导入退出0仍被当作失败。已显式丢弃异步完成值，只返回整数退出码；新增 `Test-CapturedProcess.ps1` 运行自有短子进程，512KiB输入的成功/失败和无输入共3项。修前1/3、修后3/3，原24项服务安全契约仍通过。原SQL备份不修改，主库未恢复；实际恢复/迁移/启动结果见R45交付记录。此改动仅本机PowerShell助手，不改变已签名客户端或后端DLL。

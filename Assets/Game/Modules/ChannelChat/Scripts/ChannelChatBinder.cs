@@ -25,24 +25,34 @@ namespace AstralOath.Client.ChannelChat
         private readonly ChannelChat view;private readonly BindingScope scope;private readonly ChannelChatSession session;
         private readonly Action close;private readonly Action<string> unavailable,playerSelected;private readonly Func<string> ownPlayerId;private readonly Func<string,Sprite> avatarArt;
         private readonly WindowCoordinator windows;private readonly GameToastBinder toast;private readonly Dictionary<string,Row> rows=new Dictionary<string,Row>(StringComparer.Ordinal);
+        private readonly bool embedded;
         private readonly Dictionary<string,Sprite> stickers=new Dictionary<string,Sprite>(StringComparer.Ordinal);
         private readonly List<GameObject> stickerCells=new List<GameObject>();
-        private CancellationTokenSource opening;private bool loading,sending,saving,opened;private int generation,shownChannel;private float lastWidth=-1;
+        private CancellationTokenSource opening;private bool loading,sending,saving,opened,rendering;private int generation,shownChannel;private float lastWidth=-1,lastHeight=-1;
         private bool Closed=>scope.Token.IsCancellationRequested;
         private T Get<T>(string key)where T:Object=>view.Map.Require<T>(key);
         private static string L(string key)=>ChannelChatLabels.Text(key);
         public ChannelChatBinder(ChannelChat view,BindingScope pageScope,ChannelChatSession loginSession,Action close,Action<string> unavailable,Action<string> playerSelected,
-            Func<string> ownPlayerId=null,Func<string,Sprite> avatarArt=null)
+            Func<string> ownPlayerId=null,Func<string,Sprite> avatarArt=null,bool embedded=false)
         {
             this.view=view??throw new ArgumentNullException(nameof(view));scope=pageScope??throw new ArgumentNullException(nameof(pageScope));session=loginSession??throw new ArgumentNullException(nameof(loginSession));
-            this.close=close;this.unavailable=unavailable;this.playerSelected=playerSelected;this.ownPlayerId=ownPlayerId;this.avatarArt=avatarArt;
+            this.close=close;this.unavailable=unavailable;this.playerSelected=playerSelected;this.ownPlayerId=ownPlayerId;this.avatarArt=avatarArt;this.embedded=embedded;
             windows=new WindowCoordinator(scope.Token);windows.ShowPageAsync(_=>Task.CompletedTask).GetAwaiter().GetResult();toast=new GameToastBinder(GameToast.ForInstance(Get<GameObject>("messageChrome")));
             scope.Add(()=>{opened=false;++generation;CancelOpening();windows.Dispose();session.Changed-=Changed;session.PreferencesChanged-=PreferencesChanged;session.Faulted-=Faulted;session.Uncertain-=Uncertain;Canvas.willRenderCanvases-=Layout;foreach(var row in rows.Values)row.Dispose();rows.Clear();foreach(var cell in stickerCells)if(cell)Object.Destroy(cell);stickerCells.Clear();toast.Hide();view.Hide();});
             session.Changed+=Changed;session.PreferencesChanged+=PreferencesChanged;session.Faulted+=Faulted;session.Uncertain+=Uncertain;Canvas.willRenderCanvases+=Layout;
+            foreach(string key in new[]{"close","favoriteClose","channelClose","settingsClose","stickerClose"})Get<GameButton>(key).KeepBrightnessOnPress=true;
             Hook(scope,"close",()=>{if(!windows.TryCloseOverlay())close?.Invoke();});Hook(scope,"publicTab",()=>windows.TryCloseOverlay());Hook(scope,"guildTab",()=>unavailable?.Invoke("chat.guild"));Hook(scope,"notice",()=>unavailable?.Invoke("chat.notices"));
             Hook(scope,"favorite",()=>Editor("favorite"));Hook(scope,"channelSwitch",()=>Editor("channel"));Hook(scope,"opacity",()=>_=Background());Hook(scope,"settings",()=>Settings());Hook(scope,"emoji",()=>Picker());Hook(scope,"send",()=>_=Send(null));
             foreach(string key in new[]{"favoriteLayer","channelLayer","settingsLayer","stickerLayer"})Get<GameObject>(key).SetActive(false);
             foreach(var image in Get<BindingMap>("stickerArt").GetComponentsInChildren<Image>(true))if(image.sprite)stickers.Add(image.sprite.name,image.sprite);
+            var history=Get<ScrollRect>("messages");UnityAction<Vector2> read=_=>{if(!rendering)ReadVisible();};history.onValueChanged.AddListener(read);scope.Add(()=>{if(history)history.onValueChanged.RemoveListener(read);});
+            if(embedded)
+            {
+                foreach(string key in new[]{"close","publicTab","guildTab","notice"})Get<GameButton>(key).gameObject.SetActive(false);
+                Get<Image>("publicSelected").gameObject.SetActive(false);
+                foreach(Transform child in Get<RectTransform>("drawer"))
+                    if(child.name=="Original header shadow"||child.name=="Notice collapse arrow"||child.name=="Original gold rule")child.gameObject.SetActive(false);
+            }
             BuildStickerCells();RenderPreferences();
         }
         public async Task OpenAsync(CancellationToken token)
@@ -70,6 +80,10 @@ namespace AstralOath.Client.ChannelChat
         private void PreferencesChanged(ChatPreferences preferences){if(!Closed&&opened)RenderPreferences();}
         private void Render()
         {
+            rendering=true;
+            try
+            {
+            Layout();
             Get<GameText>("channelName").text=string.Format(CultureInfo.InvariantCulture,L("channel"),session.Channel);
             Get<GameText>("entered").text=string.Format(CultureInfo.InvariantCulture,L("entered"),session.Channel);
             Get<GameObject>("enteredStrip").SetActive(session.Messages.Count==0);
@@ -88,6 +102,15 @@ namespace AstralOath.Client.ChannelChat
                 row.root.transform.SetAsLastSibling();RenderRow(row,message);
             }
             LayoutRebuilder.ForceRebuildLayoutImmediate(scroll.content);if(follow)scroll.verticalNormalizedPosition=0;
+            }
+            finally{rendering=false;}
+            ReadVisible();
+        }
+        private void ReadVisible()
+        {
+            if(Closed||!opened||loading||!view.Root.activeInHierarchy||session.Messages.Count==0||Get<ScrollRect>("messages").verticalNormalizedPosition>.08f)return;
+            if(new[]{"favorite","channel","settings","stickers"}.Any(windows.IsOverlayOpen))return;
+            session.MarkRead(session.Channel,session.Messages[session.Messages.Count-1].id);
         }
         private void RenderRow(Row row,ChatMessage message)
         {
@@ -183,7 +206,7 @@ namespace AstralOath.Client.ChannelChat
         }
         private void RenderPreferences()
         {
-            var p=session.Preferences;bool writable=!loading&&!saving&&!session.HasPendingPreferences&&p!=null;bool transparent=p?.transparentBackground==true;Get<Image>("drawerSurface").enabled=!transparent;Get<Image>("transparentBorder").enabled=transparent;Get<Image>("opacitySelected").enabled=transparent;Get<Image>("opacityIcon").color=transparent?Color.black:new Color(1,1,1,.5f);
+            var p=session.Preferences;bool writable=!loading&&!saving&&!session.HasPendingPreferences&&p!=null;bool transparent=p?.transparentBackground==true;Get<Image>("drawerSurface").enabled=!embedded&&!transparent;Get<Image>("transparentBorder").enabled=!embedded&&transparent;Get<Image>("opacitySelected").enabled=transparent;Get<Image>("opacityIcon").color=transparent?Color.black:new Color(1,1,1,.5f);
             Get<GameText>("favoriteValue").text=string.Format(CultureInfo.InvariantCulture,L("favoriteValue"),p?.favoriteChannel?.ToString(CultureInfo.InvariantCulture)??L("none"));Get<GameText>("channelValue").text=string.Format(CultureInfo.InvariantCulture,L("channel"),session.Channel);
             var n=p?.notifications??new ChatNotifications();var values=new[]{n.hero5,n.artifact5,n.guildPromotion,n.generalChat};bool all=values.All(v=>v);Get<Image>("allNotificationsCheck").enabled=all;Get<Image>("allBackground").enabled=all;Get<GameText>("allNotificationsLabel").color=all?new Color32(125,204,18,255):new Color32(136,136,136,255);
             for(int i=0;i<4;i++)Get<Image>("notification"+i+"Check").enabled=values[i];
@@ -203,7 +226,19 @@ namespace AstralOath.Client.ChannelChat
             if(Closed||loading||sending)return;windows.ShowOverlay("stickers",owner=>{var layer=Get<GameObject>("stickerLayer");layer.SetActive(true);owner.Add(()=>{if(layer)layer.SetActive(false);});Hook(owner,"stickerClose",()=>windows.CloseOverlay("stickers"));Layout();});
         }
         private void Layout()
-        {if(Closed||!view.Root)return;float width=((RectTransform)view.Root.transform).rect.width;if(Mathf.Abs(lastWidth-width)<.5f)return;lastWidth=width;var panel=Get<RectTransform>("stickerPanel");float offset=Mathf.Min(844.5f,Mathf.Max(0,width-panel.rect.width-12));panel.anchoredPosition=new Vector2(-offset,-36);}
+        {
+            if(Closed||!view.Root)return;var bounds=((RectTransform)view.Root.transform).rect;float width=bounds.width,height=bounds.height;
+            if(width<=0||height<=0||(Mathf.Abs(lastWidth-width)<.5f&&Mathf.Abs(lastHeight-height)<.5f))return;lastWidth=width;lastHeight=height;
+            var panel=Get<RectTransform>("stickerPanel");float offset=Mathf.Min(844.5f,Mathf.Max(0,width-panel.rect.width-12));panel.anchoredPosition=new Vector2(-offset,-36);
+            if(!embedded)return;
+            float scale=width/924f;var drawer=Get<RectTransform>("drawer");drawer.anchorMin=drawer.anchorMax=drawer.pivot=Vector2.zero;drawer.anchoredPosition=Vector2.zero;drawer.sizeDelta=new Vector2(924,height/scale);drawer.localScale=Vector3.one*scale;
+            var history=(RectTransform)Get<ScrollRect>("messages").transform.parent;history.anchorMin=Vector2.zero;history.anchorMax=Vector2.one;history.offsetMin=new Vector2(81,132);history.offsetMax=new Vector2(-24,-95);
+            PlaceBottom((RectTransform)Get<GameButton>("emoji").transform,78,18);
+            PlaceBottom((RectTransform)Get<TMP_InputField>("input").transform,159,18);
+            PlaceBottom((RectTransform)Get<GameButton>("send").transform,669,18);
+            PlaceBottom((RectTransform)Get<GameObject>("enteredStrip").transform,81,132);
+            void PlaceBottom(RectTransform rect,float x,float y){rect.anchorMin=rect.anchorMax=rect.pivot=Vector2.zero;rect.anchoredPosition=new Vector2(x,y);}
+        }
         private static int Scalars(string value){int count=0;for(int i=0;i<value.Length;i++,count++)if(char.IsHighSurrogate(value[i])&&i+1<value.Length&&char.IsLowSurrogate(value[i+1]))i++;return count;}
         private static bool RequestError(Exception error)=>error is IOException||error is HttpRequestException||error is OperationCanceledException;
     }

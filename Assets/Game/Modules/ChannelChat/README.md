@@ -1,5 +1,17 @@
 # 公共频道
 
+## 11/28追加：登录未读与房间共用频道
+
+世界竞技场左侧「频道」页签与主页/各页聊天入口复用同一个登录所有的`ChannelChatSession`和`ChannelChatBinder`，不新增聊天服务、消息存储或轮询器。房间通过Foundation注入回调，Arena不引用ChannelChat程序集；内嵌模式保留频道名、收藏/切换/设置、消息/表情与发送，隐藏公共抽屉自己的重复页签。切回「竞技场」仅释放本次公共页`WindowCoordinator`/`BindingScope`，房间成员、房间聊天和事件连接继续保留。
+
+`UnreadCount`/`UnreadFor(channel)`和`UnreadChanged`属于登录Session；首次成功读取各频道历史只建立本次登录基线，随后当前观察频道新收到的他人消息按十进制ID计数去重。自己的回执及同一玩家ID的消息不计数；200条正文缓存裁剪不丢未读ID。切频道保留此前未读，但仅观察当前频道，不宣称同时订阅所有频道。`MarkRead(channel, throughMessageId)`仅接受当前频道中实际缓存的消息ID，确认至该ID，不能以网络补读游标或窗口被创建/加载作为阅读证明。Binder在加载结束、消息已绘制且列表跟随底部或用户滚到底时确认；读旧消息/关闭页面不确认新消息。未读ID仅保存在登录内存，登出清除，不持久化聊天正文。
+
+主页及复用顶栏、More菜单与房间频道页签都使用Common `NotificationBadge.prefab`实例、原`_notification_num`精灵和既有`MailCountDigits.asset`数字，不增加纯色圆点/字体。`ChatEntry.BindUnread`按页作用域订阅登录计数并在关闭时解绑。依据为已实际查看的11/28原片32.000s频道框架、用户当前房间图，以及已有11/17原主界面top_bar数字角标；32s没有展示未读数字，数字样式复用不冒称为该片可见过程。证据副本与调查在`.artifacts/identity-social-followup/chat/`。
+
+追加大底按压修正：Binder在运行时给公共聊天关闭背景、收藏/切频道关闭背景、通知/表情全屏关闭区域设`KeepBrightnessOnPress=true`，避免`GameButton`递归压暗大图；这是既有AOT属性，不修改Common或只依赖非序列化的生成器赋值。普通页签/发送/设置小按钮继续原交互反馈。
+
+用户本轮明确无需回归验证、打包后自行验收，覆盖此前等待RED步骤：新增`ChannelChatUnreadTests`7项、`ChannelChatEntryUnreadTests`3项和`ChannelChatUnreadBinderTests`2项保留但**未执行**，没有声称RED/GREEN。生产编译、生成预制及签名打包由协调者统一处理；原生1080/4K、双账号收发/红点/阅读/切页和声音/特效均未由本代理执行，本轮无新增音效/特效。
+
 ## 数据层与生命周期
 
 `ChannelChatModels` 与服务端Social JSON对应；`IChannelChatApi`提供偏好读取/保存、频道消息游标、发送和NDJSON失效监听。`ChannelChatApi`使用既有Bearer，禁用自动重定向；普通请求/流空闲均20秒取消，响应上限1Mi字符、NDJSON单行4096字符。关闭流把中断Socket/IO映射为取消，不输出令牌、正文或关键字。服务端边界和018/019/020部署要求见[Social说明](../../../../Server/Host/Social/README.md)。

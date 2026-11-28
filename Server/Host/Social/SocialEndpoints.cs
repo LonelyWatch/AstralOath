@@ -39,6 +39,7 @@ internal static class SocialEndpoints
         });
         api.MapGet("/profile/me",async(HttpContext h,PlayerProfileStore s,CancellationToken ct)=>Results.Ok(await s.Read(Player(h),Player(h),ct)));
         api.MapGet("/profile/players/{playerId}",async(string playerId,HttpContext h,PlayerProfileStore s,CancellationToken ct)=>Results.Ok(await s.Read(Player(h),playerId,ct)));
+        api.MapGet("/profile/uids/{uid}",async(string uid,HttpContext h,PlayerProfileStore s,CancellationToken ct)=>Results.Ok(await s.ReadUid(Player(h),uid,ct)));
         api.MapPost("/profile/nickname/check",async(NicknameCheck input,HttpContext h,PlayerProfileStore s,CancellationToken ct)=>Results.Ok(await s.Check(Player(h),input,ct)));
         api.MapPost("/profile/me/actions",async(ProfileAction input,HttpContext h,PlayerProfileStore s,CancellationToken ct)=>Results.Ok(await s.Change(Player(h),input,ct)));
         api.MapGet("/chat/preferences",async(HttpContext h,ChannelChatStore s,CancellationToken ct)=>Results.Ok(await s.Preferences(Player(h),ct)));

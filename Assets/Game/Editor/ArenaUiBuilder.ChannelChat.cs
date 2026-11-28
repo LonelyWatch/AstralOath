@@ -28,7 +28,17 @@ namespace AstralOath.Editor
         {
             var root=Root("ChatEntry");root.sizeDelta=new Vector2(59,66)*1.5f;var button=Button(root,ChatArt("HeaderChat"),Color.white);PressSprites(button,ChatArt("HeaderChat"),ChatArt("HeaderChatPressed"));
             button.FeedbackSound=GameUiFeedback.Sound.Normal;var source=root.gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.clip=Load<AudioClip>(Common+"Sounds/UiConfirm.wav");
-            var s=new SerializedObject(button);s.FindProperty("clickAudio").objectReferenceValue=source;s.ApplyModifiedPropertiesWithoutUndo();Bind(root,("button",button),("source",source));return root;
+            var s=new SerializedObject(button);s.FindProperty("clickAudio").objectReferenceValue=source;s.ApplyModifiedPropertiesWithoutUndo();var badge=BuildChatUnreadBadge(root,new Vector2(24,-14));Bind(root,("button",button),("source",source),("unreadBadge",badge));return root;
+        }
+        private static BindingMap BuildChatUnreadBadge(RectTransform parent,Vector2 position)
+        {
+            var instance=(GameObject)PrefabUtility.InstantiatePrefab(Load<GameObject>(BadgePrefabPath),parent);
+            instance.name="Public channel unread";var rect=(RectTransform)instance.transform;
+            rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(0,1);rect.anchoredPosition=position;rect.sizeDelta=new Vector2(38,30)*1.5f;
+            var map=instance.GetComponent<BindingMap>();var mark=map.Require<Image>("mark");mark.type=Image.Type.Sliced;mark.preserveAspect=false;mark.raycastTarget=false;
+            var label=map.Require<GameText>("label");label.font=Load<TMP_FontAsset>(MailRes+"Fonts/MailCountDigits.asset");label.fontSharedMaterial=label.font.material;label.fontSize=21*.82f*1.5f;label.fontStyle=FontStyles.Normal;label.alignment=TextAlignmentOptions.Center;label.enabled=true;label.enableAutoSizing=false;label.overflowMode=TextOverflowModes.Overflow;label.raycastTarget=false;
+            var labelRect=label.rectTransform;labelRect.anchorMin=Vector2.zero;labelRect.anchorMax=Vector2.one;labelRect.offsetMin=new Vector2(-1,2.5f)*1.5f;labelRect.offsetMax=new Vector2(-1,2.5f)*1.5f;
+            map.Require<BitmapNumber>("number").gameObject.SetActive(false);instance.SetActive(false);return map;
         }
         private static RectTransform BuildChannelChat()
         {

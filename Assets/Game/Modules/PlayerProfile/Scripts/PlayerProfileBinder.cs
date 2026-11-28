@@ -35,7 +35,8 @@ namespace AstralOath.Client.PlayerProfile
             scope.Add(windows.Dispose);scope.Add(()=>{++generation;++checkGeneration;Cancel(ref read);Cancel(ref check);session.Changed-=Changed;Canvas.willRenderCanvases-=Tick;portrait.Dispose();toast.Hide();view.Hide();});
             session.Changed+=Changed;Canvas.willRenderCanvases+=Tick;
             Hook(scope,"close",()=>{if(!windows.TryCloseOverlay())close();});Hook(scope,"closeLabelButton",()=>close());
-            Hook(scope,"copyId",()=>{if(current==null)return;copy(current.playerId);Notice("copied");});
+            Get<GameButton>("close").KeepBrightnessOnPress=true;
+            Hook(scope,"copyId",()=>{if(string.IsNullOrEmpty(current?.uid))return;copy(current.uid);Notice("copied");});
             Hook(scope,"nickname",()=>OpenEditor("nickname"));Hook(scope,"greeting",()=>OpenEditor("greeting"));
             Hook(scope,"seasonPrivacy",()=>_=SetVisibility(true));Hook(scope,"bestPrivacy",()=>_=SetVisibility(false));
             foreach(string key in new[]{"representative","support","frame","customCard"})
@@ -72,7 +73,7 @@ namespace AstralOath.Client.PlayerProfile
         private void Render()
         {
             Get<GameObject>("profileContent").SetActive(true);
-            Get<GameText>("serverId").text=(realmName?.Invoke(current.realmId)??current.realmId??"")+" | "+(current.playerId??"");
+            Get<GameText>("serverId").text=L("uid")+" "+(current.uid??"—");
             Get<GameText>("displayName").text=current.displayName??"";
             Get<GameText>("rank").text=current.rank?.available==true&&current.rank.value.HasValue?"Rank. "+current.rank.value.Value:"Rank. —";
             Get<GameText>("greetingText").text=current.greetingIsDefault?L("greetingDefault"):current.greeting??"";

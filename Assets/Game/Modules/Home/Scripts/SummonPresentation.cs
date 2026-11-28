@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 namespace AstralOath.Client.Summon
 {
+    public enum SummonEffectGrade { Blue, Gold, GoldStars, VioletStars }
     /// <summary>Original summon scene layers and rendered native FMOD events.</summary>
     public sealed class SummonPresentation : ScriptableObject
     {
@@ -23,7 +24,7 @@ namespace AstralOath.Client.Summon
         public sealed class Layer
         {
             public string animation;
-            public TextAsset skeleton, atlas;
+            public TextAsset skeleton, atlas, particle;
             public string[] pageNames;
             public Texture2D[] pages;
             public float x, y, delay, rotate, speed, scale;
@@ -62,6 +63,7 @@ namespace AstralOath.Client.Summon
             private sealed class Part
             {
                 internal ISkeletonPlayer skeleton;
+                internal SummonParticles particles;
                 internal GameObject stage;
                 internal string id;
                 internal int order;
@@ -133,14 +135,17 @@ namespace AstralOath.Client.Summon
                 Canvas.willRenderCanvases += Update;
             }
 
-            public async Task PlayOpeningAsync(int rarity, CancellationToken token)
+            public Task PlayOpeningAsync(int rarity, CancellationToken token) =>
+                PlayOpeningAsync(rarity >= 5 ? SummonEffectGrade.GoldStars : rarity == 4 ? SummonEffectGrade.Gold : SummonEffectGrade.Blue, token);
+
+            public async Task PlayOpeningAsync(SummonEffectGrade grade, CancellationToken token)
             {
                 var operation = StartOperation(token);
                 try
                 {
-                    string opening = rarity >= 5 ? "1_violet1" : rarity == 4 ? "1_yellow1" : "1_blue";
+                    string opening = grade switch { SummonEffectGrade.VioletStars => "1_violet2", SummonEffectGrade.GoldStars => "1_yellow2", SummonEffectGrade.Gold => "1_yellow1", _ => "1_blue" };
                     SetScenes(opening);
-                    Play(rarity >= 5 ? "OpenViolet" : rarity == 4 ? "OpenGold" : "OpenBlue");
+                    Play(grade == SummonEffectGrade.VioletStars ? "OpenViolet" : grade != SummonEffectGrade.Blue ? "OpenGold" : "OpenBlue");
                     await WaitUntilAsync(.97f, operation.Token);
                     Play("Hall");
                     await WaitUntilAsync(4.1333f, operation.Token);
@@ -148,16 +153,17 @@ namespace AstralOath.Client.Summon
                 finally { FinishOperation(operation); }
             }
 
-            public async Task PlayRevealAsync(int rarity, bool artifact, CancellationToken token, Action revealReady = null, RectTransform artwork = null, string heroClass = null, Action<float> captionOpacity = null)
+            public async Task PlayRevealAsync(int rarity, bool artifact, CancellationToken token, Action revealReady = null, RectTransform artwork = null, string heroClass = null, Action<float> captionOpacity = null, bool moonlight = false)
             {
                 var operation = StartOperation(token);
                 try
                 {
-                    string grade = rarity >= 5 ? "violet" : rarity == 4 ? "yellow" : "blue";
-                    SetHallScene(grade, artifact ? "artifact" : heroClass);
+                    bool violet = rarity >= 5 && !artifact && moonlight;
+                    string grade = violet ? "violet" : rarity >= 4 ? "yellow" : "blue";
+                    SetHallScene(grade, artifact ? "artifact" : heroClass, rarity >= 5);
                     Play("Figure");
                     await WaitUntilAsync(2.36f, operation.Token);
-                    Play(rarity >= 5 ? "BurstViolet" : rarity == 4 ? "BurstGold" : "BurstBlue");
+                    Play(violet ? "BurstViolet" : rarity >= 4 ? "BurstGold" : "BurstBlue");
                     await WaitUntilAsync(3.9f, operation.Token);
                     if (artifact)
                     {
@@ -314,7 +320,7 @@ namespace AstralOath.Client.Summon
                 effects.Clear();
             }
 
-            private void SetHallScene(string grade, string heroClass)
+            private void SetHallScene(string grade, string heroClass, bool stars)
             {
                 string animation = heroClass switch
                 {
@@ -324,7 +330,8 @@ namespace AstralOath.Client.Summon
                     "mage" or "knight" or "ranger" or "warrior" => heroClass,
                     _ => "warrior",
                 };
-                SetSceneLayers(new[] { "2_b_" + grade, "2_class", "2_" + grade }, animation);
+                SetSceneLayers(stars ? new[] { "2_b_" + grade, "2_class", "2_" + grade, "2_" + grade + "_pat" }
+                    : new[] { "2_b_" + grade, "2_class", "2_" + grade }, animation);
             }
 
             private void SetScenes(params string[] names) => SetSceneLayers(names, null);
@@ -354,14 +361,22 @@ namespace AstralOath.Client.Summon
 
             private void AddLayer(string phase, Layer layer, int order, string animation)
             {
-                var stage = new GameObject(layer.skeleton.name) { layer = RenderLayer };
+                var stage = new GameObject(layer.particle ? layer.particle.name : layer.skeleton.name) { layer = RenderLayer };
                 stage.transform.SetParent(scene.transform, false);
                 var part = new Part { id = phase, order = order, stage = stage, speed = layer.speed, delay = layer.delay / 1000f,
-                    clips = (animation ?? layer.animation).Split(','), hold = layer.loop };
+                    clips = (animation ?? layer.animation ?? "").Split(','), hold = layer.loop };
                 active.Add(part);
                 stage.transform.localPosition = new Vector3(layer.x, layer.y, 0) * PixelScale;
                 stage.transform.localScale = Vector3.one * layer.scale;
                 stage.transform.localRotation = Quaternion.Euler(0, 0, -layer.rotate);
+                if (layer.particle)
+                {
+                    var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal);
+                    for (int index = 0; index < layer.pages.Length; ++index) textures.Add(layer.pageNames[index], layer.pages[index]);
+                    part.particles = new SummonParticles(layer.particle, textures, stage.transform, Vector2.zero, PixelScale, order, false, true);
+                    stage.SetActive(false);
+                    return;
+                }
                 if (!sources.TryGetValue(layer.skeleton, out var source))
                 {
                     var textures = new Dictionary<string, Texture2D>(StringComparer.Ordinal);
@@ -490,6 +505,7 @@ namespace AstralOath.Client.Summon
                 {
                     part.stage.SetActive(false);
                     part.skeleton?.Dispose();
+                    part.particles?.Dispose();
                     UnityEngine.Object.Destroy(part.stage);
                 }
                 active.Clear();
@@ -545,6 +561,12 @@ namespace AstralOath.Client.Summon
                     if (elapsed < part.delay) continue;
                     float now = (elapsed - part.delay) * part.speed;
                     float before = Mathf.Max(0, previous - part.delay) * part.speed;
+                    if (part.particles != null)
+                    {
+                        if (!part.started) { part.stage.SetActive(true); part.started = true; part.particles.Play(); }
+                        part.particles.Tick(now - before);
+                        continue;
+                    }
                     if (!part.started)
                     {
                         part.stage.SetActive(true);

@@ -28,6 +28,7 @@ namespace AstralOath.Client.PlayerProfile
         }
         public Task<PlayerProfileData> MeAsync(CancellationToken token)=>Send<PlayerProfileData>("me",null,token);
         public Task<PlayerProfileData> PlayerAsync(string id,CancellationToken token)=>Send<PlayerProfileData>("players/"+Uri.EscapeDataString(id??""),null,token);
+        public Task<PlayerProfileData> FindByUidAsync(string uid,CancellationToken token)=>Send<PlayerProfileData>("uids/"+Uri.EscapeDataString(uid??""),null,token);
         public Task<NicknameCheck> CheckNicknameAsync(string nickname,CancellationToken token)=>Send<NicknameCheck>("nickname/check",new Check{nickname=nickname},token);
         public Task<PlayerProfileData> ActAsync(ProfileActionRequest request,CancellationToken token)=>Send<PlayerProfileData>("me/actions",request,token);
         private async Task<T> Send<T>(string path,object data,CancellationToken token)where T:class

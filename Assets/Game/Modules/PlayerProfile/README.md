@@ -1,5 +1,7 @@
 # PlayerProfile
 
+11/28追加修订：公开玩家编号改为服务端分配的永久随机十位`uid`（JSON字符串），右上`serverId`绑定显示`UID 1234567890`，点击复制同一公开UID，不回退内部playerId或区服名称。`PlayerProfileApi.FindByUidAsync`接入鉴权`/api/profile/uids/{uid}`，供后续玩家查询使用，本轮未新增好友系统。资料大背景运行时关闭整板按压压暗。界面依赖新021身份初始化；本轮按用户要求不运行客户端回归，由用户验收新包。
+
 玩家账号资料独立模块，普通 `PlayerProfile : UIBaseView` / `PlayerProfileBinder`，预制只挂 `BindingMap` 和基础控件。本人和他人共用 `profile/window`；Foundation拥有登录级API/Session、资源Scope和窗口组合，Home及聊天通过回调打开，不让Common反向引用业务。
 
 制作依据是用户11/28录屏00:13自己的详情、00:04昵称、00:18问候语，以及只读 `D:/sevenepic/原始资源/wnd/user_profile.csb` / `user_profile_nickname.csb` / `_z_input.csb`。问候语实际使用通用 `_z_input` 布局，`user_profile_nickname_msgbox` 是另一个确认弹板，不能拿来代替。原尺寸帧、逐项缺口和源哈希在 `.artifacts/home-profile-chat-review/index.html` / `reference-review.json`。录制画面写日本服务器、中文UI；具体版本/发布日期/倍速未确认，不能标为国服或当前项目玩法通过。
@@ -26,17 +28,23 @@ Rank/赛季/最佳/好友/骑士团没有完整权威资料：不复刻参考账
 
 ## 原素材与生成
 
-运行 `Tools/ProjectEnvironment.ps1` 初始化后，用项目Python执行 `Tools/Profile/ImportProfileAssets.py`，仅导入27张所需用途PNG；`Res/profile-source.json`记录原/输出哈希、尺寸、源节点透明度与切片。23张PNG字节相同，4张受控派生：主框用途副本仅把白边alpha按sRGB覆盖率转Linear（原34→4、115→44），保持原RGB和蓝渐变；两个标题Divider及记录区竖Divider先乘原节点透明度，再把白像素有效alpha转Linear覆盖率，非白阴影保留有效alpha。森林精确为 `profile/bg/profile_bg13.png`；主框原 `renew_popup_bg_alpha.png` cap(54,54,258,470)→Unity(54,54,54,54)，昵称原框cap(44,44,24,24)→(44,48,48,44)。主框/昵称框Point采样，其余按UI原尺寸无Mipmap、显式RGBA32、保留GUID。未批量导入外部解包，未修改 `D:/sevenepic`。
+运行 `Tools/ProjectEnvironment.ps1` 初始化后，用项目Python执行 `Tools/Profile/ImportProfileAssets.py`，仅导入28张所需用途PNG；`Res/profile-source.json`记录原/输出哈希、尺寸、源节点透明度与切片。22张PNG字节相同，6张受控派生：主框白边alpha沿用sRGB覆盖率转Linear（原34→4、115→44），连续蓝底与纯黑阴影改用深色透射换算，保留原RGB、渐变、灰边和几何；新增 `ProfileDim` 恢复完整原 `_dim.png` 径向纹理；`RecordShade` 先折入原tint8/14/23及opacity76，再转换深色覆盖率，运行时Image均为白色、不再重复乘tint/opacity。两个标题Divider及记录区竖Divider先乘原节点透明度，再把白像素有效alpha转Linear覆盖率，非白阴影保留有效alpha。森林精确为 `profile/bg/profile_bg13.png`；主框原 `renew_popup_bg_alpha.png` cap(54,54,258,470)→Unity(54,54,54,54)，昵称原框cap(44,44,24,24)→(44,48,48,44)。主框/昵称框Point采样，其余按UI原尺寸无Mipmap、显式RGBA32、保留GUID。未批量导入外部解包，未修改 `D:/sevenepic`。
+
+深色覆盖率沿用本项目Home/Chat的白参考透射方法：`aLinear=(1-L(1-a+a*g))/(1-L(g))`，`g`为原RGB均值、`a`包含源节点透明度，`L`为sRGB→Linear传递函数。主框原蓝底alpha230在原图x183/y60、289、518分别转换为251、249、245；`ProfileDim`中心保留RGB25、alpha141→202。记录黑底63在Image上使用 `1-L(192/255)`，白色下横线仍用原白覆盖率。固定alpha用途图对彩色背景只能近似还原sRGB混合，必须以实际主页背景叠开资料作最终视觉验收，不能拿独立黑Canvas替代。
 
 生成入口 `ArenaUiBuilder.BuildPlayerProfileAssets()`（或Tools→游戏主页→生成玩家资料）；固定主框1470×946.5设计单位，原980×631乘1.5。整组在标准AspectRatioFitter/AuthoredHeightLayout下等比适配；卡片不随窗口分别变长变宽。森林378×558按.95×1.5，portrait方形RawImage由森林RectMask裁切，避免方形RenderTexture拉成窄长人物；独立positionOffset隔离底层英雄页相机。昵称/问候语确认及取消嵌套Common Green/Gold按钮，未另画业务底图。普通页面黑按钮、隐私选中、输入、铅笔、徽章、关闭符号均为原图。三个底部操作按00:13运行时行位，而非CSB中默认隐藏的n_btn位置。
 
 首批候选自行对照失败后按源坐标修正：昵称原PNG为116×116，明显白线在图内约32px处，1.5倍九切后可见边缘自然内缩约48px；原cap正确，错误是把包含透明边的整框600高作为百分比布局基准。现保留原图/cap，标题按CSB的282/331放到top82.83，两个底部按钮top417、bottom514.5，均在可见下白线约544.5之内。问候语按 `_z_input` 的frame556×406→834×609及原位置642/137还原，两按钮原192×61→288×91.5等宽，文字左上对齐并换行。动态人物不在 `user_profile.csb` 中；对比00:13与候选01，采用森林高1.3倍方形RT、top31的录像构图测量，使头部下移、脚由森林窗口裁切；这些数字是当前录像测量，不能标为原CSB人物常数。
 
-第二轮实看 `profile-layout-fixed` 六图，三项几何修正确认成立，但发现右侧记录区域漏源背景/分隔，以及标题分隔成亮白，故仍未作为最终视觉通过。现补 `user_profile.csb` 原节点：`bg` 是原 `_white.png` 黑色/63透明度的单块共享底（537×205，Canvas位置653.8785/289.5、805.5×307.5），并非自造两个纯色框；`line_0` 为原白25的537×1下横线；`bar1_l` 为原 `z_tile_bar.png` 185×4、顺时针90°、白76，cap精确(32,1,1,2)→Unity(32,1,31,1)，不可误用装备管理页的cap5。底下 `_grow_0` 复用原 `_grow_s_white.png`、色8/14/23、透明76、scale30.89/4.73、原旋转-90°作为右区阴影。
+第二轮实看 `profile-layout-fixed` 六图，三项几何修正确认成立，但发现右侧记录区域漏源背景/分隔，以及标题分隔成亮白，故仍未作为最终视觉通过。现补 `user_profile.csb` 原节点：`bg` 是原 `_white.png` 黑色/63透明度的单块共享底（537×205，Canvas位置653.8785/289.5、805.5×307.5），并非自造两个纯色框；`line_0` 为原白25的537×1下横线；`bar1_l` 为原 `z_tile_bar.png` 185×4、顺时针90°、白76，cap精确(32,1,1,2)→Unity(32,1,31,1)，不可误用装备管理页的cap5。底下 `_grow_0` 复用原 `_grow_s_white.png`、色8/14/23、透明76、scale30.89/4.73、原旋转-90°作为右区阴影；本次追加修订将tint/opacity和Linear覆盖率折进用途PNG。
 
 两个标题分隔均是原 `_bar_23.png`、原节点opacity127，不能把Image留255直接显示：昵称cap(30,4,14,4)，问候cap(32,4,10,4)，因cap不同保留两个小用途副本 `Divider` / `GreetingDivider`。每像素先算 `原alpha×127/255`，再按sRGB传递函数转线性coverage：星点255→54、细线128→13；运行Image alpha1，不重复乘节点127。记录竖条同法折入76（白点255→18）；纯白下横用 `GammaToLinearSpace(25/255)`。原PNG、现有meta GUID及RGB不动，来源和派生说明均入manifest。
 
 ## 验收与未完成
+
+11/28 R46资料底板透出主页人物的追加修订：已实际查看用户原片 `frames/013.000.png` 与 `.artifacts/home-social-visual-fix/native46/runs/social1080/captures/02-profile-self.png`，并将原版和修前冻结到 `.artifacts/identity-social-followup/profile/`。原版外部主页受径向渐变压暗，右侧深蓝卡底仅微透；R46外部与卡内均明显露出主页大立绘。`user_profile.csb` 的 `dim_img` 使用完整 `img/_dim.png`、opacity255，旧生成器却省掉原图，仅画黑色alpha.60；主框源蓝底alpha230直接进入Linear framebuffer，黑白背景的上中下三个红通道对比为83/79/71，远高于Cocos sRGB原意图25。旧导入器只处理白边，未处理蓝底透射。现已修复上述原Dim、蓝底及右区源层的深色覆盖率，实际运行28张最小素材导入，既有资源GUID无变化；未额外画纯色盖板。原片/修前/源哈希与推导限制见 `source-audit.json`。
+
+本轮用户随后明确「不需要回归验证，尽快改好并打包，由用户验收」，覆盖此前等待失败测试/视觉复验的安排。`PlayerProfilePrefabTests` 新增两项视觉契约及原记录底期望已保留，**本轮未执行RED/GREEN或其他新增回归**；本代理未启动Unity/服务，未重新生成预制、未取得修改后Editor/Native截图，也未打包/分发。当前只有源码、源像素换算与资源导入，根协调者负责生成/编译/打包；不能把旧R46图或离线数值当作本轮修后视觉通过。修改后应在真实主页上以1080/4K打开本人/他人资料及问候语层由用户验收，独立黑Canvas不能暴露原透射问题。原录制具体版本、发布日期及倍速仍未确认；此项无新增音效/动画，不涉及试听或连续特效验收。
 
 冻结前独立审阅发现两处取消P2，根已实际RED2/2：`client-tests/profile-cancellation-red.xml` / `.log`。受控Bearer未完成即关编辑层仍POST（期望0、实际1）；关闭Profile响应流后SocketException10004直接逸出。之后才补每次尝试的dispatch边界/everDispatched及API取消映射，并增加不确定重试取消、非取消Socket和已知400拒绝回归。当前等待根统一GREEN；没有连接真实网络、修改账号或启动Unity来伪造这两项证据。
 

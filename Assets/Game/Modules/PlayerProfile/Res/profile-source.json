@@ -46,6 +46,31 @@
     },
     "method": "White pixels: effectiveAlpha=(PNG alpha)*(source node opacity)/255, then IEC sRGB transfer to linear coverage, rounded to8bit. Other RGB shadow pixels retain RGB and effectiveAlpha. Runtime Image opacity=1; never apply source node opacity again. Pure white record lower line uses GammaToLinearSpace(25/255) in Image.color because its source PNG is fully opaque."
   },
+  "darkLayerCoverage": {
+    "method": "White-reference translation aLinear=(1-L(1-a+a*g))/(1-L(g)), where g=mean(source RGB)/255 and a includes source node opacity. Source RGB and geometry retained. This fixed-alpha translation approximates colored source compositing; it is not exact gamma blending against all backdrops.",
+    "ProfileFrame": "Only continuous blue pixels r<=g<=b,b>r and pure-black shadow pixels use dark coverage; original white-rule conversion and neutral-gray rules stay unchanged. Source blue alpha230 ->251/249/245 at x183,y60/289/518.",
+    "ProfileDim": {
+      "source": "user_profile.csb dim_img",
+      "sourceNodeOpacity": 255,
+      "sourceNodeTintRgb": [
+        255,
+        255,
+        255
+      ],
+      "runtimeImageColor": "white; source radial texture fills the viewport, replacing the flat black.60 substitute"
+    },
+    "RecordShade": {
+      "source": "user_profile.csb _grow_0",
+      "sourceNodeOpacity": 76,
+      "sourceNodeTintRgb": [
+        8,
+        14,
+        23
+      ],
+      "runtimeImageColor": "white; tint and node opacity folded into purpose PNG before dark coverage"
+    },
+    "RecordWhite": "Record bg keeps source black tint; Image opacity=1-L(1-63/255). Lower white rule is separately unchanged."
+  },
   "portraitComposition": {
     "reference": "11/28 recording 00:13; compared with profile-candidate/01-self-default.png at1080-height normalization",
     "basis": "Measured runtime composition; actor is not stored in user_profile.csb. Not an original CSB actor constant.",
@@ -58,7 +83,7 @@
       "source": "img/renew_popup_bg_alpha.png",
       "sourceSha256": "7aa82d305f97434ab9f4044915a879b23f14814cb8bcd1cca7f4386b6995e270",
       "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/ProfileFrame.png",
-      "outputSha256": "3c127ad3e17c1c4232025564754576ec413fe2f8299487d50ebc03e308a1e720",
+      "outputSha256": "cc0c4ffed2e7abf00090d6ea8f32dc0c8d3f7865bcd0c25d7a9f6947e719e9c8",
       "size": [
         366,
         578
@@ -75,7 +100,25 @@
         54,
         54
       ],
-      "conversion": "Original RGB/gradient preserved; only white frame-rule alpha sRGB coverage converted to linear (34->4,115->44), as established Common confirmation rule correction; Point sampling avoids alpha seam."
+      "conversion": "Original RGB/gradient and neutral-gray rules preserved. Continuous blue backing and pure-black shadows use white-reference sRGB-to-Linear dark coverage (blue230->251/249/245 at native183,60/289/518); existing white frame-rule conversion unchanged (34->4,115->44). Point sampling avoids alpha seam."
+    },
+    {
+      "source": "img/_dim.png",
+      "sourceSha256": "d0120d3ec050aebffa9882fe147ff45bf7ff6d1a13cc3c7bbcfee3ec712d28cf",
+      "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/ProfileDim.png",
+      "outputSha256": "19b938c79bccaaf4bc6baabc217487bd601db803696d5da9ce208a65e70e697d",
+      "size": [
+        160,
+        90
+      ],
+      "sourceCapXywh": null,
+      "unityBorder": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "conversion": "Source radial RGB/geometry preserved; node255 folded into white-reference sRGB-to-Linear dark coverage. Runtime Image color white."
     },
     {
       "source": "profile/bg/profile_bg13.png",
@@ -350,7 +393,7 @@
       "source": "img/_grow_s_white.png",
       "sourceSha256": "0b59b48e0f453c38b1c35529d58f19459ac3465ec5e156ea6b576a73b5491e04",
       "output": "Assets/Game/Modules/PlayerProfile/Res/Textures/RecordShade.png",
-      "outputSha256": "0b59b48e0f453c38b1c35529d58f19459ac3465ec5e156ea6b576a73b5491e04",
+      "outputSha256": "8d6c718720019d6e8e2ab2853d9fea8e2bbd3c3877b42fa07401e8e4c52ab5d1",
       "size": [
         20,
         113
@@ -362,7 +405,7 @@
         0,
         0
       ],
-      "conversion": "byte-identical PNG; RGBA32 explicit UI import"
+      "conversion": "Source _grow_s_white geometry retained; original tint8/14/23 and node opacity76 folded before white-reference sRGB-to-Linear dark coverage. Runtime Image color white; never multiply authored tint/opacity again."
     },
     {
       "source": "img/icon_menu_blind.png",

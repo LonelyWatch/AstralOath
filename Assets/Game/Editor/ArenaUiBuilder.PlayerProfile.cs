@@ -25,7 +25,9 @@ namespace AstralOath.Editor
         private static RectTransform BuildPlayerProfile()
         {
             var root=Root("PlayerProfile");var keys=new List<(string Key,Object Target)>();void Link(string key,Object value)=>keys.Add((key,value));
-            var close=Button(Area(root,"Outside close",0,0,1,1),null,new Color(0,0,0,.60f));Link("close",close);
+            // user_profile.csb dim_img: full original radial texture, white tint, opacity255.
+            // Its purpose PNG restores dark sRGB transmission in the Linear framebuffer.
+            var close=Button(Area(root,"Outside close",0,0,1,1),ProfileArt("ProfileDim"),Color.white);Link("close",close);
             var design=ProfileDesign(root,"Profile source design",new Vector2(1470,1080));
             // user_profile.csb: win_bg980x631; 720 source design ->1080 Canvas design.
             var panel=ProfileFixed(design,"Original profile frame",0,54,1470,946.5f);
@@ -34,8 +36,8 @@ namespace AstralOath.Editor
             // Original user_profile.csb siblings1/2/3/12: source shadow, one shared
             // record backing, lower rule and clockwise90 z_tile_bar. No replacement fill.
             var shade=ProfileFixed(content,"Original right-side source shade",652.5f,936,926.7f,801.735f);
-            shade.localRotation=Quaternion.Euler(0,0,90);Paint(shade,ProfileArt("RecordShade"),new Color32(8,14,23,76));
-            Paint(ProfileFixed(content,"Original record backing",653.8785f,289.5f,805.5f,307.5f),ProfileArt("RecordWhite"),new Color32(0,0,0,63));
+            shade.localRotation=Quaternion.Euler(0,0,90);Paint(shade,ProfileArt("RecordShade"),Color.white);
+            Paint(ProfileFixed(content,"Original record backing",653.8785f,289.5f,805.5f,307.5f),ProfileArt("RecordWhite"),new Color(0,0,0,1-Mathf.GammaToLinearSpace(192f/255)));
             Paint(ProfileFixed(content,"Original record lower rule",653.25f,596.25f,805.5f,1.5f),ProfileArt("RecordWhite"),new Color(1,1,1,Mathf.GammaToLinearSpace(25f/255)));
             var column=ProfileFixed(content,"Original record column rule",1053,303,277.5f,6);column.pivot=new Vector2(0,.5f);column.localRotation=Quaternion.Euler(0,0,-90);
             Paint(column,ProfileArt("RecordColumnRule"),Color.white,false,true).pixelsPerUnitMultiplier=1/1.5f;

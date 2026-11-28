@@ -12,12 +12,16 @@ namespace AstralOath.Client.ChannelChat
     {
         private sealed class SendIntent{internal int channel;internal ChatSendRequest request;internal Task<ChatMessage> running;internal bool notified,everDispatched;}
         private sealed class PreferenceIntent{internal ChatPreferenceRequest request;internal Task<ChatPreferences> running;internal bool notified,everDispatched;}
+        private sealed class ReadingState
+        {internal bool initialized;internal string received="0";internal readonly HashSet<string> unread=new HashSet<string>(StringComparer.Ordinal),ownReceipts=new HashSet<string>(StringComparer.Ordinal);}
         private sealed class IdComparer:IComparer<string>
         {internal static readonly IdComparer Instance=new IdComparer();public int Compare(string a,string b)=>CompareId(a,b);}
         private readonly IChannelChatApi api;
         private readonly CancellationTokenSource lifetime;
         private readonly CancellationToken login;
         private readonly Dictionary<string,ChatMessage> messages=new Dictionary<string,ChatMessage>(StringComparer.Ordinal);
+        private readonly Dictionary<int,ReadingState> reading=new Dictionary<int,ReadingState>();
+        private readonly Func<string> ownPlayerId;
         private CancellationTokenSource joining,watching;
         private long joinGeneration,channelGeneration;
         // Only a confirmed List page advances this cursor. Locally shown send receipts
@@ -27,13 +31,21 @@ namespace AstralOath.Client.ChannelChat
         private PreferenceIntent pendingPreferences;
         private Task observing,pumping;
         private bool dirty,disposed;
-        public ChannelChatSession(IChannelChatApi api,CancellationToken loginToken=default)
-        {this.api=api??throw new ArgumentNullException(nameof(api));lifetime=CancellationTokenSource.CreateLinkedTokenSource(loginToken);login=lifetime.Token;}
+        public ChannelChatSession(IChannelChatApi api,CancellationToken loginToken=default,Func<string> ownPlayerId=null)
+        {this.api=api??throw new ArgumentNullException(nameof(api));this.ownPlayerId=ownPlayerId;lifetime=CancellationTokenSource.CreateLinkedTokenSource(loginToken);login=lifetime.Token;}
         public int Channel{get;private set;}=1;
         public IReadOnlyList<ChatMessage> Messages{get;private set;}=Array.Empty<ChatMessage>();
         public ChatPreferences Preferences{get;private set;}
         public bool HasPendingSend=>pendingSend!=null;
         public bool HasPendingPreferences=>pendingPreferences!=null;
+        public int UnreadCount=>reading.Values.Sum(value=>value.unread.Count);
+        public int UnreadFor(int channel)=>reading.TryGetValue(channel,out var value)?value.unread.Count:0;
+        public event Action UnreadChanged;
+        public void MarkRead(int channel,string throughMessageId)
+        {
+            if(disposed||login.IsCancellationRequested||channel!=Channel||string.IsNullOrEmpty(throughMessageId)||!messages.ContainsKey(throughMessageId)||!reading.TryGetValue(channel,out var value))return;
+            if(value.unread.RemoveWhere(id=>CompareId(id,throughMessageId)<=0)>0)UnreadChanged?.Invoke();
+        }
         public event Action Changed;
         public event Action<ChatPreferences> PreferencesChanged;
         public event Action Uncertain;
@@ -44,7 +56,7 @@ namespace AstralOath.Client.ChannelChat
             long generation=++joinGeneration;joining?.Cancel();using var request=CancellationTokenSource.CreateLinkedTokenSource(login,page);request.CancelAfter(TimeSpan.FromSeconds(20));joining=request;
             try
             {
-                string after=channel==Channel?readCursor:"0";var incoming=new List<ChatMessage>();
+                string after=channel==Channel?readCursor:"0";var incoming=new List<ChatMessage>();var received=new List<ChatMessage>();
                 while(true)
                 {
                     var result=await api.ListAsync(channel,after,0,request.Token);request.Token.ThrowIfCancellationRequested();
@@ -52,11 +64,13 @@ namespace AstralOath.Client.ChannelChat
                     ValidatePage(result,channel);string next=ConfirmedCursor(result,after);
                     if(result.hasMore&&CompareId(next,after)<=0)throw new IOException("Invalid chat cursor.");
                     incoming.AddRange(result.messages);
+                    // Keep only ID/identity metadata for unread accounting when the visual cache trims older pages.
+                    received.AddRange(result.messages.Select(message=>new ChatMessage{id=message.id,player=new ChatSender{id=message.player.id}}));
                     if(incoming.Count>200)incoming=incoming.OrderBy(m=>m.id,IdComparer.Instance).Skip(incoming.Count-200).ToList();
                     after=next;if(!result.hasMore)break;
                 }
                 if(channel!=Channel){Channel=channel;channelGeneration++;messages.Clear();readCursor="0";watching?.Cancel();}
-                Merge(incoming,channel);AdvanceReadCursor(after);Changed?.Invoke();
+                TrackIncoming(received,channel,after);Merge(incoming,channel);AdvanceReadCursor(after);Changed?.Invoke();
             }
             finally{if(ReferenceEquals(joining,request))joining=null;}
         }
@@ -71,7 +85,7 @@ namespace AstralOath.Client.ChannelChat
                 if(channel!=Channel||generation!=channelGeneration)return;
                 ValidatePage(result,channel);string next=ConfirmedCursor(result,after);
                 if(result.hasMore&&CompareId(next,after)<=0)throw new IOException("Invalid chat cursor.");
-                Merge(result.messages,channel);AdvanceReadCursor(next);Changed?.Invoke();
+                TrackIncoming(result.messages,channel,next);Merge(result.messages,channel);AdvanceReadCursor(next);Changed?.Invoke();
                 if(!result.hasMore)return;
                 if(channel!=Channel||generation!=channelGeneration)return;after=readCursor;
             }
@@ -100,7 +114,7 @@ namespace AstralOath.Client.ChannelChat
             try
             {
                 var result=await api.SendAsync(intent.channel,call,attempt.Token);attempt.Token.ThrowIfCancellationRequested();login.ThrowIfCancellationRequested();
-                ValidateMessage(result,intent.channel);if(ReferenceEquals(pendingSend,intent))pendingSend=null;
+                ValidateMessage(result,intent.channel);Reading(intent.channel).ownReceipts.Add(DecimalId(result.id,false));if(ReferenceEquals(pendingSend,intent))pendingSend=null;
                 if(Channel==intent.channel){Merge(new[]{result},intent.channel);Changed?.Invoke();}return result;
             }
             catch(ChannelChatRequestException e)when((int)e.Status>=400&&(int)e.Status<500){if(ReferenceEquals(pendingSend,intent))pendingSend=null;throw;}
@@ -191,6 +205,20 @@ namespace AstralOath.Client.ChannelChat
             return highest;
         }
         private void AdvanceReadCursor(string confirmed){if(CompareId(confirmed,readCursor)>0)readCursor=confirmed;}
+        private ReadingState Reading(int channel)
+        {if(!reading.TryGetValue(channel,out var value)){value=new ReadingState();reading.Add(channel,value);}return value;}
+        private void TrackIncoming(IEnumerable<ChatMessage> incoming,int channel,string confirmed)
+        {
+            var value=Reading(channel);bool changed=false;string own=ownPlayerId?.Invoke();
+            foreach(var message in incoming)
+            {
+                string id=DecimalId(message.id,false);
+                if(value.initialized&&CompareId(id,value.received)>0&&!value.ownReceipts.Contains(id)&&(string.IsNullOrEmpty(own)||message.player.id!=own))changed|=value.unread.Add(id);
+            }
+            if(CompareId(confirmed,value.received)>0)value.received=confirmed;
+            value.initialized=true;value.ownReceipts.RemoveWhere(id=>CompareId(id,value.received)<=0);
+            if(changed)UnreadChanged?.Invoke();
+        }
         private void Merge(IEnumerable<ChatMessage> incoming,int channel)
         {
             if(disposed||channel!=Channel)return;
@@ -222,7 +250,7 @@ namespace AstralOath.Client.ChannelChat
         public void Dispose()
         {
             if(disposed)return;disposed=true;lifetime.Cancel();joining?.Cancel();watching?.Cancel();pendingSend=null;pendingPreferences=null;
-            messages.Clear();readCursor="0";Messages=Array.Empty<ChatMessage>();Preferences=null;Changed=null;PreferencesChanged=null;Uncertain=null;Faulted=null;api.Dispose();lifetime.Dispose();
+            messages.Clear();reading.Clear();readCursor="0";Messages=Array.Empty<ChatMessage>();Preferences=null;Changed=null;UnreadChanged=null;PreferencesChanged=null;Uncertain=null;Faulted=null;api.Dispose();lifetime.Dispose();
         }
     }
 }

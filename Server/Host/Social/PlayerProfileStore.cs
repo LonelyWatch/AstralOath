@@ -1,4 +1,5 @@
 using System.Data;
+using System.Globalization;
 using AstralOath.Server.Entry;
 using AstralOath.Server.Foundation;
 using MySqlConnector;
@@ -13,6 +14,14 @@ internal sealed class PlayerProfileStore(string? connectionString)
         if(!Guid.TryParseExact(target,"N",out var id)||id==Guid.Empty)throw new SocialProblem(404,"profile_not_found");
         await using var db=await Open(connectionString,ct);
         return await Snapshot(db,null,viewer,id.ToString("N"),ct);
+    }
+    internal async Task<PlayerProfileData> ReadUid(string viewer,string uid,CancellationToken ct)
+    {
+        if(uid.Length!=10||uid[0]=='0'||uid.Any(c=>c<'0'||c>'9'))throw new SocialProblem(400,"invalid_player_uid");
+        await using var db=await Open(connectionString,ct);
+        using var query=Sql(db,null,"SELECT player_id FROM player_public_identity WHERE uid=@uid",("@uid",long.Parse(uid,CultureInfo.InvariantCulture)));
+        string target=(string?)await query.ExecuteScalarAsync(ct)??throw new SocialProblem(404,"profile_not_found");
+        return await Snapshot(db,null,viewer,target,ct);
     }
     internal async Task<object> Check(string player,NicknameCheck input,CancellationToken ct)
     {
@@ -61,16 +70,18 @@ internal sealed class PlayerProfileStore(string? connectionString)
     }
     private static async Task<PlayerProfileData> Snapshot(MySqlConnection db,MySqlTransaction? tx,string viewer,string target,CancellationToken ct)
     {
-        string name,avatar,greeting;bool season,best;long version;
+        string name,avatar,greeting,uid;bool season,best;long version;
         using(var q=Sql(db,tx,"""
             SELECT p.display_name,p.avatar_id,COALESCE(s.greeting,''),COALESCE(s.season_visible,TRUE),
-                   COALESCE(s.best_visible,TRUE),COALESCE(s.revision,0)
-            FROM arena_player p LEFT JOIN player_profile s ON s.player_id=p.id AND s.realm_id=@r WHERE p.id=@p AND
+                   COALESCE(s.best_visible,TRUE),COALESCE(s.revision,0),u.uid
+            FROM arena_player p JOIN player_public_identity u ON u.player_id=p.id
+            LEFT JOIN player_profile s ON s.player_id=p.id AND s.realm_id=@r WHERE p.id=@p AND
             """+PlayerNicknameRegistry.RealmMembershipPredicate,("@p",target),("@r",Realm)))
         await using(var r=await q.ExecuteReaderAsync(ct))
         {
             if(!await r.ReadAsync(ct))throw new SocialProblem(404,"profile_not_found");
             name=r.GetString(0);avatar=r.GetString(1);greeting=r.GetString(2);season=r.GetBoolean(3);best=r.GetBoolean(4);version=r.GetInt64(5);
+            uid=r.GetInt64(6).ToString(CultureInfo.InvariantCulture);
         }
         ProfileHero? hero=null;
         using(var q=Sql(db,tx,"""
@@ -80,6 +91,6 @@ internal sealed class PlayerProfileStore(string? connectionString)
         await using(var r=await q.ExecuteReaderAsync(ct))
             if(await r.ReadAsync(ct))hero=new(r.GetString(0),r.GetString(1),r.GetInt32(2),r.GetInt32(3));
         bool self=viewer==target;
-        return new(target,Realm,name,avatar,greeting,greeting.Length==0,version,self,self,hero,false,new(season,best),new(),new(false,self||season),new(false,self||best));
+        return new(target,uid,Realm,name,avatar,greeting,greeting.Length==0,version,self,self,hero,false,new(season,best),new(),new(false,self||season),new(false,self||best));
     }
 }

@@ -30,6 +30,7 @@ namespace AstralOath.Editor
             var blocker = panel.gameObject.AddComponent<GameButton>();
             blocker.transition = Selectable.Transition.None;
             blocker.targetGraphic = face;
+            bindings.Add(("infoSurfaceInput", blocker));
             var title = Text(panel, "Summon information", null, 38, .08f, .031f, .84f, .079f,
                 alignment: TextAlignmentOptions.Center);
             bindings.Add(("infoTitle", title));

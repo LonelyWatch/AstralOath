@@ -44,6 +44,7 @@ internal sealed partial class ArenaStore(string? connectionString, ArenaRoomEven
             VALUES (@id, @hash, @name, @avatar, UTC_TIMESTAMP(6));
             """, ("@id", player.Id), ("@hash", SHA256.HashData(secret)), ("@name", name), ("@avatar", avatar));
         await insert.ExecuteNonQueryAsync(token);
+        await PlayerPublicIdentity.Assign(connection, transaction, player.Id, token);
         await transaction.CommitAsync(token);
         return new ArenaSession(Convert.ToHexStringLower(secret), player);
     }

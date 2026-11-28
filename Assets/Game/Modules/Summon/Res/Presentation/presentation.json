@@ -478,6 +478,354 @@
       ]
     },
     {
+      "id": "1_yellow2",
+      "parts": [
+        {
+          "source": "gacha_eff_1_b_1_1",
+          "animation": "yellow",
+          "order": 8,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_2",
+          "animation": "yellow",
+          "order": 9,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 11.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_3",
+          "animation": "yellow",
+          "order": 10,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 12.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_2",
+          "animation": "yellow",
+          "order": 0,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_3",
+          "animation": "yellow",
+          "order": 1,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_bibleo",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_biblika",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_effect_1_yellow_pat",
+          "animation": "animation",
+          "order": 11,
+          "x": -50.0,
+          "y": -30.0,
+          "z": 55.0,
+          "globalZ": 0.0,
+          "delay": 1000.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false,
+          "format": "particle"
+        },
+        {
+          "source": "gacha_eff_1_f",
+          "animation": "animation",
+          "order": 4,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2",
+          "animation": "yellow",
+          "order": 5,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 70.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f1",
+          "animation": "animation",
+          "order": 6,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 80.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f2",
+          "animation": "yellow",
+          "order": 7,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "1_violet2",
+      "parts": [
+        {
+          "source": "gacha_eff_1_b_1_1",
+          "animation": "violet",
+          "order": 8,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 10.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_2",
+          "animation": "violet",
+          "order": 9,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 11.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_1_3",
+          "animation": "violet",
+          "order": 10,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 12.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_2",
+          "animation": "violet",
+          "order": 0,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 20.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_b_3",
+          "animation": "violet",
+          "order": 1,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 30.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_bibleo",
+          "animation": "animation",
+          "order": 2,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 40.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "n_biblika",
+          "animation": "animation",
+          "order": 3,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 50.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_effect_1_violet_pat",
+          "animation": "animation",
+          "order": 11,
+          "x": -50.0,
+          "y": -30.0,
+          "z": 55.0,
+          "globalZ": 0.0,
+          "delay": 1000.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false,
+          "format": "particle"
+        },
+        {
+          "source": "gacha_eff_1_f",
+          "animation": "animation",
+          "order": 4,
+          "x": 0.0,
+          "y": -130.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2",
+          "animation": "violet",
+          "order": 5,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 70.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f1",
+          "animation": "animation",
+          "order": 6,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 80.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        },
+        {
+          "source": "gacha_eff_1_2_f2",
+          "animation": "violet",
+          "order": 7,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 90.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false
+        }
+      ]
+    },
+    {
       "id": "2_b_blue",
       "parts": [
         {
@@ -1000,6 +1348,46 @@
           "rotate": 0.0,
           "speed": 1.0,
           "loop": false
+        }
+      ]
+    },
+    {
+      "id": "2_yellow_pat",
+      "parts": [
+        {
+          "source": "gacha_effect_2_yellow_pat",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": -200.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false,
+          "format": "particle"
+        }
+      ]
+    },
+    {
+      "id": "2_violet_pat",
+      "parts": [
+        {
+          "source": "gacha_effect_2_violet_pat",
+          "animation": "animation",
+          "order": 0,
+          "x": 0.0,
+          "y": -200.0,
+          "z": 60.0,
+          "globalZ": 0.0,
+          "delay": 0.0,
+          "scale": 1.0,
+          "rotate": 0.0,
+          "speed": 1.0,
+          "loop": false,
+          "format": "particle"
         }
       ]
     },
@@ -1762,6 +2150,72 @@
         {
           "name": "loop",
           "duration": 1.2000000476837158
+        }
+      ]
+    }
+  ],
+  "particles": [
+    {
+      "id": "gacha_effect_1_yellow_pat",
+      "document": "gacha_effect_1_yellow_pat.particle.json",
+      "pages": [
+        {
+          "name": "particle/flash.sct",
+          "asset": "summon_flash.png"
+        },
+        {
+          "name": "particle/pati_03.sct",
+          "asset": "summon_pati_03.png"
+        },
+        {
+          "name": "particle/zodiac_star1.sct",
+          "asset": "summon_zodiac_star1.png"
+        }
+      ]
+    },
+    {
+      "id": "gacha_effect_1_violet_pat",
+      "document": "gacha_effect_1_violet_pat.particle.json",
+      "pages": [
+        {
+          "name": "particle/flash.sct",
+          "asset": "summon_flash.png"
+        },
+        {
+          "name": "particle/pati_03.sct",
+          "asset": "summon_pati_03.png"
+        },
+        {
+          "name": "particle/zodiac_star1.sct",
+          "asset": "summon_zodiac_star1.png"
+        }
+      ]
+    },
+    {
+      "id": "gacha_effect_2_yellow_pat",
+      "document": "gacha_effect_2_yellow_pat.particle.json",
+      "pages": [
+        {
+          "name": "particle/pati_03.sct",
+          "asset": "summon_pati_03.png"
+        },
+        {
+          "name": "particle/zodiac_star1.sct",
+          "asset": "summon_zodiac_star1.png"
+        }
+      ]
+    },
+    {
+      "id": "gacha_effect_2_violet_pat",
+      "document": "gacha_effect_2_violet_pat.particle.json",
+      "pages": [
+        {
+          "name": "particle/pati_03.sct",
+          "asset": "summon_pati_03.png"
+        },
+        {
+          "name": "particle/zodiac_star1.sct",
+          "asset": "summon_zodiac_star1.png"
         }
       ]
     }

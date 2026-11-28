@@ -29,6 +29,8 @@ namespace AstralOath.Client.Tests
                     Assert.That(view.Root.activeSelf,Is.True);Assert.That(view.Message.richText,Is.False);
                     Assert.That(view.Message.text,Is.EqualTo("<color=red>plain</color>"));
                     view.Dismiss.onClick.Invoke();view.Dismiss.onClick.Invoke();
+                    Assert.That(closed,Is.Zero);
+                    yield return new WaitForSecondsRealtime(.25f);
                     Assert.That(closed,Is.EqualTo(1));
                 }
                 Assert.That(view.Root.activeSelf,Is.False);
@@ -37,7 +39,9 @@ namespace AstralOath.Client.Tests
                 {
                     binder.Open(next,"second","message","close",()=>closed++);
                     Assert.That(view.Root.activeSelf,Is.True);
-                    view.Dismiss.onClick.Invoke();Assert.That(closed,Is.EqualTo(2));
+                    view.Dismiss.onClick.Invoke();
+                    yield return new WaitForSecondsRealtime(.25f);
+                    Assert.That(closed,Is.EqualTo(2));
                 }
                 Assert.That(view.Root.activeSelf,Is.False);
                 yield return null;

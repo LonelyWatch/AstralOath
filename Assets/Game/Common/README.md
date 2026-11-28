@@ -80,3 +80,7 @@ Common 提供通用组件和资源，业务文案、图标数据、事件和生�
 玩家名细阴影共用 `Res/Materials/Resources/AstralOathPlayerNameShadow.mat`，与 EpicSeven TMP 字体及同一图集配套。它使用细黑底阴影，不对全局字体实例改写；新增使用场景应为对应 GameText 指定该字体与材质。
 
 HeaderBackButton 与 TopBarToken 供顶部导航复用。全屏子页由 UIPageLayers 独占显示；透明确认窗可以压在任一页之上，BindBack 跟随窗口的 BindingScope。GameButton 的可选 pressedContent 与按下图同步移动并在释放时复位。
+
+### R47热更接入说明
+
+FeatureNotice预制新增既有CanvasGroup，普通FoundationDemo Binder负责0.18/0.16秒淡入淡出和取消释放。大面板的背景/空白阻挡控件按语义在各热更View/Binder运行时设GameButton.KeepBrightnessOnPress=true；不能只关Selectable.transition，因为GameButton仍递归压暗子图形。真实小按钮维持原反馈，Common控件源码和AOT边界不变。本轮用户免回归，无新连续视听验收。

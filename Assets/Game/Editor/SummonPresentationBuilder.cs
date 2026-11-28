@@ -12,15 +12,16 @@ namespace AstralOath.Editor
         public const string DirectoryPath = "Assets/Game/Modules/Summon/Res/Presentation/";
         public const string AssetPath = DirectoryPath + "SummonPresentation.asset";
 
-        [Serializable] private sealed class Graph { public Group[] groups; public Skeleton[] skeletons; public Sound[] audio; }
+        [Serializable] private sealed class Graph { public Group[] groups; public Skeleton[] skeletons; public Particle[] particles; public Sound[] audio; }
         [Serializable] private sealed class Group { public string id; public Part[] parts; }
         [Serializable] private sealed class Part
         {
-            public string source, animation;
+            public string source, animation, format;
             public float x, y, delay, rotate, speed, scale;
             public bool loop;
         }
         [Serializable] private sealed class Skeleton { public string id, document, atlas; public Page[] pages; }
+        [Serializable] private sealed class Particle { public string id, document; public Page[] pages; }
         [Serializable] private sealed class Page { public string name, asset; }
         [Serializable] private sealed class Sound { public string id, asset; }
 
@@ -30,11 +31,24 @@ namespace AstralOath.Editor
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             Graph graph = JsonUtility.FromJson<Graph>(Read<TextAsset>("presentation.json").text);
             var skeletons = graph.skeletons.ToDictionary(item => item.id, StringComparer.Ordinal);
+            var particles = graph.particles.ToDictionary(item => item.id, StringComparer.Ordinal);
             var phases = graph.groups.Select(group => new SummonPresentation.Phase
             {
                 id = group.id,
                 parts = group.parts.Select(part =>
                 {
+                    if (part.format == "particle")
+                    {
+                        Particle particle = particles[part.source];
+                        return new SummonPresentation.Layer
+                        {
+                            particle = Read<TextAsset>(particle.document),
+                            pageNames = particle.pages.Select(page => page.name).ToArray(),
+                            pages = particle.pages.Select(page => Read<Texture2D>(page.asset)).ToArray(),
+                            x = part.x, y = part.y, delay = part.delay, rotate = part.rotate, speed = part.speed,
+                            scale = part.scale, loop = part.loop
+                        };
+                    }
                     Skeleton skeleton = skeletons[part.source];
                     return new SummonPresentation.Layer
                     {
