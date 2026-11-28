@@ -20,7 +20,7 @@
 - 账号和英雄背包：[录像、数据模型与验收](plans/2026-11-17-hero-inventory.md)、[服务端接口与迁移](../Server/README.md)。
 - 游戏内邮件：[玩家收件、开发 GM 自发、服务端名单与整区投递的设计](plans/2026-11-22-game-mail.md)。
 - 普通装备：[背包、单槽配戴和管理页的原版画面与时间点](development/equipment-ui-reference.md)、[原作六部位、强化与套装规则及项目实施方案](plans/2026-11-21-equipment-system.md)、[11 月 25 日普通强化、角标与验收方案](plans/2026-11-25-equipment-enhancement.md)。
-- 当前本机试玩：[Windows0.1.27 / 内容R47，UID、频道未读与召唤追加修订](delivery/2026-11-28-identity-social-followup.md)，入口`.artifacts/windows-r47/Play-R47.exe`。签名热更兼容R37，无强更；按用户明确要求本轮未运行回归，修后实机和视听由用户验收。R46的1080p/4K证据仅证明此前版本；[R46历史](delivery/2026-11-28-home-social-visual-fix.md)保留。
+- 当前本机试玩：[Windows0.1.27 / 内容R48，召唤获得人物取景](delivery/2026-11-28-summon-reveal-layout.md)，入口`.artifacts/windows-r48/Play-R48.exe`。签名热更兼容R37、复用R47后端，无强更；按用户要求未做新包回归，修后实机由用户验收。[R47 UID和频道](delivery/2026-11-28-identity-social-followup.md)、[R46原生历史](delivery/2026-11-28-home-social-visual-fix.md)分别保留。
 - R41打不开：[旧R36占端口、启动助手安全切换与实际恢复验证](delivery/2026-11-27-r41-startup-fix.md)。只更新本机助手，原游戏本体和签名内容不变。
 - 邮件UI复核：[提示自动消失、角标、固定物品卡与共享确认框](delivery/2026-11-28-mail-ui-followup.md)。43功能/包证据保留，用户复核文字视觉不通过，44候选已修灰度/字重而尚待Native/分发；不要把历史图录当新增系统完成。
 - 后续装备修订：[角标/按钮、累计次数、CP横板、固定卡与英雄总增加](delivery/2026-11-26-equipment-followup.md)。本轮源码/Editor通过与签名包/原生/分发状态分别记录。
